@@ -21,7 +21,7 @@ class SiteFactory extends Factory
             'url' => $this->faker->domainName,
             'name' => $this->faker->name,
             'description' => $this->faker->paragraph(1),
-            'obs' => $$this->faker->paragraph(3),
+            'obs' => $this->faker->paragraph(3),
             'da' => $this->faker->randomNumber,
             'dr' => $this->faker->randomNumber,
             'traffic' => $this->faker->randomNumber,

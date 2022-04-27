@@ -21,10 +21,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('obs')->nullable();
 
-            $table->integer('da')->nullable();
-            $table->integer('dr')->nullable();
-            $table->integer('traffic')->nullable();
-            $table->integer('tf')->nullable();
+            $table->unsignedInteger('da')->nullable();
+            $table->unsignedInteger('dr')->nullable();
+            $table->unsignedBigInteger('traffic')->nullable();
+            $table->unsignedInteger('tf')->nullable();
             $table->string('language')->nullable();
             $table->string('country')->nullable();
 
