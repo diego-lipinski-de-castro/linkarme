@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Site;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SiteSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +15,8 @@ class SiteSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Site::factory(10)->create();
+        \App\Models\Category::factory(10)
+            ->has(Site::factory(10))
+            ->create();
     }
 }

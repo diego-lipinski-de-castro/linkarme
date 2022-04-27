@@ -13,7 +13,7 @@ class UpdateSiteRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,41 @@ class UpdateSiteRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'url' => 'required|string|min:1|max:255',
+            'name' => 'required|string|min:2|max:255',
+            'description' => 'nullable|string|max:255',
+            'obs' => 'nullable|string|max:600',
+            'da' => 'nullable|integer',
+            'dr' => 'nullable|integer',
+            'traffic' => 'nullable|integer',
+            'tf' => 'nullable|integer',
+            'country' => 'nullable|string',
+            'language' => 'nullable|string',
+            'category_id' => 'nullable|integer|exists:categories,id',
+            'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
+            
+            'gambling' => 'required|boolean',
+            'cdb' => 'required|boolean',
+            'cripto' => 'required|boolean',
+            'sponsor' => 'required|boolean',
+            'ssl' => 'required|boolean',
+            'broken' => 'required|boolean',
+
+            'cost' => 'nullable',
+            'sale' => 'nullable',
+            'last_posted' => 'nullable|date',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'gambling' => !blank($this->gambling),
+            'cdb' => !blank($this->cdb),
+            'cripto' => !blank($this->cripto),
+            'sponsor' => !blank($this->sponsor),
+            'ssl' => !blank($this->ssl),
+            'broken' => !blank($this->broken),
+        ]);
     }
 }

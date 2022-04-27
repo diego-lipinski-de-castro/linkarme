@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
+use App\Models\Category;
 use App\Models\Site;
+use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
@@ -15,7 +17,13 @@ class SiteController extends Controller
      */
     public function index()
     {
-        //
+        $sites = Site::orderBy('url')
+            ->with('category')
+            ->paginate(15);
+
+        return view('sites.index', [
+            'sites' => $sites,
+        ]);
     }
 
     /**
@@ -25,7 +33,11 @@ class SiteController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('sites.create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -36,7 +48,9 @@ class SiteController extends Controller
      */
     public function store(StoreSiteRequest $request)
     {
-        //
+        Site::create($request->validated());
+
+        return redirect(route('sites.index'));
     }
 
     /**
@@ -58,7 +72,14 @@ class SiteController extends Controller
      */
     public function edit(Site $site)
     {
-        //
+        $site->load('category');
+
+        $categories = Category::all();
+
+        return view('sites.edit', [
+            'site' => $site,
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -70,7 +91,9 @@ class SiteController extends Controller
      */
     public function update(UpdateSiteRequest $request, Site $site)
     {
-        //
+        $site->update($request->validated());
+
+        return redirect(route('sites.index'));
     }
 
     /**
@@ -81,6 +104,8 @@ class SiteController extends Controller
      */
     public function destroy(Site $site)
     {
-        //
+        $site->delete();
+
+        return back();
     }
 }

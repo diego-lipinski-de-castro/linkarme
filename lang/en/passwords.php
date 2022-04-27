@@ -13,6 +13,7 @@ return [
     |
     */
 
+    'password' => 'A senha e a confirmação devem combinar e possuir pelo menos seis caracteres.',
     'reset' => 'Your password has been reset!',
     'sent' => 'We have emailed your password reset link!',
     'throttled' => 'Please wait before retrying.',
