@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Category;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SiteController extends Controller
 {
@@ -17,12 +18,19 @@ class SiteController extends Controller
      */
     public function index()
     {
-        $sites = Site::orderBy('url')
+        $sites = QueryBuilder::for(Site::class)
             ->with('category')
-            ->paginate(15);
+            ->defaultSort('url')
+            ->allowedSorts(['url', 'da', 'dr', 'traffic', 'tf'])
+            ->allowedFilters(['url', 'category_id'])
+            ->paginate(15)
+            ->appends(request()->query());
+
+        $categories = Category::orderBy('name')->get();
 
         return view('sites.index', [
             'sites' => $sites,
+            'categories' => $categories,
         ]);
     }
 

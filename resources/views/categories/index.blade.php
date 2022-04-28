@@ -18,11 +18,11 @@
                 <table class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900">
                                 Nome
                             </th>
                             
-                            <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-6">
+                            <th scope="col" class="relative whitespace-nowrap px-3 py-3">
                                 <span class="sr-only">Ações</span>
                             </th>
                         </tr>
@@ -31,11 +31,11 @@
 
                         @foreach ($categories as $category)
                             <tr>
-                                <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6">
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                     {{ $category->name }}
                                 </td>
 
-                                <td class="flex relative whitespace-nowrap py-2 pl-3 pr-4 justify-end text-sm sm:pr-6">
+                                <td class="flex relative whitespace-nowrap px-3 py-2 justify-end text-sm">
                                     <a href="{{ route('categories.edit', $category->id) }}" class="font-medium text-blue-600 hover:text-blue-900">Editar</a>
 
                                     <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
