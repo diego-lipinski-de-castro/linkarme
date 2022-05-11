@@ -43,7 +43,7 @@
                         </x-dropdown-link>
 
                         <x-dropdown-link :href="route('languages.index')">
-                            {{ __('Idiomas') }}
+                            {{ __('Linguagens') }}
                         </x-dropdown-link>
 
                         <x-dropdown-link :href="route('countries.index')">
