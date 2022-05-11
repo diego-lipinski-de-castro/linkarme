@@ -25,7 +25,7 @@ class StoreSiteRequest extends FormRequest
     {
         return [
             'url' => 'required|string|min:1|max:255',
-            'name' => 'required|string|min:2|max:255',
+            'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
             'obs' => 'nullable|string|max:600',
             'da' => 'nullable|integer',

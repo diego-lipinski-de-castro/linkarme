@@ -19,10 +19,6 @@
                     <x-nav-link :href="route('sites.index')" :active="request()->routeIs('orders.*')">
                         {{ __('Pedidos') }}
                     </x-nav-link>
-
-                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                        {{ __('Categorias') }}
-                    </x-nav-link>
                 </div>
             </div>
 
@@ -42,8 +38,20 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="route('categories.index')">
+                            {{ __('Categorias') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('languages.index')">
+                            {{ __('Idiomas') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('countries.index')">
+                            {{ __('Países') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('logout') }}" class="border-top border-gray-300">
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"

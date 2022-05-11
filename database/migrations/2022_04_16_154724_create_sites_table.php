@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('url');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->text('obs')->nullable();
 

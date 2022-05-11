@@ -28,7 +28,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-span-2">
+                            <!-- <div class="col-span-2">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
                                 <div class="mt-1">
                                     <input value="{{ old('name', $site->name) }}" type="text" name="name" id="name"
@@ -53,7 +53,7 @@
                                 @error('description')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                            </div>
+                            </div> -->
 
                             <div class="col-span-2">
                                 <label for="category_id" class="block text-sm font-medium text-gray-700">Categoria</label>
@@ -203,24 +203,6 @@
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="sponsor" class="font-medium text-gray-700">Sponsor</label>
-                                    </div>
-                                </div>
-
-                                <div class="relative flex items-start">
-                                    <div class="flex items-center h-5">
-                                        <input {{ (old('ssl') == '1' || $site->ssl == true) ? 'checked' : '' }} value="1" id="ssl" name="ssl" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label for="ssl" class="font-medium text-gray-700">SSL</label>
-                                    </div>
-                                </div>
-
-                                <div class="relative flex items-start">
-                                    <div class="flex items-center h-5">
-                                        <input {{ (old('broken') == '1' || $site->broken == true) ? 'checked' : '' }} value="1" id="broken" name="broken" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label for="broken" class="font-medium text-gray-700">Link quebrado</label>
                                     </div>
                                 </div>
                             </div>
