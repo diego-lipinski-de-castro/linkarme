@@ -32,21 +32,24 @@ class UpdateSiteRequest extends FormRequest
             'dr' => 'nullable|integer',
             'traffic' => 'nullable|integer',
             'tf' => 'nullable|integer',
-            'country' => 'nullable|string',
-            'language' => 'nullable|string',
+
             'category_id' => 'nullable|integer|exists:categories,id',
+            'language_id' => 'nullable|integer|exists:languages,id',
+            'country_id' => 'nullable|integer|exists:countries,id',
+            
             'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
             
             'gambling' => 'required|boolean',
             'cdb' => 'required|boolean',
             'cripto' => 'required|boolean',
             'sponsor' => 'required|boolean',
-            'ssl' => 'required|boolean',
-            'broken' => 'required|boolean',
 
             'cost' => 'nullable',
             'sale' => 'nullable',
             'last_posted' => 'nullable|date',
+
+            'owner_name' => 'nullable|string|max:255',
+            'owner_whatsapp' => 'nullable|string|max:255',
         ];
     }
 
@@ -57,8 +60,6 @@ class UpdateSiteRequest extends FormRequest
             'cdb' => !blank($this->cdb),
             'cripto' => !blank($this->cripto),
             'sponsor' => !blank($this->sponsor),
-            'ssl' => !blank($this->ssl),
-            'broken' => !blank($this->broken),
         ]);
     }
 }

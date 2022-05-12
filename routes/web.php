@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,9 @@ Route::redirect('/', '/login');
 
 Route::resource('sites', SiteController::class)->middleware(['auth']);
 Route::resource('orders', OrderController::class)->middleware(['auth']);
+
+Route::resource('sellers', SellerController::class)->middleware(['auth']);
+Route::resource('clients', ClientController::class)->middleware(['auth']);
 
 Route::resource('categories', CategoryController::class)->middleware(['auth']);
 Route::resource('languages', LanguageController::class)->middleware(['auth']);

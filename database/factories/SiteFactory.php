@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Country;
+use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,9 +28,9 @@ class SiteFactory extends Factory
             'dr' => $this->faker->randomNumber,
             'traffic' => $this->faker->randomNumber,
             'tf' => $this->faker->randomNumber,
-            'country' => $this->faker->country,
-            'language' => $this->faker->languageCode,
             'category_id' => Category::factory(),
+            'language_id' => Language::factory(),
+            'country_id' => Country::factory(),
             'link_type' => $this->faker->randomElement(['NOFOLLOW', 'DOFOLLOW']),
             'gambling' => $this->faker->boolean,
             'cdb' => $this->faker->boolean,
@@ -39,6 +41,8 @@ class SiteFactory extends Factory
             'cost' => $this->faker->randomNumber,
             'sale' => $this->faker->randomNumber,
             'last_posted' => $this->faker->date('Y-m-d'),
+            'owner_name' => $this->faker->name,
+            'owner_whatsapp' => $this->faker->phoneNumber,
         ];
     }
 }

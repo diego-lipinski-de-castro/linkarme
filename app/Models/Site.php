@@ -25,8 +25,8 @@ class Site extends Model
         'dr',
         'traffic',
         'tf',
-        'language',
-        'country',
+        'language_id',
+        'country_id',
         'category_id',
         'link_type',
         'gambling',
@@ -38,6 +38,8 @@ class Site extends Model
         'cost',
         'sale',
         'last_posted',
+        'owner_name',
+        'owner_whatsapp',
     ];
 
     protected $casts = [
@@ -62,5 +64,15 @@ class Site extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }

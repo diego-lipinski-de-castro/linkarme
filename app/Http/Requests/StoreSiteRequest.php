@@ -35,18 +35,21 @@ class StoreSiteRequest extends FormRequest
             'country' => 'nullable|string',
             'language' => 'nullable|string',
             'category_id' => 'nullable|integer|exists:categories,id',
+            'language_id' => 'nullable|integer|exists:languages,id',
+            'country_id' => 'nullable|integer|exists:countries,id',
             'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
             
             'gambling' => 'nullable|boolean',
             'cdb' => 'nullable|boolean',
             'cripto' => 'nullable|boolean',
             'sponsor' => 'nullable|boolean',
-            'ssl' => 'nullable|boolean',
-            'broken' => 'nullable|boolean',
 
             'cost' => 'nullable',
             'sale' => 'nullable',
             'last_posted' => 'nullable|date',
+
+            'owner_name' => 'nullable|string|max:255',
+            'owner_whatsapp' => 'nullable|string|max:255',
         ];
     }
 }

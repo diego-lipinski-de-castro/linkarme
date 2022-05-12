@@ -25,10 +25,18 @@ return new class extends Migration
             $table->unsignedInteger('dr')->nullable();
             $table->unsignedBigInteger('traffic')->nullable();
             $table->unsignedInteger('tf')->nullable();
-            $table->string('language')->nullable();
-            $table->string('country')->nullable();
 
             $table->foreignId('category_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            
+            $table->foreignId('language_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+
+            $table->foreignId('country_id')
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
@@ -44,9 +52,13 @@ return new class extends Migration
             
             $table->string('cost')->nullable();
             $table->string('sale')->nullable();
+            
+            $table->date('last_posted')->nullable();
+
+            $table->string('owner_name')->nullable();
+            $table->string('owner_whatsapp')->nullable();
 
             $table->timestamps();
-            $table->date('last_posted')->nullable();
             $table->softDeletes();
         });
     }

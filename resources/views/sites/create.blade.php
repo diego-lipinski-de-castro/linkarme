@@ -17,13 +17,11 @@
                             <div class="col-span-2">
                                 <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
                                 <div class="mt-1">
-                                    <input type="text" name="url" id="url"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('url') border-red-300 @enderror"
-                                        placeholder="Ex.: ocp.news" />
+                                    <input type="text" name="url" id="url" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('url') border-red-300 @enderror" placeholder="Ex.: ocp.news" />
                                 </div>
 
                                 @error('url')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -58,93 +56,97 @@
                                 <label for="category_id" class="block text-sm font-medium text-gray-700">Categoria</label>
                                 <div class="mt-1">
 
-                                    <select id="category_id" name="category_id"
-                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                                        @error('category_id') border-red-300 @enderror>
+                                    <select id="category_id" name="category_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('category_id') border-red-300 @enderror>
                                         <option value="">Selecione</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
 
                                 </div>
 
                                 @error('category_id')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="da" class="block text-sm font-medium text-gray-700">DA</label>
                                 <div class="mt-1">
-                                    <input type="number" name="da" id="da"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('da') border-red-300 @enderror" />
+                                    <input type="number" name="da" id="da" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('da') border-red-300 @enderror" />
                                 </div>
 
                                 @error('da')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="dr" class="block text-sm font-medium text-gray-700">DR</label>
                                 <div class="mt-1">
-                                    <input type="number" name="dr" id="dr"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('dr') border-red-300 @enderror" />
+                                    <input type="number" name="dr" id="dr" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('dr') border-red-300 @enderror" />
                                 </div>
 
                                 @error('dr')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="traffic" class="block text-sm font-medium text-gray-700">Tráfego</label>
                                 <div class="mt-1">
-                                    <input type="number" name="traffic" id="traffic"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('traffic') border-red-300 @enderror" />
+                                    <input type="number" name="traffic" id="traffic" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('traffic') border-red-300 @enderror" />
                                 </div>
 
                                 @error('traffic')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="tf" class="block text-sm font-medium text-gray-700">TF</label>
                                 <div class="mt-1">
-                                    <input type="number" name="tf" id="tf"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('tf') border-red-300 @enderror" />
+                                    <input type="number" name="tf" id="tf" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('tf') border-red-300 @enderror" />
                                 </div>
 
                                 @error('tf')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="language" class="block text-sm font-medium text-gray-700">Língua</label>
+                            <div class="col-span-1">
+                                <label for="language_id" class="block text-sm font-medium text-gray-700">Linguagem</label>
                                 <div class="mt-1">
-                                    <input type="text" name="language" id="language"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('language') border-red-300 @enderror"
-                                        placeholder="Ex.: Português" />
+
+                                    <select id="language_id" name="language_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('language_id') border-red-300 @enderror>
+                                        <option value="">Selecione</option>
+                                        @foreach ($languages as $language)
+                                        <option value="{{ $language->id }}">{{ $language->name }}</option>
+                                        @endforeach
+                                    </select>
+
                                 </div>
 
-                                @error('language')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @error('language_id')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="country" class="block text-sm font-medium text-gray-700">País</label>
+                            <div class="col-span-1">
+                                <label for="country_id" class="block text-sm font-medium text-gray-700">País</label>
                                 <div class="mt-1">
-                                    <input type="text" name="country" id="country"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('country') border-red-300 @enderror"
-                                        placeholder="Ex.: Brasil" />
+
+                                    <select id="country_id" name="country_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('country_id') border-red-300 @enderror>
+                                        <option value="">Selecione</option>
+                                        @foreach ($countries as $country)
+                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
+
                                 </div>
 
-                                @error('country')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @error('country_id')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -152,9 +154,7 @@
                                 <label for="link_type" class="block text-sm font-medium text-gray-700">Tipo de link</label>
                                 <div class="mt-1">
 
-                                    <select id="link_type" name="link_type"
-                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                                        @error('link_type') border-red-300 @enderror>
+                                    <select id="link_type" name="link_type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('link_type') border-red-300 @enderror>
                                         <option value="">Selecione</option>
                                         <option value="DOFOLLOW">DOFOLLOW</option>
                                         <option value="NOFOLLOW">NOFOLLOW</option>
@@ -164,7 +164,7 @@
                                 </div>
 
                                 @error('link_type')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -208,57 +208,91 @@
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="cost" class="block text-sm font-medium text-gray-700">Custo</label>
-                                <div class="mt-1">
-                                    <input type="text" name="cost" id="cost"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input type="text" name="cost" id="cost" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
+
+                                    <div class="absolute inset-y-0 right-0 flex items-center">
+                                        <label for="coin" class="sr-only">Moeda</label>
+                                        <select id="coin" name="coin" class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                            <option>USD</option>
+                                            <option>CAD</option>
+                                            <option>EUR</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 @error('cost')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="sale" class="block text-sm font-medium text-gray-700">Venda</label>
-                                <div class="mt-1">
-                                    <input type="text" name="sale" id="sale"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('sale') border-red-300 @enderror" />
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input type="text" name="sale" id="sale" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('sale') border-red-300 @enderror" />
+
+                                    <div class="absolute inset-y-0 right-0 flex items-center">
+                                        <label for="coin" class="sr-only">Moeda</label>
+                                        <select id="coin" name="coin" class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                            <option>USD</option>
+                                            <option>CAD</option>
+                                            <option>EUR</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 @error('sale')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="col-span-2">
                                 <label for="last_posted" class="block text-sm font-medium text-gray-700">Último post</label>
                                 <div class="mt-1">
-                                    <input type="date" name="last_posted" id="last_posted"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('last_posted') border-red-300 @enderror" />
+                                    <input type="date" name="last_posted" id="last_posted" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('last_posted') border-red-300 @enderror" />
                                 </div>
 
                                 @error('last_posted')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="col-span-2">
                                 <label for="obs" class="block text-sm font-medium text-gray-700">Observações</label>
                                 <div class="mt-1">
-                                    <textarea type="text" name="obs" id="obs"
-                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('obs') border-red-300 @enderror"
-                                        placeholder="Insira suas anotações aqui"></textarea>
+                                    <textarea type="text" name="obs" id="obs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui"></textarea>
                                 </div>
 
                                 @error('obs')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-1">
+                                <label for="owner_name" class="block text-sm font-medium text-gray-700">Responsável</label>
+                                <div class="mt-1">
+                                    <input type="text" name="owner_name" id="owner_name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_name') border-red-300 @enderror" placeholder="Ex.: OCP News" />
+                                </div>
+
+                                @error('owner_name')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-1">
+                                <label for="owner_whatsapp" class="block text-sm font-medium text-gray-700">Whatsapp</label>
+                                <div class="mt-1">
+                                    <input type="text" name="owner_whatsapp" id="owner_whatsapp" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_whatsapp') border-red-300 @enderror" placeholder="Ex.: OCP News" />
+                                </div>
+
+                                @error('owner_whatsapp')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
 
                         <div class="mt-6 text-right">
-                            <button type="submit"
-                                class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Salvar</button>
+                            <button type="submit" class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Salvar</button>
                         </div>
                     </form>
 

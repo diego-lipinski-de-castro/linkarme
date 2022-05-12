@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Category;
+use App\Models\Country;
+use App\Models\Language;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -42,9 +44,13 @@ class SiteController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $languages = Language::all();
+        $countries = Country::all();
 
         return view('sites.create', [
             'categories' => $categories,
+            'languages' => $languages,
+            'countries' => $countries,
         ]);
     }
 
@@ -80,13 +86,21 @@ class SiteController extends Controller
      */
     public function edit(Site $site)
     {
-        $site->load('category');
+        $site->load([
+            'category',
+            'language',
+            'country',
+        ]);
 
         $categories = Category::all();
+        $languages = Language::all();
+        $countries = Country::all();
 
         return view('sites.edit', [
             'site' => $site,
             'categories' => $categories,
+            'languages' => $languages,
+            'countries' => $countries,
         ]);
     }
 
