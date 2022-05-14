@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Site extends Model
+class Site extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     public const LINK_TYPES = [ 
         'NOFOLLOW' => 'Nofollow',
@@ -37,6 +39,8 @@ class Site extends Model
         'broken',
         'cost',
         'sale',
+        'cost_coin',
+        'sale_coin',
         'last_posted',
         'owner_name',
         'owner_whatsapp',
@@ -55,8 +59,8 @@ class Site extends Model
         'ssl' => 'boolean',
         'broken' => 'boolean',
         
-        // 'cost',
-        // 'sale',
+        'cost' => 'integer',
+        'sale' => 'integer',
 
         // 'last_posted' => 'date',
     ];

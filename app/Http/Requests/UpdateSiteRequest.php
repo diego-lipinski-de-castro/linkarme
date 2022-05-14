@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSiteRequest extends FormRequest
@@ -44,8 +45,11 @@ class UpdateSiteRequest extends FormRequest
             'cripto' => 'required|boolean',
             'sponsor' => 'required|boolean',
 
-            'cost' => 'nullable',
-            'sale' => 'nullable',
+            'cost' => 'nullable|integer',
+            'sale' => 'nullable|integer',
+            'cost_coin' => 'nullable|in:BRL,EUR,USD',
+            'sale_coin' => 'nullable|in:BRL,EUR,USD',
+            
             'last_posted' => 'nullable|date',
 
             'owner_name' => 'nullable|string|max:255',
@@ -60,6 +64,9 @@ class UpdateSiteRequest extends FormRequest
             'cdb' => !blank($this->cdb),
             'cripto' => !blank($this->cripto),
             'sponsor' => !blank($this->sponsor),
+
+            'cost' => Helper::extractNumbersFromString($this->cost),
+            'sale' => Helper::extractNumbersFromString($this->sale),
         ]);
     }
 }

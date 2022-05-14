@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div id="app" class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -209,8 +209,17 @@
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="cost" class="block text-sm font-medium text-gray-700">Custo</label>
-                                <div class="mt-1">
-                                    <input value="{{ old('cost', $site->cost) }}" type="text" name="cost" id="cost" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input v-model.lazy="cost" v-money="costFormat" type="text" name="cost" id="cost" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
+
+                                    <div class="absolute inset-y-0 right-0 flex items-center">
+                                        <label for="cost_coin" class="sr-only">Moeda</label>
+                                        <select v-model="costCoin" id="cost_coin" name="cost_coin" class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                            <option value="BRL">BRL</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="USD">USD</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 @error('cost')
@@ -220,8 +229,17 @@
 
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="sale" class="block text-sm font-medium text-gray-700">Venda</label>
-                                <div class="mt-1">
-                                    <input value="{{ old('sale', $site->sale) }}" type="text" name="sale" id="sale" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('sale') border-red-300 @enderror" />
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input v-model.lazy="sale" v-money="saleFormat" type="text" name="sale" id="sale" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('sale') border-red-300 @enderror" />
+
+                                    <div class="absolute inset-y-0 right-0 flex items-center">
+                                        <label for="sale_coin" class="sr-only">Moeda</label>
+                                        <select v-model="saleCoin" id="sale_coin" name="sale_coin" class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                            <option value="BRL">BRL</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="USD">USD</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 @error('sale')
@@ -283,4 +301,34 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/v-money@0.8.1/dist/v-money.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    coins: @json($coins),
+
+                    cost: {{ old('cost', $site->cost ?? 0) }},
+                    sale: {{ old('sale', $site->sale ?? 0) }},
+                    
+                    costCoin: "{{ old('cost_coin', $site->cost_coin) }}",
+                    saleCoin: "{{ old('sale_coin', $site->sale_coin) }}",
+                }
+            },
+
+            computed: {
+                costFormat() {
+                    return this.coins[this.costCoin];
+                },
+
+                saleFormat() {
+                    return this.coins[this.saleCoin];
+                },
+            },
+        });
+    </script>
 </x-app-layout>

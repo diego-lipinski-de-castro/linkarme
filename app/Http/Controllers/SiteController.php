@@ -47,10 +47,13 @@ class SiteController extends Controller
         $languages = Language::all();
         $countries = Country::all();
 
+        $coins = config('coins');
+
         return view('sites.create', [
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
+            'coins' => $coins,
         ]);
     }
 
@@ -96,11 +99,14 @@ class SiteController extends Controller
         $languages = Language::all();
         $countries = Country::all();
 
+        $coins = config('coins');
+
         return view('sites.edit', [
             'site' => $site,
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
+            'coins' => $coins,
         ]);
     }
 

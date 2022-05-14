@@ -40,6 +40,8 @@ class SiteFactory extends Factory
             'broken' => $this->faker->boolean,
             'cost' => $this->faker->randomNumber,
             'sale' => $this->faker->randomNumber,
+            'cost_coin' => $this->faker->randomElement(['BRL', 'EUR', 'USD']),
+            'sale_coin' => $this->faker->randomElement(['BRL', 'EUR', 'USD']),
             'last_posted' => $this->faker->date('Y-m-d'),
             'owner_name' => $this->faker->name,
             'owner_whatsapp' => $this->faker->phoneNumber,

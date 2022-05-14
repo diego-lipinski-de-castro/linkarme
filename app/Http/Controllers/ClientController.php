@@ -15,7 +15,11 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::orderBy('name')->paginate();
+
+        return view('clients.index', [
+            'clients' => $clients,
+        ]);
     }
 
     /**
@@ -25,7 +29,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('clients.create');
     }
 
     /**
@@ -36,7 +40,9 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        //
+        Client::create($request->validated());
+
+        return redirect(route('clients.index'));
     }
 
     /**
@@ -58,7 +64,9 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        return view('clients.edit', [
+            'client' => $client,
+        ]);
     }
 
     /**
@@ -70,7 +78,9 @@ class ClientController extends Controller
      */
     public function update(UpdateClientRequest $request, Client $client)
     {
-        //
+        $client->update($request->validated());
+
+        return redirect(route('clients.index'));
     }
 
     /**
@@ -81,6 +91,8 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+
+        return back();
     }
 }

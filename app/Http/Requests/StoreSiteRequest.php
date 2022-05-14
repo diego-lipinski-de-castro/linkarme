@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSiteRequest extends FormRequest
@@ -44,12 +45,28 @@ class StoreSiteRequest extends FormRequest
             'cripto' => 'nullable|boolean',
             'sponsor' => 'nullable|boolean',
 
-            'cost' => 'nullable',
-            'sale' => 'nullable',
+            'cost' => 'nullable|integer',
+            'sale' => 'nullable|integer',
+            'cost_coin' => 'nullable|in:BRL,EUR,USD',
+            'sale_coin' => 'nullable|in:BRL,EUR,USD',
+
             'last_posted' => 'nullable|date',
 
             'owner_name' => 'nullable|string|max:255',
             'owner_whatsapp' => 'nullable|string|max:255',
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'cost' => Helper::extractNumbersFromString($this->cost),
+            'sale' => Helper::extractNumbersFromString($this->sale),
+        ]);
     }
 }

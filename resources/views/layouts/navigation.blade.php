@@ -38,6 +38,17 @@
                     </x-slot>
 
                     <x-slot name="content">
+
+                        <x-dropdown-link :href="route('clients.index')">
+                            {{ __('Clientes') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('sellers.index')">
+                            {{ __('Vendedores') }}
+                        </x-dropdown-link>
+
+                        <div class="border-t border-gray-100 dark:border-slate-600"></div>
+
                         <x-dropdown-link :href="route('categories.index')">
                             {{ __('Categorias') }}
                         </x-dropdown-link>
@@ -49,6 +60,8 @@
                         <x-dropdown-link :href="route('countries.index')">
                             {{ __('Países') }}
                         </x-dropdown-link>
+
+                        <div class="border-t border-gray-100 dark:border-slate-600"></div>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}" class="border-top border-gray-300">
@@ -83,12 +96,32 @@
                 {{ __('Sites') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('sites.index')" :active="request()->routeIs('orders.*')">
+            <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
                 {{ __('Pedidos') }}
             </x-responsive-nav-link>
 
+            <div class="border-t border-gray-100 dark:border-slate-600"></div>
+
+            <x-responsive-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.*')">
+                {{ __('Clientes') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('sellers.index')" :active="request()->routeIs('sellers.*')">
+                {{ __('Vendedores') }}
+            </x-responsive-nav-link>
+
+            <div class="border-t border-gray-100 dark:border-slate-600"></div>
+
             <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
                 {{ __('Categorias') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('languages.index')" :active="request()->routeIs('languages.*')">
+                {{ __('Linguagens') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('countries.index')" :active="request()->routeIs('countries.*')">
+                {{ __('Países') }}
             </x-responsive-nav-link>
         </div>
 
