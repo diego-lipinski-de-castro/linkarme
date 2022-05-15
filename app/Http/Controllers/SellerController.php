@@ -15,7 +15,11 @@ class SellerController extends Controller
      */
     public function index()
     {
-        //
+        $sellers = Seller::orderBy('name')->paginate();
+
+        return view('sellers.index', [
+            'sellers' => $sellers,
+        ]);
     }
 
     /**
@@ -25,7 +29,7 @@ class SellerController extends Controller
      */
     public function create()
     {
-        //
+        return view('sellers.create');
     }
 
     /**
@@ -36,7 +40,9 @@ class SellerController extends Controller
      */
     public function store(StoreSellerRequest $request)
     {
-        //
+        Seller::create($request->validated());
+
+        return redirect(route('sellers.index'));
     }
 
     /**
@@ -58,7 +64,9 @@ class SellerController extends Controller
      */
     public function edit(Seller $seller)
     {
-        //
+        return view('sellers.edit', [
+            'seller' => $seller,
+        ]);
     }
 
     /**
@@ -70,7 +78,9 @@ class SellerController extends Controller
      */
     public function update(UpdateSellerRequest $request, Seller $seller)
     {
-        //
+        $seller->update($request->validated());
+
+        return redirect(route('sellers.index'));
     }
 
     /**
@@ -81,6 +91,8 @@ class SellerController extends Controller
      */
     public function destroy(Seller $seller)
     {
-        //
+        $seller->delete();
+
+        return back();
     }
 }

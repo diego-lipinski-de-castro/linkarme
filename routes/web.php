@@ -36,4 +36,13 @@ Route::resource('categories', CategoryController::class)->middleware(['auth']);
 Route::resource('languages', LanguageController::class)->middleware(['auth']);
 Route::resource('countries', CountryController::class)->middleware(['auth']);
 
+Route::group([
+    'prefix' => 'clientes',
+    'as' => 'client.',
+], function () {
+    Route::get('sites', [\App\Http\Controllers\Client\SiteController::class, 'index'])
+        ->name('sites.index')
+        ->middleware(['auth:client']);
+});
+
 require __DIR__.'/auth.php';

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UpdateSellerRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateSellerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,31 @@ class UpdateSellerRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['nullable'],
         ];
+    }
+
+    /**
+     * Get the validated data from the request.
+     *
+     * @param  string|null  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function validated($key = null, $default = null)
+    {
+        $input = data_get($this->validator->validated(), $key, $default);
+
+        if(blank($this->password)) {
+            unset($input['password']);
+            return $input;
+        }
+
+        return array_merge($input, [
+            'password' => Hash::make($this->password),
+        ]);
     }
 }

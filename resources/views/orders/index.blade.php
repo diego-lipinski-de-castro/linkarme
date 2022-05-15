@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Clientes') }}
+                {{ __('Pedidos') }}
             </h2>
 
-            <a href="{{ route('clients.create') }}" class="inline-flex items-center px-4 px-3 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Adicionar cliente</a>
+            <!-- <a href="{{ route('sellers.create') }}" class="inline-flex items-center px-4 px-3 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Adicionar vendedor</a> -->
         </div>
     </x-slot>
 
@@ -17,15 +17,11 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900">
-                                Nome
+                                Campo 1
                             </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
-                                E-mail
-                            </th>
-
-                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
-                                Tipo
+                                Campo 2
                             </th>
                             
                             <th scope="col" class="relative whitespace-nowrap px-3 py-3 pl-3 pr-4 border-l">
@@ -36,29 +32,25 @@
                     
                     <tbody class="divide-y divide-gray-200 bg-white">
 
-                        @foreach ($clients as $client)
+                        @foreach ($orders as $order)
 
                             <tr>
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                                    {{ $client->name }}
+                                    Campo 1
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ $client->email }}
-                                </td>
-
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ $client->full ? 'Full' : 'Limitado' }}
+                                    Campo 2
                                 </td>
 
                                 <td class="flex relative whitespace-nowrap px-3 py-2 text-sm border-l">
-                                    <a href="{{ route('clients.edit', $client->id) }}" class="font-medium text-blue-600 hover:text-blue-900">
+                                    <a href="{{ route('orders.edit', $order->id) }}" class="font-medium text-blue-600 hover:text-blue-900">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                     </a>
 
-                                    <form action="{{ route('clients.destroy', $client->id) }}" method="POST">
+                                    <form action="{{ route('orders.destroy', $order->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="ml-2 font-medium text-red-600 hover:text-red-900">
@@ -76,7 +68,7 @@
             </div>
 
             <div class="mt-4">
-                {{ $clients->links() }}
+                {{ $orders->links() }}
             </div>
 
         </div>

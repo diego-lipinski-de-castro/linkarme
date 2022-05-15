@@ -21,6 +21,7 @@ class Client extends Authenticatable
         'name',
         'email',
         'password',
+        'full'
     ];
 
     /**
@@ -40,5 +41,6 @@ class Client extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'full' => 'boolean',
     ];
 }
