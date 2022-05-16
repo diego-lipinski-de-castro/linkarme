@@ -15,6 +15,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+
+            // $table->foreignId('client_id')
+            //     ->nullable()
+            //     ->constrained()
+            //     ->nullOnDelete();
+
+            $table->string('url');
+            $table->boolean('ssl')->default(false);
+            $table->boolean('broken')->default(false);
+
             $table->timestamps();
         });
     }
