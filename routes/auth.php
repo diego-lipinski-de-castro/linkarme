@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
 
 Route::group([
     'prefix' => 'clientes',
+    'as' => 'client.',
 ], function () {
     Route::middleware('guest:client')->group(function () {
         Route::get('login', [\App\Http\Controllers\Client\Auth\AuthenticatedSessionController::class, 'create'])
