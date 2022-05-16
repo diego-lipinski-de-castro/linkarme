@@ -17,17 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         User::create([
             'name' => 'André',
-            'emaill' => 'andre@linkarme.com',
+            'email' => 'andre@linkarme.com',
             'password' => bcrypt('password'),
         ]);
 
         User::create([
             'name' => 'Max',
-            'emaill' => 'max@linkarme.com',
+            'email' => 'max@linkarme.com',
             'password' => bcrypt('password'),
         ]);
 
-        $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(CountrySeeder::class);
         $this->call(LanguageSeeder::class);
