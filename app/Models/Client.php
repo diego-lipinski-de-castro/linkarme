@@ -43,4 +43,14 @@ class Client extends Authenticatable
         'email_verified_at' => 'datetime',
         'full' => 'boolean',
     ];
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Site::class, 'favorites')->withTimestamps();
+    }
+
+    public function getFavoritesIdsAttribute()
+    {
+        return $this->favorites->pluck('id')->toArray();
+    }
 }

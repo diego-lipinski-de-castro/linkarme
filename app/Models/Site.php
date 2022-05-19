@@ -79,4 +79,16 @@ class Site extends Model implements Auditable
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Client::class, 'favorites')->withTimestamps();
+    }
+
+    public function scopeAuthFavorites($query)
+    {
+        return $query->whereHas('favorites', function ($query) {
+            $query->where('clients.id', auth()->id());
+        });
+    }
 }

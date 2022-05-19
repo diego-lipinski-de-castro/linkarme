@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
 
-            $table->string('url');
+            $table->string('url')->unique();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->text('obs')->nullable();
@@ -41,7 +41,7 @@ return new class extends Migration
                 ->constrained()
                 ->nullOnDelete();
 
-            $table->enum('link_type', ['NOFOLLOW', 'DOFOLLOW']);
+            $table->enum('link_type', ['NOFOLLOW', 'DOFOLLOW'])->default('NOFOLLOW');
 
             $table->boolean('gambling')->default(false);
             $table->boolean('cdb')->default(false);

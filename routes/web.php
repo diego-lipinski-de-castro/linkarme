@@ -26,6 +26,9 @@ Route::redirect('/', '/login');
 //     return view('dashboard');
 // })->middleware(['auth'])->name('dashboard');
 
+Route::get('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']);
+Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('sites.importSubmit')->middleware(['auth']);
+
 Route::resource('sites', SiteController::class)->middleware(['auth']);
 Route::resource('orders', OrderController::class)->middleware(['auth']);
 
@@ -42,6 +45,10 @@ Route::group([
 ], function () {
     Route::get('sites', [\App\Http\Controllers\Client\SiteController::class, 'index'])
         ->name('sites.index')
+        ->middleware(['auth:client']);
+
+    Route::post('sites/{site}/favorite', [\App\Http\Controllers\Client\SiteController::class, 'favorite'])
+        ->name('sites.favorite')
         ->middleware(['auth:client']);
 });
 

@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
+use App\Imports\SitesImport;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class SiteController extends Controller
@@ -135,5 +138,38 @@ class SiteController extends Controller
         $site->delete();
 
         return back();
+    }
+
+    public function import()
+    {
+        return view('sites.import');
+    }
+
+    public function importSubmit(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file',
+        ]);
+
+        $import = new SitesImport();
+
+        $import->import(request()->file('file'));
+
+        $importFailures = collect();
+
+        foreach ($import->failures() as $failure) {
+            $importFailures->push([
+                'row' => $failure->row(),
+                'attribute' => $failure->attribute(),
+                'errors' => $failure->errors(),
+                'values' => $failure->values(),
+            ]);
+        }
+
+        if(!$import->errors()->empty()) {
+            dd($import->errors());
+        }
+
+        return back()->with('failures', $importFailures);
     }
 }
