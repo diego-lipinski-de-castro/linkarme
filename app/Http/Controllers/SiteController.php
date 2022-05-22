@@ -23,6 +23,8 @@ class SiteController extends Controller
      */
     public function index()
     {
+        $categories = Category::orderBy('name')->get();
+        
         $sites = QueryBuilder::for(Site::class)
             ->with('category')
             ->defaultSort('url')
@@ -30,8 +32,6 @@ class SiteController extends Controller
             ->allowedFilters(['url', 'category_id'])
             ->paginate(15)
             ->appends(request()->query());
-
-        $categories = Category::orderBy('name')->get();
 
         return view('sites.index', [
             'sites' => $sites,

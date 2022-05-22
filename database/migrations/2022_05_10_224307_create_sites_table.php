@@ -47,8 +47,9 @@ return new class extends Migration
             $table->boolean('cdb')->default(false);
             $table->boolean('cripto')->default(false);
             $table->boolean('sponsor')->default(false);
-            $table->boolean('ssl')->default(false);
-            $table->boolean('broken')->default(false);
+            
+            $table->boolean('broken')->nullable();
+            $table->boolean('ssl')->nullable();
             
             $table->integer('cost')->nullable();
             $table->integer('sale')->nullable();

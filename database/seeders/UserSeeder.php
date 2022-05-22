@@ -18,6 +18,12 @@ class UserSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         User::create([
+            'name' => 'Diego',
+            'email' => 'diego@linkarme.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        User::create([
             'name' => 'André',
             'email' => 'andre@linkarme.com',
             'password' => bcrypt('password'),

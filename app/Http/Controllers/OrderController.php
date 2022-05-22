@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Client;
 use App\Models\Order;
+use App\Models\Seller;
+use App\Models\Site;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderController extends Controller
 {
@@ -15,10 +20,39 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::paginate();
+        $statuses = Order::STATUSES;
+
+        $sites = Site::query()
+            ->orderBy('url')
+            ->get();
+
+        $clients = Client::query()
+            ->orderBy('name')
+            ->get();
+
+        $sellers = Seller::query()
+            ->orderBy('name')
+            ->get();
+
+        $orders = QueryBuilder::for(Order::class)
+            ->defaultSort('-created_at')
+            // ->allowedSorts([])
+            ->allowedFilters([
+                AllowedFilter::exact('site_id'),
+                AllowedFilter::exact('client_id'),
+                AllowedFilter::exact('seller_id'),
+                'url',
+                AllowedFilter::exact('status'),
+            ])
+            ->paginate(15)
+            ->appends(request()->query());
 
         return view('orders.index', [
             'orders' => $orders,
+            'statuses' => $statuses,
+            'sites' => $sites,
+            'clients' => $clients,
+            'sellers' => $sellers,
         ]);
     }
 
@@ -29,7 +63,26 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        $statuses = Order::STATUSES;
+
+        $sites = Site::query()
+            ->orderBy('url')
+            ->get();
+
+        $clients = Client::query()
+            ->orderBy('name')
+            ->get();
+
+        $sellers = Seller::query()
+            ->orderBy('name')
+            ->get();
+
+        return view('orders.create', [
+            'statuses' => $statuses,
+            'sites' => $sites,
+            'clients' => $clients,
+            'sellers' => $sellers,
+        ]);
     }
 
     /**
@@ -40,7 +93,9 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
+        Order::create($request->validated());
+
+        return redirect(route('orders.index'));
     }
 
     /**
@@ -62,7 +117,33 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $order->load([
+            'site',
+            'client',
+            'seller',
+        ]);
+
+        $statuses = Order::STATUSES;
+
+        $sites = Site::query()
+            ->orderBy('url')
+            ->get();
+
+        $clients = Client::query()
+            ->orderBy('name')
+            ->get();
+
+        $sellers = Seller::query()
+            ->orderBy('name')
+            ->get();
+
+        return view('orders.edit', [
+            'order' => $order,
+            'statuses' => $statuses,
+            'sites' => $sites,
+            'clients' => $clients,
+            'sellers' => $sellers,
+        ]);
     }
 
     /**
@@ -74,7 +155,9 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $order->update($request->validated());
+
+        return redirect(route('orders.index'));
     }
 
     /**
@@ -85,6 +168,8 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        
+        return back();
     }
 }

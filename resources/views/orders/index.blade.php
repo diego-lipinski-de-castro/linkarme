@@ -5,7 +5,7 @@
                 {{ __('Pedidos') }}
             </h2>
 
-            <!-- <a href="{{ route('sellers.create') }}" class="inline-flex items-center px-4 px-3 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Adicionar vendedor</a> -->
+            <a href="{{ route('orders.create') }}" class="inline-flex items-center px-4 px-3 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Adicionar pedido</a>
         </div>
     </x-slot>
 
@@ -16,12 +16,24 @@
                 <table class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900">
-                                Campo 1
+                            <!-- <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900">
+                                Site
                             </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
-                                Campo 2
+                                Cliente
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Vendedor
+                            </th> -->
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                URL
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Status
                             </th>
                             
                             <th scope="col" class="relative whitespace-nowrap px-3 py-3 pl-3 pr-4 border-l">
@@ -32,15 +44,85 @@
                     
                     <tbody class="divide-y divide-gray-200 bg-white">
 
-                        @foreach ($orders as $order)
-
+                        <form action="{{ route('orders.index') }}">
                             <tr>
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                                    Campo 1
+                                <!-- <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                        <select onchange="this.form.submit()" name="filter[site_id]"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            >
+                                            <option {{ blank(optional(request()->query('filter'))['site_id']) ? 'selected' : '' }} value="">Todos</option>
+                                            @foreach ($sites as $site)
+                                                <option {{ optional(request()->query('filter'))['site_id'] == $site->id ? 'selected': '' }} value="{{ $site->id }}">{{ $site->url }}</option>
+                                            @endforeach
+                                        </select>
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    Campo 2
+                                        <select onchange="this.form.submit()" name="filter[client_id]"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            >
+                                            <option {{ blank(optional(request()->query('filter'))['client_id']) ? 'selected' : '' }} value="">Todos</option>
+                                            @foreach ($clients as $client)
+                                                <option {{ optional(request()->query('filter'))['client_id'] == $client->id ? 'selected': '' }} value="{{ $client->id }}">{{ $client->name }}</option>
+                                            @endforeach
+                                        </select>
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                        <select onchange="this.form.submit()" name="filter[seller_id]"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            >
+                                            <option {{ blank(optional(request()->query('filter'))['seller_id']) ? 'selected' : '' }} value="">Todos</option>
+                                            @foreach ($sellers as $seller)
+                                                <option {{ optional(request()->query('filter'))['seller_id'] == $seller->id ? 'selected': '' }} value="{{ $seller->id }}">{{ $seller->name }}</option>
+                                            @endforeach
+                                        </select>
+                                </td> -->
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <input onchange="this.form.submit()" name="filter[url]" value="{{ optional(request()->query('filter'))['url'] }}"
+                                        type="text"
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                        <select onchange="this.form.submit()" name="filter[status]"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            >
+                                            <option {{ blank(optional(request()->query('filter'))['status']) ? 'selected' : '' }} value="">Todos</option>
+                                            @foreach ($statuses as $key => $label)
+                                                <option {{ optional(request()->query('filter'))['status'] == $key ? 'selected': '' }} value="{{ $key }}">{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+
+                                </td>
+                            </tr>
+                        </form>
+
+                        @foreach ($orders as $order)
+
+                            <tr>
+                                <!-- <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                    {{ $order->site->url }}
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->client->name }}
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->seller->name }}
+                                </td> -->
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->url }}
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->formatted_status }}
                                 </td>
 
                                 <td class="flex relative whitespace-nowrap px-3 py-2 text-sm border-l">
