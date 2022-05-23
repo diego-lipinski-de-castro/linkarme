@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
+        
         $schedule->job(new CheckOrdersUrl)->twiceDaily(1, 13);
     }
 
