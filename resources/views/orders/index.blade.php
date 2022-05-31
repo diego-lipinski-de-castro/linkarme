@@ -46,7 +46,8 @@
 
                         <form action="{{ route('orders.index') }}">
                             <tr>
-                                <!-- <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                {{--
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                         <select onchange="this.form.submit()" name="filter[site_id]"
                                             class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                                             >
@@ -77,7 +78,8 @@
                                                 <option {{ optional(request()->query('filter'))['seller_id'] == $seller->id ? 'selected': '' }} value="{{ $seller->id }}">{{ $seller->name }}</option>
                                             @endforeach
                                         </select>
-                                </td> -->
+                                </td>
+                                --}}
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     <input onchange="this.form.submit()" name="filter[url]" value="{{ optional(request()->query('filter'))['url'] }}"
@@ -105,7 +107,8 @@
                         @foreach ($orders as $order)
 
                             <tr>
-                                <!-- <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                {{--
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                     {{ $order->site->url }}
                                 </td>
 
@@ -115,7 +118,8 @@
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     {{ $order->seller->name }}
-                                </td> -->
+                                </td>
+                                --}}
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     {{ $order->url }}
