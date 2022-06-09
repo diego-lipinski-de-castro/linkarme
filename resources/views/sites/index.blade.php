@@ -10,11 +10,27 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="sm:px-6 lg:px-8">
 
             @php
-                $sort = request()->query('sort', 'url')
+            $sort = request()->query('sort', 'url')
             @endphp
+
+            <!-- 
+            Domínio
+            País
+            Linguagem
+            DA
+            DR
+            TF
+            Categoria
+            SSL
+            Cassino
+            Publi
+            Cripto
+            OBS
+            Preço
+            -->
 
             <div class="overflow-x-scroll border border-gray-300 md:rounded-md">
                 <table class="min-w-full divide-y divide-gray-300">
@@ -22,19 +38,23 @@
                         <tr>
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900">
                                 <a href="{{ route('sites.index', [ 'sort' => $sort == 'url' ? '-url' : 'url' ]) }}" class="group inline-flex cursor-pointer">
-                                    URL
-                                    
+                                    Domínio
+
                                     <span class="{{ str_starts_with($sort, 'url') ? '' : 'rotate-180' }} {{ str_contains($sort, 'url') ? 'bg-gray-200 text-gray-900 group-hover:bg-gray-300' : 'invisible text-gray-400 group-hover:visible group-focus:visible' }} ml-2 flex-none rounded">
                                         <!-- Heroicon name: solid/chevron-down -->
                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
-                                      </span>
+                                    </span>
                                 </a>
                             </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
-                                Categoria
+                                País
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Linguagem
                             </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
@@ -44,9 +64,9 @@
                                     <span class="{{ str_starts_with($sort, 'da') ? '' : 'rotate-180' }} {{ str_contains($sort, 'da') ? 'bg-gray-200 text-gray-900 group-hover:bg-gray-300' : 'invisible text-gray-400 group-hover:visible group-focus:visible' }} ml-2 flex-none rounded">
                                         <!-- Heroicon name: solid/chevron-down -->
                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
-                                      </span>
+                                    </span>
                                 </a>
                             </th>
 
@@ -57,22 +77,9 @@
                                     <span class="{{ str_starts_with($sort, 'dr') ? '' : 'rotate-180' }} {{ str_contains($sort, 'dr') ? 'bg-gray-200 text-gray-900 group-hover:bg-gray-300' : 'invisible text-gray-400 group-hover:visible group-focus:visible' }} ml-2 flex-none rounded">
                                         <!-- Heroicon name: solid/chevron-down -->
                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
-                                      </span>
-                                </a>
-                            </th>
-
-                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
-                                <a href="{{ route('sites.index', [ 'sort' => $sort == 'traffic' ? '-traffic' : 'traffic' ]) }}" class="group inline-flex cursor-pointer">
-                                    Tráfego
-
-                                    <span class="{{ str_starts_with($sort, 'traffic') ? '' : 'rotate-180' }} {{ str_contains($sort, 'traffic') ? 'bg-gray-200 text-gray-900 group-hover:bg-gray-300' : 'invisible text-gray-400 group-hover:visible group-focus:visible' }} ml-2 flex-none rounded">
-                                        <!-- Heroicon name: solid/chevron-down -->
-                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                      </span>
+                                    </span>
                                 </a>
                             </th>
 
@@ -83,97 +90,170 @@
                                     <span class="{{ str_starts_with($sort, 'tf') ? '' : 'rotate-180' }} {{ str_contains($sort, 'tf') ? 'bg-gray-200 text-gray-900 group-hover:bg-gray-300' : 'invisible text-gray-400 group-hover:visible group-focus:visible' }} ml-2 flex-none rounded">
                                         <!-- Heroicon name: solid/chevron-down -->
                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
-                                      </span>
+                                    </span>
                                 </a>
                             </th>
-                            
-                            <th scope="col" class="relative whitespace-nowrap px-3 py-3 pl-3 pr-4 border-l">
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Categoria
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                SSL
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Cassino
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Publi
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Cripto
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Preço
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
                                 <span class="sr-only">Ações</span>
                             </th>
                         </tr>
                     </thead>
-                    
+
                     <tbody class="divide-y divide-gray-200 bg-white">
 
                         <form action="{{ route('sites.index') }}">
                             <tr>
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                                        <input onchange="this.form.submit()" name="filter[url]" value="{{ optional(request()->query('filter'))['url'] }}"
-                                            type="text"
-                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                            placeholder="Ex.: ocp"/>
+                                <td class="whitespace-nowrap px-3 py-2">
+                                    <input onchange="this.form.submit()" name="filter[url]" value="{{ optional(request()->query('filter'))['url'] }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: ocp" />
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td class="whitespace-nowrap px-3 py-2 border-l">
+                                    <input onchange="this.form.submit()" name="da" value="{{ request()->query('da') }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: > 1000"/>
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 border-l">
+                                    <input onchange="this.form.submit()" name="dr" value="{{ request()->query('dr') }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: < 5000"/>
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 border-l">
+                                    <input onchange="this.form.submit()" name="tf" value="{{ request()->query('tf') }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: > 1000"/>
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                        <select onchange="this.form.submit()" name="filter[category_id]"
-                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                            >
-                                            <option {{ blank(optional(request()->query('filter'))['category_id']) ? 'selected' : '' }} value="">Todos</option>
-                                            @foreach ($categories as $category)
-                                                <option {{ optional(request()->query('filter'))['category_id'] == $category->id ? 'selected': '' }} value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
+                                    <select onchange="this.form.submit()" name="filter[category_id]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['category_id']) ? 'selected' : '' }} value="">Todos</option>
+                                        @foreach ($categories as $category)
+                                        <option {{ optional(request()->query('filter'))['category_id'] == $category->id ? 'selected': '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
 
-                                </td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
 
-                                </td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-
-                                </td>
-
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-
-                                </td>
-
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-
-                                </td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
                             </tr>
                         </form>
 
                         @foreach ($sites as $site)
 
-                            <tr>
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                                    {{ $site->url }}
-                                </td>
+                        <tr>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                {{ $site->url }}
+                            </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ optional($site->category)->name ?? '-' }}
-                                </td>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->country->name }}
+                            </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ $site->da }}
-                                </td>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                            {{ $site->language->name }}
+                            </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ $site->dr }}
-                                </td>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->da }}
+                            </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ $site->traffic }}
-                                </td>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->dr }}
+                            </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ $site->tf }}
-                                </td>
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->tf }}
+                            </td>
 
-                                <td class="flex relative whitespace-nowrap px-3 py-2 text-sm border-l">
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ optional($site->category)->name ?? '-' }}
+                            </td>
+
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->ssl ? 'Sim' : 'Não' }}
+                            </td>
+
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->gambling ? 'Sim' : 'Não' }}
+                            </td>
+
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                
+                            </td>
+
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->crypto ? 'Sim' : 'Não' }}
+                            </td>
+
+                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                
+                            </td>
+
+                            <td class="whitespace-nowrap px-3 py-2 text-sm border-l">
+                                <div class="flex items-center justify-center">
+                                    @if(!$site->trashed())
                                     <a href="{{ route('sites.edit', $site->id) }}" class="font-medium text-blue-600 hover:text-blue-900">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                     </a>
+                                    @endif
 
-                                    <form action="{{ route('sites.destroy', $site->id) }}" method="POST">
+                                    <form action="{{ route('sites.toggle', $site->id) }}" method="POST" class="flex items-center">
+                                        @csrf
+
+                                        @if($site->trashed())
+                                        <button type="submit" class="ml-2 font-medium text-green-500 hover:text-green-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        @else
+                                        <button type="submit" class="ml-2 font-medium text-yellow-500 hover:text-yellow-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        @endif
+                                    </form>
+
+                                    @if($site->trashed())
+                                    <form action="{{ route('sites.destroy', $site->id) }}" method="POST" class="flex items-center">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="ml-2 font-medium text-red-600 hover:text-red-900">
@@ -182,8 +262,10 @@
                                             </svg>
                                         </button>
                                     </form>
-                                </td>
-                            </tr>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
                         @endforeach
 
                     </tbody>

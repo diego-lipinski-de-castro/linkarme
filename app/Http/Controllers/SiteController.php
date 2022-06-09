@@ -26,10 +26,79 @@ class SiteController extends Controller
         $categories = Category::orderBy('name')->get();
         
         $sites = QueryBuilder::for(Site::class)
+            ->when(request()->has('da'), function ($query) {
+
+                $search = explode(' ', request()->query('da'));
+
+                if(count($search) == 2) {
+                    $query->where('da', $search[0], $search[1]);
+                }
+
+                if(count($search) == 5) {
+
+                    if(in_array('&', $search)) {
+                        $query->where('da', $search[0], $search[1])->where('da', $search[3], $search[4]);
+                    } elseif(in_array('||', $search)) {
+                        $query->where('da', $search[0], $search[1])->orWhere('da', $search[3], $search[4]);
+                    }
+                }
+            })
+            ->when(request()->has('dr'), function ($query) {
+
+                $search = explode(' ', request()->query('dr'));
+
+                if(count($search) == 2) {
+                    $query->where('dr', $search[0], $search[1]);
+                }
+
+                if(count($search) == 5) {
+
+                    if(in_array('&', $search)) {
+                        $query->where('dr', $search[0], $search[1])->where('dr', $search[3], $search[4]);
+                    } elseif(in_array('||', $search)) {
+                        $query->where('dr', $search[0], $search[1])->orWhere('dr', $search[3], $search[4]);
+                    }
+                }
+            })
+            ->when(request()->has('traffic'), function ($query) {
+
+                $search = explode(' ', request()->query('traffic'));
+
+                if(count($search) == 2) {
+                    $query->where('traffic', $search[0], $search[1]);
+                }
+
+                if(count($search) == 5) {
+
+                    if(in_array('&', $search)) {
+                        $query->where('traffic', $search[0], $search[1])->where('traffic', $search[3], $search[4]);
+                    } elseif(in_array('||', $search)) {
+                        $query->where('traffic', $search[0], $search[1])->orWhere('traffic', $search[3], $search[4]);
+                    }
+                }
+            })
+            ->when(request()->has('tf'), function ($query) {
+
+                $search = explode(' ', request()->query('tf'));
+
+                if(count($search) == 2) {
+                    $query->where('tf', $search[0], $search[1]);
+                }
+
+                if(count($search) == 5) {
+
+                    if(in_array('&', $search)) {
+                        $query->where('tf', $search[0], $search[1])->where('tf', $search[3], $search[4]);
+                    } elseif(in_array('||', $search)) {
+                        $query->where('tf', $search[0], $search[1])->orWhere('tf', $search[3], $search[4]);
+                    }
+                }
+            })
+            ->withTrashed()
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts(['url', 'da', 'dr', 'traffic', 'tf'])
-            ->allowedFilters(['url', 'category_id'])
+            ->allowedFilters(['url', 'category_id', 'da'])
             ->paginate(15)
             ->appends(request()->query());
 
@@ -135,7 +204,14 @@ class SiteController extends Controller
      */
     public function destroy(Site $site)
     {
-        $site->delete();
+        $site->forceDelete();
+
+        return back();
+    }
+
+    public function toggle(Site $site)
+    {
+        $site->trashed() ? $site->restore() : $site->delete();
 
         return back();
     }
@@ -150,6 +226,8 @@ class SiteController extends Controller
         $request->validate([
             'file' => 'required|file',
         ]);
+
+        $before = Site::count();
 
         $import = new SitesImport();
 
@@ -170,6 +248,12 @@ class SiteController extends Controller
             dd($import->errors());
         }
 
-        return back()->with('failures', $importFailures);
+        $after = Site::count();
+
+        $diff = $after - $before;
+
+        return back()
+            ->with('failures', $importFailures)
+            ->with('diff', $diff);
     }
 }

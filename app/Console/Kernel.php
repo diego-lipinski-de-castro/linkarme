@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\CheckOrdersUrl;
+use App\Jobs\CheckSites;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
         
         $schedule->job(new CheckOrdersUrl)->twiceDaily(1, 13);
+        $schedule->job(new CheckSites)->twiceDaily(1, 13);
     }
 
     /**

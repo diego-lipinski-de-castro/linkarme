@@ -12,7 +12,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="sm:px-6 lg:px-8">
 
             <div class="overflow-hidden border border-gray-300 md:rounded-md">
                 <table class="min-w-full divide-y divide-gray-300">
@@ -35,14 +35,16 @@
                                     {{ $category->name }}
                                 </td>
 
-                                <td class="flex relative whitespace-nowrap px-3 py-2 justify-end text-sm">
-                                    <a href="{{ route('categories.edit', $category->id) }}" class="font-medium text-blue-600 hover:text-blue-900">Editar</a>
+                                <td class="whitespace-nowrap px-3 py-2 justify-end text-sm">
+                                    <div class="flex">
+                                        <a href="{{ route('categories.edit', $category->id) }}" class="font-medium text-blue-600 hover:text-blue-900">Editar</a>
 
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="ml-2 font-medium text-red-600 hover:text-red-900">Excluir</button>
-                                    </form>
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="ml-2 font-medium text-red-600 hover:text-red-900">Excluir</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

@@ -19,7 +19,10 @@ return new class extends Migration
             $table->string('url')->unique();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
+            
             $table->text('obs')->nullable();
+            $table->text('admin_obs')->nullable();
+            $table->text('client_obs')->nullable();
 
             $table->unsignedInteger('da')->nullable();
             $table->unsignedInteger('dr')->nullable();

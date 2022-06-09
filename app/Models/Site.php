@@ -23,6 +23,8 @@ class Site extends Model implements Auditable
         'name',
         'description',
         'obs',
+        'admin_obs',
+        'client_obs',
         'da',
         'dr',
         'traffic',

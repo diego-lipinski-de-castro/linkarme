@@ -8,7 +8,13 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="sm:px-6 lg:px-8">
+
+            @if(session('diff'))
+            <span class="px-3 py-2 border border-green-300 rounded-md bg-green-100 text-green-500 block mb-3">
+                {{ session('diff') }} novos sites foram adicionados.
+            </span>
+            @endif
 
             @if ($errors->any())
             <div>

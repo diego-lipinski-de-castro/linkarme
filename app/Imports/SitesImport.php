@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Str;
 
-class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, SkipsOnError, SkipsOnFailure
+class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, SkipsOnFailure, SkipsOnError
 {
     use Importable;
     use SkipsFailures;
@@ -59,7 +59,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
         $venda = Helper::extractNumbersFromString($venda);
 
         return new Site([
-            'url' => $row['dominio'],
+            'url' => str_replace('www.', '', parse_url($row['dominio'])),
             'name' => null,
             'description' => null,
             'obs' => $row['observacoes'],
@@ -88,16 +88,23 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     }
 
     public function rules(): array
-    {
+    {            
         return [
+            'inclusao' => [],
             'dominio' => [],
-            'observacoes' => [],
             'da' => ['nullable', 'integer'],
             'dr' => ['nullable', 'integer'],
-            'cassinos' => [Rule::in(['Sim', 'Não'])],
+            'atendimento' => [],
             'custo' => [],
             'venda' => [],
-            'atendimento' => [],
+            'categorias' => [],
+            'pais' => [],
+            'linguagem' => [],
+            'cassinos' => [Rule::in(['Sim', 'Não'])],
+            'cripto' => [Rule::in(['Sim', 'Não'])],
+            'tag_publi' => [Rule::in(['Sim', 'Não'])],
+            'notas' => [],
+            'observacoes' => [],
         ];
     }
 

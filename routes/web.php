@@ -31,7 +31,10 @@ Route::redirect('/', '/login');
 Route::get('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']);
 Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('sites.importSubmit')->middleware(['auth']);
 
-Route::resource('sites', SiteController::class)->middleware(['auth']);
+Route::resource('sites', SiteController::class)->except(['destroy'])->middleware(['auth']);
+Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth']);
+Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);
+
 Route::resource('orders', OrderController::class)->middleware(['auth']);
 
 Route::resource('sellers', SellerController::class)->middleware(['auth']);
@@ -51,6 +54,10 @@ Route::group([
 
     Route::post('sites/{site}/favorite', [\App\Http\Controllers\Client\SiteController::class, 'favorite'])
         ->name('sites.favorite')
+        ->middleware(['auth:client']);
+
+    Route::get('orders', [\App\Http\Controllers\Client\OrderController::class, 'index'])
+        ->name('orders.index')
         ->middleware(['auth:client']);
 });
 
