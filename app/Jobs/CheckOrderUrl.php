@@ -41,21 +41,17 @@ class CheckOrderUrl implements ShouldQueue
 
         $result = (new CheckUrlService())->check($order->url);
 
-        Check::updateOrCreate([
+        $check = new Check([
             'url' => $order->url,
-        ],[
             'code' => $result->code,
             'ssl' => $result->ssl,
         ]);
+
+        $order->checks()->save($check);
 
         $order->update([
             'broken' => $result->code != 200,
             'ssl' => $result->ssl,
         ]);
-
-        // $order->site->update([
-        //     'broken' => $result->code == 200,
-        //     'ssl' => $result->ssl,
-        // ]);
     }
 }

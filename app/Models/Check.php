@@ -14,7 +14,8 @@ class Check extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'order_id',
+        'checkable_id',
+        'checkable_type',
         'url',
         'code',
         'ssl',
@@ -22,4 +23,9 @@ class Check extends Model implements Auditable
 
     protected $casts = [
     ];
+
+    public function checkable()
+    {
+        return $this->morphTo();
+    }
 }

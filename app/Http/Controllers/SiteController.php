@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\FilterLimiter;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Imports\SitesImport;
@@ -12,6 +13,7 @@ use App\Models\Site;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class SiteController extends Controller
@@ -23,87 +25,42 @@ class SiteController extends Controller
      */
     public function index()
     {
+        $countries = Country::query()
+            ->orderBy('name')
+            ->get();
+
+        $languages = Language::query()
+            ->orderBy('name')
+            ->get();
+
         $categories = Category::orderBy('name')->get();
         
         $sites = QueryBuilder::for(Site::class)
-            ->when(request()->has('da'), function ($query) {
-
-                $search = explode(' ', request()->query('da'));
-
-                if(count($search) == 2) {
-                    $query->where('da', $search[0], $search[1]);
-                }
-
-                if(count($search) == 5) {
-
-                    if(in_array('&', $search)) {
-                        $query->where('da', $search[0], $search[1])->where('da', $search[3], $search[4]);
-                    } elseif(in_array('||', $search)) {
-                        $query->where('da', $search[0], $search[1])->orWhere('da', $search[3], $search[4]);
-                    }
-                }
-            })
-            ->when(request()->has('dr'), function ($query) {
-
-                $search = explode(' ', request()->query('dr'));
-
-                if(count($search) == 2) {
-                    $query->where('dr', $search[0], $search[1]);
-                }
-
-                if(count($search) == 5) {
-
-                    if(in_array('&', $search)) {
-                        $query->where('dr', $search[0], $search[1])->where('dr', $search[3], $search[4]);
-                    } elseif(in_array('||', $search)) {
-                        $query->where('dr', $search[0], $search[1])->orWhere('dr', $search[3], $search[4]);
-                    }
-                }
-            })
-            ->when(request()->has('traffic'), function ($query) {
-
-                $search = explode(' ', request()->query('traffic'));
-
-                if(count($search) == 2) {
-                    $query->where('traffic', $search[0], $search[1]);
-                }
-
-                if(count($search) == 5) {
-
-                    if(in_array('&', $search)) {
-                        $query->where('traffic', $search[0], $search[1])->where('traffic', $search[3], $search[4]);
-                    } elseif(in_array('||', $search)) {
-                        $query->where('traffic', $search[0], $search[1])->orWhere('traffic', $search[3], $search[4]);
-                    }
-                }
-            })
-            ->when(request()->has('tf'), function ($query) {
-
-                $search = explode(' ', request()->query('tf'));
-
-                if(count($search) == 2) {
-                    $query->where('tf', $search[0], $search[1]);
-                }
-
-                if(count($search) == 5) {
-
-                    if(in_array('&', $search)) {
-                        $query->where('tf', $search[0], $search[1])->where('tf', $search[3], $search[4]);
-                    } elseif(in_array('||', $search)) {
-                        $query->where('tf', $search[0], $search[1])->orWhere('tf', $search[3], $search[4]);
-                    }
-                }
-            })
             ->withTrashed()
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts(['url', 'da', 'dr', 'traffic', 'tf'])
-            ->allowedFilters(['url', 'category_id', 'da'])
+            ->allowedFilters([
+                'url',
+                AllowedFilter::exact('country_id'),
+                AllowedFilter::exact('language_id'),
+                AllowedFilter::custom('da', new FilterLimiter),
+                AllowedFilter::custom('dr', new FilterLimiter),
+                AllowedFilter::custom('traffic', new FilterLimiter),
+                AllowedFilter::custom('tf', new FilterLimiter),
+                AllowedFilter::exact('category_id'),
+                'ssl',
+                'gambling',
+                'sponsor',
+                'cripto',
+            ])
             ->paginate(15)
             ->appends(request()->query());
 
         return view('sites.index', [
             'sites' => $sites,
+            'countries' => $countries,
+            'languages' => $languages,
             'categories' => $categories,
         ]);
     }

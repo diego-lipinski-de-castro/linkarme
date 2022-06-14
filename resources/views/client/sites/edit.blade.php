@@ -1,7 +1,7 @@
-<x-app-layout>
+<x-app-client-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Adicionar site') }}
+            {{ __('Editar site') }}
         </h2>
     </x-slot>
 
@@ -10,14 +10,15 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <form action="{{ route('sites.store') }}" method="POST">
+                    <form action="{{ route('client.sites.update', $site->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
 
                         <div class="grid grid-cols-2 gap-6">
                             <div class="col-span-2">
                                 <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
                                 <div class="mt-1">
-                                    <input type="text" name="url" id="url" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('url') border-red-300 @enderror" placeholder="Ex.: ocp.news" />
+                                    <input disabled value="{{ old('url', $site->url) }}" type="text" name="url" id="url" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('url') border-red-300 @enderror" placeholder="Ex.: ocp.news" />
                                 </div>
 
                                 @error('url')
@@ -28,7 +29,7 @@
                             <!-- <div class="col-span-2">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
                                 <div class="mt-1">
-                                    <input type="text" name="name" id="name"
+                                    <input value="{{ old('name', $site->name) }}" type="text" name="name" id="name"
                                         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('name') border-red-300 @enderror"
                                         placeholder="Ex.: OCP News" />
                                 </div>
@@ -42,7 +43,7 @@
                                 <label for="description"
                                     class="block text-sm font-medium text-gray-700">Descrição</label>
                                 <div class="mt-1">
-                                    <input type="text" name="description" id="description"
+                                    <input value="{{ old('description', $site->description) }}" type="text" name="description" id="description"
                                         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('description') border-red-300 @enderror"
                                         placeholder="Ex.: Portal de notícias" />
                                 </div>
@@ -56,10 +57,10 @@
                                 <label for="category_id" class="block text-sm font-medium text-gray-700">Categoria</label>
                                 <div class="mt-1">
 
-                                    <select id="category_id" name="category_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('category_id') border-red-300 @enderror>
-                                        <option value="">Selecione</option>
+                                    <select disabled id="category_id" name="category_id" class="disabled:opacity-50 mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('category_id') border-red-300 @enderror>
+                                        <option value="" disabled>Selecione</option>
                                         @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option {{ old('category_id', $site->category_id) == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -73,7 +74,7 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="da" class="block text-sm font-medium text-gray-700">DA</label>
                                 <div class="mt-1">
-                                    <input type="number" name="da" id="da" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('da') border-red-300 @enderror" />
+                                    <input disabled value="{{ old('da', $site->da) }}" type="number" name="da" id="da" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('da') border-red-300 @enderror" />
                                 </div>
 
                                 @error('da')
@@ -84,7 +85,7 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="dr" class="block text-sm font-medium text-gray-700">DR</label>
                                 <div class="mt-1">
-                                    <input type="number" name="dr" id="dr" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('dr') border-red-300 @enderror" />
+                                    <input disabled value="{{ old('dr', $site->dr) }}" type="number" name="dr" id="dr" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('dr') border-red-300 @enderror" />
                                 </div>
 
                                 @error('dr')
@@ -95,7 +96,7 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="traffic" class="block text-sm font-medium text-gray-700">Tráfego</label>
                                 <div class="mt-1">
-                                    <input type="number" name="traffic" id="traffic" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('traffic') border-red-300 @enderror" />
+                                    <input disabled value="{{ old('traffic', $site->traffic) }}" type="number" name="traffic" id="traffic" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('traffic') border-red-300 @enderror" />
                                 </div>
 
                                 @error('traffic')
@@ -106,7 +107,7 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="tf" class="block text-sm font-medium text-gray-700">TF</label>
                                 <div class="mt-1">
-                                    <input type="number" name="tf" id="tf" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('tf') border-red-300 @enderror" />
+                                    <input disabled value="{{ old('tf', $site->tf) }}" type="number" name="tf" id="tf" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('tf') border-red-300 @enderror" />
                                 </div>
 
                                 @error('tf')
@@ -118,10 +119,10 @@
                                 <label for="language_id" class="block text-sm font-medium text-gray-700">Linguagem</label>
                                 <div class="mt-1">
 
-                                    <select id="language_id" name="language_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('language_id') border-red-300 @enderror>
-                                        <option value="">Selecione</option>
+                                    <select disabled id="language_id" name="language_id" class="disabled:opacity-50 mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('language_id') border-red-300 @enderror>
+                                        <option value="" disabled>Selecione</option>
                                         @foreach ($languages as $language)
-                                        <option value="{{ $language->id }}">{{ $language->name }}</option>
+                                        <option {{ old('language_id', $site->language_id) == $language->id ? 'selected' : '' }} value="{{ $language->id }}">{{ $language->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -136,10 +137,10 @@
                                 <label for="country_id" class="block text-sm font-medium text-gray-700">País</label>
                                 <div class="mt-1">
 
-                                    <select id="country_id" name="country_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('country_id') border-red-300 @enderror>
-                                        <option value="">Selecione</option>
+                                    <select disabled id="country_id" name="country_id" class="disabled:opacity-50 mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('country_id') border-red-300 @enderror>
+                                        <option value="" disabled>Selecione</option>
                                         @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        <option {{ old('country_id', $site->country_id) == $country->id ? 'selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -154,10 +155,10 @@
                                 <label for="link_type" class="block text-sm font-medium text-gray-700">Tipo de link</label>
                                 <div class="mt-1">
 
-                                    <select id="link_type" name="link_type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('link_type') border-red-300 @enderror>
-                                        <option value="">Selecione</option>
-                                        <option value="DOFOLLOW">DOFOLLOW</option>
-                                        <option value="NOFOLLOW">NOFOLLOW</option>
+                                    <select disabled id="link_type" name="link_type" class="disabled:opacity-50 mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('link_type') border-red-300 @enderror>
+                                        <option value="" disabled>Selecione</option>
+                                        <option {{ old('link_type', $site->link_type) == 'DOFOLLOW' ? 'selected' : '' }} value="DOFOLLOW">DOFOLLOW</option>
+                                        <option {{ old('link_type', $site->link_type) == 'NOFOLLOW' ? 'selected' : '' }} value="NOFOLLOW">NOFOLLOW</option>
 
                                     </select>
 
@@ -171,7 +172,7 @@
                             <div class="col-span-2 space-y-2">
                                 <div class="relative flex items-start">
                                     <div class="flex items-center h-5">
-                                        <input value="1" id="gambling" name="gambling" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input disabled {{ (old('gambling') == '1' || $site->gambling == true) ? 'checked' : '' }} value="1" id="gambling" name="gambling" type="checkbox" class="disabled:opacity-50 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="gambling" class="font-medium text-gray-700">Gambling</label>
@@ -180,7 +181,7 @@
 
                                 <div class="relative flex items-start">
                                     <div class="flex items-center h-5">
-                                        <input value="1" id="cdb" name="cdb" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input disabled {{ (old('cdb') == '1' || $site->cdb == true) ? 'checked' : '' }} value="1" id="cdb" name="cdb" type="checkbox" class="disabled:opacity-50 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="cdb" class="font-medium text-gray-700">CDB</label>
@@ -189,7 +190,7 @@
 
                                 <div class="relative flex items-start">
                                     <div class="flex items-center h-5">
-                                        <input value="1" id="cripto" name="cripto" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input disabled {{ (old('cripto') == '1' || $site->cripto == true) ? 'checked' : '' }} value="1" id="cripto" name="cripto" type="checkbox" class="disabled:opacity-50 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="cripto" class="font-medium text-gray-700">Cripto</label>
@@ -198,7 +199,7 @@
 
                                 <div class="relative flex items-start">
                                     <div class="flex items-center h-5">
-                                        <input value="1" id="sponsor" name="sponsor" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <input disabled {{ (old('sponsor') == '1' || $site->sponsor == true) ? 'checked' : '' }} value="1" id="sponsor" name="sponsor" type="checkbox" class="disabled:opacity-50 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="sponsor" class="font-medium text-gray-700">Publi</label>
@@ -209,11 +210,11 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="cost" class="block text-sm font-medium text-gray-700">Custo</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
-                                    <input v-model.lazy="cost" v-money="costFormat" type="text" name="cost" id="cost" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
+                                    <input disabled v-model.lazy="cost" v-money="costFormat" type="text" name="cost" id="cost" class="disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
 
                                     <div class="absolute inset-y-0 right-0 flex items-center">
                                         <label for="cost_coin" class="sr-only">Moeda</label>
-                                        <select v-model="costCoin" id="cost_coin" name="cost_coin" class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                        <select disabled v-model="costCoin" id="cost_coin" name="cost_coin" class="disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                             <option value="BRL">BRL</option>
                                             <option value="EUR">EUR</option>
                                             <option value="USD">USD</option>
@@ -229,11 +230,11 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="sale" class="block text-sm font-medium text-gray-700">Venda</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
-                                    <input v-model.lazy="sale" v-money="saleFormat" type="text" name="sale" id="sale" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('sale') border-red-300 @enderror" />
+                                    <input disabled v-model.lazy="sale" v-money="saleFormat" type="text" name="sale" id="sale" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('sale') border-red-300 @enderror" />
 
                                     <div class="absolute inset-y-0 right-0 flex items-center">
                                         <label for="sale_coin" class="sr-only">Moeda</label>
-                                        <select v-model="saleCoin" id="sale_coin" name="sale_coin" class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                        <select disabled v-model="saleCoin" id="sale_coin" name="sale_coin" class="disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                             <option value="BRL">BRL</option>
                                             <option value="EUR">EUR</option>
                                             <option value="USD">USD</option>
@@ -249,7 +250,7 @@
                             <div class="col-span-2">
                                 <label for="last_posted" class="block text-sm font-medium text-gray-700">Último post</label>
                                 <div class="mt-1">
-                                    <input type="date" name="last_posted" id="last_posted" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('last_posted') border-red-300 @enderror" />
+                                    <input disabled value="{{ old('last_posted', $site->last_posted) }}" type="date" name="last_posted" id="last_posted" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('last_posted') border-red-300 @enderror" />
                                 </div>
 
                                 @error('last_posted')
@@ -260,7 +261,7 @@
                             <div class="col-span-2">
                                 <label for="obs" class="block text-sm font-medium text-gray-700">Observações</label>
                                 <div class="mt-1">
-                                    <textarea type="text" name="obs" id="obs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui"></textarea>
+                                    <textarea disabled type="text" name="obs" id="obs" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui">{{ old('obs', $site->obs) }}</textarea>
                                 </div>
 
                                 @error('obs')
@@ -269,12 +270,12 @@
                             </div>
 
                             <div class="col-span-2">
-                                <label for="admin_obs" class="block text-sm font-medium text-gray-700">Notas</label>
+                                <label for="client_obs" class="block text-sm font-medium text-gray-700">Notas</label>
                                 <div class="mt-1">
-                                    <textarea type="text" name="admin_obs" id="admin_obs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('admin_obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui"></textarea>
+                                    <textarea type="text" name="client_obs" id="client_obs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('client_obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui">{{ old('client_obs', $site->client_obs) }}</textarea>
                                 </div>
 
-                                @error('admin_obs')
+                                @error('client_obs')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -282,7 +283,7 @@
                             <div class="col-span-1">
                                 <label for="owner_name" class="block text-sm font-medium text-gray-700">Responsável</label>
                                 <div class="mt-1">
-                                    <input type="text" name="owner_name" id="owner_name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_name') border-red-300 @enderror" placeholder="Ex.: OCP News" />
+                                    <input disabled value="{{ old('owner_name', $site->owner_name) }}" type="text" name="owner_name" id="owner_name" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_name') border-red-300 @enderror" placeholder="Ex.: OCP News" />
                                 </div>
 
                                 @error('owner_name')
@@ -293,7 +294,7 @@
                             <div class="col-span-1">
                                 <label for="owner_whatsapp" class="block text-sm font-medium text-gray-700">Whatsapp</label>
                                 <div class="mt-1">
-                                    <input type="text" name="owner_whatsapp" id="owner_whatsapp" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_whatsapp') border-red-300 @enderror" placeholder="Ex.: OCP News" />
+                                    <input disabled value="{{ old('owner_whatsapp', $site->owner_whatsapp) }}" type="text" name="owner_whatsapp" id="owner_whatsapp" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_whatsapp') border-red-300 @enderror" placeholder="Ex.: OCP News" />
                                 </div>
 
                                 @error('owner_whatsapp')
@@ -322,11 +323,11 @@
                 return {
                     coins: @json($coins),
 
-                    cost: '',
-                    sale: '',
+                    cost: {{ old('cost', $site->cost ?? 0) }},
+                    sale: {{ old('sale', $site->sale ?? 0) }},
                     
-                    costCoin: 'BRL',
-                    saleCoin: 'BRL',
+                    costCoin: "{{ old('cost_coin', $site->cost_coin) }}",
+                    saleCoin: "{{ old('sale_coin', $site->sale_coin) }}",
                 }
             },
 
@@ -341,4 +342,4 @@
             },
         });
     </script>
-</x-app-layout>
+</x-app-client-layout>

@@ -46,6 +46,7 @@ class Site extends Model implements Auditable
         'last_posted',
         'owner_name',
         'owner_whatsapp',
+        'created_at',
     ];
 
     protected $casts = [
@@ -85,6 +86,16 @@ class Site extends Model implements Auditable
     public function favorites()
     {
         return $this->belongsToMany(Client::class, 'favorites')->withTimestamps();
+    }
+
+    public function checks()
+    {
+        return $this->morphMany(Check::class, 'checkable');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function scopeAuthFavorites($query)

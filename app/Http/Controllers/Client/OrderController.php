@@ -17,6 +17,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = QueryBuilder::for(Order::class)
+            ->ofClient(auth()->id())
             ->defaultSort('-created_at')
             ->allowedSorts([])
             ->allowedFilters([

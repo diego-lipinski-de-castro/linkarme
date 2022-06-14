@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Check;
 use App\Models\Site;
 use App\Services\CheckUrlService;
 use Illuminate\Bus\Queueable;
@@ -36,22 +37,21 @@ class CheckSite implements ShouldQueue
     {
         $site = Site::find($this->siteId);
 
-        if(blank($site)) return;
+        if(blank($site) || blank($site->url)) return;
 
         $result = (new CheckUrlService())->check($site->url);
 
-        dd($site->url, $result);
+        $check = new Check([
+            'url' => $site->url,
+            'code' => $result->code,
+            'ssl' => $result->ssl,
+        ]);
 
-        // Check::updateOrCreate([
-        //     'url' => $order->url,
-        // ],[
-        //     'code' => $result->code,
-        //     'ssl' => $result->ssl,
-        // ]);
+        $site->checks()->save($check);
 
-        // $order->update([
-        //     'broken' => $result->code != 200,
-        //     'ssl' => $result->ssl,
-        // ]);
+        $site->update([
+            'broken' => $result->code != 200,
+            'ssl' => $result->ssl,
+        ]);
     }
 }

@@ -16,10 +16,7 @@ return new class extends Migration
         Schema::create('checks', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('order_id')
-                ->nullable()
-                ->constrained()
-                ->nullOnDelete();
+            $table->morphs('checkable');
 
             $table->string('url');
             $table->integer('code')->nullable();

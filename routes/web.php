@@ -56,6 +56,14 @@ Route::group([
         ->name('sites.favorite')
         ->middleware(['auth:client']);
 
+    Route::get('sites/{site}/edit', [\App\Http\Controllers\Client\SiteController::class, 'edit'])
+        ->name('sites.edit')
+        ->middleware(['auth:client']);
+
+    Route::put('sites/{site}', [\App\Http\Controllers\Client\SiteController::class, 'update'])
+        ->name('sites.update')
+        ->middleware(['auth:client']);
+
     Route::get('orders', [\App\Http\Controllers\Client\OrderController::class, 'index'])
         ->name('orders.index')
         ->middleware(['auth:client']);

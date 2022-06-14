@@ -134,20 +134,34 @@
                                     <input onchange="this.form.submit()" name="filter[url]" value="{{ optional(request()->query('filter'))['url'] }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: ocp" />
                                 </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[country_id]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['country_id']) ? 'selected' : '' }} value="">Todos</option>
+                                        @foreach ($countries as $country)
+                                        <option {{ optional(request()->query('filter'))['country_id'] == $country->id ? 'selected': '' }} value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
-
-                                <td class="whitespace-nowrap px-3 py-2 border-l">
-                                    <input onchange="this.form.submit()" name="da" value="{{ request()->query('da') }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: > 1000"/>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[language_id]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['language_id']) ? 'selected' : '' }} value="">Todos</option>
+                                        @foreach ($languages as $language)
+                                        <option {{ optional(request()->query('filter'))['language_id'] == $language->id ? 'selected': '' }} value="{{ $language->id }}">{{ $language->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 border-l">
-                                    <input onchange="this.form.submit()" name="dr" value="{{ request()->query('dr') }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: < 5000"/>
+                                    <input onchange="this.form.submit()" name="filter[da]" value="{{ optional(request()->query('filter'))['da'] }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: > 1000"/>
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 border-l">
-                                    <input onchange="this.form.submit()" name="tf" value="{{ request()->query('tf') }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: > 1000"/>
+                                    <input onchange="this.form.submit()" name="filter[dr]" value="{{ optional(request()->query('filter'))['dr'] }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: < 5000"/>
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 border-l">
+                                    <input onchange="this.form.submit()" name="filter[tf]" value="{{ optional(request()->query('filter'))['tf'] }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: > 1000"/>
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
@@ -159,13 +173,37 @@
                                     </select>
                                 </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[ssl]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['ssl']) ? 'selected' : '' }} value="">Todos</option>
+                                        <option {{ optional(request()->query('filter'))['ssl'] == '1' ? 'selected' : '' }} value="1">Sim</option>
+                                        <option {{ optional(request()->query('filter'))['ssl'] == '0' ? 'selected' : '' }} value="0">Não</option>
+                                    </select>
+                                </td>
                                 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[gambling]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['gambling']) ? 'selected' : '' }} value="">Todos</option>
+                                        <option {{ optional(request()->query('filter'))['gambling'] == '1' ? 'selected' : '' }} value="1">Sim</option>
+                                        <option {{ optional(request()->query('filter'))['gambling'] == '0' ? 'selected' : '' }} value="0">Não</option>
+                                    </select>
+                                </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[sponsor]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['sponsor']) ? 'selected' : '' }} value="">Todos</option>
+                                        <option {{ optional(request()->query('filter'))['sponsor'] == '1' ? 'selected' : '' }} value="1">Sim</option>
+                                        <option {{ optional(request()->query('filter'))['sponsor'] == '0' ? 'selected' : '' }} value="0">Não</option>
+                                    </select>
+                                </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[cripto]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['cripto']) ? 'selected' : '' }} value="">Todos</option>
+                                        <option {{ optional(request()->query('filter'))['cripto'] == '1' ? 'selected' : '' }} value="1">Sim</option>
+                                        <option {{ optional(request()->query('filter'))['cripto'] == '0' ? 'selected' : '' }} value="0">Não</option>
+                                    </select>
+                                </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
 
@@ -213,11 +251,11 @@
                             </td>
 
                             <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                
+                                {{ $site->sponsor ? 'Sim' : 'Não' }}
                             </td>
 
                             <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->crypto ? 'Sim' : 'Não' }}
+                                {{ $site->cripto ? 'Sim' : 'Não' }}
                             </td>
 
                             <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">

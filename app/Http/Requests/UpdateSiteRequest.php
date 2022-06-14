@@ -28,7 +28,11 @@ class UpdateSiteRequest extends FormRequest
             'url' => 'required|string|min:1|max:255',
             'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
+            
             'obs' => 'nullable|string|max:600',
+            'admin_obs' => 'nullable|string|max:600',
+            'client_obs' => 'nullable|string|max:600',
+
             'da' => 'nullable|integer',
             'dr' => 'nullable|integer',
             'traffic' => 'nullable|integer',

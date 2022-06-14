@@ -202,7 +202,7 @@
                                         <input {{ (old('sponsor') == '1' || $site->sponsor == true) ? 'checked' : '' }} value="1" id="sponsor" name="sponsor" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
-                                        <label for="sponsor" class="font-medium text-gray-700">Sponsor</label>
+                                        <label for="sponsor" class="font-medium text-gray-700">Publi</label>
                                     </div>
                                 </div>
                             </div>
@@ -265,6 +265,17 @@
                                 </div>
 
                                 @error('obs')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="admin_obs" class="block text-sm font-medium text-gray-700">Notas</label>
+                                <div class="mt-1">
+                                    <textarea type="text" name="admin_obs" id="admin_obs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('admin_obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui">{{ old('admin_obs', $site->admin_obs) }}</textarea>
+                                </div>
+
+                                @error('admin_obs')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

@@ -84,6 +84,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'last_posted' => null,
             'owner_name' => $row['atendimento'],
             'owner_whatsapp' => null,
+            // 'created_at' => ,
         ]);
     }
 
