@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@alpinejs/persist@^3.10.2":
+  version "3.10.2"
+  resolved "https://registry.yarnpkg.com/@alpinejs/persist/-/persist-3.10.2.tgz#b59580bda33ca4f9f308745b9cfdf0a3dfd55b64"
+  integrity sha512-BYnc4CxiuBHEaMqeMkU9KVrmV88lOEkdWY6qo5ryDnPMJGg1T/YhAMl3JxPImLJTsdc4r9fmcRgWeCXNPSGJew==
+
 "@ampproject/remapping@^2.1.0":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.1.2.tgz#4edca94973ded9630d20101cd8559cedb8d8bd34"

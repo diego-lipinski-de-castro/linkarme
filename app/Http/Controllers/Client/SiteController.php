@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Filters\FilterLimiter;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
@@ -23,6 +24,14 @@ class SiteController extends Controller
     public function index(Request $request)
     {
         $favorites = auth()->user()->favorites_ids;
+
+        $countries = Country::query()
+            ->orderBy('name')
+            ->get();
+
+        $languages = Language::query()
+            ->orderBy('name')
+            ->get();
 
         $categories = Category::orderBy('name')->get();
 
@@ -104,13 +113,22 @@ class SiteController extends Controller
                 'url',
                 'da',
                 'dr',
-                'traffic',
                 'tf',
                 AllowedSort::custom('orders_count', new OrderCountSort()),
             ])
             ->allowedFilters([
                 'url',
-                'category_id',
+                AllowedFilter::exact('country_id'),
+                AllowedFilter::exact('language_id'),
+                AllowedFilter::custom('da', new FilterLimiter),
+                AllowedFilter::custom('dr', new FilterLimiter),
+                AllowedFilter::custom('traffic', new FilterLimiter),
+                AllowedFilter::custom('tf', new FilterLimiter),
+                AllowedFilter::exact('category_id'),
+                'ssl',
+                'gambling',
+                'sponsor',
+                'cripto',
                 AllowedFilter::scope('favorites', 'auth_favorites'),
             ])
             ->paginate(15)
@@ -119,6 +137,8 @@ class SiteController extends Controller
         return view('client.sites.index', [
             'sites' => $sites,
             'favorites' => $favorites,
+            'countries' => $countries,
+            'languages' => $languages,
             'categories' => $categories,
         ]);
     }

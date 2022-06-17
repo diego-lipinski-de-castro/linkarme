@@ -39,7 +39,7 @@ class SiteController extends Controller
             ->withTrashed()
             ->with('category')
             ->defaultSort('url')
-            ->allowedSorts(['url', 'da', 'dr', 'traffic', 'tf'])
+            ->allowedSorts(['url', 'da', 'dr', 'tf'])
             ->allowedFilters([
                 'url',
                 AllowedFilter::exact('country_id'),
