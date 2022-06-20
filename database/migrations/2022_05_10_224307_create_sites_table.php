@@ -65,6 +65,7 @@ return new class extends Migration
             $table->string('owner_name')->nullable();
             $table->string('owner_whatsapp')->nullable();
 
+            $table->date('inserted_at');
             $table->timestamps();
             $table->softDeletes();
         });

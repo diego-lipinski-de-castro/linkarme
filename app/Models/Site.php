@@ -46,7 +46,7 @@ class Site extends Model implements Auditable
         'last_posted',
         'owner_name',
         'owner_whatsapp',
-        'created_at',
+        'inserted_at',
     ];
 
     protected $casts = [
@@ -67,6 +67,16 @@ class Site extends Model implements Auditable
 
         // 'last_posted' => 'date',
     ];
+
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($site) {
+            if(blank($site->inserted_at)) {
+                $site->inserted_at = now();
+            }
+        });
+    }
 
     public function category()
     {
