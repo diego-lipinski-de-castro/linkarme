@@ -322,11 +322,11 @@
                             </td>
 
                             <td x-show="columns.includes('country')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->country->name }}
+                                {{ optional($site->country)->name ?? '-' }}
                             </td>
 
                             <td x-show="columns.includes('language')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->language->name }}
+                                {{ optional($site->language)->name ?? '-' }}
                             </td>
 
                             <td x-show="columns.includes('da')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
