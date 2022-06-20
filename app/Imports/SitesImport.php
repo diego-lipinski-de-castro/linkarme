@@ -17,12 +17,18 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, SkipsOnFailure, SkipsOnError
+class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, SkipsOnFailure, SkipsOnError, WithBatchInserts
 {
     use Importable;
     use SkipsFailures;
     use SkipsErrors;
+
+    public function batchSize(): int
+    {
+        return 100;
+    }
 
     /**
     * @param array $row
@@ -86,7 +92,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'last_posted' => null,
             'owner_name' => $row['atendimento'],
             'owner_whatsapp' => null,
-            'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+            // 'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
         ]);
     }
 

@@ -68,9 +68,8 @@ class Site extends Model implements Auditable
         // 'last_posted' => 'date',
     ];
 
-    protected static function boot() {
-        parent::boot();
-
+    protected static function booted()
+    {
         static::creating(function ($site) {
             if(blank($site->inserted_at)) {
                 $site->inserted_at = now();
