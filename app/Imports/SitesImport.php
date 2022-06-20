@@ -73,13 +73,14 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             str_replace('www.', '', parse_url($row['dominio'], PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($row['dominio'], PHP_URL_PATH));
 
-        
         $country = Country::firstWhere('name', $row['pais']);
         $language = Language::firstWhere('name', $row['linguagem']);
-        
-        $category = Category::firstOrCreate([
-            'name' => $row['categorias'],
-        ]);
+
+        if(!blank($row['categorias'])) {
+            $category = Category::firstOrCreate([
+                'name' => $row['categorias'],
+            ]);
+        }
 
         return new Site([
             'url' => $url,
