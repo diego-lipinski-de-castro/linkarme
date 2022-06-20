@@ -67,7 +67,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
         $venda = Helper::extractNumbersFromString($venda);
 
         return new Site([
-            'url' => str_replace('www.', '', parse_url($row['dominio'])),
+            'url' => str_replace('www.', '', parse_url($row['dominio'], PHP_URL_HOST)),
             'name' => null,
             'description' => null,
             'obs' => $row['observacoes'],
@@ -92,7 +92,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'last_posted' => null,
             'owner_name' => $row['atendimento'],
             'owner_whatsapp' => null,
-            // 'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+            'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
         ]);
     }
 
