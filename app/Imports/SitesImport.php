@@ -3,6 +3,9 @@
 namespace App\Imports;
 
 use App\Helper;
+use App\Models\Category;
+use App\Models\Country;
+use App\Models\Language;
 use App\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -66,8 +69,20 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
         $custo = Helper::extractNumbersFromString($custo);
         $venda = Helper::extractNumbersFromString($venda);
 
+        $url = Str::contains($row['dominio'], '://') ? 
+            str_replace('www.', '', parse_url($row['dominio'], PHP_URL_HOST)) :
+            str_replace('www.', '', parse_url($row['dominio'], PHP_URL_PATH));
+
+        
+        $country = Country::firstWhere('name', $row['pais']);
+        $language = Language::firstWhere('name', $row['linguagem']);
+        
+        $category = Category::firstOrCreate([
+            'name' => $row['categorias'],
+        ]);
+
         return new Site([
-            'url' => str_replace('www.', '', parse_url($row['dominio'], PHP_URL_HOST)),
+            'url' => $url,
             'name' => null,
             'description' => null,
             'obs' => $row['observacoes'],
@@ -75,9 +90,9 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'dr' => $row['dr'],
             'traffic' => null,
             'tf' => null,
-            'language_id' => null,
-            'country_id' => null,
-            'category_id' => null,
+            'language_id' => optional($language)->id,
+            'country_id' => optional($country)->id,
+            'category_id' => optional($category)->id,
             'link_type' => 'NOFOLLOW',
             'gambling' => $row['cassinos'] == 'Sim' ? true : false,
             'cdb' => false,
