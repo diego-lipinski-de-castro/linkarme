@@ -113,4 +113,14 @@ class Site extends Model implements Auditable
             $query->where('clients.id', auth()->id());
         });
     }
+
+    public function getFormattedCostAttribute()
+    {
+        return 'R$ ' . number_format($this->cost / 100, 2, ',', '.');
+    }
+
+    public function getFormattedSaleAttribute()
+    {
+        return 'R$ ' . number_format($this->sale / 100, 2, ',', '.');
+    }
 }

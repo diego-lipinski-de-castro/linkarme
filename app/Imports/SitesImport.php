@@ -40,6 +40,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     */
     public function model(array $row)
     {
+        dd($row);
+
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
@@ -73,10 +75,17 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             str_replace('www.', '', parse_url($row['dominio'], PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($row['dominio'], PHP_URL_PATH));
 
-        $country = Country::firstWhere('name', $row['pais']);
-        $language = Language::firstWhere('name', $row['linguagem']);
-
+        $country = null;
+        $language = null;
         $category = null;
+
+        $country = Country::firstWhere('name', $row['pais']);
+
+        if(!blank($row['linguagem'])) {
+            $language = Language::firstOrCreate([
+                'name' => $row['linguagem'],
+            ]);
+        }
 
         if(!blank($row['categorias'])) {
             $category = Category::firstOrCreate([
@@ -99,8 +108,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'link_type' => 'NOFOLLOW',
             'gambling' => $row['cassinos'] == 'Sim' ? true : false,
             'cdb' => false,
-            'cripto' => false,
-            'sponsor' => false,
+            'cripto' => $row['cripto'] == 'Sim' ? true : false,
+            'sponsor' => $row['tag_publi'],
             'ssl' => false,
             'broken' => false,
             'cost' => $custo,

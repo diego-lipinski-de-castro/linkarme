@@ -131,7 +131,7 @@ class SiteController extends Controller
                 'cripto',
                 AllowedFilter::scope('favorites', 'auth_favorites'),
             ])
-            ->paginate(15)
+            ->paginate(50)
             ->appends(request()->query());
 
         return view('client.sites.index', [

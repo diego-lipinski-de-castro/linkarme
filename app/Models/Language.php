@@ -12,4 +12,9 @@ class Language extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
+    }
 }

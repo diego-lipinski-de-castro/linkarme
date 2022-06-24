@@ -316,97 +316,105 @@
 
                         @foreach ($sites as $site)
 
-                        <tr>
-                            <td x-show="columns.includes('url')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                                {{ $site->url }}
-                            </td>
+                            <tr class="hover:bg-blue-50">
+                                <td x-show="columns.includes('url')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                    {{ $site->url }}
+                                </td>
 
-                            <td x-show="columns.includes('country')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ optional($site->country)->name ?? '-' }}
-                            </td>
+                                <td x-show="columns.includes('country')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ optional($site->country)->name ?? '-' }}
+                                </td>
 
-                            <td x-show="columns.includes('language')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ optional($site->language)->name ?? '-' }}
-                            </td>
+                                <td x-show="columns.includes('language')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ optional($site->language)->name ?? '-' }}
+                                </td>
 
-                            <td x-show="columns.includes('da')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->da }}
-                            </td>
+                                <td x-show="columns.includes('da')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->da }}
+                                </td>
 
-                            <td x-show="columns.includes('dr')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->dr }}
-                            </td>
+                                <td x-show="columns.includes('dr')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->dr }}
+                                </td>
 
-                            <td x-show="columns.includes('tf')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->tf }}
-                            </td>
+                                <td x-show="columns.includes('tf')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->tf }}
+                                </td>
 
-                            <td x-show="columns.includes('category')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ optional($site->category)->name ?? '-' }}
-                            </td>
+                                <td x-show="columns.includes('category')" class="px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ optional($site->category)->name ?? '-' }}
+                                </td>
 
-                            <td x-show="columns.includes('ssl')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->ssl ? 'Sim' : 'Não' }}
-                            </td>
+                                <td x-show="columns.includes('ssl')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <div class="flex justify-center">
+                                        <span class="block rounded-full h-2 w-2 @if($site->ssl) bg-green-400 @else bg-red-400 @endif"></span>
+                                    </div>
+                                </td>
 
-                            <td x-show="columns.includes('gambling')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->gambling ? 'Sim' : 'Não' }}
-                            </td>
+                                <td x-show="columns.includes('gambling')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <div class="flex justify-center">
+                                        <span class="block rounded-full h-2 w-2 @if($site->gambling) bg-green-400 @else bg-red-400 @endif"></span>
+                                    </div>
+                                </td>
 
-                            <td x-show="columns.includes('sponsor')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->sponsor ? 'Sim' : 'Não' }}
-                            </td>
+                                <td x-show="columns.includes('sponsor')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <div class="flex justify-center">
+                                        <span class="block rounded-full h-2 w-2 @if($site->sponsor) bg-green-400 @else bg-red-400 @endif"></span>
+                                    </div>
+                                </td>
 
-                            <td x-show="columns.includes('cripto')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->cripto ? 'Sim' : 'Não' }}
-                            </td>
+                                <td x-show="columns.includes('cripto')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <div class="flex justify-center">
+                                        <span class="block rounded-full h-2 w-2 @if($site->cripto) bg-green-400 @else bg-red-400 @endif"></span>
+                                    </div>
+                                </td>
 
-                            <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->formatted_sale }}
+                                </td>
 
-                            </td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm border-l">
+                                    <div class="flex items-center justify-center">
+                                        @if(!$site->trashed())
+                                        <a href="{{ route('sites.edit', $site->id) }}" class="font-medium text-blue-600 hover:text-blue-900">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </a>
+                                        @endif
 
-                            <td class="whitespace-nowrap px-3 py-2 text-sm border-l">
-                                <div class="flex items-center justify-center">
-                                    @if(!$site->trashed())
-                                    <a href="{{ route('sites.edit', $site->id) }}" class="font-medium text-blue-600 hover:text-blue-900">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                    </a>
-                                    @endif
+                                        <form action="{{ route('sites.toggle', $site->id) }}" method="POST" class="flex items-center">
+                                            @csrf
 
-                                    <form action="{{ route('sites.toggle', $site->id) }}" method="POST" class="flex items-center">
-                                        @csrf
+                                            @if($site->trashed())
+                                            <button type="submit" class="ml-2 font-medium text-green-500 hover:text-green-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                            @else
+                                            <button type="submit" class="ml-2 font-medium text-yellow-500 hover:text-yellow-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                            @endif
+                                        </form>
 
                                         @if($site->trashed())
-                                        <button type="submit" class="ml-2 font-medium text-green-500 hover:text-green-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                        @else
-                                        <button type="submit" class="ml-2 font-medium text-yellow-500 hover:text-yellow-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
+                                        <form action="{{ route('sites.destroy', $site->id) }}" method="POST" class="flex items-center">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="ml-2 font-medium text-red-600 hover:text-red-900">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </form>
                                         @endif
-                                    </form>
-
-                                    @if($site->trashed())
-                                    <form action="{{ route('sites.destroy', $site->id) }}" method="POST" class="flex items-center">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="ml-2 font-medium text-red-600 hover:text-red-900">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
+                                    </div>
+                                </td>
+                            </tr>
                         @endforeach
 
                     </tbody>

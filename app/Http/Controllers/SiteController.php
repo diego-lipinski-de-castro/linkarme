@@ -26,14 +26,19 @@ class SiteController extends Controller
     public function index()
     {
         $countries = Country::query()
+            ->whereHas('sites')
             ->orderBy('name')
             ->get();
 
         $languages = Language::query()
+            ->whereHas('sites')
             ->orderBy('name')
             ->get();
 
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
         
         $sites = QueryBuilder::for(Site::class)
             ->withTrashed()
@@ -54,7 +59,7 @@ class SiteController extends Controller
                 'sponsor',
                 'cripto',
             ])
-            ->paginate(15)
+            ->paginate(50)
             ->appends(request()->query());
 
         return view('sites.index', [

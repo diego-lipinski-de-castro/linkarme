@@ -393,24 +393,32 @@
                                 {{ $site->tf }}
                             </td>
 
-                            <td x-show="columns.includes('category')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                            <td x-show="columns.includes('category')" class="px-3 py-2 text-sm text-gray-500 border-l">
                                 {{ optional($site->category)->name ?? '-' }}
                             </td>
 
                             <td x-show="columns.includes('ssl')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->ssl ? 'Sim' : 'Não' }}
+                                <div class="flex justify-center">
+                                    <span class="block rounded-full h-2 w-2 @if($site->ssl) bg-green-400 @else bg-red-400 @endif"></span>
+                                </div>
                             </td>
 
                             <td x-show="columns.includes('gambling')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->gambling ? 'Sim' : 'Não' }}
+                                <div class="flex justify-center">
+                                    <span class="block rounded-full h-2 w-2 @if($site->gambling) bg-green-400 @else bg-red-400 @endif"></span>
+                                </div>
                             </td>
 
                             <td x-show="columns.includes('sponsor')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->sponsor ? 'Sim' : 'Não' }}
+                                <div class="flex justify-center">
+                                    <span class="block rounded-full h-2 w-2 @if($site->sponsor) bg-green-400 @else bg-red-400 @endif"></span>
+                                </div>
                             </td>
 
                             <td x-show="columns.includes('cripto')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                {{ $site->cripto ? 'Sim' : 'Não' }}
+                                <div class="flex justify-center">
+                                    <span class="block rounded-full h-2 w-2 @if($site->cripto) bg-green-400 @else bg-red-400 @endif"></span>
+                                </div>
                             </td>
 
                             <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
