@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Spatie\SslCertificate\SslCertificate;
 
 class CheckUrlService {
@@ -10,16 +12,31 @@ class CheckUrlService {
         
         if(blank($url)) return null;
 
-        $code = (new \GuzzleHttp\Client())->request('GET', $url, [
-            'connect_timeout' => 10,
-            'timeout' => 30,
-            'http_errors' => false,
-            'allow_redirects' => false,
-            'verify' => true,
-            'debug' => true,
-        ])->getStatusCode();
+        $code = null;
+        $validSsl = null;
 
-        $validSsl = SslCertificate::createForHostName($url)->isValid();
+        try {
+            $code = (new \GuzzleHttp\Client())->request('GET', $url, [
+                'connect_timeout' => 10,
+                'timeout' => 30,
+                'http_errors' => false,
+                'allow_redirects' => false,
+                'verify' => true,
+                'debug' => true,
+            ])->getStatusCode();
+        } catch (Exception $e) {
+            Log::debug($e);
+
+            $code = null;
+        }
+
+        try {
+            $validSsl = SslCertificate::createForHostName($url)->isValid();
+        } catch (Exception $e) {
+            Log::debug($e);
+
+            $validSsl = false;
+        }
 
         return (object) [
             'code' => $code,
