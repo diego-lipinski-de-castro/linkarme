@@ -43,7 +43,7 @@ return new class extends Migration
             $table->integer('charged')->nullable();
             $table->integer('paid')->nullable();
             $table->integer('markup')->nullable();
-            $table->string('comission')->nullable();    
+            $table->integer('comission')->nullable();    
 
             $table->enum('status', ['WAITING', 'PRODUCTION', 'SUBMITTED', 'PROCESSING', 'PUBLISHED', 'INVOICE', 'COMPLETED']);
 

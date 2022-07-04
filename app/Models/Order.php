@@ -41,6 +41,7 @@ class Order extends Model implements Auditable
     ];
 
     protected $casts = [
+        'comission' => 'integer',
     ];
 
     public function site()

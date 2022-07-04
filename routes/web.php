@@ -31,6 +31,9 @@ Route::redirect('/', '/login');
 Route::get('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']);
 Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('sites.importSubmit')->middleware(['auth']);
 
+Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
+Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
+
 Route::resource('sites', SiteController::class)->except(['destroy'])->middleware(['auth']);
 Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth']);
 Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);

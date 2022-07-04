@@ -174,7 +174,7 @@
                             <div class="col-span-2">
                                 <label for="comission" class="block text-sm font-medium text-gray-700">Comissão</label>
                                 <div class="mt-1">
-                                    <input type="text" name="comission" id="comission"
+                                    <input v-model.lazy="comission" v-money="format" type="text" name="comission" id="comission"
                                         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('comission') border-red-300 @enderror" />
                                 </div>
 
@@ -207,6 +207,7 @@
                     charged: '',
                     paid: '',
                     markup: '',
+                    comission: '',
 
                     format: {
                         thousands: '.',

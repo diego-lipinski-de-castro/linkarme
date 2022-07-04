@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Imports\OrdersImport;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\Seller;
 use App\Models\Site;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -171,5 +173,46 @@ class OrderController extends Controller
         $order->delete();
         
         return back();
+    }
+
+    public function import()
+    {
+        return view('orders.import');
+    }
+
+    public function importSubmit(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file',
+        ]);
+
+        $before = Order::count();
+
+        $import = new OrdersImport();
+
+        $import->import(request()->file('file'));
+
+        $importFailures = collect();
+
+        foreach ($import->failures() as $failure) {
+            $importFailures->push([
+                'row' => $failure->row(),
+                'attribute' => $failure->attribute(),
+                'errors' => $failure->errors(),
+                'values' => $failure->values(),
+            ]);
+        }
+
+        if(!$import->errors()->empty()) {
+            dd($import->errors());
+        }
+
+        $after = Order::count();
+
+        $diff = $after - $before;
+
+        return back()
+            ->with('failures', $importFailures)
+            ->with('diff', $diff);
     }
 }

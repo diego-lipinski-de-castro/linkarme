@@ -64,7 +64,11 @@
                         <div class="border-t border-gray-100"></div>
 
                         <x-dropdown-link :href="route('sites.import')">
-                            {{ __('Importar') }}
+                            {{ __('Importar sites') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('orders.import')">
+                            {{ __('Importar pedidos') }}
                         </x-dropdown-link>
 
                         <div class="border-t border-gray-100"></div>
