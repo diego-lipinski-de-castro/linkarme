@@ -62,9 +62,6 @@ return new class extends Migration
             
             $table->date('last_posted')->nullable();
 
-            $table->string('owner_name')->nullable();
-            $table->string('owner_whatsapp')->nullable();
-
             $table->date('inserted_at');
             $table->timestamps();
             $table->softDeletes();

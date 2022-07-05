@@ -9,6 +9,7 @@ use App\Imports\SitesImport;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\Seller;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -77,9 +78,10 @@ class SiteController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $languages = Language::all();
-        $countries = Country::all();
+        $categories = Category::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
+        $countries = Country::orderBy('name')->get();
+        $sellers = Seller::orderBy('name')->get();
 
         $coins = config('coins');
 
@@ -87,6 +89,7 @@ class SiteController extends Controller
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
+            'sellers' => $sellers,
             'coins' => $coins,
         ]);
     }
@@ -127,11 +130,13 @@ class SiteController extends Controller
             'category',
             'language',
             'country',
+            'seller',
         ]);
 
-        $categories = Category::all();
-        $languages = Language::all();
-        $countries = Country::all();
+        $categories = Category::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
+        $countries = Country::orderBy('name')->get();
+        $sellers = Seller::orderBy('name')->get();
 
         $coins = config('coins');
 
@@ -140,6 +145,7 @@ class SiteController extends Controller
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
+            'sellers' => $sellers,
             'coins' => $coins,
         ]);
     }

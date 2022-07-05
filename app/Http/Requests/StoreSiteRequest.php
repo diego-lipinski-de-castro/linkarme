@@ -56,8 +56,7 @@ class StoreSiteRequest extends FormRequest
 
             'last_posted' => 'nullable|date',
 
-            'owner_name' => 'nullable|string|max:255',
-            'owner_whatsapp' => 'nullable|string|max:255',
+            'seller_id' => 'nullable|integer|exists:sellers,id',
         ];
     }
 

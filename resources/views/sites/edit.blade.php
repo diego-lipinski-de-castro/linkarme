@@ -259,6 +259,24 @@
                             </div>
 
                             <div class="col-span-2">
+                                <label for="seller_id" class="block text-sm font-medium text-gray-700">Vendedor</label>
+                                <div class="mt-1">
+
+                                    <select id="seller_id" name="seller_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" @error('seller_id') border-red-300 @enderror>
+                                        <option value="" disabled>Selecione</option>
+                                        @foreach ($sellers as $seller)
+                                        <option {{ old('seller_id', $site->seller_id) == $seller->id ? 'selected' : '' }} value="{{ $seller->id }}">{{ $seller->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+
+                                @error('seller_id')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
                                 <label for="obs" class="block text-sm font-medium text-gray-700">Observações</label>
                                 <div class="mt-1">
                                     <textarea type="text" name="obs" id="obs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui">{{ old('obs', $site->obs) }}</textarea>
@@ -276,28 +294,6 @@
                                 </div>
 
                                 @error('admin_obs')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="col-span-1">
-                                <label for="owner_name" class="block text-sm font-medium text-gray-700">Responsável</label>
-                                <div class="mt-1">
-                                    <input value="{{ old('owner_name', $site->owner_name) }}" type="text" name="owner_name" id="owner_name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_name') border-red-300 @enderror" placeholder="Ex.: OCP News" />
-                                </div>
-
-                                @error('owner_name')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="col-span-1">
-                                <label for="owner_whatsapp" class="block text-sm font-medium text-gray-700">Whatsapp</label>
-                                <div class="mt-1">
-                                    <input value="{{ old('owner_whatsapp', $site->owner_whatsapp) }}" type="text" name="owner_whatsapp" id="owner_whatsapp" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_whatsapp') border-red-300 @enderror" placeholder="Ex.: OCP News" />
-                                </div>
-
-                                @error('owner_whatsapp')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

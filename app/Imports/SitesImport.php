@@ -6,9 +6,9 @@ use App\Helper;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\Seller;
 use App\Models\Site;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -40,8 +40,6 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     */
     public function model(array $row)
     {
-        dd($row);
-
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
@@ -93,6 +91,17 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             ]);
         }
 
+        if(!blank($row['atendimento'])) {
+
+            $seller = Seller::where('name', 'LIKE', '%'.$row['atendimento'].'%')->first();
+
+            if(blank($seller)) {
+                $seller = Seller::create([
+                    'name' => $row['atendimento'],
+                ]);
+            }
+        }
+
         return new Site([
             'url' => $url,
             'name' => null,
@@ -105,7 +114,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'language_id' => optional($language)->id,
             'country_id' => optional($country)->id,
             'category_id' => optional($category)->id,
-            'link_type' => 'NOFOLLOW',
+            'link_type' => 'DOFOLLOW',
             'gambling' => $row['cassinos'] == 'Sim' ? true : false,
             'cdb' => false,
             'cripto' => $row['cripto'] == 'Sim' ? true : false,
@@ -117,9 +126,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'cost_coin' => $costCoin,
             'sale_coin' => $saleCoin,
             'last_posted' => null,
-            'owner_name' => $row['atendimento'],
-            'owner_whatsapp' => null,
             'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+            'seller_id' => optional($seller)->id,
         ]);
     }
 

@@ -44,9 +44,8 @@ class Site extends Model implements Auditable
         'cost_coin',
         'sale_coin',
         'last_posted',
-        'owner_name',
-        'owner_whatsapp',
         'inserted_at',
+        'seller_id',
     ];
 
     protected $casts = [
@@ -75,6 +74,11 @@ class Site extends Model implements Auditable
                 $site->inserted_at = now();
             }
         });
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
     }
 
     public function category()
@@ -112,6 +116,11 @@ class Site extends Model implements Auditable
         return $query->whereHas('favorites', function ($query) {
             $query->where('clients.id', auth()->id());
         });
+    }
+
+    public function scopeOfSeller($query, $seller)
+    {
+        return $query->where('seller_id', $seller);
     }
 
     public function getFormattedCostAttribute()

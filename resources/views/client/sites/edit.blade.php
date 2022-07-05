@@ -279,28 +279,6 @@
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-
-                            <div class="col-span-1">
-                                <label for="owner_name" class="block text-sm font-medium text-gray-700">Responsável</label>
-                                <div class="mt-1">
-                                    <input disabled value="{{ old('owner_name', $site->owner_name) }}" type="text" name="owner_name" id="owner_name" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_name') border-red-300 @enderror" placeholder="Ex.: OCP News" />
-                                </div>
-
-                                @error('owner_name')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="col-span-1">
-                                <label for="owner_whatsapp" class="block text-sm font-medium text-gray-700">Whatsapp</label>
-                                <div class="mt-1">
-                                    <input disabled value="{{ old('owner_whatsapp', $site->owner_whatsapp) }}" type="text" name="owner_whatsapp" id="owner_whatsapp" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_whatsapp') border-red-300 @enderror" placeholder="Ex.: OCP News" />
-                                </div>
-
-                                @error('owner_whatsapp')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
                         </div>
 
                         <div class="mt-6 text-right">

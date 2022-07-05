@@ -72,4 +72,21 @@ Route::group([
         ->middleware(['auth:client']);
 });
 
+Route::group([
+    'prefix' => 'vendedores',
+    'as' => 'seller.',
+], function () {
+    Route::get('sites', [\App\Http\Controllers\Seller\SiteController::class, 'index'])
+        ->name('sites.index')
+        ->middleware(['auth:seller']);
+
+    Route::post('sites/{site}/favorite', [\App\Http\Controllers\Seller\SiteController::class, 'favorite'])
+        ->name('sites.favorite')
+        ->middleware(['auth:seller']);
+
+    Route::put('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'update'])
+        ->name('sites.update')
+        ->middleware(['auth:seller']);
+});
+
 require __DIR__.'/auth.php';
