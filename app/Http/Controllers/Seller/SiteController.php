@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Filters\FilterLimiter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Seller\UpdateSiteRequest;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
@@ -21,14 +22,8 @@ class SiteController extends Controller
      */
     public function index(Request $request)
     {
-        $countries = Country::query()
-            ->orderBy('name')
-            ->get();
-
-        $languages = Language::query()
-            ->orderBy('name')
-            ->get();
-
+        $countries = Country::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
 
         $sites = QueryBuilder::for(Site::class)
@@ -64,5 +59,39 @@ class SiteController extends Controller
             'languages' => $languages,
             'categories' => $categories,
         ]);
+    }
+
+    public function edit(Site $site)
+    {
+        $site->load([
+            'category',
+            'language',
+            'country',
+        ]);
+
+        $countries = Country::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+
+        $coins = config('coins');
+
+        return view('seller.sites.edit', [
+            'site' => $site,
+            'countries' => $countries,
+            'languages' => $languages,
+            'categories' => $categories,
+            'coins' => $coins,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     */
+    public function update(UpdateSiteRequest $request, Site $site)
+    {
+        $site->update($request->validated());
+
+        return redirect(route('seller.sites.index'));
     }
 }

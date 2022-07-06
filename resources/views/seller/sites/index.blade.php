@@ -218,6 +218,10 @@
                             <th x-show="columns.includes('cripto')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
                                 Cripto
                             </th>
+
+                            <th scope="col" class="relative whitespace-nowrap px-3 py-3 pl-3 pr-4 border-l">
+                                <span class="sr-only">Ações</span>
+                            </th>
                         </tr>
                     </thead>
 
@@ -299,6 +303,10 @@
                                         <option {{ optional(request()->query('filter'))['cripto'] == '0' ? 'selected' : '' }} value="0">Não</option>
                                     </select>
                                 </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+
+                                </td>
                             </tr>
                         </form>
 
@@ -354,6 +362,16 @@
                             <td x-show="columns.includes('cripto')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                 <div class="flex justify-center">
                                     <span class="block rounded-full h-2 w-2 @if($site->cripto) bg-green-400 @else bg-red-400 @endif"></span>
+                                </div>
+                            </td>
+
+                            <td class="whitespace-nowrap px-3 py-2 text-sm border-l">
+                                <div class="flex">
+                                    <a href="{{ route('seller.sites.edit', $site->id) }}" class="font-medium text-blue-600 hover:text-blue-900">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

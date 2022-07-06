@@ -80,12 +80,16 @@ Route::group([
         ->name('sites.index')
         ->middleware(['auth:seller']);
 
-    Route::post('sites/{site}/favorite', [\App\Http\Controllers\Seller\SiteController::class, 'favorite'])
-        ->name('sites.favorite')
+    Route::get('sites/{site}/edit', [\App\Http\Controllers\Seller\SiteController::class, 'edit'])
+        ->name('sites.edit')
         ->middleware(['auth:seller']);
 
     Route::put('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'update'])
         ->name('sites.update')
+        ->middleware(['auth:seller']);
+
+    Route::get('orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])
+        ->name('orders.index')
         ->middleware(['auth:seller']);
 });
 

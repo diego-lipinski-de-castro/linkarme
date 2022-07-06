@@ -15,6 +15,10 @@
                     <x-nav-link :href="route('seller.sites.index')" :active="request()->routeIs('seller.sites.*')">
                         {{ __('Sites') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('seller.orders.index')" :active="request()->routeIs('seller.orders.*')">
+                        {{ __('Pedidos') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -65,6 +69,10 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('seller.sites.index')" :active="request()->routeIs('seller.sites.*')">
                 {{ __('Sites') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('seller.orders.index')" :active="request()->routeIs('seller.orders.*')">
+                {{ __('Pedidos') }}
             </x-responsive-nav-link>
         </div>
 
