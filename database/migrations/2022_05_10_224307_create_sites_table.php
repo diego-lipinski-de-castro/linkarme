@@ -44,7 +44,7 @@ return new class extends Migration
                 ->constrained()
                 ->nullOnDelete();
 
-            $table->enum('link_type', ['NOFOLLOW', 'DOFOLLOW'])->default('NOFOLLOW');
+            $table->enum('link_type', ['NOFOLLOW', 'DOFOLLOW'])->default('DOFOLLOW');
 
             $table->boolean('gambling')->default(false);
             $table->boolean('cdb')->default(false);

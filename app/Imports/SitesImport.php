@@ -22,7 +22,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, SkipsOnFailure, SkipsOnError, WithBatchInserts
+class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, WithBatchInserts, SkipsOnError, SkipsOnFailure
 {
     use Importable;
     use SkipsFailures;
@@ -40,6 +40,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     */
     public function model(array $row)
     {
+        // dd($row);
+
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
@@ -118,7 +120,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'gambling' => $row['cassinos'] == 'Sim' ? true : false,
             'cdb' => false,
             'cripto' => $row['cripto'] == 'Sim' ? true : false,
-            'sponsor' => $row['tag_publi'],
+            'sponsor' => $row['tag_publi'] == 'Sim' ? true : false,
             'ssl' => false,
             'broken' => false,
             'cost' => $custo,
