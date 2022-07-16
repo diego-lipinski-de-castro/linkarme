@@ -358,7 +358,7 @@
                                     {{ $site->url }}
                                 </td>
 
-                                <td x-show="columns.includes('url')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                <td x-show="columns.includes('seller')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     {{ $site->seller->name ?? '-' }}
                                 </td>
 

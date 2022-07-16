@@ -13,6 +13,12 @@ class Site extends Model implements Auditable
     use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
+    public const STATUSES = [
+        'PENDING' => 'Pendente',
+        'APPROVED' => 'Aprovado',
+        'REJECTED' => 'Rejeitado',
+    ];
+
     public const LINK_TYPES = [ 
         'NOFOLLOW' => 'Nofollow',
         'DOFOLLOW' => 'Dofollow',
@@ -111,6 +117,11 @@ class Site extends Model implements Auditable
         return $this->hasMany(Order::class);
     }
 
+    public function scopeOfStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
     public function scopeAuthFavorites($query)
     {
         return $query->whereHas('favorites', function ($query) {
@@ -131,5 +142,10 @@ class Site extends Model implements Auditable
     public function getFormattedSaleAttribute()
     {
         return 'R$ ' . number_format($this->sale / 100, 2, ',', '.');
+    }
+
+    public function getFormattedStatusAttribute()
+    {
+        return self::STATUSES[$this->status];
     }
 }
