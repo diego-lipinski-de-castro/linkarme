@@ -93,7 +93,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             ]);
         }
 
-        if(!blank($row['atendimento'])) {
+        if(!blank($row['atendimento'])) { 
 
             $seller = Seller::where('name', 'LIKE', '%'.$row['atendimento'].'%')->first();
 

@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12" x-data="{ columns: $persist(['url', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto', 'link_type']) }">
+    <div class="py-12" x-data="{ columns: $persist(['url', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto', 'link_type', 'seller']) }">
         <div class="sm:px-6 lg:px-8">
 
             <div class="flex justify-end mb-3">
@@ -34,6 +34,15 @@
                             </div>
                             <div class="ml-3 text-sm">
                                 <label for="url" class="font-medium text-gray-700">Domínio</label>
+                            </div>
+                        </div>
+
+                        <div class="block px-4 py-2 relative flex">
+                            <div class="flex items-center h-5">
+                                <input x-model="columns" value="seller" id="seller" name="seller" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="seller" class="font-medium text-gray-700">Vendedor</label>
                             </div>
                         </div>
 
@@ -161,6 +170,10 @@
                                 </a>
                             </th>
 
+                            <th x-show="columns.includes('seller')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Vendedor
+                            </th>
+
                             <th x-show="columns.includes('country')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
                                 País
                             </th>
@@ -250,6 +263,15 @@
                                     <input onchange="this.form.submit()" name="filter[url]" value="{{ optional(request()->query('filter'))['url'] }}" type="text" class="text-sm text-gray-500 placeholder:text-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Ex.: ocp" />
                                 </td>
 
+                                <td x-show="columns.includes('seller')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[seller_id]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['seller_id']) ? 'selected' : '' }} value="">Todos</option>
+                                        @foreach ($sellers as $seller)
+                                        <option {{ optional(request()->query('filter'))['seller_id'] == $seller->id ? 'selected': '' }} value="{{ $seller->id }}">{{ $seller->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+
                                 <td x-show="columns.includes('country')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     <select onchange="this.form.submit()" name="filter[country_id]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                         <option {{ blank(optional(request()->query('filter'))['country_id']) ? 'selected' : '' }} value="">Todos</option>
@@ -334,6 +356,10 @@
                             <tr class="hover:bg-blue-50">
                                 <td x-show="columns.includes('url')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                     {{ $site->url }}
+                                </td>
+
+                                <td x-show="columns.includes('url')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->seller->name ?? '-' }}
                                 </td>
 
                                 <td x-show="columns.includes('country')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Filters\FilterLimiter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Seller\StoreSiteRequest;
 use App\Http\Requests\Seller\UpdateSiteRequest;
 use App\Models\Category;
 use App\Models\Country;
@@ -59,6 +60,42 @@ class SiteController extends Controller
             'languages' => $languages,
             'categories' => $categories,
         ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $categories = Category::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
+        $countries = Country::orderBy('name')->get();
+
+        $coins = config('coins');
+
+        return view('seller.sites.create', [
+            'categories' => $categories,
+            'languages' => $languages,
+            'countries' => $countries,
+            'coins' => $coins,
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StoreSiteRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreSiteRequest $request)
+    {
+        Site::create(array_merge($request->validated(), [
+            'seller_id' => auth()->id(),
+        ]));
+
+        return redirect(route('seller.sites.index'));
     }
 
     public function edit(Site $site)

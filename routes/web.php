@@ -80,6 +80,14 @@ Route::group([
         ->name('sites.index')
         ->middleware(['auth:seller']);
 
+    Route::get('sites/adicionar', [\App\Http\Controllers\Seller\SiteController::class, 'create'])
+        ->name('sites.create')
+        ->middleware(['auth:seller']);
+
+    Route::post('sites', [\App\Http\Controllers\Seller\SiteController::class, 'store'])
+        ->name('sites.store')
+        ->middleware(['auth:seller']);
+
     Route::get('sites/{site}/edit', [\App\Http\Controllers\Seller\SiteController::class, 'edit'])
         ->name('sites.edit')
         ->middleware(['auth:seller']);

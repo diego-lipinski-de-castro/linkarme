@@ -40,6 +40,10 @@ class SiteController extends Controller
             ->whereHas('sites')
             ->orderBy('name')
             ->get();
+
+        $sellers = Seller::query()
+            ->orderBy('name')
+            ->get();
         
         $sites = QueryBuilder::for(Site::class)
             ->withTrashed()
@@ -55,6 +59,7 @@ class SiteController extends Controller
                 AllowedFilter::custom('traffic', new FilterLimiter),
                 AllowedFilter::custom('tf', new FilterLimiter),
                 AllowedFilter::exact('category_id'),
+                AllowedFilter::exact('seller_id'),
                 'ssl',
                 'gambling',
                 'sponsor',
@@ -68,6 +73,7 @@ class SiteController extends Controller
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,
+            'sellers' => $sellers,
         ]);
     }
 
