@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12" x-data="{ columns: $persist(['url', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto']) }">
+    <div class="py-12" x-data="{ columns: $persist(['url', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto', 'cost']) }">
         <div class="sm:px-6 lg:px-8">
 
             <div class="flex justify-end mb-3">
@@ -127,6 +127,15 @@
                             </div>
                         </div>
 
+                        <div class="block px-4 py-2 relative flex">
+                            <div class="flex items-center h-5">
+                                <input x-model="columns" value="cost" id="cost" name="cost" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="cost" class="font-medium text-gray-700">Custo</label>
+                            </div>
+                        </div>
+
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -219,6 +228,10 @@
                                 Cripto
                             </th>
 
+                            <th x-show="columns.includes('cost')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Custo
+                            </th>
+
                             <th scope="col" class="relative whitespace-nowrap px-3 py-3 pl-3 pr-4 border-l">
                                 <span class="sr-only">Ações</span>
                             </th>
@@ -304,9 +317,8 @@
                                     </select>
                                 </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-
-                                </td>
+                                <td x-show="columns.includes('cost')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
                             </tr>
                         </form>
 
@@ -363,6 +375,10 @@
                                 <div class="flex justify-center">
                                     <span class="block rounded-full h-2 w-2 @if($site->cripto) bg-green-400 @else bg-red-400 @endif"></span>
                                 </div>
+                            </td>
+
+                            <td x-show="columns.includes('cost')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                {{ $site->formatted_cost }}
                             </td>
 
                             <td class="whitespace-nowrap px-3 py-2 text-sm border-l">

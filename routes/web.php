@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SiteController;
@@ -34,7 +35,17 @@ Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('site
 Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
 Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
 
+Route::get('sites/requests', [SiteController::class, 'requests'])->name('sites.requests')->middleware(['auth']);
+Route::get('sites/offers', [OfferController::class, 'index'])->name('sites.offers')->middleware(['auth']);
+
+Route::post('sites/offers/{offer}', [OfferController::class, 'accept'])->name('offers.accept')->middleware(['auth']);
+Route::delete('sites/offers/{offer}', [OfferController::class, 'reject'])->name('offers.reject')->middleware(['auth']);
+
 Route::resource('sites', SiteController::class)->except(['destroy'])->middleware(['auth']);
+
+Route::get('sites/{site}/aprovar', [SiteController::class, 'approve'])->withTrashed()->name('sites.approve')->middleware(['auth']);
+Route::get('sites/{site}/rejeitar', [SiteController::class, 'reject'])->withTrashed()->name('sites.reject')->middleware(['auth']);
+
 Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth']);
 Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);
 
@@ -88,6 +99,10 @@ Route::group([
         ->name('sites.store')
         ->middleware(['auth:seller']);
 
+    Route::post('sites/offer', [\App\Http\Controllers\Seller\SiteController::class, 'offer'])
+        ->name('sites.offer')
+        ->middleware(['auth:seller']);
+
     Route::get('sites/{site}/edit', [\App\Http\Controllers\Seller\SiteController::class, 'edit'])
         ->name('sites.edit')
         ->middleware(['auth:seller']);
@@ -95,6 +110,9 @@ Route::group([
     Route::put('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'update'])
         ->name('sites.update')
         ->middleware(['auth:seller']);
+    
+    Route::delete('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth:seller']);
+    Route::post('sites/{site}/toggle', [\App\Http\Controllers\Seller\SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth:seller']);
 
     Route::get('orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])
         ->name('orders.index')

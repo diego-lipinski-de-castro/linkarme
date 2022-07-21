@@ -7,7 +7,34 @@
 
     <div id="app" class="py-12">
         <div class="sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+            <div class="flex space-x-2 justify-end">
+                <form action="{{ route('seller.sites.toggle', $site->id) }}" method="POST" class="space-x-2 flex">
+                    @csrf
+
+                    @if($site->trashed())
+                    <button type="submit" class="text-sm font-medium bg-green-500 hover:bg-green-700 px-2 py-1 rounded-md text-white">
+                        Reativar
+                    </button>
+                    @else
+                    <button type="button" x-on:click="showModal = true" class="text-sm font-medium bg-yellow-500 hover:bg-yellow-700 px-2 py-1 rounded-md text-white">
+                        Inativar
+                    </button>
+                    @endif
+                </form>
+
+                @if($site->trashed())
+                <form action="{{ route('seller.sites.destroy', $site->id) }}" method="POST" class="flex items-center">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-sm font-medium bg-red-500 hover:bg-red-700 px-2 py-1 rounded-md text-white">
+                        Apagar
+                    </button>
+                </form>
+                @endif
+            </div>
+
+            <div class="mt-3 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     <form action="{{ route('seller.sites.update', $site->id) }}" method="POST">
@@ -257,6 +284,38 @@
 
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="overflow-auto" style="background-color: rgba(0,0,0,0.5)" x-show="showModal" :class="{ 'fixed inset-0 z-10 flex items-center justify-center': showModal }">
+        <div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg py-4 text-left px-6" x-show="showModal" @click.away="showModal = false" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
+
+            <form action="{{ route('seller.sites.toggle', $site->id) }}" method="POST" class="col-span-2">
+
+                @csrf
+
+                <div class="flex justify-between items-center mb-5">
+                    <p class="text-2xl font-bold">Inativar portal</p>
+                    <div class="cursor-pointer z-50" @click="showModal = false">
+                        <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="deleted_why" class="block text-sm font-medium text-gray-700">Motivo</label>
+                    <div class="mt-1">
+                        <input type="text" name="deleted_why" id="deleted_why" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('last_posted') border-red-300 @enderror" />
+                    </div>
+                </div>                
+
+                <div class="flex justify-end mt-5">
+                    <button type="button" class="bg-transparent px-2 py-1 rounded-md text-indigo-500 hover:bg-gray-100 hover:text-indigo-700 mr-2"  @click="showModal = false">Voltar</button>
+                    <button type="submit" class="modal-close px-4 bg-indigo-500 px-2 py-1 rounded-md text-white hover:bg-indigo-700">Salvar</button>
+                </div>
+
+            </form>
         </div>
     </div>
 

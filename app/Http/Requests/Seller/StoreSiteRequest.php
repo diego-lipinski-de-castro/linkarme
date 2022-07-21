@@ -4,6 +4,7 @@ namespace App\Http\Requests\Seller;
 
 use App\Helper;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class StoreSiteRequest extends FormRequest
 {
@@ -62,6 +63,9 @@ class StoreSiteRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
+            'url' => Str::contains($this->url, '://') ? 
+                str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
+                str_replace('www.', '', parse_url($this->url, PHP_URL_PATH)),
             'cost' => Helper::extractNumbersFromString($this->cost),
         ]);
     }

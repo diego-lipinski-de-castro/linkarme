@@ -7,7 +7,43 @@
 
     <div id="app" class="py-12">
         <div class="sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+            <div class="flex justify-between items-center">
+                <span class="
+                    text-sm font-medium uppercase
+                    @if($site->status == 'PENDING') text-yellow-500 @endif
+                    @if($site->status == 'APPROVED') text-green-500 @endif
+                    @if($site->status == 'REJECTED') text-red-500 @endif
+                ">{{ $site->formatted_status }}</span>
+
+                <div class="flex space-x-2 justify-end">
+                    <form action="{{ route('sites.toggle', $site->id) }}" method="POST" class="space-x-2 flex">
+                        @csrf
+
+                        @if($site->trashed())
+                        <button type="submit" class="text-sm font-medium bg-green-500 hover:bg-green-700 px-2 py-1 rounded-md text-white">
+                            Reativar
+                        </button>
+                        @else
+                        <button type="submit" class="text-sm font-medium bg-yellow-500 hover:bg-yellow-700 px-2 py-1 rounded-md text-white">
+                            Inativar
+                        </button>
+                        @endif
+                    </form>
+
+                    @if($site->trashed())
+                    <form action="{{ route('sites.destroy', $site->id) }}" method="POST" class="flex items-center">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-sm font-medium bg-red-500 hover:bg-red-700 px-2 py-1 rounded-md text-white">
+                            Apagar
+                        </button>
+                    </form>
+                    @endif
+                </div>
+            </div>
+
+            <div class="mt-3 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     <form action="{{ route('sites.update', $site->id) }}" method="POST">
@@ -300,6 +336,10 @@
                         </div>
 
                         <div class="mt-6 text-right">
+                            @if($site->status == 'PENDING')
+                            <a href="{{ route('sites.reject', $site->id) }}" class="bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Rejeitar</a>
+                            <a href="{{ route('sites.approve', $site->id) }}" class="bg-green-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Aprovar</a>
+                            @endif
                             <button type="submit" class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Salvar</button>
                         </div>
                     </form>
@@ -321,7 +361,7 @@
 
                     cost: {{ old('cost', $site->cost ?? 0) }},
                     sale: {{ old('sale', $site->sale ?? 0) }},
-                    
+
                     costCoin: "{{ old('cost_coin', $site->cost_coin) }}",
                     saleCoin: "{{ old('sale_coin', $site->sale_coin) }}",
                 }

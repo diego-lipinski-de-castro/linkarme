@@ -9,11 +9,10 @@ use App\Imports\SitesImport;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Validators\ValidationException;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -26,6 +25,9 @@ class SiteController extends Controller
      */
     public function index()
     {
+        $pending = Site::ofStatus('PENDING')->count();
+        $offers = Offer::count();
+
         $countries = Country::query()
             ->whereHas('sites')
             ->orderBy('name')
@@ -69,6 +71,67 @@ class SiteController extends Controller
             ->appends(request()->query());
 
         return view('sites.index', [
+            'pending' => $pending,
+            'offers' => $offers,
+            'sites' => $sites,
+            'countries' => $countries,
+            'languages' => $languages,
+            'categories' => $categories,
+            'sellers' => $sellers,
+        ]);
+    }
+
+    public function requests()
+    {
+        $pending = Site::ofStatus('PENDING')->count();
+        $offers = Offer::count();
+
+        $countries = Country::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
+
+        $languages = Language::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
+
+        $categories = Category::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
+
+        $sellers = Seller::query()
+            ->orderBy('name')
+            ->get();
+        
+        $sites = QueryBuilder::for(Site::class)
+            ->ofStatus('PENDING')
+            ->withTrashed()
+            ->with('category')
+            ->defaultSort('url')
+            ->allowedSorts(['url', 'da', 'dr', 'tf'])
+            ->allowedFilters([
+                'url',
+                AllowedFilter::exact('country_id'),
+                AllowedFilter::exact('language_id'),
+                AllowedFilter::custom('da', new FilterLimiter),
+                AllowedFilter::custom('dr', new FilterLimiter),
+                AllowedFilter::custom('traffic', new FilterLimiter),
+                AllowedFilter::custom('tf', new FilterLimiter),
+                AllowedFilter::exact('category_id'),
+                AllowedFilter::exact('seller_id'),
+                'ssl',
+                'gambling',
+                'sponsor',
+                'cripto',
+            ])
+            ->paginate(50)
+            ->appends(request()->query());
+
+        return view('sites.index', [
+            'pending' => $pending,
+            'offers' => $offers,
             'sites' => $sites,
             'countries' => $countries,
             'languages' => $languages,
@@ -127,11 +190,13 @@ class SiteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Site  $site
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Site $site)
+    public function edit($id)
     {
+        $site = Site::withTrashed()->findOrFail($id);
+
         $site->load([
             'category',
             'language',
@@ -160,11 +225,13 @@ class SiteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateSiteRequest  $request
-     * @param  \App\Models\Site  $site
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSiteRequest $request, Site $site)
+    public function update(UpdateSiteRequest $request, $id)
     {
+        $site = Site::withTrashed()->findOrFail($id);
+
         $site->update($request->validated());
 
         return redirect(route('sites.index'));
@@ -173,18 +240,22 @@ class SiteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Site  $site
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Site $site)
+    public function destroy($id)
     {
+        $site = Site::withTrashed()->findOrFail($id);
+
         $site->forceDelete();
 
         return back();
     }
 
-    public function toggle(Site $site)
+    public function toggle($id)
     {
+        $site = Site::withTrashed()->findOrFail($id);
+
         $site->trashed() ? $site->restore() : $site->delete();
 
         return back();
@@ -229,5 +300,27 @@ class SiteController extends Controller
         return back()
             ->with('failures', $importFailures)
             ->with('diff', $diff);
+    }
+
+    public function approve($id)
+    {
+        $site = Site::withTrashed()->findOrFail($id);
+
+        $site->update([
+            'status' => 'APPROVED',
+        ]);
+
+        return back();
+    }
+
+    public function reject($id)
+    {
+        $site = Site::withTrashed()->findOrFail($id);
+
+        $site->update([
+            'status' => 'REJECTED',
+        ]);
+
+        return back();
     }
 }

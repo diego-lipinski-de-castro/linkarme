@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Helper;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class UpdateSiteRequest extends FormRequest
 {
@@ -68,6 +69,10 @@ class UpdateSiteRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
+            'url' => Str::contains($this->url, '://') ? 
+                str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
+                str_replace('www.', '', parse_url($this->url, PHP_URL_PATH)),
+
             'gambling' => !blank($this->gambling),
             'cdb' => !blank($this->cdb),
             'cripto' => !blank($this->cripto),

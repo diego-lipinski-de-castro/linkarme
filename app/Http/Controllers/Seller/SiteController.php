@@ -9,10 +9,12 @@ use App\Http\Requests\Seller\UpdateSiteRequest;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\Offer;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Support\Str;
 
 class SiteController extends Controller
 {
@@ -98,8 +100,10 @@ class SiteController extends Controller
         return redirect(route('seller.sites.index'));
     }
 
-    public function edit(Site $site)
+    public function edit($id)
     {
+        $site = Site::withTrashed()->findOrFail($id);
+        
         $site->load([
             'category',
             'language',
@@ -125,9 +129,74 @@ class SiteController extends Controller
      * Update the specified resource in storage.
      *
      */
-    public function update(UpdateSiteRequest $request, Site $site)
+    public function update(UpdateSiteRequest $request, $id)
     {
+        $site = Site::withTrashed()->findOrFail($id);
+
         $site->update($request->validated());
+
+        return redirect(route('seller.sites.index'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $site = Site::withTrashed()->findOrFail($id);
+
+        $site->forceDelete();
+
+        return back();
+    }
+
+    public function toggle(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'deleted_why' => 'nullable|string',
+        ]);
+
+        $site = Site::withTrashed()->findOrFail($id);
+
+        if($site->trashed()) {
+            $site->restore();
+            return back();
+        }
+
+        $site->update([
+            'deleted_why' => $validated['deleted_why'],
+        ]);
+
+        $site->delete();
+
+        return back();
+    }
+
+    public function offer(Request $request)
+    {
+        $validated = $request->validate([
+            'url' => 'required',
+            'offer_cost' => 'required',
+        ]);
+
+        $url = Str::contains($validated['url'], '://') ? 
+            str_replace('www.', '', parse_url($validated['url'], PHP_URL_HOST)) :
+            str_replace('www.', '', parse_url($validated['url'], PHP_URL_PATH));
+
+        $site = Site::withTrashed()->firstWhere('url', $url);
+
+        if(blank($site)) {
+            return back();
+        }
+
+        Offer::create([
+            'seller_id' => auth()->id(),
+            'site_id' => $site->id,
+            'cost' => $validated['offer_cost'],
+        ]);
 
         return redirect(route('seller.sites.index'));
     }

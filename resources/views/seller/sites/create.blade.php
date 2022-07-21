@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-seller-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Adicionar site') }}
@@ -17,8 +17,10 @@
                             <div class="col-span-2">
                                 <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
                                 <div class="mt-1">
-                                    <input type="text" name="url" id="url" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('url') border-red-300 @enderror" placeholder="Ex.: ocp.news" />
+                                    <input @blur="check" v-model="url" type="text" name="url" id="url" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('url') border-red-300 @enderror" placeholder="Ex.: ocp.news" />
                                 </div>
+
+                                <p v-if="exists" class="mt-2 text-sm text-red-500">Verificamos que já existe um site com essa url. <button type="button" @click="showModal = true" class="text-blue-500">Clique aqui para fazer uma proposta de valor</button></p>
 
                                 @error('url')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -257,6 +259,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="overflow-auto" style="background-color: rgba(0,0,0,0.5)" v-show="showModal" :class="{ 'fixed inset-0 z-10 flex items-center justify-center': showModal }">
+            <div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg py-4 text-left px-6" v-show="showModal">
+
+                <form action="{{ route('seller.sites.offer') }}" method="POST" class="col-span-2">
+
+                    @csrf
+
+                    <input type="hidden" :value="url" name="url">
+
+                    <div class="flex justify-between items-center mb-5">
+                        <p class="text-2xl font-bold">Enviar proposta pelo portal</p>
+                        <div class="cursor-pointer z-50" @click="showModal = false">
+                            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="offer_cost" class="block text-sm font-medium text-gray-700">Valor</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input v-model.lazy="offerCost" v-money="offerCostFormat" type="text" name="offer_cost" id="offer_cost" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
+
+                            <div class="absolute inset-y-0 right-0 flex items-center">
+                                <label for="offer_cost_coin" class="sr-only">Moeda</label>
+                                <select v-model="offerCostCoin" id="offer_cost_coin" name="offer_cost_coin" class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                    <option value="BRL">BRL</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="USD">USD</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        @error('offer_cost')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>           
+
+                    <div class="flex justify-end mt-5">
+                        <button type="button" class="bg-transparent px-2 py-1 rounded-md text-indigo-500 hover:bg-gray-100 hover:text-indigo-700 mr-2"  @click="showModal = false">Voltar</button>
+                        <button type="submit" class="modal-close px-4 bg-indigo-500 px-2 py-1 rounded-md text-white hover:bg-indigo-700">Enviar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -267,11 +316,17 @@
             el: '#app',
             data() {
                 return {
+                    showModal: false,
+                    url: '',
+                    exists: null,
+
                     coins: @json($coins),
 
                     cost: '',
-                    
                     costCoin: 'BRL',
+
+                    offerCost: '',
+                    offerCostCoin: 'BRL',
                 }
             },
 
@@ -279,7 +334,24 @@
                 costFormat() {
                     return this.coins[this.costCoin];
                 },
+
+                offerCostFormat() {
+                    return this.coins[this.offerCostCoin];
+                },
+            },
+
+            methods: {
+                async check() {
+                    try {
+                        const res = await fetch(`{{ route('seller.sites.check') }}?url=${this.url}`)
+                        const data = await res.json()
+                        this.exists = data.exists
+                    } catch (error) {
+                        console.log(error)
+                        this.exists = null
+                    }
+                },
             },
         });
     </script>
-</x-app-layout>
+</x-app-seller-layout>

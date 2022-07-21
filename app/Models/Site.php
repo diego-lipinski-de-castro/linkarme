@@ -52,6 +52,8 @@ class Site extends Model implements Auditable
         'last_posted',
         'inserted_at',
         'seller_id',
+        'status',
+        'deleted_why',
     ];
 
     protected $casts = [
@@ -146,6 +148,8 @@ class Site extends Model implements Auditable
 
     public function getFormattedStatusAttribute()
     {
+        if(blank($this->status)) return null;
+
         return self::STATUSES[$this->status];
     }
 }
