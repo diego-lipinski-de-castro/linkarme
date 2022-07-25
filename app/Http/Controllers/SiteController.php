@@ -13,6 +13,7 @@ use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -259,6 +260,23 @@ class SiteController extends Controller
         $site->trashed() ? $site->restore() : $site->delete();
 
         return back();
+    }
+
+    public function export()
+    {
+        $urls = Site::select('url')->get();
+
+        $urls = $urls->pluck('url')->toArray();
+
+        $text = '';
+
+        foreach($urls as $url) {
+            $text .= "$url\n";
+        }
+
+        Storage::put('urls.txt', $text);
+
+        return Storage::download('urls.txt');
     }
 
     public function import()

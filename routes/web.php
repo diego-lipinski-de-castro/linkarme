@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
@@ -29,8 +30,11 @@ Route::redirect('/', '/login');
 //     return view('dashboard');
 // })->middleware(['auth'])->name('dashboard');
 
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
+
 Route::get('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']);
 Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('sites.importSubmit')->middleware(['auth']);
+Route::get('sites/export', [SiteController::class, 'export'])->name('sites.export')->middleware(['auth']);
 
 Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
 Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
