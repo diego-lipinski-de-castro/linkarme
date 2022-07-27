@@ -54,6 +54,7 @@ class Site extends Model implements Auditable
         'seller_id',
         'status',
         'deleted_why',
+        'suggested',
     ];
 
     protected $casts = [
@@ -73,6 +74,8 @@ class Site extends Model implements Auditable
         'sale' => 'integer',
 
         // 'last_posted' => 'date',
+
+        'suggested' => 'integer',
     ];
 
     protected static function booted()
@@ -81,6 +84,12 @@ class Site extends Model implements Auditable
             if(blank($site->inserted_at)) {
                 $site->inserted_at = now();
             }
+
+            $site->suggested = ($site->cost) + ($site->cost * 0.25) + (560.33 * 100);
+        });
+
+        static::updating(function ($site) {
+            $site->suggested = ($site->cost) + ($site->cost * 0.25) + (560.33 * 100);
         });
     }
 
@@ -136,6 +145,13 @@ class Site extends Model implements Auditable
         return $query->where('seller_id', $seller);
     }
 
+    public function getFormattedStatusAttribute()
+    {
+        if(blank($this->status)) return null;
+
+        return self::STATUSES[$this->status];
+    }
+
     public function getFormattedCostAttribute()
     {
         return 'R$ ' . number_format($this->cost / 100, 2, ',', '.');
@@ -146,10 +162,20 @@ class Site extends Model implements Auditable
         return 'R$ ' . number_format($this->sale / 100, 2, ',', '.');
     }
 
-    public function getFormattedStatusAttribute()
+    public function getFormattedSuggestedAttribute()
     {
-        if(blank($this->status)) return null;
+        return 'R$ ' . number_format($this->suggested / 100, 2, ',', '.');
+    }
 
-        return self::STATUSES[$this->status];
+    public function getPositiveAttribute()
+    {
+        return $this->suggested > $this->sale;
+    }
+
+    public function getFormattedDiffAttribute()
+    {
+        $diff = $this->suggested - $this->sale;
+        
+        return 'R$ ' . number_format($diff / 100, 2, ',', '.');
     }
 }

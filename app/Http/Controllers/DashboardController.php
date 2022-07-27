@@ -2,14 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard', [
+        $data = [
+            [
+                'label' => 'Pedidos em aberto',
+                'value' => Order::status('WAITING')->count(),
+            ],
+            [
+                'label' => 'Pedidos esse mês',
+                'value' => Order::whereMonth('created_at', date('m'))->count(),
+            ],
+            [
+                'label' => 'Pedidos no total',
+                'value' => Order::count(),
+            ],
+        ];
 
+        $data = json_decode(json_encode($data));
+
+        return view('dashboard', [
+            'data' => $data,
         ]);
     }
 }

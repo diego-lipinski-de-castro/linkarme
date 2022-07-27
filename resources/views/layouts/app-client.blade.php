@@ -19,7 +19,7 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased" @keydown.escape="showModal = false" x-data="{ 'showModal': false }"  x-cloak>
-        <div id="app" class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation-client')
 
             <!-- Page Heading -->

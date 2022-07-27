@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\FilterLimiter;
+use App\Filters\SuggestionFilter;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Imports\SitesImport;
@@ -67,6 +68,7 @@ class SiteController extends Controller
                 'gambling',
                 'sponsor',
                 'cripto',
+                AllowedFilter::custom('suggestion', new SuggestionFilter),
             ])
             ->paginate(50)
             ->appends(request()->query());

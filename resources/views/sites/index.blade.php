@@ -16,7 +16,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12" x-data="{ columns: $persist(['url', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto', 'link_type', 'seller']) }">
+    <div class="py-12" x-data="{ columns: $persist(['url', 'seller', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto', 'link_type', 'cost', 'sale', 'suggestion']) }">
         <div class="sm:px-6 lg:px-8">
 
             <div class="flex justify-between items-center mb-3">
@@ -163,6 +163,33 @@
                             </div>
                         </div>
 
+                        <div class="block px-4 py-2 relative flex">
+                            <div class="flex items-center h-5">
+                                <input x-model="columns" value="cost" id="cost" name="cost" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="cost" class="font-medium text-gray-700">Custo</label>
+                            </div>
+                        </div>
+
+                        <div class="block px-4 py-2 relative flex">
+                            <div class="flex items-center h-5">
+                                <input x-model="columns" value="sale" id="sale" name="sale" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="sale" class="font-medium text-gray-700">Preço</label>
+                            </div>
+                        </div>
+
+                        <div class="block px-4 py-2 relative flex">
+                            <div class="flex items-center h-5">
+                                <input x-model="columns" value="suggestion" id="suggestion" name="suggestion" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="suggestion" class="font-medium text-gray-700">Sugestão</label>
+                            </div>
+                        </div>
+
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -263,8 +290,16 @@
                                 Link
                             </th>
 
-                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                            <th x-show="columns.includes('cost')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Custo
+                            </th>
+
+                            <th x-show="columns.includes('sale')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
                                 Preço
+                            </th>
+
+                            <th x-show="columns.includes('suggestion')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Sugestão
                             </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
@@ -363,7 +398,17 @@
 
                                 <td x-show="columns.includes('link_type')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                <td x-show="columns.includes('cost')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td x-show="columns.includes('sale')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td x-show="columns.includes('suggestion')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <select onchange="this.form.submit()" name="filter[suggestion]" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                        <option {{ blank(optional(request()->query('filter'))['suggestion']) ? 'selected' : '' }} value="">Todos</option>
+                                        <option {{ optional(request()->query('filter'))['suggestion'] == '1' ? 'selected' : '' }} value="1">Positivos</option>
+                                        <option {{ optional(request()->query('filter'))['suggestion'] == '0' ? 'selected' : '' }} value="0">Negativados</option>
+                                    </select>
+                                </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
                             </tr>
@@ -434,8 +479,16 @@
                                     {{ $site->link_type }}
                                 </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                <td x-show="columns.includes('cost')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->formatted_cost }}
+                                </td>
+
+                                <td x-show="columns.includes('sale')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     {{ $site->formatted_sale }}
+                                </td>
+
+                                <td x-show="columns.includes('suggestion')" class="whitespace-nowrap px-3 py-2 text-sm @if($site->positive) text-green-500 @else text-red-500 @endif border-l">
+                                    {{ $site->formatted_suggested }}
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm border-l">
@@ -461,7 +514,5 @@
         </div>
     </div>
 
-    @if(!request()->routeIs('seller.sites.create'))
     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
-    @endif
 </x-app-layout>

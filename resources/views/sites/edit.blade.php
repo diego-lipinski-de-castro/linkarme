@@ -278,6 +278,8 @@
                                     </div>
                                 </div>
 
+                                <p class="mt-2 ml-2 text-sm font-medium @if($site->positive) text-green-500 @else text-red-500 @endif">Sugerido: {{ $site->formatted_suggested }}</p>
+
                                 @error('sale')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
