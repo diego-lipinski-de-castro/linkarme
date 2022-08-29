@@ -66,6 +66,10 @@ Route::group([
     'prefix' => 'clientes',
     'as' => 'client.',
 ], function () {
+    Route::get('dashboard', [\App\Http\Controllers\Client\DashboardController::class, 'index'])
+        ->name('dashboard')
+        ->middleware(['auth:client']);
+
     Route::get('sites', [\App\Http\Controllers\Client\SiteController::class, 'index'])
         ->name('sites.index')
         ->middleware(['auth:client']);

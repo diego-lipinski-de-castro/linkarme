@@ -40,7 +40,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     */
     public function model(array $row)
     {
-        // dd($row);
+        dd($row);
 
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
@@ -127,7 +127,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'sale' => $venda,
             'cost_coin' => $costCoin,
             'sale_coin' => $saleCoin,
-            'last_posted' => null,
+            // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
         ]);

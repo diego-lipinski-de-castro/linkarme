@@ -6,7 +6,16 @@
     </x-slot>
 
     <div id="app" class="py-12">
+
         <div class="sm:px-6 lg:px-8">
+
+            @if($site->popular)
+            <div class="mb-6 lg:mb-8 rounded-md bg-blue-100 p-4 border border-blue-200">
+                <p class="text-sm text-blue-500">Este é um site popular!</p>
+                <p class="text-sm text-blue-500">Este site é um possui uma grande quantidade de pedidos.</p>
+            </div>
+            @endif
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
@@ -207,27 +216,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="cost" class="block text-sm font-medium text-gray-700">Custo</label>
-                                <div class="mt-1 relative rounded-md shadow-sm">
-                                    <input disabled v-model.lazy="cost" v-money="costFormat" type="text" name="cost" id="cost" class="disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('cost') border-red-300 @enderror" />
-
-                                    <div class="absolute inset-y-0 right-0 flex items-center">
-                                        <label for="cost_coin" class="sr-only">Moeda</label>
-                                        <select disabled v-model="costCoin" id="cost_coin" name="cost_coin" class="disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                            <option value="BRL">BRL</option>
-                                            <option value="EUR">EUR</option>
-                                            <option value="USD">USD</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                @error('cost')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="col-span-2 sm:col-span-1">
+                            <div class="col-span-2">
                                 <label for="sale" class="block text-sm font-medium text-gray-700">Venda</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input disabled v-model.lazy="sale" v-money="saleFormat" type="text" name="sale" id="sale" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('sale') border-red-300 @enderror" />
@@ -241,6 +230,8 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <p class="mt-2 ml-2 text-sm italic text-gray-400">Atualizado: {{ blank($site->sale_updated_at) ? '-' : date('d/m/Y \à\s H:i', strtotime($site->sale_updated_at)) }}</p>
 
                                 @error('sale')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -301,19 +292,17 @@
                 return {
                     coins: @json($coins),
 
-                    cost: {{ old('cost', $site->cost ?? 0) }},
-                    sale: {{ old('sale', $site->sale ?? 0) }},
-                    
-                    costCoin: "{{ old('cost_coin', $site->cost_coin) }}",
+                    sale: {
+                        {
+                            old('sale', $site - > sale ?? 0)
+                        }
+                    },
+
                     saleCoin: "{{ old('sale_coin', $site->sale_coin) }}",
                 }
             },
 
             computed: {
-                costFormat() {
-                    return this.coins[this.costCoin];
-                },
-
                 saleFormat() {
                     return this.coins[this.saleCoin];
                 },

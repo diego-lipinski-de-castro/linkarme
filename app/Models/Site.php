@@ -90,6 +90,10 @@ class Site extends Model implements Auditable
 
         static::updating(function ($site) {
             $site->suggested = ($site->cost) + ($site->cost * 0.25) + (560.33 * 100);
+
+            if($site->isDirty('sale')) {
+                $site->sale_updated_at = now();
+            }
         });
     }
 
@@ -177,5 +181,10 @@ class Site extends Model implements Auditable
         $diff = $this->suggested - $this->sale;
         
         return 'R$ ' . number_format($diff / 100, 2, ',', '.');
+    }
+
+    public function getPopularAttribute()
+    {
+        return $this->orders()->count() > 6;
     }
 }
