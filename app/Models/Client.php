@@ -44,6 +44,11 @@ class Client extends Authenticatable
         'full' => 'boolean',
     ];
 
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
     public function favorites()
     {
         return $this->belongsToMany(Site::class, 'favorites')->withTimestamps();

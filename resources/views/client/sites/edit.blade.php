@@ -261,15 +261,15 @@
                             </div>
 
                             <div class="col-span-2">
-                                <label for="client_obs" class="block text-sm font-medium text-gray-700">Notas</label>
+                                <label for="text" class="block text-sm font-medium text-gray-700">Notas</label>
                                 <div class="mt-1">
-                                    <textarea type="text" name="client_obs" id="client_obs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('client_obs') border-red-300 @enderror" placeholder="Insira suas anotações aqui">{{ old('client_obs', $site->client_obs) }}</textarea>
+                                    <textarea type="text" name="text" id="text" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('text') border-red-300 @enderror" placeholder="Insira suas anotações aqui">{{ old('text', optional($note)->text) }}</textarea>
                                 </div>
 
-                                @error('client_obs')
+                                @error('text')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                            </div>
+                            </div>                            
                         </div>
 
                         <div class="mt-6 text-right">

@@ -40,8 +40,6 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     */
     public function model(array $row)
     {
-        dd($row);
-
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
@@ -109,6 +107,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'name' => null,
             'description' => null,
             'obs' => $row['observacoes'],
+            'admin_obs' => $row['notas'],
             'da' => $row['da'],
             'dr' => $row['dr'],
             'traffic' => null,
@@ -117,10 +116,10 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'country_id' => optional($country)->id,
             'category_id' => optional($category)->id,
             'link_type' => 'DOFOLLOW',
-            'gambling' => $row['cassinos'] == 'Sim' ? true : false,
+            'gambling' => strtolower($row['cassinos']) == 'sim' ? true : false,
             'cdb' => false,
-            'cripto' => $row['cripto'] == 'Sim' ? true : false,
-            'sponsor' => $row['tag_publi'] == 'Sim' ? true : false,
+            'cripto' => strtolower($row['cripto']) == 'sim' ? true : false,
+            'sponsor' => strtolower($row['tag_publi']) == 'sim' ? true : false,
             'ssl' => false,
             'broken' => false,
             'cost' => $custo,
@@ -130,6 +129,23 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
+
+            'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
+            'banner' => strtolower($row['banners']) == 'sim' ? true : false,
+
+            'owner_name' => $row['dono_do_site'],
+            'owner_email' => $row['email'],
+            'owner_phone' => $row['whats'],
+
+            'bank' => $row['dados_bancarios'],
+            'pix' => $row['pix'],
+
+            'phone' => $row['telefone'],
+            'paypal' => $row['paypal'],
+            'instagram' => $row['instagram'],
+            'facebook' => $row['facebook'],
+
+            'deleted_at' => strtolower($row['ativo']) == 'sim' ? null : now(),
         ]);
     }
 
@@ -146,11 +162,28 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'categorias' => [],
             'pais' => [],
             'linguagem' => [],
-            'cassinos' => [Rule::in(['Sim', 'Não'])],
-            'cripto' => [Rule::in(['Sim', 'Não'])],
-            'tag_publi' => [Rule::in(['Sim', 'Não'])],
+            'cassinos' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
+            'cripto' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
+            'tag_publi' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
             'notas' => [],
             'observacoes' => [],
+
+            'link_menu' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
+            'banners' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
+
+            'dono_do_site' => [],
+            'email' => [],
+            'whats' => [],
+
+            'dados_bancarios' => [],
+            'pix' => [],
+
+            'telefone' => [],
+            'paypal' => [],
+            'instagram' => [],
+            'facebook' => [],
+
+            'ativo' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
         ];
     }
 

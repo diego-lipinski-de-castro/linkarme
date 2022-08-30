@@ -47,11 +47,25 @@ class UpdateSiteRequest extends FormRequest
             'cdb' => 'required|boolean',
             'cripto' => 'required|boolean',
             'sponsor' => 'required|boolean',
+            'menu' => 'required|boolean',
+            'banner' => 'required|boolean',
 
             'cost' => 'nullable|integer',
             'cost_coin' => 'nullable|in:BRL,EUR,USD',
             
             'last_posted' => 'nullable|date',
+
+            'owner_name' => 'nullable',
+            'owner_email' => 'nullable',
+            'owner_phone' => 'nullable',
+
+            'bank' => 'nullable',
+            'pix' => 'nullable',
+
+            'phone' => 'nullable',
+            'paypal' => 'nullable',
+            'instagram' => 'nullable',
+            'facebook' => 'nullable',
         ];
     }
 
@@ -71,6 +85,8 @@ class UpdateSiteRequest extends FormRequest
             'cdb' => !blank($this->cdb),
             'cripto' => !blank($this->cripto),
             'sponsor' => !blank($this->sponsor),
+            'menu' => !blank($this->menu),
+            'banner' => !blank($this->banner),
 
             'cost' => Helper::extractNumbersFromString($this->cost),
             'sale' => Helper::extractNumbersFromString($this->sale),

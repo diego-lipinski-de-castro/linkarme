@@ -204,6 +204,24 @@
                                         <label for="sponsor" class="font-medium text-gray-700">Publi</label>
                                     </div>
                                 </div>
+
+                                <div class="relative flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input value="1" id="menu" name="menu" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="menu" class="font-medium text-gray-700">Link menu</label>
+                                    </div>
+                                </div>
+
+                                <div class="relative flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input value="1" id="banner" name="banner" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="banner" class="font-medium text-gray-700">Banners</label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
@@ -293,6 +311,105 @@
                                 </div>
 
                                 @error('admin_obs')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="owner_name" class="block text-sm font-medium text-gray-700">Nome dono</label>
+                                <div class="mt-1">
+                                    <input type="text" name="owner_name" id="owner_name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_name') border-red-300 @enderror" />
+                                </div>
+
+                                @error('owner_name')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="owner_email" class="block text-sm font-medium text-gray-700">E-mail dono</label>
+                                <div class="mt-1">
+                                    <input type="text" name="owner_email" id="owner_email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_email') border-red-300 @enderror" />
+                                </div>
+
+                                @error('owner_email')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="owner_phone" class="block text-sm font-medium text-gray-700">Telefone dono</label>
+                                <div class="mt-1">
+                                    <input type="text" name="owner_phone" id="owner_phone" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('owner_phone') border-red-300 @enderror" />
+                                </div>
+
+                                @error('owner_phone')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="bank" class="block text-sm font-medium text-gray-700">Informações bancárias</label>
+                                <div class="mt-1">
+                                    <textarea type="text" name="bank" id="bank" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('bank') border-red-300 @enderror"></textarea>
+                                </div>
+
+                                @error('bank')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="pix" class="block text-sm font-medium text-gray-700">PIX site</label>
+                                <div class="mt-1">
+                                    <input type="text" name="pix" id="pix" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('pix') border-red-300 @enderror" />
+                                </div>
+
+                                @error('pix')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Telefone site</label>
+                                <div class="mt-1">
+                                    <input type="text" name="phone" id="phone" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('phone') border-red-300 @enderror" />
+                                </div>
+
+                                @error('phone')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="paypal" class="block text-sm font-medium text-gray-700">Paypal site</label>
+                                <div class="mt-1">
+                                    <input type="text" name="paypal" id="paypal" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('paypal') border-red-300 @enderror" />
+                                </div>
+
+                                @error('paypal')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="instagram" class="block text-sm font-medium text-gray-700">Instagram site</label>
+                                <div class="mt-1">
+                                    <input type="text" name="instagram" id="instagram" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('instagram') border-red-300 @enderror" />
+                                </div>
+
+                                @error('instagram')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="facebook" class="block text-sm font-medium text-gray-700">Facebook site</label>
+                                <div class="mt-1">
+                                    <input type="text" name="facebook" id="facebook" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('facebook') border-red-300 @enderror" />
+                                </div>
+
+                                @error('facebook')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

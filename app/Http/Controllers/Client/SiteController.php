@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\Note;
 use App\Models\Site;
 use App\Sorts\OrderCountSort;
 use Illuminate\Http\Request;
@@ -103,8 +104,11 @@ class SiteController extends Controller
 
         $coins = config('coins');
 
+        $note = auth()->user()->notes()->where('site_id', $site->id)->first();
+
         return view('client.sites.edit', [
             'site' => $site,
+            'note' => $note,
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
@@ -118,12 +122,11 @@ class SiteController extends Controller
      */
     public function update(Request $request, Site $site)
     {
-        $validated = $request->validate([
-            'client_obs' => 'nullable|string|max:600',
-        ]);
+        Note::updateOrCreate(
+            ['client_id' => auth()->id(), 'site_id' => $site->id],
+            ['text' => $request->input('text')]
+        );
 
-        $site->update($validated);
-
-        return redirect(route('client.sites.index'));
+        return back();
     }
 }

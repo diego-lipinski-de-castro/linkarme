@@ -30,7 +30,6 @@ class Site extends Model implements Auditable
         'description',
         'obs',
         'admin_obs',
-        'client_obs',
         'da',
         'dr',
         'traffic',
@@ -55,6 +54,17 @@ class Site extends Model implements Auditable
         'status',
         'deleted_why',
         'suggested',
+        'menu',
+        'banner',
+        'owner_name',
+        'owner_email',
+        'owner_phone',
+        'bank',
+        'pix',
+        'phone',
+        'paypal',
+        'instagram',
+        'facebook',
     ];
 
     protected $casts = [
@@ -76,6 +86,9 @@ class Site extends Model implements Auditable
         // 'last_posted' => 'date',
 
         'suggested' => 'integer',
+
+        'menu' => 'boolean',
+        'banner' => 'boolean',
     ];
 
     protected static function booted()

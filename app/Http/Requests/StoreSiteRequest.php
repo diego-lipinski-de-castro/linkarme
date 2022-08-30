@@ -32,7 +32,6 @@ class StoreSiteRequest extends FormRequest
             
             'obs' => 'nullable|string|max:600',
             'admin_obs' => 'nullable|string|max:600',
-            'client_obs' => 'nullable|string|max:600',
             
             'da' => 'nullable|integer',
             'dr' => 'nullable|integer',
@@ -49,6 +48,8 @@ class StoreSiteRequest extends FormRequest
             'cdb' => 'nullable|boolean',
             'cripto' => 'nullable|boolean',
             'sponsor' => 'nullable|boolean',
+            'menu' => 'nullable|boolean',
+            'banner' => 'nullable|boolean',
 
             'cost' => 'nullable|integer',
             'sale' => 'nullable|integer',
@@ -58,6 +59,18 @@ class StoreSiteRequest extends FormRequest
             'last_posted' => 'nullable|date',
 
             'seller_id' => 'nullable|integer|exists:sellers,id',
+
+            'owner_name' => 'nullable',
+            'owner_email' => 'nullable',
+            'owner_phone' => 'nullable',
+
+            'bank' => 'nullable',
+            'pix' => 'nullable',
+
+            'phone' => 'nullable',
+            'paypal' => 'nullable',
+            'instagram' => 'nullable',
+            'facebook' => 'nullable',
         ];
     }
 

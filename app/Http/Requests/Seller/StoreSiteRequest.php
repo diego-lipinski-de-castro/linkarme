@@ -47,11 +47,25 @@ class StoreSiteRequest extends FormRequest
             'cdb' => 'nullable|boolean',
             'cripto' => 'nullable|boolean',
             'sponsor' => 'nullable|boolean',
+            'menu' => 'nullable|boolean',
+            'banner' => 'nullable|boolean',
 
             'cost' => 'nullable|integer',
             'cost_coin' => 'nullable|in:BRL,EUR,USD',
 
             'last_posted' => 'nullable|date',
+
+            'owner_name' => 'nullable',
+            'owner_email' => 'nullable',
+            'owner_phone' => 'nullable',
+
+            'bank' => 'nullable',
+            'pix' => 'nullable',
+
+            'phone' => 'nullable',
+            'paypal' => 'nullable',
+            'instagram' => 'nullable',
+            'facebook' => 'nullable',
         ];
     }
 
