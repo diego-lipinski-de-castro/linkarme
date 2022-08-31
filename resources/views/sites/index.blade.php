@@ -16,7 +16,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12" x-data="{ columns: $persist(['url', 'seller', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto', 'link_type', 'cost', 'sale', 'suggestion']) }">
+    <div class="py-12" x-data="{ columns: $persist(['url', 'seller', 'country', 'language', 'da', 'dr', 'tf', 'category', 'ssl', 'gambling', 'sponsor', 'cripto', 'link_type', 'cost', 'sale', 'suggestion', 'menu', 'banner', 'owner_name', 'owner_email', 'owner_phone', 'bank', 'pix', 'phone', 'paypal', 'instagram', 'facebook']) }">
         <div class="sm:px-6 lg:px-8">
 
             <div class="flex justify-between items-center mb-3">
@@ -46,148 +46,224 @@
 
                     <x-slot name="content">
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="url" id="url" name="url" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                            </div>
-                            <div class="ml-3 text-sm">
-                                <label for="url" class="font-medium text-gray-700">Domínio</label>
-                            </div>
-                        </div>
+                        <div style="height: 50vh; overflow-y: scroll;">
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="seller" id="seller" name="seller" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="url" id="url" name="url" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="url" class="font-medium text-gray-700">Domínio</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="seller" class="font-medium text-gray-700">Vendedor</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="country" id="country" name="country" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="seller" id="seller" name="seller" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="seller" class="font-medium text-gray-700">Vendedor</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="country" class="font-medium text-gray-700">País</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="language" id="language" name="language" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="country" id="country" name="country" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="country" class="font-medium text-gray-700">País</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="language" class="font-medium text-gray-700">Linguagem</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="da" id="da" name="da" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="language" id="language" name="language" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="language" class="font-medium text-gray-700">Linguagem</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="da" class="font-medium text-gray-700">DA</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="dr" id="dr" name="dr" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="da" id="da" name="da" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="da" class="font-medium text-gray-700">DA</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="dr" class="font-medium text-gray-700">DR</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="tf" id="tf" name="tf" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="dr" id="dr" name="dr" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="dr" class="font-medium text-gray-700">DR</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="tf" class="font-medium text-gray-700">TF</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="category" id="category" name="category" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="tf" id="tf" name="tf" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="tf" class="font-medium text-gray-700">TF</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="category" class="font-medium text-gray-700">Categoria</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="ssl" id="ssl" name="ssl" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="category" id="category" name="category" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="category" class="font-medium text-gray-700">Categoria</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="ssl" class="font-medium text-gray-700">SSL</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="gambling" id="gambling" name="gambling" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="ssl" id="ssl" name="ssl" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="ssl" class="font-medium text-gray-700">SSL</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="gambling" class="font-medium text-gray-700">Cassino</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="sponsor" id="sponsor" name="sponsor" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="gambling" id="gambling" name="gambling" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="gambling" class="font-medium text-gray-700">Cassino</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="sponsor" class="font-medium text-gray-700">Publi</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="cripto" id="cripto" name="cripto" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="sponsor" id="sponsor" name="sponsor" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="sponsor" class="font-medium text-gray-700">Publi</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="cripto" class="font-medium text-gray-700">Cripto</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="link_type" id="link_type" name="link_type" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="cripto" id="cripto" name="cripto" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="cripto" class="font-medium text-gray-700">Cripto</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="link_type" class="font-medium text-gray-700">Link</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="cost" id="cost" name="cost" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="link_type" id="link_type" name="link_type" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="link_type" class="font-medium text-gray-700">Link</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="cost" class="font-medium text-gray-700">Custo</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="sale" id="sale" name="sale" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="cost" id="cost" name="cost" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="cost" class="font-medium text-gray-700">Custo</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="sale" class="font-medium text-gray-700">Preço</label>
-                            </div>
-                        </div>
 
-                        <div class="block px-4 py-2 relative flex">
-                            <div class="flex items-center h-5">
-                                <input x-model="columns" value="suggestion" id="suggestion" name="suggestion" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="sale" id="sale" name="sale" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="sale" class="font-medium text-gray-700">Preço</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm">
-                                <label for="suggestion" class="font-medium text-gray-700">Sugestão</label>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="suggestion" id="suggestion" name="suggestion" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="suggestion" class="font-medium text-gray-700">Sugestão</label>
+                                </div>
                             </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="menu" id="menu" name="menu" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="menu" class="font-medium text-gray-700">Link menu</label>
+                                </div>
+                            </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="banner" id="banner" name="banner" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="banner" class="font-medium text-gray-700">Banners</label>
+                                </div>
+                            </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="owner_name" id="owner_name" name="owner_name" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="owner_name" class="font-medium text-gray-700">Dono</label>
+                                </div>
+                            </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="owner_email" id="owner_email" name="owner_email" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="owner_email" class="font-medium text-gray-700">E-mail</label>
+                                </div>
+                            </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="owner_phone" id="owner_phone" name="owner_phone" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="owner_phone" class="font-medium text-gray-700">Whatsapp</label>
+                                </div>
+                            </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="phone" id="phone" name="phone" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="phone" class="font-medium text-gray-700">Telefone</label>
+                                </div>
+                            </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="instagram" id="instagram" name="instagram" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="instagram" class="font-medium text-gray-700">Instagram</label>
+                                </div>
+                            </div>
+
+                            <div class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input x-model="columns" value="facebook" id="facebook" name="facebook" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="facebook" class="font-medium text-gray-700">Facebook</label>
+                                </div>
+                            </div>
+
                         </div>
 
                     </x-slot>
@@ -302,6 +378,40 @@
                                 Sugestão
                             </th>
 
+                            <!--  -->
+                            <th x-show="columns.includes('menu')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Link menu
+                            </th>
+
+                            <th x-show="columns.includes('banner')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Banners
+                            </th>
+
+                            <th x-show="columns.includes('owner_name')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Dono
+                            </th>
+
+                            <th x-show="columns.includes('owner_email')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                E-mail
+                            </th>
+
+                            <th x-show="columns.includes('owner_phone')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Whatsapp
+                            </th>
+
+                            <th x-show="columns.includes('phone')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Telefone
+                            </th>
+
+                            <th x-show="columns.includes('instagram')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Instagram
+                            </th>
+
+                            <th x-show="columns.includes('facebook')" scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Facebook
+                            </th>
+                            <!--  -->
+
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
 
                             </th>
@@ -410,6 +520,22 @@
                                     </select>
                                 </td>
 
+                                <td x-show="columns.includes('menu')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td x-show="columns.includes('banner')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td x-show="columns.includes('owner_name')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td x-show="columns.includes('owner_email')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td x-show="columns.includes('owner_phone')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td x-show="columns.includes('phone')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td x-show="columns.includes('instagram')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+                                
+                                <td x-show="columns.includes('facebook')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
                             </tr>
                         </form>
@@ -489,6 +615,42 @@
 
                                 <td x-show="columns.includes('suggestion')" class="whitespace-nowrap px-3 py-2 text-sm @if($site->positive) text-green-500 @else text-red-500 @endif border-l">
                                     {{ $site->formatted_suggested }}
+                                </td>
+
+                                <td x-show="columns.includes('menu')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <div class="flex justify-center">
+                                        <span class="block rounded-full h-2 w-2 @if($site->menu) bg-green-400 @else bg-red-400 @endif"></span>
+                                    </div>
+                                </td>
+
+                                <td x-show="columns.includes('banner')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    <div class="flex justify-center">
+                                        <span class="block rounded-full h-2 w-2 @if($site->banner) bg-green-400 @else bg-red-400 @endif"></span>
+                                    </div>
+                                </td>
+
+                                <td x-show="columns.includes('owner_name')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->owner_name }}
+                                </td>
+
+                                <td x-show="columns.includes('owner_email')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->owner_email }}
+                                </td>
+
+                                <td x-show="columns.includes('owner_phone')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->owner_phone }}
+                                </td>
+
+                                <td x-show="columns.includes('phone')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->phone }}
+                                </td>
+
+                                <td x-show="columns.includes('instagram')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->instagram }}
+                                </td>
+
+                                <td x-show="columns.includes('facebook')" class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $site->facebook }}
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm border-l">
