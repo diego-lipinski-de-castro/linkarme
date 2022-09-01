@@ -88,4 +88,24 @@ class Order extends Model implements Auditable
     {
         return self::STATUSES[$this->status];
     }
+
+    public function getFormattedChargedAttribute()
+    {
+        return 'R$ ' . number_format($this->charged / 100, 2, ',', '.');
+    }
+
+    public function getFormattedPaidAttribute()
+    {
+        return 'R$ ' . number_format($this->paid / 100, 2, ',', '.');
+    }
+
+    public function getFormattedMarkupAttribute()
+    {
+        return 'R$ ' . number_format($this->markup / 100, 2, ',', '.');
+    }
+
+    public function getFormattedComissionAttribute()
+    {
+        return 'R$ ' . number_format($this->comission / 100, 2, ',', '.');
+    }
 }

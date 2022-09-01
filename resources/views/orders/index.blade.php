@@ -18,6 +18,10 @@
                         <tr>
                             <!-- <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900">
                                 Site
+                            </th> -->
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                URL
                             </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
@@ -26,10 +30,22 @@
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
                                 Vendedor
-                            </th> -->
+                            </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
-                                URL
+                                Cobrado
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Pago
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Markup
+                            </th>
+
+                            <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
+                                Comissão
                             </th>
 
                             <th scope="col" class="whitespace-nowrap px-3 py-3 text-left text-sm font-semibold text-gray-900 border-l">
@@ -98,9 +114,19 @@
                                         </select>
                                 </td>
 
-                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
 
-                                </td>
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l"></td>
                             </tr>
                         </form>
 
@@ -111,6 +137,11 @@
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                     {{ $order->site->url }}
                                 </td>
+                                --}}
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->url }}
+                                </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     {{ $order->client->name }}
@@ -119,10 +150,21 @@
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
                                     {{ $order->seller->name }}
                                 </td>
-                                --}}
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
-                                    {{ $order->url }}
+                                    {{ $order->formatted_charged }}
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->formatted_paid }}
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->formatted_markup }}
+                                </td>
+
+                                <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">
+                                    {{ $order->formatted_comission }}
                                 </td>
 
                                 <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500 border-l">

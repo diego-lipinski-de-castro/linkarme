@@ -43,6 +43,8 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
     */
     public function model(array $row)
     {
+        dd($row);
+
         $url = $row['url'];
 
         $site = Site::whereRaw("LOCATE(sites.url, '$url') > 0")->first();
