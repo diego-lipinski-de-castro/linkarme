@@ -13,7 +13,7 @@ class SiteController extends Controller
     {
         $url = $request->query('url');
 
-        $url = Str::contains($url, '://') ? 
+        $url = Str::contains($url, '://') ?
             str_replace('www.', '', parse_url($url, PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($url, PHP_URL_PATH));
 

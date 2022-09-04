@@ -48,7 +48,7 @@ class SiteController extends Controller
         $sellers = Seller::query()
             ->orderBy('name')
             ->get();
-        
+
         $sites = QueryBuilder::for(Site::class)
             ->withTrashed()
             ->with('category')
@@ -107,7 +107,7 @@ class SiteController extends Controller
         $sellers = Seller::query()
             ->orderBy('name')
             ->get();
-        
+
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('PENDING')
             ->withTrashed()
@@ -228,7 +228,7 @@ class SiteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateSiteRequest  $request
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateSiteRequest $request, $id)
@@ -243,7 +243,7 @@ class SiteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -272,7 +272,7 @@ class SiteController extends Controller
 
         $text = '';
 
-        foreach($urls as $url) {
+        foreach ($urls as $url) {
             $text .= "$url\n";
         }
 
@@ -309,7 +309,7 @@ class SiteController extends Controller
             ]);
         }
 
-        if(!$import->errors()->empty()) {
+        if (! $import->errors()->empty()) {
             dd($import->errors());
         }
 

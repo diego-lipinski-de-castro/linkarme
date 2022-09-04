@@ -29,7 +29,7 @@ class UpdateSiteRequest extends FormRequest
             'url' => 'required|string|min:1|max:255',
             'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
-            
+
             'obs' => 'nullable|string|max:600',
 
             'da' => 'nullable|integer',
@@ -40,9 +40,9 @@ class UpdateSiteRequest extends FormRequest
             'category_id' => 'nullable|integer|exists:categories,id',
             'language_id' => 'nullable|integer|exists:languages,id',
             'country_id' => 'nullable|integer|exists:countries,id',
-            
+
             'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
-            
+
             'gambling' => 'required|boolean',
             'cdb' => 'required|boolean',
             'cripto' => 'required|boolean',
@@ -52,7 +52,7 @@ class UpdateSiteRequest extends FormRequest
 
             'cost' => 'nullable|integer',
             'cost_coin' => 'nullable|in:BRL,EUR,USD',
-            
+
             'last_posted' => 'nullable|date',
 
             'owner_name' => 'nullable',
@@ -77,16 +77,16 @@ class UpdateSiteRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'url' => Str::contains($this->url, '://') ? 
+            'url' => Str::contains($this->url, '://') ?
                 str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
                 str_replace('www.', '', parse_url($this->url, PHP_URL_PATH)),
 
-            'gambling' => !blank($this->gambling),
-            'cdb' => !blank($this->cdb),
-            'cripto' => !blank($this->cripto),
-            'sponsor' => !blank($this->sponsor),
-            'menu' => !blank($this->menu),
-            'banner' => !blank($this->banner),
+            'gambling' => ! blank($this->gambling),
+            'cdb' => ! blank($this->cdb),
+            'cripto' => ! blank($this->cripto),
+            'sponsor' => ! blank($this->sponsor),
+            'menu' => ! blank($this->menu),
+            'banner' => ! blank($this->banner),
 
             'cost' => Helper::extractNumbersFromString($this->cost),
             'sale' => Helper::extractNumbersFromString($this->sale),

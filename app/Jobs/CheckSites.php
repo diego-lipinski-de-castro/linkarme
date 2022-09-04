@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Site;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -34,6 +33,6 @@ class CheckSites implements ShouldQueue
         $sites = Site::query()
             ->get();
 
-        $sites->each(fn($site) => dispatch(new CheckSite($site->id)));
+        $sites->each(fn ($site) => dispatch(new CheckSite($site->id)));
     }
 }

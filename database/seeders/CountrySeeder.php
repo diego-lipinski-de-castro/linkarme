@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Country;
 use GuzzleHttp\Client;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 

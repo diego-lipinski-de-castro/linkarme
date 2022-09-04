@@ -12,9 +12,9 @@ use App\Models\Language;
 use App\Models\Offer;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Illuminate\Support\Str;
 
 class SiteController extends Controller
 {
@@ -103,7 +103,7 @@ class SiteController extends Controller
     public function edit($id)
     {
         $site = Site::withTrashed()->findOrFail($id);
-        
+
         $site->load([
             'category',
             'language',
@@ -127,7 +127,6 @@ class SiteController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
      */
     public function update(UpdateSiteRequest $request, $id)
     {
@@ -141,7 +140,7 @@ class SiteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -161,8 +160,9 @@ class SiteController extends Controller
 
         $site = Site::withTrashed()->findOrFail($id);
 
-        if($site->trashed()) {
+        if ($site->trashed()) {
             $site->restore();
+
             return back();
         }
 
@@ -182,13 +182,13 @@ class SiteController extends Controller
             'offer_cost' => 'required',
         ]);
 
-        $url = Str::contains($validated['url'], '://') ? 
+        $url = Str::contains($validated['url'], '://') ?
             str_replace('www.', '', parse_url($validated['url'], PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($validated['url'], PHP_URL_PATH));
 
         $site = Site::withTrashed()->firstWhere('url', $url);
 
-        if(blank($site)) {
+        if (blank($site)) {
             return back();
         }
 

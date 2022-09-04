@@ -44,8 +44,9 @@ class UpdateSellerRequest extends FormRequest
     {
         $input = data_get($this->validator->validated(), $key, $default);
 
-        if(blank($this->password)) {
+        if (blank($this->password)) {
             unset($input['password']);
+
             return $input;
         }
 

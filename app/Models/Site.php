@@ -19,7 +19,7 @@ class Site extends Model implements Auditable
         'REJECTED' => 'Rejeitado',
     ];
 
-    public const LINK_TYPES = [ 
+    public const LINK_TYPES = [
         'NOFOLLOW' => 'Nofollow',
         'DOFOLLOW' => 'Dofollow',
     ];
@@ -79,7 +79,7 @@ class Site extends Model implements Auditable
         'sponsor' => 'boolean',
         'ssl' => 'boolean',
         'broken' => 'boolean',
-        
+
         'cost' => 'integer',
         'sale' => 'integer',
 
@@ -94,7 +94,7 @@ class Site extends Model implements Auditable
     protected static function booted()
     {
         static::creating(function ($site) {
-            if(blank($site->inserted_at)) {
+            if (blank($site->inserted_at)) {
                 $site->inserted_at = now();
             }
 
@@ -104,7 +104,7 @@ class Site extends Model implements Auditable
         static::updating(function ($site) {
             $site->suggested = ($site->cost) + ($site->cost * 0.25) + (560.33 * 100);
 
-            if($site->isDirty('sale')) {
+            if ($site->isDirty('sale')) {
                 $site->sale_updated_at = now();
             }
         });
@@ -164,24 +164,26 @@ class Site extends Model implements Auditable
 
     public function getFormattedStatusAttribute()
     {
-        if(blank($this->status)) return null;
+        if (blank($this->status)) {
+            return null;
+        }
 
         return self::STATUSES[$this->status];
     }
 
     public function getFormattedCostAttribute()
     {
-        return 'R$ ' . number_format($this->cost / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->cost / 100, 2, ',', '.');
     }
 
     public function getFormattedSaleAttribute()
     {
-        return 'R$ ' . number_format($this->sale / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->sale / 100, 2, ',', '.');
     }
 
     public function getFormattedSuggestedAttribute()
     {
-        return 'R$ ' . number_format($this->suggested / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->suggested / 100, 2, ',', '.');
     }
 
     public function getPositiveAttribute()
@@ -192,8 +194,8 @@ class Site extends Model implements Auditable
     public function getFormattedDiffAttribute()
     {
         $diff = $this->suggested - $this->sale;
-        
-        return 'R$ ' . number_format($diff / 100, 2, ',', '.');
+
+        return 'R$ '.number_format($diff / 100, 2, ',', '.');
     }
 
     public function getPopularAttribute()

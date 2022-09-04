@@ -9,6 +9,7 @@ use App\Models\Language;
 use App\Models\Seller;
 use App\Models\Site;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -16,11 +17,10 @@ use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Illuminate\Support\Str;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, WithBatchInserts, SkipsOnError, SkipsOnFailure
 {
@@ -34,42 +34,41 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     }
 
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param  array  $row
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
-        if(!blank($row['custo']) && Str::contains($row['custo'], ['USD', 'usd', 'dolar', 'Dolares'])) {
+        if (! blank($row['custo']) && Str::contains($row['custo'], ['USD', 'usd', 'dolar', 'Dolares'])) {
             $costCoin = 'USD';
-        } else if(!blank($row['custo']) && Str::contains($row['custo'], ['EUR', 'eur', 'euros', '€'])) {
+        } elseif (! blank($row['custo']) && Str::contains($row['custo'], ['EUR', 'eur', 'euros', '€'])) {
             $costCoin = 'EUR';
         }
 
-        if(!blank($row['venda']) && Str::contains($row['venda'], ['USD', 'usd', 'dolar', 'Dolares'])) {
+        if (! blank($row['venda']) && Str::contains($row['venda'], ['USD', 'usd', 'dolar', 'Dolares'])) {
             $saleCoin = 'USD';
-        } else if(!blank($row['venda']) && Str::contains($row['venda'], ['EUR', 'eur', 'euros', '€'])) {
+        } elseif (! blank($row['venda']) && Str::contains($row['venda'], ['EUR', 'eur', 'euros', '€'])) {
             $saleCoin = 'EUR';
         }
 
         $custo = $row['custo'];
         $venda = $row['venda'];
 
-        if(!Str::contains($custo, ',')) {
+        if (! Str::contains($custo, ',')) {
             $custo .= '00';
         }
 
-        if(!Str::contains($venda, ',')) {
+        if (! Str::contains($venda, ',')) {
             $venda .= '00';
         }
 
         $custo = Helper::extractNumbersFromString($custo);
         $venda = Helper::extractNumbersFromString($venda);
 
-        $url = Str::contains($row['dominio'], '://') ? 
+        $url = Str::contains($row['dominio'], '://') ?
             str_replace('www.', '', parse_url($row['dominio'], PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($row['dominio'], PHP_URL_PATH));
 
@@ -79,23 +78,22 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
 
         $country = Country::firstWhere('name', $row['pais']);
 
-        if(!blank($row['linguagem'])) {
+        if (! blank($row['linguagem'])) {
             $language = Language::firstOrCreate([
                 'name' => $row['linguagem'],
             ]);
         }
 
-        if(!blank($row['categorias'])) {
+        if (! blank($row['categorias'])) {
             $category = Category::firstOrCreate([
                 'name' => $row['categorias'],
             ]);
         }
 
-        if(!blank($row['atendimento'])) { 
-
+        if (! blank($row['atendimento'])) {
             $seller = Seller::where('name', 'LIKE', '%'.$row['atendimento'].'%')->first();
 
-            if(blank($seller)) {
+            if (blank($seller)) {
                 $seller = Seller::create([
                     'name' => $row['atendimento'],
                 ]);

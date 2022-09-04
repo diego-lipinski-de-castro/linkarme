@@ -39,7 +39,7 @@ class SiteController extends Controller
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('APPROVED')
             ->withCount([
-                'orders' => fn($q) => $q->ofClient(auth()->id()),
+                'orders' => fn ($q) => $q->ofClient(auth()->id()),
             ])
             ->with('category')
             ->defaultSort('url')
@@ -118,7 +118,6 @@ class SiteController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
      */
     public function update(Request $request, Site $site)
     {

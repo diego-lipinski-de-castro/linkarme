@@ -3,27 +3,23 @@
 namespace App\Imports;
 
 use App\Helper;
-use App\Models\Category;
 use App\Models\Client;
-use App\Models\Country;
-use App\Models\Language;
 use App\Models\Order;
 use App\Models\Seller;
 use App\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Illuminate\Support\Str;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, SkipsOnFailure, SkipsOnError, WithBatchInserts
 {
@@ -37,10 +33,9 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
     }
 
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param  array  $row
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         dd($row);
@@ -49,12 +44,13 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
 
         $site = Site::whereRaw("LOCATE(sites.url, '$url') > 0")->first();
 
-        if(blank($site)) {
+        if (blank($site)) {
             Log::debug("SITE NOT FOUND FOR URL: $url");
+
             return;
         }
 
-        $status = match($row['status']) {
+        $status = match ($row['status']) {
             // '' => 'WAITING',
             // '' => 'PRODUCTION',
             // '' => 'SUBMITTED',
@@ -68,15 +64,15 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
         $paid = $row['valor_pago'];
         $comission = $row['comissao'];
 
-        if(!Str::contains($charged, ',')) {
+        if (! Str::contains($charged, ',')) {
             $charged .= '00';
         }
 
-        if(!Str::contains($paid, ',')) {
+        if (! Str::contains($paid, ',')) {
             $paid .= '00';
         }
 
-        if(!Str::contains($comission, ',')) {
+        if (! Str::contains($comission, ',')) {
             $comission .= '00';
         }
 
@@ -87,22 +83,20 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
         $client = null;
         $seller = null;
 
-        if(!blank($row['cliente'])) {
-
+        if (! blank($row['cliente'])) {
             $client = Client::where('name', 'LIKE', '%'.$row['cliente'].'%')->first();
 
-            if(blank($client)) {
+            if (blank($client)) {
                 $client = Client::create([
                     'name' => $row['cliente'],
                 ]);
             }
         }
 
-        if(!blank($row['vendedor'])) {
-
+        if (! blank($row['vendedor'])) {
             $seller = Seller::where('name', 'LIKE', '%'.$row['vendedor'].'%')->first();
 
-            if(blank($seller)) {
+            if (blank($seller)) {
                 $seller = Seller::create([
                     'name' => $row['vendedor'],
                 ]);

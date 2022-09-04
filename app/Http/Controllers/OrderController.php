@@ -171,7 +171,7 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
-        
+
         return back();
     }
 
@@ -203,7 +203,7 @@ class OrderController extends Controller
             ]);
         }
 
-        if(!$import->errors()->empty()) {
+        if (! $import->errors()->empty()) {
             dd($import->errors());
         }
 

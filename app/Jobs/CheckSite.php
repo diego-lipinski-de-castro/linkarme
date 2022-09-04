@@ -6,7 +6,6 @@ use App\Models\Check;
 use App\Models\Site;
 use App\Services\CheckUrlService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -37,7 +36,9 @@ class CheckSite implements ShouldQueue
     {
         $site = Site::find($this->siteId);
 
-        if(blank($site) || blank($site->url)) return;
+        if (blank($site) || blank($site->url)) {
+            return;
+        }
 
         $result = (new CheckUrlService())->check($site->url);
 

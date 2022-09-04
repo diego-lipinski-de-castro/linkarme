@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -35,6 +34,6 @@ class CheckOrdersUrl implements ShouldQueue
             ->status('PUBLISHED')
             ->get();
 
-        $orders->each(fn($order) => dispatch(new CheckOrderUrl($order->id)));
+        $orders->each(fn ($order) => dispatch(new CheckOrderUrl($order->id)));
     }
 }

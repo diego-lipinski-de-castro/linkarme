@@ -6,7 +6,6 @@ use App\Models\Check;
 use App\Models\Order;
 use App\Services\CheckUrlService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -37,7 +36,9 @@ class CheckOrderUrl implements ShouldQueue
     {
         $order = Order::find($this->orderId);
 
-        if(blank($order) || blank($order->url)) return;
+        if (blank($order) || blank($order->url)) {
+            return;
+        }
 
         $result = (new CheckUrlService())->check($order->url);
 

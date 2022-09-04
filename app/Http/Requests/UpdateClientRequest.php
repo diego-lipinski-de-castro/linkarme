@@ -41,7 +41,7 @@ class UpdateClientRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'full' => !blank($this->full),
+            'full' => ! blank($this->full),
         ]);
     }
 
@@ -56,8 +56,9 @@ class UpdateClientRequest extends FormRequest
     {
         $input = data_get($this->validator->validated(), $key, $default);
 
-        if(blank($this->password)) {
+        if (blank($this->password)) {
             unset($input['password']);
+
             return $input;
         }
 

@@ -118,7 +118,7 @@ Route::group([
     Route::put('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'update'])
         ->name('sites.update')
         ->middleware(['auth:seller']);
-    
+
     Route::delete('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth:seller']);
     Route::post('sites/{site}/toggle', [\App\Http\Controllers\Seller\SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth:seller']);
 

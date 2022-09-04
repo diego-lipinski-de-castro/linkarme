@@ -29,9 +29,9 @@ class StoreSiteRequest extends FormRequest
             'url' => 'required|string|min:1|max:255',
             'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
-            
+
             'obs' => 'nullable|string|max:600',
-            
+
             'da' => 'nullable|integer',
             'dr' => 'nullable|integer',
             'traffic' => 'nullable|integer',
@@ -42,7 +42,7 @@ class StoreSiteRequest extends FormRequest
             'language_id' => 'nullable|integer|exists:languages,id',
             'country_id' => 'nullable|integer|exists:countries,id',
             'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
-            
+
             'gambling' => 'nullable|boolean',
             'cdb' => 'nullable|boolean',
             'cripto' => 'nullable|boolean',
@@ -77,7 +77,7 @@ class StoreSiteRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'url' => Str::contains($this->url, '://') ? 
+            'url' => Str::contains($this->url, '://') ?
                 str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
                 str_replace('www.', '', parse_url($this->url, PHP_URL_PATH)),
             'cost' => Helper::extractNumbersFromString($this->cost),

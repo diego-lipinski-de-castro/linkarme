@@ -10,6 +10,6 @@ class SuggestionFilter implements \Spatie\QueryBuilder\Filters\Filter
     {
         $op = $value == '1' ? '>' : '<';
 
-        $query->whereColumn('suggested',  $op, 'sale');
+        $query->whereColumn('suggested', $op, 'sale');
     }
 }

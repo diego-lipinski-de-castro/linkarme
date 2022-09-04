@@ -13,7 +13,7 @@ class Order extends Model implements Auditable
     use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
-    public const STATUSES = [ 
+    public const STATUSES = [
         'WAITING' => 'Aguardando',
         'PRODUCTION' => 'Produção do artigo',
         'SUBMITTED' => 'Enviado para vendedor',
@@ -91,21 +91,21 @@ class Order extends Model implements Auditable
 
     public function getFormattedChargedAttribute()
     {
-        return 'R$ ' . number_format($this->charged / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->charged / 100, 2, ',', '.');
     }
 
     public function getFormattedPaidAttribute()
     {
-        return 'R$ ' . number_format($this->paid / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->paid / 100, 2, ',', '.');
     }
 
     public function getFormattedMarkupAttribute()
     {
-        return 'R$ ' . number_format($this->markup / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->markup / 100, 2, ',', '.');
     }
 
     public function getFormattedComissionAttribute()
     {
-        return 'R$ ' . number_format($this->comission / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->comission / 100, 2, ',', '.');
     }
 }

@@ -6,11 +6,13 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Spatie\SslCertificate\SslCertificate;
 
-class CheckUrlService {
-
-    public function check(string $url) {
-        
-        if(blank($url)) return null;
+class CheckUrlService
+{
+    public function check(string $url)
+    {
+        if (blank($url)) {
+            return null;
+        }
 
         $code = null;
         $validSsl = null;

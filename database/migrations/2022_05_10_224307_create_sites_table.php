@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('url')->unique();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
-            
+
             $table->text('obs')->nullable();
             $table->text('admin_obs')->nullable();
 
@@ -32,7 +32,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
-            
+
             $table->foreignId('language_id')
                 ->nullable()
                 ->constrained()
@@ -49,16 +49,16 @@ return new class extends Migration
             $table->boolean('cdb')->default(false);
             $table->boolean('cripto')->default(false);
             $table->boolean('sponsor')->default(false);
-            
+
             $table->boolean('broken')->nullable();
             $table->boolean('ssl')->nullable();
-            
+
             $table->integer('cost')->nullable();
             $table->integer('sale')->nullable();
 
             $table->enum('cost_coin', ['BRL', 'EUR', 'USD'])->default('BRL');
             $table->enum('sale_coin', ['BRL', 'EUR', 'USD'])->default('BRL');
-            
+
             $table->date('last_posted')->nullable();
 
             $table->date('inserted_at');

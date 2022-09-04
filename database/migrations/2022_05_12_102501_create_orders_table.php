@@ -32,7 +32,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->string('url');
-            
+
             $table->boolean('broken')->nullable();
             $table->boolean('ssl')->nullable();
 
@@ -43,7 +43,7 @@ return new class extends Migration
             $table->integer('charged')->nullable();
             $table->integer('paid')->nullable();
             $table->integer('markup')->nullable();
-            $table->integer('comission')->nullable();    
+            $table->integer('comission')->nullable();
 
             $table->enum('status', ['WAITING', 'PRODUCTION', 'SUBMITTED', 'PROCESSING', 'PUBLISHED', 'INVOICE', 'COMPLETED']);
 
