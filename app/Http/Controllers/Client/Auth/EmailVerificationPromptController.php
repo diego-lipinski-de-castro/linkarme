@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EmailVerificationPromptController extends Controller
 {
@@ -18,6 +19,6 @@ class EmailVerificationPromptController extends Controller
     {
         return $request->user()->hasVerifiedEmail()
                     ? redirect()->intended(RouteServiceProvider::CLIENT_HOME)
-                    : view('client.auth.verify-email');
+                    : Inertia::render('Client/Auth/VerifyEmail', ['status' => session('status')]);
     }
 }

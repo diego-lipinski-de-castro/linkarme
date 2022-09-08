@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -24,9 +25,7 @@ class DashboardController extends Controller
             ],
         ];
 
-        $data = json_decode(json_encode($data));
-
-        return view('client.dashboard', [
+        return Inertia::render('Client/Dashboard', [
             'data' => $data,
         ]);
     }

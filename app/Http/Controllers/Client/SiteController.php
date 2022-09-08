@@ -11,6 +11,7 @@ use App\Models\Note;
 use App\Models\Site;
 use App\Sorts\OrderCountSort;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -68,7 +69,7 @@ class SiteController extends Controller
             ->paginate(50)
             ->appends(request()->query());
 
-        return view('client.sites.index', [
+        return Inertia::render('Client/Sites/Index', [
             'sites' => $sites,
             'favorites' => $favorites,
             'countries' => $countries,
@@ -106,7 +107,7 @@ class SiteController extends Controller
 
         $note = auth()->user()->notes()->where('site_id', $site->id)->first();
 
-        return view('client.sites.edit', [
+        return Inertia::render('client.sites.edit', [
             'site' => $site,
             'note' => $note,
             'categories' => $categories,
