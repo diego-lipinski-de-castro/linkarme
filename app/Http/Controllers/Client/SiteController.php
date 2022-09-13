@@ -38,7 +38,7 @@ class SiteController extends Controller
         $categories = Category::orderBy('name')->get();
 
         $sites = QueryBuilder::for(Site::class)
-            ->ofStatus('APPROVED')
+            // ->ofStatus('APPROVED')
             ->withCount([
                 'orders' => fn ($q) => $q->ofClient(auth()->id()),
             ])
@@ -66,7 +66,7 @@ class SiteController extends Controller
                 'cripto',
                 AllowedFilter::scope('favorites', 'auth_favorites'),
             ])
-            ->paginate(50)
+            ->paginate(10)
             ->appends(request()->query());
 
         return Inertia::render('Client/Sites/Index', [

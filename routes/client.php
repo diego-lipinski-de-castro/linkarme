@@ -42,11 +42,11 @@ Route::group([
         ->middleware(['auth:client']);
 
     // guest
-    Route::get('/acessar', [AuthenticatedSessionController::class, 'create'])
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])
         ->middleware('guest:client')
         ->name('login');
 
-    Route::post('/acessar', [AuthenticatedSessionController::class, 'store'])
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
         ->middleware('guest:client');
 
     Route::get('/esqueci-minha-senha', [PasswordResetLinkController::class, 'create'])
