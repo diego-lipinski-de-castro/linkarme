@@ -49,10 +49,7 @@ defineProps({
 const navigation = [
     { name: 'Dashboard', href: route('client.dashboard'), icon: HomeIcon, current: route().current('client.dashboard') },
     { name: 'Sites', href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
-    { name: 'Pedidos', href: '#', icon: ScaleIcon, current: false },
-    { name: 'Cards', href: '#', icon: CreditCardIcon, current: false },
-    { name: 'Recipients', href: '#', icon: UserGroupIcon, current: false },
-    { name: 'Reports', href: '#', icon: DocumentChartBarIcon, current: false },
+    { name: 'Pedidos', href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
 ]
 
 const sidebarOpen = ref(false)
@@ -63,13 +60,13 @@ const logout = () => {
 </script>
     
 <template>
-    <div>
+    <div class="min-h-full h-full bg-gray-100">
 
         <Head :title="title" />
 
         <Banner />
 
-        <div class="min-h-full">
+        <div class="min-h-full h-full">
             <TransitionRoot as="template" :show="sidebarOpen">
                 <Dialog as="div" class="relative z-40 lg:hidden" @close="sidebarOpen = false">
                     <TransitionChild as="template" enter="transition-opacity ease-linear duration-300"
@@ -117,7 +114,7 @@ const logout = () => {
             <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
                 <div class="flex flex-grow flex-col overflow-y-auto bg-indigo-700 pt-5 pb-4">
                     <div class="flex flex-shrink-0 items-center px-4">
-                        <ApplicationLogo class="block h-8 w-auto" />
+                        <ApplicationLogo white class="block h-8 w-auto" />
                     </div>
                     <nav class="mt-5 flex flex-1 flex-col overflow-y-auto"
                         aria-label="Sidebar">
@@ -191,7 +188,7 @@ const logout = () => {
                                     <MenuItems
                                         class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         
-                                        <MenuItem v-slot="{ active }">
+                                        <!-- <MenuItem v-slot="{ active }">
                                         <a href="#"
                                             :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
                                             Profile</a>
@@ -200,12 +197,12 @@ const logout = () => {
                                         <MenuItem v-slot="{ active }">
                                         <a href="#"
                                             :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
-                                        </MenuItem>
+                                        </MenuItem> -->
 
                                         <MenuItem v-slot="{ active }">
                                             <form method="POST" @submit.prevent="logout">
                                                 <button
-                                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">Logout</button>
+                                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">Sair</button>
                                             </form>
                                         </MenuItem>
 

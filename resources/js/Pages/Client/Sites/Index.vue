@@ -1,7 +1,9 @@
 <script setup>
 import ClientLayout from '@/Layouts/ClientLayout.vue';
+import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
-import { computed, ref } from 'vue'
+import { Inertia } from "@inertiajs/inertia";
+import { computed, ref, watch } from 'vue'
 import {
     Dialog,
     DialogPanel,
@@ -11,7 +13,9 @@ import {
     MenuItems,
     TransitionChild,
     TransitionRoot,
+    Switch, SwitchGroup, SwitchLabel,
 } from '@headlessui/vue'
+
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
 
 import {
@@ -36,6 +40,7 @@ import {
     ChevronRightIcon,
     MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
+import { debounce } from 'debounce';
 
 const props = defineProps({
     title: String,
@@ -53,150 +58,438 @@ const links = computed(() => {
     return _links
 })
 
+const _columns = localStorage.getItem('client.sites.index.columns') ? JSON.parse(localStorage.getItem('client.sites.index.columns')) : [
+    { key: 'url', label: 'Domínio', visible: true },
+    { key: 'da', label: 'DA', visible: true },
+    { key: 'dr', label: 'DR', visible: true },
+    { key: 'traffic', label: 'Tráfego', visible: true },
+    { key: 'gambling', label: 'Cassino', visible: true },
+    { key: 'sponsor', label: 'Publi', visible: true },
+    { key: 'cripto', label: 'Cripto', visible: true },
+    { key: 'ssl', label: 'SSL', visible: true },
+    { key: 'category', label: 'Categoria', visible: true },
+    { key: 'banner', label: 'Banners', visible: true },
+    { key: 'menu', label: 'Links menu', visible: true },
+    { key: 'obs', label: 'Observação', visible: true },
+]
+
+const columns = ref(_columns)
+
+watch(columns, (n, o) => {
+    console.log(n, o)
+    localStorage.setItem('client.sites.index.columns', JSON.stringify(columns.value))
+}, {
+    deep: true,
+})
+
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+});
+
+const sort = ref(params.sort ?? 'url')
+
+const filters = ref({
+    da: { from: 0, to: 0 },
+    dr: { from: 0, to: 0 },
+    traffic: { from: 0, to: 0 },
+    gambling: params["filter[gambling]"] == 'true',
+    sponsor: params["filter[sponsor]"] == 'true',
+    cripto: params["filter[cripto]"] == 'true',
+    ssl: params["filter[ssl]"] == 'true',
+    banner: params["filter[banner]"] == 'true',
+    menu: params["filter[menu]"] == 'true',
+})
+
+watch(sort, (n, o) => get());
+
+watch(filters, debounce((n, o) => {
+    get()
+}, 400), {
+    deep: true,
+})
+
+const get = async () => {
+    Inertia.get(route('client.sites.index'), {
+        sort: sort.value,
+        filter: {
+            gambling: filters.value.gambling,
+            sponsor: filters.value.sponsor,
+            cripto: filters.value.cripto,
+            ssl: filters.value.ssl,
+            banner: filters.value.banner,
+            menu: filters.value.menu,
+        }
+    })
+}
+
 </script>
     
 <template>
     <ClientLayout title="Sites">
         <template #header>
-            <div class="px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
+            <div
+                class="flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Sites
                 </h2>
+
+                <Menu as="div" class="relative ml-3">
+                    <div>
+                        <MenuButton
+                            class="flex max-w-xs items-center rounded-full bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
+                            <span class="ml-1 hidden text-sm font-medium text-gray-700 lg:block">Colunas</span>
+                            <ChevronDownIcon class="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
+                                aria-hidden="true" />
+                        </MenuButton>
+                    </div>
+                    <transition enter-active-class="transition ease-out duration-100"
+                        enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
+                        leave-active-class="transition ease-in duration-75"
+                        leave-from-class="transform opacity-100 scale-100"
+                        leave-to-class="transform opacity-0 scale-95">
+                        <MenuItems
+                            class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                            <div v-for="(column, index) in columns" :key="index" class="px-4 py-2 relative flex">
+                                <div class="flex items-center h-5">
+                                    <input v-model="column.visible" :value="column.key" :id="column.key"
+                                        :name="column.key" type="checkbox"
+                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                </div>
+
+                                <div class="ml-3 text-sm">
+                                    <label :for="column.key" class="font-medium text-gray-700">{{ column.label
+                                        }}</label>
+                                </div>
+                            </div>
+
+                        </MenuItems>
+                    </transition>
+                </Menu>
             </div>
         </template>
 
         <template #submenu>
-            <div class="space-y-1 px-2">
-                <a v-for="item in [1,2,3,4,5]" :key="item" href="#"
-                    class="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-indigo-100 hover:bg-indigo-600 hover:text-white">
-                    1
-                </a>
-            </div>
+            <!-- <div class="px-4">
+                <span class="block text-white">DA range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_da" class="w-24 text-white">from</label>
+                    <input v-model="filters.da.from" id="from_da" name="from_da" type="number"
+                        class="w-24 bg-transparent text-white border-white focus:border-white focus:ring-0" />
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_da" class="w-24 text-white">to</label>
+                    <input v-model="filters.da.to" id="to_da" name="to_da" type="number"
+                        class="w-24 bg-transparent text-white border-white focus:border-white focus:ring-0" />
+                </div>
+            </div> -->
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Cassino</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.gambling"
+                    :class="[filters.gambling ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.gambling ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Publi</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.sponsor"
+                    :class="[filters.sponsor ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.sponsor ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Cripto</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.cripto"
+                    :class="[filters.cripto ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.cripto ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">SSL</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.ssl"
+                    :class="[filters.ssl ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.ssl ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Banners</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.banner"
+                    :class="[filters.banner ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.banner ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Links menu</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.menu"
+                    :class="[filters.menu ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.menu ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
         </template>
 
         <template #submenu-mobile>
-            <div class="space-y-1 px-2">
-                <Link v-for="item in [1,2,3,4,5]" :key="item" href="#"
-                    class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white">
-                1
-                </Link>
-            </div>
+            
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Cassino</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.gambling"
+                    :class="[filters.gambling ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.gambling ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Publi</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.sponsor"
+                    :class="[filters.sponsor ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.sponsor ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Cripto</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.cripto"
+                    :class="[filters.cripto ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.cripto ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">SSL</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.ssl"
+                    :class="[filters.ssl ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.ssl ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Banners</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.banner"
+                    :class="[filters.banner ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.banner ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Links menu</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.menu"
+                    :class="[filters.menu ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.menu ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
         </template>
 
         <div>
-            <div class="shadow sm:hidden">
-                <ul role="list" class="mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden">
+            <div class="sm:hidden border border-gray-200 rounded-lg overflow-hidden">
+                <ul role="list" class="divide-y divide-gray-200">
 
                     <li v-for="(site, index) in sites.data" :key="index">
-                        <Link :href="route('client.sites.edit', site.id)"
-                            class="block bg-white px-4 py-4 hover:bg-gray-50">
-                        <span class="flex items-center space-x-4">
-                            <span class="flex flex-1 space-x-2 truncate">
-                                <span class="text-sm text-gray-500">
-                                    {{ site.url }}
+                        <Link :href="route('client.sites.edit', site.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
+                            <span class="flex items-center space-x-4">
+                                <span class="flex flex-1 space-x-2 truncate">
+                                    <span class="text-sm text-gray-500">
+                                        {{ site.url }}
+                                    </span>
                                 </span>
+                                <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             </span>
-                            <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                        </span>
                         </Link>
                     </li>
 
                 </ul>
 
-                <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3"
-                    aria-label="Pagination">
+                <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3" aria-label="Pagination">
                     <div class="flex flex-1 justify-between">
-                        <a href="#"
-                            class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">Previous</a>
-                        <a href="#"
-                            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">Next</a>
+                        <Link :href="sites.prev_page_url" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">Previous</Link>
+                        <Link :href="sites.next_page_url" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">Next</Link>
                     </div>
                 </nav>
             </div>
 
-            <!-- Activity table (small breakpoint and up) -->
             <div class="hidden sm:block">
-                <div class="mt-2 flex flex-col">
-                    <div class="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+                <div class="flex flex-col">
+                    <div class="min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Domínio</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">País</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Linguagem</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">DA</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">DR</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">TF</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Categoria</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">SSL</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                    <th v-show="columns[0].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+                                        <div class="flex group">
+                                            <span class="block ">Domínio</span>
+                                            <TableSortButton column='url' :current="sort" @onClick='(column) => sort = column'/>
+                                        </div></th>
+                                    <th v-show="columns[1].visible" class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900" scope="col">
+                                        <div class="flex group">
+                                            <span class="block ">DA</span>
+                                            <TableSortButton column='da' :current="sort" @onClick='(column) => sort = column'/>
+                                        </div>
+                                    </th>
+                                    <th v-show="columns[2].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+                                        <div class="flex group">
+                                            <span class="block ">DR</span>
+                                            <TableSortButton column='dr' :current="sort" @onClick='(column) => sort = column'/>
+                                        </div>
+                                    </th>
+                                    <th v-show="columns[3].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+                                        <div class="flex group">
+                                            <span class="block ">Tráfego</span>
+                                            <TableSortButton column='traffic' :current="sort" @onClick='(column) => sort = column'/>
+                                        </div>
+                                    </th>
+                                    <th v-show="columns[4].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Cassino</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                    <th v-show="columns[5].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Publi</th>
-                                    <th class="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                    <th v-show="columns[6].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Cripto</th>
+                                    <th v-show="columns[7].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">SSL</th>
+                                    <th v-show="columns[8].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">Categoria</th>
+                                    <th v-show="columns[9].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">Banners</th>
+                                    <th v-show="columns[10].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">Links menu</th>
+                                    <th v-show="columns[11].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">Observação</th>
+                                    <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">Exemplo</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
-                                    <td class="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                                        <div class="flex">
-                                            <Link :href="route('client.sites.edit', site.id)"
-                                                class="group inline-flex space-x-2 truncate text-sm">
-                                            <p class="truncate text-gray-500 group-hover:text-gray-900">{{
-                                            site.url }}</p>
-                                            </Link>
-                                        </div>
+                                    <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
+                                        <Link :href="route('client.sites.edit', site.id)"
+                                            class="text-gray-500 hover:text-gray-900">
+                                        {{ site.url }}
+                                        </Link>
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.country?.name ?? '-' }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.language?.name ?? '-' }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[1].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.da ?? '-' }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[2].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.dr ?? '-' }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.tf ?? '-' }}
+                                    <td v-show="columns[3].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ site.traffic ?? '-' }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.category?.name ?? '-' }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        <div class="flex justify-center">
-                                            <span
-                                                :class="['block h-2 w-2 rounded-full', site.ssl ? 'bg-green-300' : 'bg-red-300']"></span>
-                                        </div>
-                                    </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[4].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         <div class="flex justify-center">
                                             <span
                                                 :class="['block h-2 w-2 rounded-full', site.gambling ? 'bg-green-300' : 'bg-red-300']"></span>
                                         </div>
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[5].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         <div class="flex justify-center">
                                             <span
                                                 :class="['block h-2 w-2 rounded-full', site.sponsor ? 'bg-green-300' : 'bg-red-300']"></span>
                                         </div>
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[6].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         <div class="flex justify-center">
                                             <span
                                                 :class="['block h-2 w-2 rounded-full', site.cripto ? 'bg-green-300' : 'bg-red-300']"></span>
                                         </div>
+                                    </td>
+                                    <td v-show="columns[7].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        <div class="flex justify-center">
+                                            <span
+                                                :class="['block h-2 w-2 rounded-full', site.ssl ? 'bg-green-300' : 'bg-red-300']"></span>
+                                        </div>
+                                    </td>
+                                    <td v-show="columns[8].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ site.category?.name ?? '-' }}
+                                    </td>
+                                    <td v-show="columns[9].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ site.banner ? 'Sim' : 'Não' }}
+                                    </td>
+                                    <td v-show="columns[10].visible" class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ site.menu ? 'Sim' : 'Não' }}
+                                    </td>
+                                    <td v-show="columns[11].visible" class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ site.obs ?? '-' }}
+                                    </td>
+                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ site.id ?? '-' }}
                                     </td>
                                 </tr>
                             </tbody>
