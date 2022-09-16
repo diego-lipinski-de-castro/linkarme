@@ -489,7 +489,7 @@ const get = async () => {
                                         {{ site.obs ?? '-' }}
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.id ?? '-' }}
+                                        -
                                     </td>
                                 </tr>
                             </tbody>
