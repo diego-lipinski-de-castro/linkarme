@@ -89,9 +89,9 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const sort = ref(params.sort ?? 'url')
 
 const filters = ref({
-    da: { from: 0, to: 0 },
-    dr: { from: 0, to: 0 },
-    traffic: { from: 0, to: 0 },
+    da: { from: params["filter[da][from]"] ?? null, to: params["filter[da][to]"] ?? null },
+    dr: { from: params["filter[dr][from]"] ?? null, to: params["filter[dr][to]"] ?? null },
+    traffic: { from: params["filter[traffic][from]"] ?? null, to: params["filter[traffic][to]"] ?? null },
     gambling: params["filter[gambling]"] == 'true',
     sponsor: params["filter[sponsor]"] == 'true',
     cripto: params["filter[cripto]"] == 'true',
@@ -112,6 +112,9 @@ const get = async () => {
     Inertia.get(route('client.sites.index'), {
         sort: sort.value,
         filter: {
+            da: filters.value.da,
+            dr: filters.value.dr,
+            trafficc: filters.value.traffic,
             gambling: filters.value.gambling,
             sponsor: filters.value.sponsor,
             cripto: filters.value.cripto,
@@ -119,6 +122,8 @@ const get = async () => {
             banner: filters.value.banner,
             menu: filters.value.menu,
         }
+    }, {
+        preserveState: true,
     })
 }
 
@@ -134,12 +139,10 @@ const get = async () => {
                 </h2>
 
                 <Menu as="div" class="relative ml-3">
-                    <div>
-                        <MenuButton
-                            class="flex max-w-xs items-center rounded-full bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
-                            <span class="ml-1 hidden text-sm font-medium text-gray-700 lg:block">Colunas</span>
-                            <ChevronDownIcon class="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
-                                aria-hidden="true" />
+                    <div class="hidden sm:block">
+                        <MenuButton class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                            <span class="ml-1 text-sm font-medium text-gray-700">Colunas</span>
+                            <ChevronDownIcon class="ml-1 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                         </MenuButton>
                     </div>
                     <transition enter-active-class="transition ease-out duration-100"
@@ -170,21 +173,53 @@ const get = async () => {
         </template>
 
         <template #submenu>
-            <!-- <div class="px-4">
-                <span class="block text-white">DA range</span>
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">DA range</span>
 
                 <div class="ml-2 flex items-center mt-4">
-                    <label for="from_da" class="w-24 text-white">from</label>
+                    <label for="from_da" class="w-24 text-sm font-medium text-white">from</label>
                     <input v-model="filters.da.from" id="from_da" name="from_da" type="number"
-                        class="w-24 bg-transparent text-white border-white focus:border-white focus:ring-0" />
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
                 </div>
 
                 <div class="ml-2 flex items-center mt-2">
-                    <label for="to_da" class="w-24 text-white">to</label>
+                    <label for="to_da" class="w-24 text-sm font-medium text-white">to</label>
                     <input v-model="filters.da.to" id="to_da" name="to_da" type="number"
-                        class="w-24 bg-transparent text-white border-white focus:border-white focus:ring-0" />
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
                 </div>
-            </div> -->
+            </div>
+
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">DR range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_dr" class="w-24 text-sm font-medium text-white">from</label>
+                    <input v-model="filters.dr.from" id="from_dr" name="from_dr" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_dr" class="w-24 text-sm font-medium text-white">to</label>
+                    <input v-model="filters.dr.to" id="to_dr" name="to_dr" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+            </div>
+
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">Traffic range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_traffic" class="w-24 text-sm font-medium text-white">from</label>
+                    <input v-model="filters.traffic.from" id="from_traffic" name="from_traffic" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_traffic" class="w-24 text-sm font-medium text-white">to</label>
+                    <input v-model="filters.traffic.to" id="to_traffic" name="to_traffic" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+            </div>
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
@@ -261,6 +296,54 @@ const get = async () => {
         </template>
 
         <template #submenu-mobile>
+
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">DA range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_da" class="w-24 text-sm font-medium text-white">from</label>
+                    <input v-model="filters.da.from" id="from_da" name="from_da" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_da" class="w-24 text-sm font-medium text-white">to</label>
+                    <input v-model="filters.da.to" id="to_da" name="to_da" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+            </div>
+
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">DR range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_dr" class="w-24 text-sm font-medium text-white">from</label>
+                    <input v-model="filters.dr.from" id="from_dr" name="from_dr" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_dr" class="w-24 text-sm font-medium text-white">to</label>
+                    <input v-model="filters.dr.to" id="to_dr" name="to_dr" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+            </div>
+
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">Traffic range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_traffic" class="w-24 text-sm font-medium text-white">from</label>
+                    <input v-model="filters.traffic.from" id="from_traffic" name="from_traffic" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_traffic" class="w-24 text-sm font-medium text-white">to</label>
+                    <input v-model="filters.traffic.to" id="to_traffic" name="to_traffic" type="number"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+            </div>
             
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">

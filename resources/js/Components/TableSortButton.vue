@@ -1,8 +1,6 @@
 <script setup>
     const emits = defineEmits(['onClick'])
 
-    console.log(emits)
-
     const props = defineProps({
         current: String,
         column: String
