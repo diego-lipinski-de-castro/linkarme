@@ -4,6 +4,7 @@ import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed, ref, watch } from 'vue'
+import unionBy from 'lodash/unionBy'
 import {
     Dialog,
     DialogPanel,
@@ -58,7 +59,7 @@ const links = computed(() => {
     return _links
 })
 
-const _columns = localStorage.getItem('client.sites.index.columns') ? JSON.parse(localStorage.getItem('client.sites.index.columns')) : [
+const _defaultColumns = [
     { key: 'url', label: 'Domínio', visible: true },
     { key: 'da', label: 'DA', visible: true },
     { key: 'dr', label: 'DR', visible: true },
@@ -71,7 +72,14 @@ const _columns = localStorage.getItem('client.sites.index.columns') ? JSON.parse
     { key: 'banner', label: 'Banners', visible: true },
     { key: 'menu', label: 'Links menu', visible: true },
     { key: 'obs', label: 'Observação', visible: true },
-]
+    { key: 'example', label: 'Exemplo', visible: true },
+    { key: 'updated_at', label: 'Atualizado às', visible: true },
+];
+
+const _columns =
+    localStorage.getItem('client.sites.index.columns') ? 
+    unionBy(JSON.parse(localStorage.getItem('client.sites.index.columns')), _defaultColumns, 'key')
+    : _defaultColumns
 
 const columns = ref(_columns)
 
@@ -89,15 +97,19 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const sort = ref(params.sort ?? 'url')
 
 const filters = ref({
+    url: params["filter[url]"] ?? null,
     da: { from: params["filter[da][from]"] ?? null, to: params["filter[da][to]"] ?? null },
     dr: { from: params["filter[dr][from]"] ?? null, to: params["filter[dr][to]"] ?? null },
-    traffic: { from: params["filter[traffic][from]"] ?? null, to: params["filter[traffic][to]"] ?? null },
+    // traffic: { from: params["filter[traffic][from]"] ?? null, to: params["filter[traffic][to]"] ?? null },
+    favorites: params["filter[favorites]"] == 'true',
     gambling: params["filter[gambling]"] == 'true',
     sponsor: params["filter[sponsor]"] == 'true',
     cripto: params["filter[cripto]"] == 'true',
     ssl: params["filter[ssl]"] == 'true',
     banner: params["filter[banner]"] == 'true',
     menu: params["filter[menu]"] == 'true',
+    new: params["filter[new]"] == 'true',
+    favorites: params["filter[favorites]"] == 'true',
 })
 
 watch(sort, (n, o) => get());
@@ -112,18 +124,28 @@ const get = async () => {
     Inertia.get(route('client.sites.index'), {
         sort: sort.value,
         filter: {
+            url: filters.value.url,
             da: filters.value.da,
             dr: filters.value.dr,
-            trafficc: filters.value.traffic,
             gambling: filters.value.gambling,
             sponsor: filters.value.sponsor,
             cripto: filters.value.cripto,
             ssl: filters.value.ssl,
             banner: filters.value.banner,
             menu: filters.value.menu,
-        }
+            new: filters.value.new,
+            ...(filters.value.favorites && {
+                favorites: filters.value.favorites,
+            }),
+        },
     }, {
         preserveState: true,
+    })
+}
+
+const toggleFavorite = async (site) => {
+    Inertia.post(route('client.sites.favorite', site), null, {
+        preserveScroll: true,
     })
 }
 
@@ -131,6 +153,20 @@ const get = async () => {
     
 <template>
     <ClientLayout title="Sites">
+        <template #uppermenu>
+            <div class="flex w-full md:ml-0">
+                <label for="search" class="sr-only">Search</label>
+                <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
+                        <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    <input v-model="filters.url" id="search" name="search"
+                        class="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                        placeholder="Buscar sites" type="search" />
+                </div>
+            </div>
+        </template>
+
         <template #header>
             <div
                 class="flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
@@ -140,7 +176,8 @@ const get = async () => {
 
                 <Menu as="div" class="relative ml-3">
                     <div class="hidden sm:block">
-                        <MenuButton class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                        <MenuButton
+                            class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
                             <span class="ml-1 text-sm font-medium text-gray-700">Colunas</span>
                             <ChevronDownIcon class="ml-1 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                         </MenuButton>
@@ -205,7 +242,7 @@ const get = async () => {
                 </div>
             </div>
 
-            <div class="mb-12 px-4">
+            <!-- <div class="mb-12 px-4">
                 <span class="block text-sm font-medium text-white">Traffic range</span>
 
                 <div class="ml-2 flex items-center mt-4">
@@ -219,7 +256,19 @@ const get = async () => {
                     <input v-model="filters.traffic.to" id="to_traffic" name="to_traffic" type="number"
                         class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
                 </div>
-            </div>
+            </div> -->
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Favoritos</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.favorites"
+                    :class="[filters.favorites ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.favorites ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
@@ -290,6 +339,18 @@ const get = async () => {
                     :class="[filters.menu ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
                     <span aria-hidden="true"
                         :class="[filters.menu ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">New</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.new"
+                    :class="[filters.new ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.new ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
                 </Switch>
             </SwitchGroup>
 
@@ -329,7 +390,7 @@ const get = async () => {
                 </div>
             </div>
 
-            <div class="mb-12 px-4">
+            <!-- <div class="mb-12 px-4">
                 <span class="block text-sm font-medium text-white">Traffic range</span>
 
                 <div class="ml-2 flex items-center mt-4">
@@ -343,8 +404,20 @@ const get = async () => {
                     <input v-model="filters.traffic.to" id="to_traffic" name="to_traffic" type="number"
                         class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
                 </div>
-            </div>
-            
+            </div> -->
+
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">Favoritos</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.favorites"
+                    :class="[filters.favorites ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.favorites ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
                     <span class="text-sm font-medium text-white">Cassino</span>
@@ -417,6 +490,18 @@ const get = async () => {
                 </Switch>
             </SwitchGroup>
 
+            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                <SwitchLabel as="span">
+                    <span class="text-sm font-medium text-white">New</span>
+                </SwitchLabel>
+
+                <Switch v-model="filters.new"
+                    :class="[filters.new ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                    <span aria-hidden="true"
+                        :class="[filters.new ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                </Switch>
+            </SwitchGroup>
+
         </template>
 
         <div>
@@ -424,31 +509,38 @@ const get = async () => {
                 <ul role="list" class="divide-y divide-gray-200">
 
                     <li v-for="(site, index) in sites.data" :key="index">
-                        <Link :href="route('client.sites.edit', site.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
-                            <span class="flex items-center space-x-4">
-                                <span class="flex flex-1 space-x-2 truncate">
-                                    <span class="text-sm text-gray-500">
-                                        {{ site.url }}
-                                    </span>
+                        <Link :href="route('client.sites.edit', site.id)"
+                            class="block bg-white px-4 py-4 hover:bg-gray-50">
+                        <span class="flex items-center space-x-4">
+                            <span class="flex flex-1 space-x-2 truncate">
+                                <span class="text-sm text-gray-500">
+                                    {{ site.url }}
                                 </span>
-                                <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             </span>
+                            <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                        </span>
                         </Link>
                     </li>
 
                 </ul>
 
-                <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3" aria-label="Pagination">
+                <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3"
+                    aria-label="Pagination">
                     <div class="flex flex-1 justify-between">
-                        <Link :href="sites.prev_page_url" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">Previous</Link>
-                        <Link :href="sites.next_page_url" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">Next</Link>
+                        <Link :href="sites.prev_page_url"
+                            class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
+                        Previous</Link>
+                        <Link :href="sites.next_page_url"
+                            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
+                        Next</Link>
                     </div>
                 </nav>
             </div>
 
             <div class="hidden sm:block">
                 <div class="flex flex-col">
-                    <div class="min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg">
+                    <div
+                        class="min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
@@ -457,12 +549,17 @@ const get = async () => {
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">Domínio</span>
-                                            <TableSortButton column='url' :current="sort" @onClick='(column) => sort = column'/>
-                                        </div></th>
-                                    <th v-show="columns[1].visible" class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900" scope="col">
+                                            <TableSortButton column='url' :current="sort"
+                                                @onClick='(column) => sort = column' />
+                                        </div>
+                                    </th>
+                                    <th v-show="columns[1].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
                                         <div class="flex group">
                                             <span class="block ">DA</span>
-                                            <TableSortButton column='da' :current="sort" @onClick='(column) => sort = column'/>
+                                            <TableSortButton column='da' :current="sort"
+                                                @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
                                     <th v-show="columns[2].visible"
@@ -470,7 +567,8 @@ const get = async () => {
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">DR</span>
-                                            <TableSortButton column='dr' :current="sort" @onClick='(column) => sort = column'/>
+                                            <TableSortButton column='dr' :current="sort"
+                                                @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
                                     <th v-show="columns[3].visible"
@@ -478,7 +576,8 @@ const get = async () => {
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">Tráfego</span>
-                                            <TableSortButton column='traffic' :current="sort" @onClick='(column) => sort = column'/>
+                                            <TableSortButton column='traffic' :current="sort"
+                                                @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
                                     <th v-show="columns[4].visible"
@@ -505,8 +604,27 @@ const get = async () => {
                                     <th v-show="columns[11].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Observação</th>
-                                    <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Exemplo</th>
+                                    <th v-show="columns[12].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+                                        <div class="flex group">
+                                            <span class="block ">Exemplo</span>
+                                            <TableSortButton column='example' :current="sort"
+                                                @onClick='(column) => sort = column' />
+                                        </div>
+                                    </th>
+                                    <th v-show="columns[13].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+                                        <div class="flex group">
+                                            <span class="block ">Atualizado às</span>
+                                            <TableSortButton column='updated_at' :current="sort"
+                                                @onClick='(column) => sort = column' />
+                                        </div>
+                                    </th>
+                                    <th
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">Favorito</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
@@ -565,14 +683,33 @@ const get = async () => {
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.banner ? 'Sim' : 'Não' }}
                                     </td>
-                                    <td v-show="columns[10].visible" class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[10].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.menu ? 'Sim' : 'Não' }}
                                     </td>
-                                    <td v-show="columns[11].visible" class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[11].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.obs ?? '-' }}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td v-show="columns[12].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         -
+                                    </td>
+                                    <td v-show="columns[13].visible"
+                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ site.formatted_updated_at }}
+                                    </td>
+
+                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        <button @click="toggleFavorite(site.id)">
+                                            <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                            </svg>
+
+                                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>

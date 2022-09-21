@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Filters\FilterLimiter;
+use App\Filters\NewFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
@@ -49,15 +50,16 @@ class SiteController extends Controller
                 'da',
                 'dr',
                 'traffic',
+                'updated_at',
                 // AllowedSort::custom('orders_count', new OrderCountSort()),
             ])
             ->allowedFilters([
-                // 'url',
+                'url',
                 // AllowedFilter::exact('country_id'),
                 // AllowedFilter::exact('language_id'),
                 AllowedFilter::custom('da', new FilterLimiter),
                 AllowedFilter::custom('dr', new FilterLimiter),
-                AllowedFilter::custom('trafficc', new FilterLimiter, 'traffic'),
+                // AllowedFilter::custom('traffic', new FilterLimiter),
                 // AllowedFilter::custom('tf', new FilterLimiter),
                 // AllowedFilter::exact('category_id'),
                 'ssl',
@@ -66,7 +68,8 @@ class SiteController extends Controller
                 'cripto',
                 'banner',
                 'menu',
-                // AllowedFilter::scope('favorites', 'auth_favorites'),
+                AllowedFilter::scope('favorites', 'auth_favorites'),
+                AllowedFilter::custom('new', new NewFilter),
             ])
             ->paginate(10)
             ->appends(request()->query());
@@ -78,13 +81,6 @@ class SiteController extends Controller
             'languages' => $languages,
             'categories' => $categories,
         ]);
-    }
-
-    public function favorite(Site $site)
-    {
-        auth()->user()->favorites()->toggle([$site->id]);
-
-        return back();
     }
 
     /**
@@ -117,6 +113,13 @@ class SiteController extends Controller
             'countries' => $countries,
             'coins' => $coins,
         ]);
+    }
+
+    public function favorite(Site $site)
+    {
+        auth()->user()->favorites()->toggle([$site->id]);
+
+        return back();
     }
 
     /**

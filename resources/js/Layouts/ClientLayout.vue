@@ -39,7 +39,6 @@ import {
     CheckCircleIcon,
     ChevronDownIcon,
     ChevronRightIcon,
-    MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
 
 defineProps({
@@ -60,13 +59,14 @@ const logout = () => {
 </script>
     
 <template>
-    <div class="min-h-full h-full bg-gray-100">
+    <div class="min-h-full h-max bg-gray-100">
 
         <Head :title="title" />
 
         <Banner />
 
-        <div class="min-h-full h-full">
+        <div class="min-h-full h-max">
+
             <TransitionRoot as="template" :show="sidebarOpen">
                 <Dialog as="div" class="relative z-40 lg:hidden" @close="sidebarOpen = false">
                     <TransitionChild as="template" enter="transition-opacity ease-linear duration-300"
@@ -145,18 +145,7 @@ const logout = () => {
 
                     <div class="flex flex-1 justify-between px-4 sm:px-6 lg:mx-auto lg:px-8">
                         <div class="flex flex-1">
-                            <form class="flex w-full md:ml-0" action="#" method="GET">
-                                <label for="search-field" class="sr-only">Search</label>
-                                <div class="relative w-full text-gray-400 focus-within:text-gray-600">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center"
-                                        aria-hidden="true">
-                                        <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
-                                    </div>
-                                    <input id="search-field" name="search-field"
-                                        class="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                                        placeholder="Search transactions" type="search" />
-                                </div>
-                            </form>
+                            <slot name="uppermenu"/>
                         </div>
                         <div class="ml-4 flex items-center md:ml-6">
                             <button type="button"

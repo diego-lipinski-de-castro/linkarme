@@ -91,6 +91,15 @@ class Site extends Model implements Auditable
         'banner' => 'boolean',
     ];
 
+    protected $appends = [
+        'formatted_status',
+        'formatted_cost',
+        'formatted_sale',
+        'formatted_suggested',
+        'formatted_diff',
+        'formatted_updated_at',
+    ];
+
     protected static function booted()
     {
         static::creating(function ($site) {
@@ -201,5 +210,10 @@ class Site extends Model implements Auditable
     public function getPopularAttribute()
     {
         return $this->orders()->count() > 6;
+    }
+    
+    public function getFormattedUpdatedAtAttribute()
+    {
+        return $this->updated_at->format('d/m/Y H:i');
     }
 }
