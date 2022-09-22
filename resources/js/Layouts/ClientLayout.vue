@@ -26,12 +26,12 @@ import {
     CogIcon,
     CreditCardIcon,
     DocumentChartBarIcon,
-    HomeIcon,
     QuestionMarkCircleIcon,
     ScaleIcon,
     ShieldCheckIcon,
     UserGroupIcon,
     XMarkIcon,
+    ComputerDesktopIcon
 } from '@heroicons/vue/24/outline'
 import {
     BanknotesIcon,
@@ -46,7 +46,7 @@ defineProps({
 });
 
 const navigation = [
-    { name: 'Dashboard', href: route('client.dashboard'), icon: HomeIcon, current: route().current('client.dashboard') },
+    { name: 'Dashboard', href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
     { name: 'Sites', href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
     { name: 'Pedidos', href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
 ]

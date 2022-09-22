@@ -34,7 +34,7 @@ class DashboardController extends Controller
             ->count();
         
         $new = Site::query()
-            ->where('created_at', '>', now()->subDays(60)->endOfDay())
+            ->where('inserted_at', '>', now()->subDays(60)->endOfDay())
             ->orderBy('dr', 'desc')
             ->take(10)
             ->get();
@@ -42,6 +42,9 @@ class DashboardController extends Controller
         $recommended = Site::query()
             ->withCount('orders')
             ->having('orders_count', '>', 5)
+            ->whereDoesntHave('orders', function ($query) {
+                $query->ofClient(auth()->id());
+            })
             ->orderBy('dr', 'desc')
             ->take(10)
             ->get();
