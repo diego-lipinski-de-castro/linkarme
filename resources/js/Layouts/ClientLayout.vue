@@ -116,7 +116,7 @@ const logout = () => {
                     <div class="flex flex-shrink-0 items-center px-4">
                         <ApplicationLogo white class="block h-8 w-auto" />
                     </div>
-                    <nav class="mt-5 flex flex-1 flex-col overflow-y-auto"
+                    <nav class="sidebar mt-5 flex flex-1 flex-col overflow-y-auto"
                         aria-label="Sidebar">
                         <div class="space-y-1 px-2">
                             <a v-for="item in navigation" :key="item.name" :href="item.href"
