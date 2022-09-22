@@ -117,7 +117,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'gambling' => strtolower($row['cassinos']) == 'sim' ? true : false,
             'cdb' => false,
             'cripto' => strtolower($row['cripto']) == 'sim' ? true : false,
-            'sponsor' => strtolower($row['tag_publi']) == 'sim' ? true : false,
+            'sponsor' => strtolower($row['publi']) == 'sim' ? true : false,
             'ssl' => false,
             'broken' => false,
             'cost' => $custo,
@@ -162,7 +162,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'linguagem' => [],
             'cassinos' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
             'cripto' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
-            'tag_publi' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
+            'publi' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
             'notas' => [],
             'observacoes' => [],
 
