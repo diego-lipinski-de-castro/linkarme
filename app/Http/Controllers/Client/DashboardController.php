@@ -15,35 +15,42 @@ class DashboardController extends Controller
 
         $orders = Order::ofClient(auth()->id())->count();
 
-        $used = Site::query()
+        $usedCount = Site::query()
             ->whereHas('orders', function ($query) {
                 $query->ofClient(auth()->id());
             })
-            ->take(5)
+            ->count();
+
+        $favs = Site::query()
+            ->authFavorites()
+            ->orderBy('dr', 'desc')
+            ->take(10)
             ->get();
 
-        $unused = Site::query()
+        $unusedCount = Site::query()
             ->whereDoesntHave('orders', function ($query) {
                 $query->ofClient(auth()->id());
             })
-            ->take(5)
-            ->get();
+            ->count();
         
         $new = Site::query()
             ->where('created_at', '>', now()->subDays(60)->endOfDay())
-            ->take(5)
+            ->orderBy('dr', 'desc')
+            ->take(10)
             ->get();
 
         $recommended = Site::query()
             ->withCount('orders')
             ->having('orders_count', '>', 5)
-            ->take(5)
+            ->orderBy('dr', 'desc')
+            ->take(10)
             ->get();
 
         return Inertia::render('Client/Dashboard', [
             'orders' => $orders,
-            'used' => $used,
-            'unused' => $unused,
+            'usedCount' => $usedCount,
+            'favs' => $favs,
+            'unusedCount' => $unusedCount,
             'new' => $new,
             'recommended' => $recommended,
             'favorites' => $favorites,

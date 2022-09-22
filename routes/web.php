@@ -36,43 +36,44 @@ Route::redirect('/', '/login');
 //     })->name('dashboard');
 // });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
+
+Route::get('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']);
+Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('sites.importSubmit')->middleware(['auth']);
+Route::get('sites/export', [SiteController::class, 'export'])->name('sites.export')->middleware(['auth']);
+
+Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
+Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
+
+Route::get('sites/requests', [SiteController::class, 'requests'])->name('sites.requests')->middleware(['auth']);
+Route::get('sites/offers', [OfferController::class, 'index'])->name('sites.offers')->middleware(['auth']);
+
+Route::post('sites/offers/{offer}', [OfferController::class, 'accept'])->name('offers.accept')->middleware(['auth']);
+Route::delete('sites/offers/{offer}', [OfferController::class, 'reject'])->name('offers.reject')->middleware(['auth']);
+
+Route::resource('sites', SiteController::class)->except(['destroy'])->middleware(['auth']);
+
+Route::get('sites/{site}/aprovar', [SiteController::class, 'approve'])->withTrashed()->name('sites.approve')->middleware(['auth']);
+Route::get('sites/{site}/rejeitar', [SiteController::class, 'reject'])->withTrashed()->name('sites.reject')->middleware(['auth']);
+
+Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth']);
+Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);
+
+Route::resource('orders', OrderController::class)->middleware(['auth']);
+
+Route::resource('sellers', SellerController::class)->middleware(['auth']);
+Route::resource('clients', ClientController::class)->middleware(['auth']);
+
+Route::resource('categories', CategoryController::class)->middleware(['auth']);
+Route::resource('languages', LanguageController::class)->middleware(['auth']);
+Route::resource('countries', CountryController::class)->middleware(['auth']);
+
+require __DIR__.'/auth.php';
 require __DIR__.'/client.php';
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dashboard');
-
-// Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
-
-// Route::get('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']);
-// Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('sites.importSubmit')->middleware(['auth']);
-// Route::get('sites/export', [SiteController::class, 'export'])->name('sites.export')->middleware(['auth']);
-
-// Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
-// Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
-
-// Route::get('sites/requests', [SiteController::class, 'requests'])->name('sites.requests')->middleware(['auth']);
-// Route::get('sites/offers', [OfferController::class, 'index'])->name('sites.offers')->middleware(['auth']);
-
-// Route::post('sites/offers/{offer}', [OfferController::class, 'accept'])->name('offers.accept')->middleware(['auth']);
-// Route::delete('sites/offers/{offer}', [OfferController::class, 'reject'])->name('offers.reject')->middleware(['auth']);
-
-// Route::resource('sites', SiteController::class)->except(['destroy'])->middleware(['auth']);
-
-// Route::get('sites/{site}/aprovar', [SiteController::class, 'approve'])->withTrashed()->name('sites.approve')->middleware(['auth']);
-// Route::get('sites/{site}/rejeitar', [SiteController::class, 'reject'])->withTrashed()->name('sites.reject')->middleware(['auth']);
-
-// Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth']);
-// Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);
-
-// Route::resource('orders', OrderController::class)->middleware(['auth']);
-
-// Route::resource('sellers', SellerController::class)->middleware(['auth']);
-// Route::resource('clients', ClientController::class)->middleware(['auth']);
-
-// Route::resource('categories', CategoryController::class)->middleware(['auth']);
-// Route::resource('languages', LanguageController::class)->middleware(['auth']);
-// Route::resource('countries', CountryController::class)->middleware(['auth']);
 
 // Route::group([
 //     'prefix' => 'vendedores',
@@ -110,4 +111,3 @@ require __DIR__.'/client.php';
 //         ->middleware(['auth:seller']);
 // });
 
-// require __DIR__.'/auth.php';

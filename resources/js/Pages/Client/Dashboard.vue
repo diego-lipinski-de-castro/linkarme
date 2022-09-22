@@ -26,8 +26,9 @@ import {
 const props = defineProps({
     title: String,
     orders: Number,
-    used: Array,
-    unused: Array,
+    usedCount: Number,
+    favs: Array,
+    unusedCount: Number,
     new: Array,
     recommended: Array,
     favorites: Array,
@@ -35,13 +36,14 @@ const props = defineProps({
 
 const cards = [
     { name: 'Pedidos feitos', href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
+    { name: 'Sites utilizados', href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
+    { name: 'Sites não utilizados', href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
 ]
 
 const list = [
-    { label: 'Sites utilizados', sites: props.used },
-    { label: 'Sites não utilizados', sites: props.unused },
-    { label: 'Novos sites', sites: props.new },
-    { label: 'Sites recomendados', sites: props.recommended },
+    { label: 'Favoritos', sites: props.favs, href: route('client.sites.index') },
+    { label: 'Novos sites', sites: props.new, href: route('client.sites.index') },
+    { label: 'Sites recomendados', sites: props.recommended, href: route('client.sites.index') },
 ];
 
 const toggleFavorite = async (site) => {
@@ -126,167 +128,83 @@ const toggleFavorite = async (site) => {
                             </div>
                         </div>
                         <div class="bg-gray-50 px-5 py-3">
-                            <div class="text-sm">
-                                <Link :href="card.href" class="font-medium text-cyan-700 hover:text-cyan-900">Ver todos</Link>
-                            </div>
+                            <Link :href="card.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">Ver todos</Link>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div v-for="(item, index) in list" :key="index">
-                <h2 class="mt-8 text-lg font-medium leading-6 text-gray-900">{{ item.label }}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6">
+                <div v-for="(item, index) in list" :key="index">
+                    <h2 class="mt-8 text-lg font-medium leading-6 text-gray-900">{{ item.label }}</h2>
 
-                <div class="sm:hidden">
-                    <ul role="list" class="mt-2 divide-y divide-gray-200 border rounded-md overflow-hidden">
-                        <li v-for="(site, index) in item.sites" :key="index">
-                        <Link :href="route('client.sites.edit', site.id)"
-                            class="block bg-white px-4 py-4 hover:bg-gray-50">
-                        <span class="flex items-center space-x-4">
-                            <span class="flex flex-1 space-x-2 truncate">
-                                <span class="text-sm text-gray-500">
-                                    {{ site.url }}
+                    <div class="sm:hidden">
+                        <ul role="list" class="mt-2 divide-y divide-gray-200 border rounded-md overflow-hidden">
+                            <li v-if="item.sites.length == 0">
+                                <span class="block bg-white px-4 py-4 text-center text-gray-500 italic">Em breve</span></li>
+                            <li v-else v-for="(site, index) in item.sites" :key="index">
+                                <Link :href="route('client.sites.edit', site.id)"
+                                    class="block bg-white px-4 py-4 hover:bg-gray-50">
+                                <span class="flex items-center space-x-4">
+                                    <span class="flex flex-1 space-x-2 truncate">
+                                        <span class="text-sm text-gray-500">
+                                            {{ site.url }}
+                                        </span>
+                                    </span>
+                                    <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </span>
-                            </span>
-                            <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                        </span>
-                        </Link>
-                    </li>
-                    </ul>
-                </div>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
 
-                <!-- Activity table (small breakpoint and up) -->
-                <div class="hidden sm:block">
-                    <div class="mt-2 flex flex-col">
-                        <div class="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Domínio
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">DA
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">DR
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Tráfego
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Cassino</th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Publi</th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Cripto</th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">SSL</th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Categoria</th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Banners</th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Links menu</th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Atualizado às
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Favorito</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr v-for="(site, index) in item.sites" :key="index" class="bg-white">
-                                    <td  class="whitespace-nowrap px-6 py-4 text-sm">
-                                        <Link :href="route('client.sites.edit', site.id)"
-                                            class="text-gray-500 hover:text-gray-900">
-                                        {{ site.url }}
-                                        </Link>
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.da ?? '-' }}
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.dr ?? '-' }}
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.traffic ?? '-' }}
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        <div class="flex justify-center">
-                                            <span
-                                                :class="['block h-2 w-2 rounded-full', site.gambling ? 'bg-green-300' : 'bg-red-300']"></span>
-                                        </div>
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        <div class="flex justify-center">
-                                            <span
-                                                :class="['block h-2 w-2 rounded-full', site.sponsor ? 'bg-green-300' : 'bg-red-300']"></span>
-                                        </div>
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        <div class="flex justify-center">
-                                            <span
-                                                :class="['block h-2 w-2 rounded-full', site.cripto ? 'bg-green-300' : 'bg-red-300']"></span>
-                                        </div>
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        <div class="flex justify-center">
-                                            <span
-                                                :class="['block h-2 w-2 rounded-full', site.ssl ? 'bg-green-300' : 'bg-red-300']"></span>
-                                        </div>
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.category?.name ?? '-' }}
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.banner ? 'Sim' : 'Não' }}
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.menu ? 'Sim' : 'Não' }}
-                                    </td>
-                                    <td 
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.formatted_updated_at }}
-                                    </td>
+                    <!-- Activity table (small breakpoint and up) -->
+                    <div class="hidden sm:block">
+                        <div class="mt-2 flex flex-col">
+                            <div class="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead>
+                                        <tr>
+                                            <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                scope="col">Domínio
+                                            </th>
+                                            <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                scope="col">DA
+                                            </th>
+                                            <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                scope="col">DR
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 bg-white">
+                                        <tr v-if="item.sites.length == 0">
+                                            <td colspan="3" class="text-center text-gray-500 italic py-2">Em breve</td>
+                                        </tr>
+                                        <tr v-else v-for="(site, index) in item.sites" :key="index" class="bg-white">
+                                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                                <Link :href="route('client.sites.edit', site.id)"
+                                                    class="text-gray-500 hover:text-gray-900">
+                                                {{ site.url }}
+                                                </Link>
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                                {{ site.da ?? '-' }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                                {{ site.dr ?? '-' }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
 
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        <button @click="toggleFavorite(site.id)">
-                                            <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-                                            </svg>
-
-                                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" class="bg-gray-50 px-5 py-3">
+                                                <Link :href="item.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">Ver todos</Link>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
