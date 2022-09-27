@@ -20,18 +20,21 @@ class DashboardController extends Controller
                 $query->ofClient(auth()->id());
             })
             ->count();
-
-        $favs = Site::query()
-            ->authFavorites()
-            ->orderBy('dr', 'desc')
-            ->take(10)
-            ->get();
-
+            
         $unusedCount = Site::query()
             ->whereDoesntHave('orders', function ($query) {
                 $query->ofClient(auth()->id());
             })
             ->count();
+
+        $favs = Site::query()
+            ->authFavorites()
+            ->join('favorites', 'favorites.site_id', '=', 'sites.id')   
+            ->orderBy('favorites.created_at', 'desc')
+            ->take(10)
+            ->get()
+            ->sortByDesc('dr')
+            ->values();
         
         $new = Site::query()
             ->where('inserted_at', '>', now()->subDays(60)->endOfDay())

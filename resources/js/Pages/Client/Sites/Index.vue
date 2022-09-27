@@ -60,17 +60,17 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
+    { key: 'sale', label: 'Valor', visible: true },
     { key: 'url', label: 'Domínio', visible: true },
     { key: 'da', label: 'DA', visible: true },
     { key: 'dr', label: 'DR', visible: true },
-    { key: 'traffic', label: 'Tráfego', visible: true },
     { key: 'gambling', label: 'Cassino', visible: true },
     { key: 'sponsor', label: 'Publi', visible: true },
     { key: 'cripto', label: 'Cripto', visible: true },
     { key: 'ssl', label: 'SSL', visible: true },
     { key: 'category', label: 'Categoria', visible: true },
-    { key: 'banner', label: 'Banners', visible: true },
-    { key: 'menu', label: 'Links menu', visible: true },
+    // { key: 'banner', label: 'Banners', visible: true },
+    // { key: 'menu', label: 'Links menu', visible: true },
     { key: 'obs', label: 'Observação', visible: true },
     { key: 'example', label: 'Exemplo', visible: true },
     { key: 'updated_at', label: 'Atualizado às', visible: true },
@@ -105,8 +105,8 @@ const filters = ref({
     gambling: params["filter[gambling]"] == 'true',
     sponsor: params["filter[sponsor]"] == 'true',
     cripto: params["filter[cripto]"] == 'true',
-    ssl: params["filter[ssl]"] == 'true',
-    banner: params["filter[banner]"] == 'true',
+    // ssl: params["filter[ssl]"] == 'true',
+    // banner: params["filter[banner]"] == 'true',
     menu: params["filter[menu]"] == 'true',
     new: params["filter[new]"] == 'true',
     favorites: params["filter[favorites]"] == 'true',
@@ -294,7 +294,7 @@ const toggleFavorite = async (site) => {
                 </Switch>
             </SwitchGroup>
 
-            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+            <!-- <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
                     <span class="text-sm font-medium text-white">Cripto</span>
                 </SwitchLabel>
@@ -340,7 +340,7 @@ const toggleFavorite = async (site) => {
                     <span aria-hidden="true"
                         :class="[filters.menu ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
                 </Switch>
-            </SwitchGroup>
+            </SwitchGroup> -->
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
@@ -442,7 +442,7 @@ const toggleFavorite = async (site) => {
                 </Switch>
             </SwitchGroup>
 
-            <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+            <!-- <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
                     <span class="text-sm font-medium text-white">Cripto</span>
                 </SwitchLabel>
@@ -488,7 +488,7 @@ const toggleFavorite = async (site) => {
                     <span aria-hidden="true"
                         :class="[filters.menu ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
                 </Switch>
-            </SwitchGroup>
+            </SwitchGroup> -->
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
@@ -548,12 +548,22 @@ const toggleFavorite = async (site) => {
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
+                                            <span class="block ">Valor</span>
+                                            <TableSortButton column='sale' :current="sort"
+                                                @onClick='(column) => sort = column' />
+                                        </div>
+                                    </th>
+
+                                    <th v-show="columns[1].visible"
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+                                        <div class="flex group">
                                             <span class="block ">Domínio</span>
                                             <TableSortButton column='url' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
-                                    <th v-show="columns[1].visible"
+                                    <th v-show="columns[2].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
@@ -562,7 +572,8 @@ const toggleFavorite = async (site) => {
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
-                                    <th v-show="columns[2].visible"
+                                    
+                                    <th v-show="columns[3].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
@@ -571,18 +582,9 @@ const toggleFavorite = async (site) => {
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
-                                    <th v-show="columns[3].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">
-                                        <div class="flex group">
-                                            <span class="block ">Tráfego</span>
-                                            <TableSortButton column='traffic' :current="sort"
-                                                @onClick='(column) => sort = column' />
-                                        </div>
-                                    </th>
                                     <th v-show="columns[4].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Cassino</th>
+                                        scope="col">Gambling</th>
                                     <th v-show="columns[5].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Publi</th>
@@ -595,16 +597,16 @@ const toggleFavorite = async (site) => {
                                     <th v-show="columns[8].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Categoria</th>
-                                    <th v-show="columns[9].visible"
+                                    <!-- <th v-show="columns[9].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Banners</th>
                                     <th v-show="columns[10].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Links menu</th>
-                                    <th v-show="columns[11].visible"
+                                        scope="col">Links menu</th> -->
+                                    <th v-show="columns[9].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Observação</th>
-                                    <th v-show="columns[12].visible"
+                                    <th v-show="columns[10].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
@@ -613,12 +615,12 @@ const toggleFavorite = async (site) => {
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
-                                    <th v-show="columns[13].visible"
+                                    <th v-show="columns[11].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Atualizado às</span>
-                                            <TableSortButton column='updated_at' :current="sort"
+                                            <span class="block ">Upload data</span>
+                                            <TableSortButton column='inserted_at' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
@@ -630,22 +632,21 @@ const toggleFavorite = async (site) => {
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
                                     <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
+                                        {{ site.formatted_sale }}
+                                    </td>
+                                    <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.edit', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
                                         {{ site.url }}
                                         </Link>
                                     </td>
-                                    <td v-show="columns[1].visible"
+                                    <td v-show="columns[2].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.da ?? '-' }}
                                     </td>
-                                    <td v-show="columns[2].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.dr ?? '-' }}
-                                    </td>
                                     <td v-show="columns[3].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.traffic ?? '-' }}
+                                        {{ site.dr ?? '-' }}
                                     </td>
                                     <td v-show="columns[4].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
@@ -679,25 +680,25 @@ const toggleFavorite = async (site) => {
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.category?.name ?? '-' }}
                                     </td>
-                                    <td v-show="columns[9].visible"
+                                    <!-- <td v-show="columns[9].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.banner ? 'Sim' : 'Não' }}
                                     </td>
                                     <td v-show="columns[10].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.menu ? 'Sim' : 'Não' }}
-                                    </td>
-                                    <td v-show="columns[11].visible"
+                                    </td> -->
+                                    <td v-show="columns[9].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.obs ?? '-' }}
                                     </td>
-                                    <td v-show="columns[12].visible"
+                                    <td v-show="columns[10].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         -
                                     </td>
-                                    <td v-show="columns[13].visible"
+                                    <td v-show="columns[11].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.formatted_updated_at }}
+                                        {{ site.formatted_inserted_at }}
                                     </td>
 
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">

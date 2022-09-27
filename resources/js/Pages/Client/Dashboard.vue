@@ -1,5 +1,6 @@
 <script setup>
 import ClientLayout from '@/Layouts/ClientLayout.vue';
+import { computed } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { ref } from 'vue'
@@ -34,6 +35,8 @@ const props = defineProps({
     favorites: Array,
 });
 
+console.log(props.favs)
+
 const cards = [
     { name: 'Pedidos feitos', href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
     { name: 'Sites utilizados', href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
@@ -45,6 +48,18 @@ const list = [
     { label: 'Novos sites', sites: props.new, href: route('client.sites.index') },
     { label: 'Sites recomendados', sites: props.recommended, href: route('client.sites.index') },
 ];
+
+const greeting = computed(() => {
+    const hour = new Date().getHours();
+    const welcomeTypes = ['Good morning', 'Good afternoon', 'Good evening'];
+    let welcomeText = '';
+    
+    if (hour < 12) welcomeText = welcomeTypes[0];
+    else if (hour < 18) welcomeText = welcomeTypes[1];
+    else welcomeText = welcomeTypes[2];
+
+    return welcomeText
+})
 
 const toggleFavorite = async (site) => {
     Inertia.post(route('client.sites.favorite', site), null, {
@@ -63,27 +78,27 @@ const toggleFavorite = async (site) => {
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center">
                                 <img class="hidden h-16 w-16 rounded-full sm:block"
-                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.6&w=256&h=256&q=80"
-                                    alt="" />
+                                    :src="$page.props.user.profile_photo_url"
+                                    :alt="$page.props.user.name" />
                                 <div>
                                     <div class="flex items-center">
                                         <img class="h-16 w-16 rounded-full sm:hidden"
-                                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.6&w=256&h=256&q=80"
-                                            alt="" />
+                                            :src="$page.props.user.profile_photo_url"
+                                            :alt="$page.props.user.name" />
                                         <h1
                                             class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
-                                            Good morning, {{ $page.props.user.name }}</h1>
+                                            {{ greeting }}, {{ $page.props.user.name }}</h1>
                                     </div>
                                     <dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
-                                        <dt class="sr-only">Company</dt>
-                                        <dd
+                                        <dt v-if="false" class="sr-only">Company</dt>
+                                        <dd v-if="false"
                                             class="flex items-center text-sm font-medium capitalize text-gray-500 sm:mr-6">
                                             <BuildingOfficeIcon class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                                                 aria-hidden="true" />
                                             Duke street studio
                                         </dd>
-                                        <dt class="sr-only">Account status</dt>
-                                        <dd
+                                        <dt v-if="$page.props.user.full" class="sr-only">Account status</dt>
+                                        <dd v-if="$page.props.user.full"
                                             class="mt-3 flex items-center text-sm font-medium capitalize text-gray-500 sm:mr-6 sm:mt-0">
                                             <CheckCircleIcon class="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400"
                                                 aria-hidden="true" />

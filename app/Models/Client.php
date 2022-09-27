@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
 class Client extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use HasProfilePhoto;
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +45,15 @@ class Client extends Authenticatable
         'full' => 'boolean',
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
+    
     public function notes()
     {
         return $this->hasMany(Note::class);

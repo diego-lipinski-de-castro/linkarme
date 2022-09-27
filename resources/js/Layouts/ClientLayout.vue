@@ -84,7 +84,7 @@ const logout = () => {
                             <DialogPanel class="relative flex w-full max-w-xs flex-1 flex-col bg-indigo-700 pt-5 pb-4">
 
                                 <div class="flex flex-shrink-0 items-center px-4">
-                                    <ApplicationLogo class="block h-8 w-auto" />
+                                    <ApplicationLogo white class="block h-8 w-auto" />
                                 </div>
                                 <nav class="mt-5 h-full flex-shrink-0 overflow-y-auto"
                                     aria-label="Sidebar">
@@ -159,8 +159,8 @@ const logout = () => {
                                     <MenuButton
                                         class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
                                         <img class="h-8 w-8 rounded-full"
-                                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                            alt="" />
+                                            :src="$page.props.user.profile_photo_url"
+                                            :alt="$page.props.user.name" />
                                         <span class="ml-3 hidden text-sm font-medium text-gray-700 lg:block"><span
                                                 class="sr-only">Open user menu for </span>{{ $page.props.user.name }}</span>
                                         <ChevronDownIcon

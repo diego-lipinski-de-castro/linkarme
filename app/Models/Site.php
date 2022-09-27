@@ -89,6 +89,8 @@ class Site extends Model implements Auditable
 
         'menu' => 'boolean',
         'banner' => 'boolean',
+
+        'inserted_at' => 'date',
     ];
 
     protected $appends = [
@@ -97,6 +99,7 @@ class Site extends Model implements Auditable
         'formatted_sale',
         'formatted_suggested',
         'formatted_diff',
+        'formatted_inserted_at',
         'formatted_updated_at',
     ];
 
@@ -210,6 +213,11 @@ class Site extends Model implements Auditable
     public function getPopularAttribute()
     {
         return $this->orders()->count() > 6;
+    }
+
+    public function getFormattedInsertedAtAttribute()
+    {
+        return $this->inserted_at->format('d/m/Y');
     }
     
     public function getFormattedUpdatedAtAttribute()

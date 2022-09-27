@@ -46,11 +46,12 @@ class SiteController extends Controller
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([
+                'sale',
                 'url',
                 'da',
                 'dr',
                 'traffic',
-                'updated_at',
+                'inserted_at',
                 // AllowedSort::custom('orders_count', new OrderCountSort()),
             ])
             ->allowedFilters([
@@ -71,7 +72,7 @@ class SiteController extends Controller
                 AllowedFilter::scope('favorites', 'auth_favorites'),
                 AllowedFilter::custom('new', new NewFilter),
             ])
-            ->paginate(10)
+            ->paginate(50)
             ->appends(request()->query());
 
         return Inertia::render('Client/Sites/Index', [
