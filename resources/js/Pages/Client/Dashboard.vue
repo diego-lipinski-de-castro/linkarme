@@ -38,15 +38,15 @@ const props = defineProps({
 console.log(props.favs)
 
 const cards = [
-    { name: 'Pedidos feitos', href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
-    { name: 'Sites utilizados', href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
-    { name: 'Sites não utilizados', href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
+    { name: 'Orders', href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
+    { name: 'Sites used', href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
+    { name: 'Sites never used', href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
 ]
 
 const list = [
-    { label: 'Favoritos', sites: props.favs, href: route('client.sites.index') },
-    { label: 'Novos sites', sites: props.new, href: route('client.sites.index') },
-    { label: 'Sites recomendados', sites: props.recommended, href: route('client.sites.index') },
+    { label: 'Favorites', sites: props.favs, href: route('client.sites.index') },
+    { label: 'New sites', sites: props.new, href: route('client.sites.index') },
+    { label: 'Recommended', sites: props.recommended, href: route('client.sites.index') },
 ];
 
 const greeting = computed(() => {
@@ -143,7 +143,7 @@ const toggleFavorite = async (site) => {
                             </div>
                         </div>
                         <div class="bg-gray-50 px-5 py-3">
-                            <Link :href="card.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">Ver todos</Link>
+                            <Link :href="card.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">See all</Link>
                         </div>
                     </div>
                 </div>
@@ -214,7 +214,7 @@ const toggleFavorite = async (site) => {
                                     <tfoot>
                                         <tr>
                                             <td colspan="3" class="bg-gray-50 px-5 py-3">
-                                                <Link :href="item.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">Ver todos</Link>
+                                                <Link :href="item.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">See all</Link>
                                             </td>
                                         </tr>
                                     </tfoot>

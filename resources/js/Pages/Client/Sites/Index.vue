@@ -60,20 +60,20 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'sale', label: 'Valor', visible: true },
-    { key: 'url', label: 'Domínio', visible: true },
+    { key: 'sale', label: 'Price', visible: true },
+    { key: 'url', label: 'Domain', visible: true },
     { key: 'da', label: 'DA', visible: true },
     { key: 'dr', label: 'DR', visible: true },
-    { key: 'gambling', label: 'Cassino', visible: true },
-    { key: 'sponsor', label: 'Publi', visible: true },
+    { key: 'gambling', label: 'Gambling', visible: true },
+    { key: 'sponsor', label: 'Sponsor', visible: true },
     { key: 'cripto', label: 'Cripto', visible: true },
     { key: 'ssl', label: 'SSL', visible: true },
-    { key: 'category', label: 'Categoria', visible: true },
+    { key: 'category', label: 'Category', visible: true },
     // { key: 'banner', label: 'Banners', visible: true },
     // { key: 'menu', label: 'Links menu', visible: true },
-    { key: 'obs', label: 'Observação', visible: true },
-    { key: 'example', label: 'Exemplo', visible: true },
-    { key: 'updated_at', label: 'Atualizado às', visible: true },
+    { key: 'obs', label: 'Obs', visible: true },
+    { key: 'example', label: 'Examplo', visible: true },
+    { key: 'inserted_at', label: 'Upload data', visible: true },
 ];
 
 const _columns =
@@ -162,7 +162,7 @@ const toggleFavorite = async (site) => {
                     </div>
                     <input v-model="filters.url" id="search" name="search"
                         class="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                        placeholder="Buscar sites" type="search" />
+                        placeholder="Search sites" type="search" />
                 </div>
             </div>
         </template>
@@ -178,7 +178,7 @@ const toggleFavorite = async (site) => {
                     <div class="hidden sm:block">
                         <MenuButton
                             class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                            <span class="ml-1 text-sm font-medium text-gray-700">Colunas</span>
+                            <span class="ml-1 text-sm font-medium text-gray-700">Columns</span>
                             <ChevronDownIcon class="ml-1 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                         </MenuButton>
                     </div>
@@ -260,7 +260,7 @@ const toggleFavorite = async (site) => {
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
-                    <span class="text-sm font-medium text-white">Favoritos</span>
+                    <span class="text-sm font-medium text-white">Favorites</span>
                 </SwitchLabel>
 
                 <Switch v-model="filters.favorites"
@@ -272,7 +272,7 @@ const toggleFavorite = async (site) => {
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
-                    <span class="text-sm font-medium text-white">Cassino</span>
+                    <span class="text-sm font-medium text-white">Gambling</span>
                 </SwitchLabel>
 
                 <Switch v-model="filters.gambling"
@@ -284,7 +284,7 @@ const toggleFavorite = async (site) => {
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
-                    <span class="text-sm font-medium text-white">Publi</span>
+                    <span class="text-sm font-medium text-white">Sponsor</span>
                 </SwitchLabel>
 
                 <Switch v-model="filters.sponsor"
@@ -544,11 +544,14 @@ const toggleFavorite = async (site) => {
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
+                                    <th
+                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">Favorite</th>
                                     <th v-show="columns[0].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Valor</span>
+                                            <span class="block ">Price</span>
                                             <TableSortButton column='sale' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -558,7 +561,7 @@ const toggleFavorite = async (site) => {
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Domínio</span>
+                                            <span class="block ">Domain</span>
                                             <TableSortButton column='url' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -587,7 +590,7 @@ const toggleFavorite = async (site) => {
                                         scope="col">Gambling</th>
                                     <th v-show="columns[5].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Publi</th>
+                                        scope="col">Sponsor</th>
                                     <th v-show="columns[6].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Cripto</th>
@@ -596,7 +599,7 @@ const toggleFavorite = async (site) => {
                                         scope="col">SSL</th>
                                     <th v-show="columns[8].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Categoria</th>
+                                        scope="col">Category</th>
                                     <!-- <th v-show="columns[9].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Banners</th>
@@ -605,12 +608,12 @@ const toggleFavorite = async (site) => {
                                         scope="col">Links menu</th> -->
                                     <th v-show="columns[9].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Observação</th>
+                                        scope="col">Obs</th>
                                     <th v-show="columns[10].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Exemplo</span>
+                                            <span class="block ">Example</span>
                                             <TableSortButton column='example' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -624,13 +627,21 @@ const toggleFavorite = async (site) => {
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
-                                    <th
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Favorito</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
+                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        <button @click="toggleFavorite(site.id)">
+                                            <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                            </svg>
+
+                                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </button>
+                                    </td>
                                     <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
                                         {{ site.formatted_sale }}
                                     </td>
@@ -699,18 +710,6 @@ const toggleFavorite = async (site) => {
                                     <td v-show="columns[11].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.formatted_inserted_at }}
-                                    </td>
-
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        <button @click="toggleFavorite(site.id)">
-                                            <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-                                            </svg>
-
-                                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                            </svg>
-                                        </button>
                                     </td>
                                 </tr>
                             </tbody>

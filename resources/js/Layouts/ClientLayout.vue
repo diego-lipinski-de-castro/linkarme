@@ -48,7 +48,7 @@ defineProps({
 const navigation = [
     { name: 'Dashboard', href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
     { name: 'Sites', href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
-    { name: 'Pedidos', href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
+    { name: 'Orders', href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
 ]
 
 const sidebarOpen = ref(false)
@@ -148,11 +148,11 @@ const logout = () => {
                             <slot name="uppermenu"/>
                         </div>
                         <div class="ml-4 flex items-center md:ml-6">
-                            <button type="button"
+                            <!-- <button type="button"
                                 class="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                 <span class="sr-only">View notifications</span>
                                 <BellIcon class="h-6 w-6" aria-hidden="true" />
-                            </button>
+                            </button> -->
 
                             <Menu as="div" class="relative ml-3">
                                 <div>
@@ -191,7 +191,7 @@ const logout = () => {
                                         <MenuItem v-slot="{ active }">
                                             <form method="POST" @submit.prevent="logout">
                                                 <button
-                                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">Sair</button>
+                                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">Logout</button>
                                             </form>
                                         </MenuItem>
 

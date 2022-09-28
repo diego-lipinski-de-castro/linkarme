@@ -1,1 +1,0 @@
-import{_ as r,a as s}from"./logo.327800f5.js";import{o,d as t}from"./app.6e87bc1e.js";const a={key:0,src:r,alt:"Linkarme"},_={key:1,src:s,alt:"Linkarme"},p={__name:"ApplicationLogo",props:{white:Boolean},setup(e){return(i,c)=>e.white?(o(),t("img",a)):(o(),t("img",_))}};export{p as _};

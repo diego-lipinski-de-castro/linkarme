@@ -54,11 +54,11 @@ const submit = () => {
                                 <InputError class="mt-2" :message="form.errors.password" />
                             </div>
 
-                            <Link v-if="canResetPassword" :href="route('password.request')" class="w-min whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500">Esqueceu sua senha?</Link>
+                            <Link v-if="canResetPassword" :href="route('password.request')" class="w-min whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</Link>
 
                             <div>
                                 <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit"
-                                    class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Entrar</button>
+                                    class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Login</button>
                             </div>
                         </form>
                     </div>

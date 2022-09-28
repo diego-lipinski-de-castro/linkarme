@@ -1,1 +1,0 @@
-import{_ as r,a}from"./logo.327800f5.js";import{o as t,d as e}from"./app.6e87bc1e.js";const s={key:0,src:r,alt:"Linkarme"},_={key:1,src:a,alt:"Linkarme"},p={__name:"ApplicationMark",props:{white:Boolean},setup(o){return(i,c)=>o.white?(t(),e("img",s)):(t(),e("img",_))}};export{p as _};
