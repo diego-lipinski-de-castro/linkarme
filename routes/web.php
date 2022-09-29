@@ -72,42 +72,41 @@ Route::resource('categories', CategoryController::class)->middleware(['auth']);
 Route::resource('languages', LanguageController::class)->middleware(['auth']);
 Route::resource('countries', CountryController::class)->middleware(['auth']);
 
+Route::group([
+    'prefix' => 'vendedores',
+    'as' => 'seller.',
+], function () {
+    Route::get('sites', [\App\Http\Controllers\Seller\SiteController::class, 'index'])
+        ->name('sites.index')
+        ->middleware(['auth:seller']);
+
+    Route::get('sites/adicionar', [\App\Http\Controllers\Seller\SiteController::class, 'create'])
+        ->name('sites.create')
+        ->middleware(['auth:seller']);
+
+    Route::post('sites', [\App\Http\Controllers\Seller\SiteController::class, 'store'])
+        ->name('sites.store')
+        ->middleware(['auth:seller']);
+
+    Route::post('sites/offer', [\App\Http\Controllers\Seller\SiteController::class, 'offer'])
+        ->name('sites.offer')
+        ->middleware(['auth:seller']);
+
+    Route::get('sites/{site}/edit', [\App\Http\Controllers\Seller\SiteController::class, 'edit'])
+        ->name('sites.edit')
+        ->middleware(['auth:seller']);
+
+    Route::put('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'update'])
+        ->name('sites.update')
+        ->middleware(['auth:seller']);
+
+    Route::delete('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth:seller']);
+    Route::post('sites/{site}/toggle', [\App\Http\Controllers\Seller\SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth:seller']);
+
+    Route::get('orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])
+        ->name('orders.index')
+        ->middleware(['auth:seller']);
+});
+
 require __DIR__.'/auth.php';
 require __DIR__.'/client.php';
-
-// Route::group([
-//     'prefix' => 'vendedores',
-//     'as' => 'seller.',
-// ], function () {
-//     Route::get('sites', [\App\Http\Controllers\Seller\SiteController::class, 'index'])
-//         ->name('sites.index')
-//         ->middleware(['auth:seller']);
-
-//     Route::get('sites/adicionar', [\App\Http\Controllers\Seller\SiteController::class, 'create'])
-//         ->name('sites.create')
-//         ->middleware(['auth:seller']);
-
-//     Route::post('sites', [\App\Http\Controllers\Seller\SiteController::class, 'store'])
-//         ->name('sites.store')
-//         ->middleware(['auth:seller']);
-
-//     Route::post('sites/offer', [\App\Http\Controllers\Seller\SiteController::class, 'offer'])
-//         ->name('sites.offer')
-//         ->middleware(['auth:seller']);
-
-//     Route::get('sites/{site}/edit', [\App\Http\Controllers\Seller\SiteController::class, 'edit'])
-//         ->name('sites.edit')
-//         ->middleware(['auth:seller']);
-
-//     Route::put('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'update'])
-//         ->name('sites.update')
-//         ->middleware(['auth:seller']);
-
-//     Route::delete('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth:seller']);
-//     Route::post('sites/{site}/toggle', [\App\Http\Controllers\Seller\SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth:seller']);
-
-//     Route::get('orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])
-//         ->name('orders.index')
-//         ->middleware(['auth:seller']);
-// });
-
