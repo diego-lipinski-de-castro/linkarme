@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\FilterLimiter;
+use App\Filters\NewFilter;
 use App\Filters\SuggestionFilter;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
@@ -15,6 +16,7 @@ use App\Models\Seller;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -53,27 +55,37 @@ class SiteController extends Controller
             ->withTrashed()
             ->with('category')
             ->defaultSort('url')
-            ->allowedSorts(['url', 'da', 'dr', 'tf'])
+            ->allowedSorts([
+                'sale',
+                'url',
+                'da',
+                'dr',
+                'traffic',
+                'inserted_at',
+            ])
             ->allowedFilters([
                 'url',
-                AllowedFilter::exact('country_id'),
-                AllowedFilter::exact('language_id'),
+                // AllowedFilter::exact('country_id'),
+                // AllowedFilter::exact('language_id'),
                 AllowedFilter::custom('da', new FilterLimiter),
                 AllowedFilter::custom('dr', new FilterLimiter),
-                AllowedFilter::custom('traffic', new FilterLimiter),
-                AllowedFilter::custom('tf', new FilterLimiter),
-                AllowedFilter::exact('category_id'),
-                AllowedFilter::exact('seller_id'),
+                // AllowedFilter::custom('traffic', new FilterLimiter),
+                // AllowedFilter::custom('tf', new FilterLimiter),
+                // AllowedFilter::exact('category_id'),
+                // AllowedFilter::exact('seller_id'),
                 'ssl',
                 'gambling',
                 'sponsor',
                 'cripto',
-                AllowedFilter::custom('suggestion', new SuggestionFilter),
+                'banner',
+                'menu',
+                AllowedFilter::custom('new', new NewFilter),
+                // AllowedFilter::custom('suggestion', new SuggestionFilter),
             ])
             ->paginate(50)
             ->appends(request()->query());
 
-        return view('sites.index', [
+        return Inertia::render('Sites/Index', [
             'pending' => $pending,
             'offers' => $offers,
             'sites' => $sites,

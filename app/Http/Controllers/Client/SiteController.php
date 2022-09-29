@@ -39,7 +39,7 @@ class SiteController extends Controller
         $categories = Category::orderBy('name')->get();
 
         $sites = QueryBuilder::for(Site::class)
-            // ->ofStatus('APPROVED')
+            ->ofStatus('APPROVED')
             ->withCount([
                 'orders' => fn ($q) => $q->ofClient(auth()->id()),
             ])

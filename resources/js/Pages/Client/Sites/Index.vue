@@ -408,7 +408,7 @@ const toggleFavorite = async (site) => {
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
-                    <span class="text-sm font-medium text-white">Favoritos</span>
+                    <span class="text-sm font-medium text-white">Favorites</span>
                 </SwitchLabel>
 
                 <Switch v-model="filters.favorites"
@@ -420,7 +420,7 @@ const toggleFavorite = async (site) => {
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
-                    <span class="text-sm font-medium text-white">Cassino</span>
+                    <span class="text-sm font-medium text-white">Gambling</span>
                 </SwitchLabel>
 
                 <Switch v-model="filters.gambling"
@@ -432,7 +432,7 @@ const toggleFavorite = async (site) => {
 
             <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
-                    <span class="text-sm font-medium text-white">Publi</span>
+                    <span class="text-sm font-medium text-white">Sponsor</span>
                 </SwitchLabel>
 
                 <Switch v-model="filters.sponsor"
