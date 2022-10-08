@@ -17,8 +17,6 @@ import {
     Switch, SwitchGroup, SwitchLabel,
 } from '@headlessui/vue'
 
-import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid'
-
 import {
     Bars3CenterLeftIcon,
     BellIcon,
@@ -34,11 +32,14 @@ import {
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import {
+    ArrowLongLeftIcon,
+    ArrowLongRightIcon,
     BanknotesIcon,
     BuildingOfficeIcon,
     CheckCircleIcon,
     ChevronDownIcon,
     ChevronRightIcon,
+    ChevronUpIcon,
     MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
 import { debounce } from 'debounce';
@@ -97,6 +98,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const sort = ref(params.sort ?? 'url')
 
 const filters = ref({
+    sale: { from: params["filter[sale][from]"] ?? null, to: params["filter[sale][to]"] ?? null },
     url: params["filter[url]"] ?? null,
     da: { from: params["filter[da][from]"] ?? null, to: params["filter[da][to]"] ?? null },
     dr: { from: params["filter[dr][from]"] ?? null, to: params["filter[dr][to]"] ?? null },
@@ -124,6 +126,7 @@ const get = async () => {
     Inertia.get(route('client.sites.index'), {
         sort: sort.value,
         filter: {
+            sale: filters.value.sale,
             url: filters.value.url,
             da: filters.value.da,
             dr: filters.value.dr,
@@ -210,6 +213,25 @@ const toggleFavorite = async (site) => {
         </template>
 
         <template #submenu>
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">Price range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_sale" class="w-24 text-sm font-medium text-white">from</label>
+                    
+                    <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500"/>
+                    <input v-model="filters.sale.from" id="from_sale" name="from_sale" type="text" class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                    <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500"/>
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_sale" class="w-24 text-sm font-medium text-white">to</label>
+                    <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500"/>
+                    <input v-model="filters.sale.to" id="to_sale" name="to_sale" type="text" class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                    <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500"/>
+                </div>
+            </div>
+
             <div class="mb-12 px-4">
                 <span class="block text-sm font-medium text-white">DA range</span>
 
@@ -357,6 +379,21 @@ const toggleFavorite = async (site) => {
         </template>
 
         <template #submenu-mobile>
+            <div class="mb-12 px-4">
+                <span class="block text-sm font-medium text-white">Price range</span>
+
+                <div class="ml-2 flex items-center mt-4">
+                    <label for="from_sale" class="w-24 text-sm font-medium text-white">from</label>
+                    <input v-model="filters.sale.from" id="from_sale" name="from_sale" type="text"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+
+                <div class="ml-2 flex items-center mt-2">
+                    <label for="to_sale" class="w-24 text-sm font-medium text-white">to</label>
+                    <input v-model="filters.sale.to" id="to_sale" name="to_sale" type="text"
+                        class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                </div>
+            </div>
 
             <div class="mb-12 px-4">
                 <span class="block text-sm font-medium text-white">DA range</span>
@@ -545,10 +582,10 @@ const toggleFavorite = async (site) => {
                             <thead>
                                 <tr>
                                     <th
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Favorite</th>
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col"></th>
                                     <th v-show="columns[0].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">Price</span>
@@ -558,7 +595,7 @@ const toggleFavorite = async (site) => {
                                     </th>
 
                                     <th v-show="columns[1].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">Domain</span>
@@ -567,7 +604,7 @@ const toggleFavorite = async (site) => {
                                         </div>
                                     </th>
                                     <th v-show="columns[2].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">DA</span>
@@ -577,7 +614,7 @@ const toggleFavorite = async (site) => {
                                     </th>
                                     
                                     <th v-show="columns[3].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">DR</span>
@@ -586,31 +623,31 @@ const toggleFavorite = async (site) => {
                                         </div>
                                     </th>
                                     <th v-show="columns[4].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Gambling</th>
                                     <th v-show="columns[5].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Sponsor</th>
                                     <th v-show="columns[6].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Cripto</th>
                                     <th v-show="columns[7].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">SSL</th>
                                     <th v-show="columns[8].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Category</th>
                                     <!-- <th v-show="columns[9].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Banners</th>
                                     <th v-show="columns[10].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Links menu</th> -->
                                     <th v-show="columns[9].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Obs</th>
                                     <th v-show="columns[10].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">Example</span>
@@ -619,7 +656,7 @@ const toggleFavorite = async (site) => {
                                         </div>
                                     </th>
                                     <th v-show="columns[11].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
                                             <span class="block ">Upload data</span>
@@ -631,7 +668,7 @@ const toggleFavorite = async (site) => {
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                    <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         <button @click="toggleFavorite(site.id)">
                                             <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
@@ -642,73 +679,73 @@ const toggleFavorite = async (site) => {
                                             </svg>
                                         </button>
                                     </td>
-                                    <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
+                                    <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                         {{ site.formatted_sale }}
                                     </td>
-                                    <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
+                                    <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                         <Link :href="route('client.sites.edit', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
                                         {{ site.url }}
                                         </Link>
                                     </td>
                                     <td v-show="columns[2].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         {{ site.da ?? '-' }}
                                     </td>
                                     <td v-show="columns[3].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         {{ site.dr ?? '-' }}
                                     </td>
                                     <td v-show="columns[4].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         <div class="flex justify-center">
                                             <span
                                                 :class="['block h-2 w-2 rounded-full', site.gambling ? 'bg-green-300' : 'bg-red-300']"></span>
                                         </div>
                                     </td>
                                     <td v-show="columns[5].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         <div class="flex justify-center">
                                             <span
                                                 :class="['block h-2 w-2 rounded-full', site.sponsor ? 'bg-green-300' : 'bg-red-300']"></span>
                                         </div>
                                     </td>
                                     <td v-show="columns[6].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         <div class="flex justify-center">
                                             <span
                                                 :class="['block h-2 w-2 rounded-full', site.cripto ? 'bg-green-300' : 'bg-red-300']"></span>
                                         </div>
                                     </td>
                                     <td v-show="columns[7].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         <div class="flex justify-center">
                                             <span
                                                 :class="['block h-2 w-2 rounded-full', site.ssl ? 'bg-green-300' : 'bg-red-300']"></span>
                                         </div>
                                     </td>
                                     <td v-show="columns[8].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         {{ site.category?.name ?? '-' }}
                                     </td>
                                     <!-- <td v-show="columns[9].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         {{ site.banner ? 'Sim' : 'Não' }}
                                     </td>
                                     <td v-show="columns[10].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         {{ site.menu ? 'Sim' : 'Não' }}
                                     </td> -->
                                     <td v-show="columns[9].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         {{ site.obs ?? '-' }}
                                     </td>
                                     <td v-show="columns[10].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         -
                                     </td>
                                     <td v-show="columns[11].visible"
-                                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         {{ site.formatted_inserted_at }}
                                     </td>
                                 </tr>

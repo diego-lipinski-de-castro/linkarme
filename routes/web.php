@@ -42,12 +42,9 @@ Route::get('/dashboard', function () {
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 
-Route::get('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']);
-Route::post('sites/import', [SiteController::class, 'importSubmit'])->name('sites.importSubmit')->middleware(['auth']);
-Route::get('sites/export', [SiteController::class, 'export'])->name('sites.export')->middleware(['auth']);
-
-Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
-Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
+// site
+Route::post('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']); // ok
+Route::get('sites/export', [SiteController::class, 'export'])->name('sites.export')->middleware(['auth']); // ok
 
 Route::get('sites/requests', [SiteController::class, 'requests'])->name('sites.requests')->middleware(['auth']);
 Route::get('sites/offers', [OfferController::class, 'index'])->name('sites.offers')->middleware(['auth']);
@@ -63,11 +60,20 @@ Route::get('sites/{site}/rejeitar', [SiteController::class, 'reject'])->withTras
 Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth']);
 Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);
 
+// orders
+
+Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
+Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
+
 Route::resource('orders', OrderController::class)->middleware(['auth']);
 
+// sellers
 Route::resource('sellers', SellerController::class)->middleware(['auth']);
+
+// clients
 Route::resource('clients', ClientController::class)->middleware(['auth']);
 
+// misc
 Route::resource('categories', CategoryController::class)->middleware(['auth']);
 Route::resource('languages', LanguageController::class)->middleware(['auth']);
 Route::resource('countries', CountryController::class)->middleware(['auth']);

@@ -93,6 +93,8 @@ class SiteController extends Controller
             'languages' => $languages,
             'categories' => $categories,
             'sellers' => $sellers,
+            'importFailures' => session('importFailures'),
+            'importDiff' => session('importDiff'),
         ]);
     }
 
@@ -121,7 +123,7 @@ class SiteController extends Controller
             ->get();
 
         $sites = QueryBuilder::for(Site::class)
-            ->ofStatus('PENDING')
+            // ->ofStatus('PENDING')
             ->withTrashed()
             ->with('category')
             ->defaultSort('url')
@@ -293,15 +295,10 @@ class SiteController extends Controller
         return Storage::download('urls.txt');
     }
 
-    public function import()
-    {
-        return view('sites.import');
-    }
-
-    public function importSubmit(Request $request)
+    public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|file',
+            'file' => 'required|file|mimes:csv',
         ]);
 
         $before = Site::count();
@@ -329,9 +326,10 @@ class SiteController extends Controller
 
         $diff = $after - $before;
 
-        return back()
-            ->with('failures', $importFailures)
-            ->with('diff', $diff);
+        $request->session()->flash('importFailures', $importFailures);
+        $request->session()->flash('importDiff', $diff);
+
+        return back();
     }
 
     public function approve($id)

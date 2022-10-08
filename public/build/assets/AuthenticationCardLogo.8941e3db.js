@@ -1,1 +1,0 @@
-import{o as a,c as e,w as o,b as t,f as r,L as s}from"./app.6b51bc3f.js";import{_ as c}from"./ApplicationMark.88180ba5.js";const p={__name:"AuthenticationCardLogo",setup(_){return(n,f)=>(a(),e(r(s),{href:"/"},{default:o(()=>[t(c,{class:"block h-12"})]),_:1}))}};export{p as _};

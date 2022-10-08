@@ -43,7 +43,7 @@ import {
 
 defineProps({
     title: String,
-});
+})
 
 const navigation = [
     { name: 'Dashboard', href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
@@ -54,8 +54,8 @@ const navigation = [
 const sidebarOpen = ref(false)
 
 const logout = () => {
-    Inertia.post(route('client.logout'));
-};
+    Inertia.post(route('client.logout'))
+}
 </script>
     
 <template>
@@ -112,7 +112,7 @@ const logout = () => {
             </TransitionRoot>
 
             <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-                <div class="flex flex-grow flex-col overflow-y-auto bg-indigo-700 pt-5 pb-4">
+                <div class="flex flex-grow flex-col overflow-y-auto bg-indigo-900 pt-5 pb-4">
                     <div class="flex flex-shrink-0 items-center px-4">
                         <ApplicationLogo white class="block h-8 w-auto" />
                     </div>

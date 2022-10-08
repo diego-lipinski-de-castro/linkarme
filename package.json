@@ -27,5 +27,9 @@
         "vite": "^3.1.0",
         "vue": "^3.2.31"
     },
-    "dependencies": {}
+    "dependencies": {
+        "filepond": "^4.30.4",
+        "filepond-plugin-file-validate-type": "^1.2.8",
+        "vue-filepond": "^7.0.3"
+    }
 }
