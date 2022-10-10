@@ -30,6 +30,7 @@
     "dependencies": {
         "filepond": "^4.30.4",
         "filepond-plugin-file-validate-type": "^1.2.8",
+        "laravel-vue-i18n": "^2.2.2",
         "vue-filepond": "^7.0.3"
     }
 }

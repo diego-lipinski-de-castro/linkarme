@@ -42,7 +42,10 @@ import {
     ChevronRightIcon,
     MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
+
 import { debounce } from 'debounce';
+
+import { trans } from 'laravel-vue-i18n';
 
 import vueFilePond from 'vue-filepond';
 import 'filepond/dist/filepond.min.css';
@@ -67,20 +70,20 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'sale', label: 'Price', visible: true },
-    { key: 'url', label: 'Domain', visible: true },
-    { key: 'da', label: 'DA', visible: true },
-    { key: 'dr', label: 'DR', visible: true },
-    { key: 'gambling', label: 'Gambling', visible: true },
-    { key: 'sponsor', label: 'Sponsor', visible: true },
-    { key: 'cripto', label: 'Cripto', visible: true },
-    { key: 'ssl', label: 'SSL', visible: true },
-    { key: 'category', label: 'Category', visible: true },
-    // { key: 'banner', label: 'Banners', visible: true },
-    // { key: 'menu', label: 'Links menu', visible: true },
-    { key: 'obs', label: 'Obs', visible: true },
-    { key: 'example', label: 'Examplo', visible: true },
-    { key: 'inserted_at', label: 'Upload data', visible: true },
+    { key: 'sale', label: trans('Price'), visible: true },
+    { key: 'url', label: trans('Domain'), visible: true },
+    { key: 'da', label: trans('DA'), visible: true },
+    { key: 'dr', label: trans('DR'), visible: true },
+    { key: 'gambling', label: trans('Gambling'), visible: true },
+    { key: 'sponsor', label: trans('Sponsor'), visible: true },
+    { key: 'cripto', label: trans('Cripto'), visible: true },
+    { key: 'ssl', label: trans('SSL'), visible: true },
+    { key: 'category', label: trans('Category'), visible: true },
+    // { key: 'banner', label: trans('Banners'), visible: true },
+    // { key: 'menu', label: trans('Links menu'), visible: true },
+    { key: 'obs', label: trans('Obs'), visible: true },
+    { key: 'example', label: trans('Example'), visible: true },
+    { key: 'inserted_at', label: trans('Upload data'), visible: true },
 ];
 
 const _columns =
@@ -270,7 +273,7 @@ watch(openImportDialog, (n, o) => {
                     </div>
                     <input v-model="filters.url" id="search" name="search"
                         class="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                        placeholder="Search sites" type="search" />
+                        :placeholder="$t('Search sites')" type="search" />
                 </div>
             </div>
         </template>
@@ -285,18 +288,18 @@ watch(openImportDialog, (n, o) => {
                 <div class="flex space-x-3">
                     <Link :href="route('sites.create')"
                         class="flex max-w-xs items-center rounded-md bg-indigo-500 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-indigo-700">
-                        <span class="px-1 text-sm font-medium text-white">Adicionar site</span>
+                        <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
                     </Link>
 
                     <button @click="openImportDialog = true"
                         class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                        <span class="ml-1 text-sm font-medium text-gray-700">Import</span>
+                        <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Import') }}</span>
                         <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                     </button>
 
                     <a :href="route('sites.export')"
                         class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                        <span class="ml-1 text-sm font-medium text-gray-700">Export</span>
+                        <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export') }}</span>
                         <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                     </a>
 
@@ -304,7 +307,7 @@ watch(openImportDialog, (n, o) => {
                         <div class="hidden sm:block">
                             <MenuButton
                                 class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                <span class="ml-1 text-sm font-medium text-gray-700">Columns</span>
+                                <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Columns') }}</span>
                                 <ChevronDownIcon class="ml-1 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             </MenuButton>
                         </div>
@@ -634,10 +637,10 @@ watch(openImportDialog, (n, o) => {
                     <div class="flex flex-1 justify-between">
                         <Link :href="sites.prev_page_url"
                             class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
-                        Previous</Link>
+                        {{ $t('Previous') }}</Link>
                         <Link :href="sites.next_page_url"
                             class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
-                        Next</Link>
+                        {{ $t('Next') }}</Link>
                     </div>
                 </nav>
             </div>
@@ -653,7 +656,7 @@ watch(openImportDialog, (n, o) => {
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Price</span>
+                                            <span class="block">{{ $t('Price') }}</span>
                                             <TableSortButton column='sale' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -663,7 +666,7 @@ watch(openImportDialog, (n, o) => {
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Domain</span>
+                                            <span class="block">{{ $t('Domain') }}</span>
                                             <TableSortButton column='url' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -672,7 +675,7 @@ watch(openImportDialog, (n, o) => {
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">DA</span>
+                                            <span class="block">{{ $t('DA') }}</span>
                                             <TableSortButton column='da' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -682,40 +685,40 @@ watch(openImportDialog, (n, o) => {
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">DR</span>
+                                            <span class="block">{{ $t('DR') }}</span>
                                             <TableSortButton column='dr' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
                                     <th v-show="columns[4].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Gambling</th>
+                                        scope="col">{{ $t('Gambling') }}</th>
                                     <th v-show="columns[5].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Sponsor</th>
+                                        scope="col">{{ $t('Sponsor') }}</th>
                                     <th v-show="columns[6].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Cripto</th>
+                                        scope="col">{{ $t('Cripto') }}</th>
                                     <th v-show="columns[7].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">SSL</th>
+                                        scope="col">{{ $t('SSL') }}</th>
                                     <th v-show="columns[8].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Category</th>
+                                        scope="col">{{ $t('Category') }}</th>
                                     <!-- <th v-show="columns[9].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Banners</th>
+                                            scope="col">{{ $t('Banners') }}</th>
                                         <th v-show="columns[10].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">Links menu</th> -->
+                                            scope="col">{{ $t('Links') }} menu</th> -->
                                     <th v-show="columns[9].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Obs</th>
+                                        scope="col">{{ $t('Obs') }}</th>
                                     <th v-show="columns[10].visible"
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Example</span>
+                                            <span class="block">{{ $t('Example') }}</span>
                                             <TableSortButton column='example' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -724,7 +727,7 @@ watch(openImportDialog, (n, o) => {
                                         class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Upload data</span>
+                                            <span class="block">{{ $t('Upload data') }}</span>
                                             <TableSortButton column='inserted_at' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -812,7 +815,7 @@ watch(openImportDialog, (n, o) => {
                             <Link :href="sites.prev_page_url"
                                 class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                             <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                            Previous
+                            {{ $t('Previous') }}
                             </Link>
                         </div>
                         <div class="hidden md:-mt-px md:flex">
@@ -824,7 +827,7 @@ watch(openImportDialog, (n, o) => {
                         <div class="-mt-px flex w-0 flex-1 justify-end">
                             <Link :href="sites.next_page_url"
                                 class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
-                            Next
+                            {{ $t('Next') }}
                             <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                             </Link>
                         </div>

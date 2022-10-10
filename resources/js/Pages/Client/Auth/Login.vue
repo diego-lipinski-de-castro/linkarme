@@ -43,22 +43,22 @@ const submit = () => {
                     <div>
                         <form @submit.prevent="submit" class="flex flex-col space-y-6">
                             <div>
-                                <InputLabel for="email" value="E-mail" />
+                                <InputLabel for="email" :value="$t('E-mail')" />
                                 <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required autofocus autocomplete="email" />
                                 <InputError class="mt-2" :message="form.errors.email" />
                             </div>
 
                             <div>
-                                <InputLabel for="password" value="Password" />
+                                <InputLabel for="password" :value="$t('Password')" />
                                 <TextInput id="password" v-model="form.password" type="password" class="mt-1 block w-full" required autocomplete="current-password" />
                                 <InputError class="mt-2" :message="form.errors.password" />
                             </div>
 
-                            <Link v-if="canResetPassword" :href="route('password.request')" class="w-min whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</Link>
+                            <Link v-if="canResetPassword" :href="route('password.request')" class="w-min whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500">{{ $t('Forgot your password?') }}</Link>
 
                             <div>
                                 <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit"
-                                    class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Login</button>
+                                    class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ $t('Login') }}</button>
                             </div>
                         </form>
                     </div>

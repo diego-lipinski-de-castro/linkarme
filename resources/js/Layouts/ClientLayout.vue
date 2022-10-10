@@ -139,7 +139,6 @@ const logout = () => {
                     <button type="button"
                         class="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
                         @click="sidebarOpen = true">
-                        <span class="sr-only">Open sidebar</span>
                         <Bars3CenterLeftIcon class="h-6 w-6" aria-hidden="true" />
                     </button>
 
@@ -161,8 +160,7 @@ const logout = () => {
                                         <img class="h-8 w-8 rounded-full"
                                             :src="$page.props.user.profile_photo_url"
                                             :alt="$page.props.user.name" />
-                                        <span class="ml-3 hidden text-sm font-medium text-gray-700 lg:block"><span
-                                                class="sr-only">Open user menu for </span>{{ $page.props.user.name }}</span>
+                                        <span class="ml-3 hidden text-sm font-medium text-gray-700 lg:block">{{ $page.props.user.name }}</span>
                                         <ChevronDownIcon
                                             class="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
                                             aria-hidden="true" />
@@ -191,7 +189,7 @@ const logout = () => {
                                         <MenuItem v-slot="{ active }">
                                             <form method="POST" @submit.prevent="logout">
                                                 <button
-                                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">Logout</button>
+                                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">{{ $t('Logout') }}</button>
                                             </form>
                                         </MenuItem>
 

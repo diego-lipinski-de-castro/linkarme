@@ -26,6 +26,46 @@ use Inertia\Inertia;
 
 Route::redirect('/', '/login');
 
+Route::middleware('guest')->group(function () {
+    Route::get('login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
+                ->name('login');
+
+    Route::post('login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
+
+    // Route::get('forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'create'])
+    //             ->name('password.request');
+
+    // Route::post('forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'store'])
+    //             ->name('password.email');
+
+    // Route::get('reset-password/{token}', [\App\Http\Controllers\Auth\NewPasswordController::class, 'create'])
+    //             ->name('password.reset');
+
+    // Route::post('reset-password', [\App\Http\Controllers\Auth\NewPasswordController::class, 'store'])
+    //             ->name('password.update');
+});
+
+Route::middleware('auth')->group(function () {
+    // Route::get('verify-email', [\App\Http\Controllers\Auth\EmailVerificationPromptController::class, '__invoke'])
+    //             ->name('verification.notice');
+
+    // Route::get('verify-email/{id}/{hash}', [\App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'])
+    //             ->middleware(['signed', 'throttle:6,1'])
+    //             ->name('verification.verify');
+
+    // Route::post('email/verification-notification', [\App\Http\Controllers\Auth\EmailVerificationNotificationController::class, 'store'])
+    //             ->middleware('throttle:6,1')
+    //             ->name('verification.send');
+
+    // Route::get('confirm-password', [\App\Http\Controllers\Auth\ConfirmablePasswordController::class, 'show'])
+    //             ->name('password.confirm');
+
+    // Route::post('confirm-password', [\App\Http\Controllers\Auth\ConfirmablePasswordController::class, 'store']);
+
+    Route::post('logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
+                ->name('logout');
+});
+
 // Route::middleware([
 //     'auth:sanctum',
 //     config('jetstream.auth_session'),
@@ -35,10 +75,6 @@ Route::redirect('/', '/login');
 //         return Inertia::render('Dashboard');
 //     })->name('dashboard');
 // });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 
@@ -78,41 +114,5 @@ Route::resource('categories', CategoryController::class)->middleware(['auth']);
 Route::resource('languages', LanguageController::class)->middleware(['auth']);
 Route::resource('countries', CountryController::class)->middleware(['auth']);
 
-Route::group([
-    'prefix' => 'vendedores',
-    'as' => 'seller.',
-], function () {
-    Route::get('sites', [\App\Http\Controllers\Seller\SiteController::class, 'index'])
-        ->name('sites.index')
-        ->middleware(['auth:seller']);
-
-    Route::get('sites/adicionar', [\App\Http\Controllers\Seller\SiteController::class, 'create'])
-        ->name('sites.create')
-        ->middleware(['auth:seller']);
-
-    Route::post('sites', [\App\Http\Controllers\Seller\SiteController::class, 'store'])
-        ->name('sites.store')
-        ->middleware(['auth:seller']);
-
-    Route::post('sites/offer', [\App\Http\Controllers\Seller\SiteController::class, 'offer'])
-        ->name('sites.offer')
-        ->middleware(['auth:seller']);
-
-    Route::get('sites/{site}/edit', [\App\Http\Controllers\Seller\SiteController::class, 'edit'])
-        ->name('sites.edit')
-        ->middleware(['auth:seller']);
-
-    Route::put('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'update'])
-        ->name('sites.update')
-        ->middleware(['auth:seller']);
-
-    Route::delete('sites/{site}', [\App\Http\Controllers\Seller\SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth:seller']);
-    Route::post('sites/{site}/toggle', [\App\Http\Controllers\Seller\SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth:seller']);
-
-    Route::get('orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])
-        ->name('orders.index')
-        ->middleware(['auth:seller']);
-});
-
-require __DIR__.'/auth.php';
 require __DIR__.'/client.php';
+require __DIR__.'/seller.php';

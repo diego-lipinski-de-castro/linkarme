@@ -42,7 +42,10 @@ import {
     ChevronUpIcon,
     MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
+
 import { debounce } from 'debounce';
+
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
     title: String,
@@ -61,26 +64,26 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'sale', label: 'Price', visible: true },
-    { key: 'url', label: 'Domain', visible: true },
-    { key: 'da', label: 'DA', visible: true },
-    { key: 'dr', label: 'DR', visible: true },
-    { key: 'gambling', label: 'Gambling', visible: true },
-    { key: 'sponsor', label: 'Sponsor', visible: true },
-    { key: 'cripto', label: 'Cripto', visible: true },
-    { key: 'ssl', label: 'SSL', visible: true },
-    { key: 'category', label: 'Category', visible: true },
-    // { key: 'banner', label: 'Banners', visible: true },
-    // { key: 'menu', label: 'Links menu', visible: true },
-    { key: 'obs', label: 'Obs', visible: true },
-    { key: 'example', label: 'Examplo', visible: true },
-    { key: 'inserted_at', label: 'Upload data', visible: true },
+    { key: 'sale', label: trans('Price'), visible: true },
+    { key: 'url', label: trans('Domain'), visible: true },
+    { key: 'da', label: trans('DA'), visible: true },
+    { key: 'dr', label: trans('DR'), visible: true },
+    { key: 'gambling', label: trans('Gambling'), visible: true },
+    { key: 'sponsor', label: trans('Sponsor'), visible: true },
+    { key: 'cripto', label: trans('Cripto'), visible: true },
+    { key: 'ssl', label: trans('SSL'), visible: true },
+    { key: 'category', label: trans('Category'), visible: true },
+    // { key: 'banner', label: trans('Banners'), visible: true },
+    // { key: 'menu', label: trans('Links menu'), visible: true },
+    { key: 'obs', label: trans('Obs'), visible: true },
+    { key: 'example', label: trans('Example'), visible: true },
+    { key: 'inserted_at', label: trans('Upload data'), visible: true },
 ];
 
 const _columns =
-    localStorage.getItem('client.sites.index.columns') ? 
-    unionBy(JSON.parse(localStorage.getItem('client.sites.index.columns')), _defaultColumns, 'key')
-    : _defaultColumns
+    localStorage.getItem('client.sites.index.columns') ?
+        unionBy(JSON.parse(localStorage.getItem('client.sites.index.columns')), _defaultColumns, 'key')
+        : _defaultColumns
 
 const columns = ref(_columns)
 
@@ -165,7 +168,7 @@ const toggleFavorite = async (site) => {
                     </div>
                     <input v-model="filters.url" id="search" name="search"
                         class="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                        placeholder="Search sites" type="search" />
+                        :placeholder="$t('Search sites')" type="search" />
                 </div>
             </div>
         </template>
@@ -202,7 +205,7 @@ const toggleFavorite = async (site) => {
 
                                 <div class="ml-3 text-sm">
                                     <label :for="column.key" class="font-medium text-gray-700">{{ column.label
-                                        }}</label>
+                                    }}</label>
                                 </div>
                             </div>
 
@@ -218,17 +221,19 @@ const toggleFavorite = async (site) => {
 
                 <div class="ml-2 flex items-center mt-4">
                     <label for="from_sale" class="w-24 text-sm font-medium text-white">from</label>
-                    
-                    <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500"/>
-                    <input v-model="filters.sale.from" id="from_sale" name="from_sale" type="text" class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
-                    <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500"/>
+
+                    <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" />
+                    <input v-model="filters.sale.from" id="from_sale" name="from_sale" type="text"
+                        class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                    <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" />
                 </div>
 
                 <div class="ml-2 flex items-center mt-2">
                     <label for="to_sale" class="w-24 text-sm font-medium text-white">to</label>
-                    <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500"/>
-                    <input v-model="filters.sale.to" id="to_sale" name="to_sale" type="text" class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
-                    <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500"/>
+                    <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" />
+                    <input v-model="filters.sale.to" id="to_sale" name="to_sale" type="text"
+                        class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                    <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" />
                 </div>
             </div>
 
@@ -566,10 +571,10 @@ const toggleFavorite = async (site) => {
                     <div class="flex flex-1 justify-between">
                         <Link :href="sites.prev_page_url"
                             class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
-                        Previous</Link>
+                        {{$t('Previous')}}</Link>
                         <Link :href="sites.next_page_url"
                             class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
-                        Next</Link>
+                        {{$t('Next')}}</Link>
                     </div>
                 </nav>
             </div>
@@ -581,14 +586,13 @@ const toggleFavorite = async (site) => {
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
-                                    <th
-                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                    <th class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col"></th>
                                     <th v-show="columns[0].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Price</span>
+                                            <span class="block">{{$t('Price')}}</span>
                                             <TableSortButton column='sale' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -598,7 +602,7 @@ const toggleFavorite = async (site) => {
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Domain</span>
+                                            <span class="block">{{$t('Domain')}}</span>
                                             <TableSortButton column='url' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -607,50 +611,50 @@ const toggleFavorite = async (site) => {
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">DA</span>
+                                            <span class="block">{{$t('DA')}}</span>
                                             <TableSortButton column='da' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
-                                    
+
                                     <th v-show="columns[3].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">DR</span>
+                                            <span class="block">{{$t('DR')}}</span>
                                             <TableSortButton column='dr' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
                                     <th v-show="columns[4].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Gambling</th>
+                                        scope="col">{{$t('Gambling')}}</th>
                                     <th v-show="columns[5].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Sponsor</th>
+                                        scope="col">{{$t('Sponsor')}}</th>
                                     <th v-show="columns[6].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Cripto</th>
+                                        scope="col">{{$t('Cripto')}}</th>
                                     <th v-show="columns[7].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">SSL</th>
+                                        scope="col">{{$t('SSL')}}</th>
                                     <th v-show="columns[8].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Category</th>
+                                        scope="col">{{$t('Category')}}</th>
                                     <!-- <th v-show="columns[9].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Banners</th>
+                                        scope="col">{{$t('Banners')}}</th>
                                     <th v-show="columns[10].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Links menu</th> -->
+                                        scope="col">Links {{$t('menu')}}</th> -->
                                     <th v-show="columns[9].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Obs</th>
+                                        scope="col">{{$t('Obs')}}</th>
                                     <th v-show="columns[10].visible"
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Example</span>
+                                            <span class="block">{{$t('Example')}}</span>
                                             <TableSortButton column='example' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -659,7 +663,7 @@ const toggleFavorite = async (site) => {
                                         class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
                                         <div class="flex group">
-                                            <span class="block ">Upload data</span>
+                                            <span class="block">{{$t('Upload data')}}</span>
                                             <TableSortButton column='inserted_at' :current="sort"
                                                 @onClick='(column) => sort = column' />
                                         </div>
@@ -670,12 +674,17 @@ const toggleFavorite = async (site) => {
                                 <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
                                     <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                         <button @click="toggleFavorite(site.id)">
-                                            <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                            <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg"
+                                                class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                    clip-rule="evenodd" />
                                             </svg>
 
-                                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                             </svg>
                                         </button>
                                     </td>
@@ -758,7 +767,7 @@ const toggleFavorite = async (site) => {
                             <Link :href="sites.prev_page_url"
                                 class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                             <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                            Previous
+                            {{ $t('Previous') }}
                             </Link>
                         </div>
                         <div class="hidden md:-mt-px md:flex">
@@ -770,7 +779,7 @@ const toggleFavorite = async (site) => {
                         <div class="-mt-px flex w-0 flex-1 justify-end">
                             <Link :href="sites.next_page_url"
                                 class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
-                            Next
+                            {{ $t('Next') }}
                             <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                             </Link>
                         </div>
