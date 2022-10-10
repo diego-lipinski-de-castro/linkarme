@@ -48,7 +48,7 @@ defineProps({
 });
 
 const gkey = ref(0);
-let language = ref('pt-BR')
+let language = ref(window.localStorage.getItem('language') || 'en')
 
 const navigation = [
     // { name: trans('Dashboard'), href: route('dashboard'), icon: ComputerDesktopIcon, current: route().current('dashboard') },
@@ -75,9 +75,9 @@ const loadLanguage = async (lang) => {
 }
 
 onMounted(() => {
-    // setTimeout(() => {
-    //     gkey.value += 1;
-    // }, 10)
+    setTimeout(() => {
+        gkey.value += 1;
+    }, 50)
 })
 
 </script>

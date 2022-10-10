@@ -40,15 +40,16 @@ import {
     ChevronDownIcon,
     ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
+import { trans } from 'laravel-vue-i18n';
 
 defineProps({
     title: String,
 })
 
 const navigation = [
-    { name: 'Dashboard', href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
-    { name: 'Sites', href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
-    { name: 'Orders', href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
+    { name: trans('Dashboard'), href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
+    { name: trans('Sites'), href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
+    { name: trans('Orders'), href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
 ]
 
 const sidebarOpen = ref(false)

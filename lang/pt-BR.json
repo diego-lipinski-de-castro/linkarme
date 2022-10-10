@@ -911,5 +911,12 @@
     "Example": "Exemplo",
     "Upload data": "Upload data",
     "Search sites": "Pesquisar sites",
-    "Add site": "Adicionar site"
+    "Add site": "Adicionar site",
+    "Sites": "Sites",
+    "Orders": "Pedidos",
+    "Clients": "Clientes",
+    "Sellers": "Vendedores",
+    "Categories": "Categorias",
+    "Languages": "Linguagens",
+    "Countries": "Países"
 }

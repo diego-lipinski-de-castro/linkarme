@@ -19,8 +19,9 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             // .use(i18n)
             .use(i18nVue, {
-                lang: 'pt-BR',
-                fallbackLang: 'pt-BR',
+                // lang: 'pt-BR',
+                lang: window.localStorage.getItem('language') || 'en',
+                // fallbackLang: 'pt-BR',
                 resolve: async lang => {
                     console.log(lang)
                     const langs = import.meta.glob('../../lang/*.json');

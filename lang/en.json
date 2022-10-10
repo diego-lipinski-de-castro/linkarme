@@ -922,5 +922,12 @@
     "Example": "Example",
     "Upload data": "Upload data",
     "Search sites": "Search sites",
-    "Add site": "Add site"
+    "Add site": "Add site",
+    "Sites": "Sites",
+    "Orders": "Orders",
+    "Clients": "Clients",
+    "Sellers": "Sellers",
+    "Categories": "Categories",
+    "Languages": "Languages",
+    "Countries": "Countries"
 }

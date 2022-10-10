@@ -3783,10 +3783,10 @@ laravel-vite-plugin@^0.6.0:
   dependencies:
     vite-plugin-full-reload "^1.0.1"
 
-laravel-vue-i18n@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/laravel-vue-i18n/-/laravel-vue-i18n-2.2.2.tgz#fc8d2275b6cd96f3453b209a41898d1ce14207ac"
-  integrity sha512-F2n54d303KEQL0iF5E0u3TmseNzEbPrug6k+4ScHKzp9zXQokoZZHN/fQN4UhmW+RwzR2D4E6R7M6QDq3HqPFw==
+laravel-vue-i18n@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/laravel-vue-i18n/-/laravel-vue-i18n-2.3.0.tgz#0c06300f9bd8f4bf54f7fe4760f2ebbfaeeac62c"
+  integrity sha512-udpyhKtg08SzY0yetsa7MLhn+5ZHYsWHRFsCkpoAGiyIhNjo+u7UGuKFJmr4pbVQl4vgN1L6UlogHi0HHVMw6Q==
   dependencies:
     php-parser "3.1.0"
     vue "^3.2.38"
