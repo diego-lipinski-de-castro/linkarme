@@ -41,6 +41,7 @@ import {
 } from '@heroicons/vue/20/solid'
 import { loadLanguageAsync } from 'laravel-vue-i18n';
 import { onMounted, ref } from 'vue';
+import { trans } from 'laravel-vue-i18n';
 
 defineProps({
     title: String,
@@ -50,9 +51,14 @@ const gkey = ref(0);
 let language = ref('pt-BR')
 
 const navigation = [
-    // { name: 'Dashboard', href: route('dashboard'), icon: ComputerDesktopIcon, current: route().current('dashboard') },
-    { name: 'Sites', href: route('sites.index'), icon: ClockIcon, current: route().current('sites.index') },
-    // { name: 'Orders', href: route('orders.index'), icon: ScaleIcon, current: route().current('orders.index') },
+    // { name: trans('Dashboard'), href: route('dashboard'), icon: ComputerDesktopIcon, current: route().current('dashboard') },
+    { name: trans('Sites'), href: route('sites.index'), icon: ClockIcon, current: route().current('sites.index') },
+    // { name: trans('Orders'), href: route('orders.index'), icon: ScaleIcon, current: route().current('orders.index') },
+    { name: trans('Clients'), href: route('clients.index'), icon: ClockIcon, current: route().current('clients.index') },
+    { name: trans('Sellers'), href: route('sellers.index'), icon: ClockIcon, current: route().current('sellers.index') },
+    { name: trans('Categories'), href: route('categories.index'), icon: ClockIcon, current: route().current('categories.index') },
+    { name: trans('Languages'), href: route('languages.index'), icon: ClockIcon, current: route().current('languages.index') },
+    { name: trans('Countries'), href: route('countries.index'), icon: ClockIcon, current: route().current('countries.index') },
 ]
 
 const sidebarOpen = ref(false)
