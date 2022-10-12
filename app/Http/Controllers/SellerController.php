@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
 use App\Models\Seller;
+use Inertia\Inertia;
 
 class SellerController extends Controller
 {
@@ -15,9 +16,11 @@ class SellerController extends Controller
      */
     public function index()
     {
-        $sellers = Seller::orderBy('name')->paginate();
-
-        return view('sellers.index', [
+        $sellers = Seller::query()
+            ->orderBy('name')
+            ->paginate();
+        
+        return Inertia::render('Sellers/Index', [
             'sellers' => $sellers,
         ]);
     }

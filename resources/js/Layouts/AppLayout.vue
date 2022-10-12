@@ -68,17 +68,18 @@ const logout = () => {
 };
 
 const loadLanguage = async (lang) => {
+    console.log('loadLanguageAsync')
     await loadLanguageAsync(lang)
     language.value = lang
     window.localStorage.setItem('language', lang)
     gkey.value += 1;
 }
 
-onMounted(() => {
-    setTimeout(() => {
-        gkey.value += 1;
-    }, 50)
-})
+// onMounted(() => {
+//     setTimeout(() => {
+//         gkey.value += 1;
+//     }, 50)
+// })
 
 </script>
         

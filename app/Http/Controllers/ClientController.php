@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
+use Inertia\Inertia;
 
 class ClientController extends Controller
 {
@@ -15,9 +16,11 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::orderBy('name')->paginate();
+        $clients = Client::query()
+            ->orderBy('name')
+            ->paginate();
 
-        return view('clients.index', [
+        return Inertia::render('Clients/Index', [
             'clients' => $clients,
         ]);
     }

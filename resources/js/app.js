@@ -17,16 +17,14 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
-            // .use(i18n)
             .use(i18nVue, {
                 // lang: 'pt-BR',
                 lang: window.localStorage.getItem('language') || 'en',
                 // fallbackLang: 'pt-BR',
-                resolve: async lang => {
-                    console.log(lang)
-                    const langs = import.meta.glob('../../lang/*.json');
-                    return await langs[`../../lang/${lang}.json`]();
-                }
+                resolve: lang => {
+                    const langs = import.meta.globEager('../../lang/*.json');
+                    return langs[`../../lang/${lang}.json`].default;
+                },
             })
             .mount(el);
     },
