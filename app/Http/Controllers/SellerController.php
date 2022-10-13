@@ -32,7 +32,7 @@ class SellerController extends Controller
      */
     public function create()
     {
-        return view('sellers.create');
+        return Inertia::render('Sellers/Create');
     }
 
     /**
@@ -45,7 +45,7 @@ class SellerController extends Controller
     {
         Seller::create($request->validated());
 
-        return redirect(route('sellers.index'));
+        return redirect()->route('sellers.index');
     }
 
     /**
@@ -83,7 +83,7 @@ class SellerController extends Controller
     {
         $seller->update($request->validated());
 
-        return redirect(route('sellers.index'));
+        return redirect()->route('sellers.index');
     }
 
     /**

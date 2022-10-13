@@ -104,6 +104,11 @@ const links = computed(() => {
                                         scope="col">
                                         {{ $t('E-mail') }}
                                     </th>
+
+                                    <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+                                        
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
@@ -116,6 +121,10 @@ const links = computed(() => {
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ seller.email ?? '-' }}
+                                    </td>
+
+                                    <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                        
                                     </td>
                                 </tr>
                             </tbody>
