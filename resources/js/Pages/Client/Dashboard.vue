@@ -23,6 +23,7 @@ import {
     CheckCircleIcon,
     ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
     title: String,
@@ -38,20 +39,20 @@ const props = defineProps({
 console.log(props.favs)
 
 const cards = [
-    { name: 'Orders', href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
-    { name: 'Sites used', href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
-    { name: 'Sites never used', href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
+    { name: trans('Orders'), href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
+    { name: trans('Sites used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
+    { name: trans('Sites never used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
 ]
 
 const list = [
-    { label: 'Favorites', sites: props.favs, href: route('client.sites.index') },
-    { label: 'New sites', sites: props.new, href: route('client.sites.index') },
-    { label: 'Recommended', sites: props.recommended, href: route('client.sites.index') },
+    { label: trans('Favorites'), sites: props.favs, href: route('client.sites.index') },
+    { label: trans('New sites'), sites: props.new, href: route('client.sites.index') },
+    { label: trans('Recommended'), sites: props.recommended, href: route('client.sites.index') },
 ];
 
 const greeting = computed(() => {
     const hour = new Date().getHours();
-    const welcomeTypes = ['Good morning', 'Good afternoon', 'Good evening'];
+    const welcomeTypes = [trans('Good morning'), trans('Good afternoon'), trans('Good evening')];
     let welcomeText = '';
     
     if (hour < 12) welcomeText = welcomeTypes[0];
@@ -123,7 +124,7 @@ const toggleFavorite = async (site) => {
 
         <div>
             <div>
-                <h2 class="text-lg font-medium leading-6 text-gray-900">Overview</h2>
+                <h2 class="text-lg font-medium leading-6 text-gray-900">{{ $t('Overview') }}</h2>
                 <div class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     <!-- Card -->
                     <div v-for="card in cards" :key="card.name" class="overflow-hidden rounded-lg bg-white shadow">
@@ -156,7 +157,7 @@ const toggleFavorite = async (site) => {
                     <div class="sm:hidden">
                         <ul role="list" class="mt-2 divide-y divide-gray-200 border rounded-md overflow-hidden">
                             <li v-if="item.sites.length == 0">
-                                <span class="block bg-white px-4 py-4 text-center text-gray-500 italic">Em breve</span></li>
+                                <span class="block bg-white px-4 py-4 text-center text-gray-500 italic">{{ $t('Soon') }}</span></li>
                             <li v-else v-for="(site, index) in item.sites" :key="index">
                                 <Link :href="route('client.sites.edit', site.id)"
                                     class="block bg-white px-4 py-4 hover:bg-gray-50">
@@ -181,13 +182,13 @@ const toggleFavorite = async (site) => {
                                     <thead>
                                         <tr>
                                             <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                                scope="col">Domínio
+                                                scope="col">{{ $t('Domain') }}
                                             </th>
                                             <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                                scope="col">DA
+                                                scope="col">{{ $t('DA') }}
                                             </th>
                                             <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                                scope="col">DR
+                                                scope="col">{{ $t('DR') }}
                                             </th>
                                         </tr>
                                     </thead>
@@ -214,7 +215,7 @@ const toggleFavorite = async (site) => {
                                     <tfoot>
                                         <tr>
                                             <td colspan="3" class="bg-gray-50 px-5 py-3">
-                                                <Link :href="item.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">See all</Link>
+                                                <Link :href="item.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">{{ $t('See all') }}</Link>
                                             </td>
                                         </tr>
                                     </tfoot>

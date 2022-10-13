@@ -47,9 +47,6 @@ defineProps({
     title: String,
 });
 
-const gkey = ref(0);
-let language = ref(window.localStorage.getItem('language') || 'en')
-
 const navigation = [
     // { name: trans('Dashboard'), href: route('dashboard'), icon: ComputerDesktopIcon, current: route().current('dashboard') },
     { name: trans('Sites'), href: route('sites.index'), icon: ClockIcon, current: route().current('sites.index') },
@@ -67,24 +64,18 @@ const logout = () => {
     Inertia.post(route('logout'));
 };
 
+let language = ref(window.localStorage.getItem('language') || 'en')
+
 const loadLanguage = async (lang) => {
-    console.log('loadLanguageAsync')
     await loadLanguageAsync(lang)
     language.value = lang
     window.localStorage.setItem('language', lang)
-    gkey.value += 1;
 }
-
-// onMounted(() => {
-//     setTimeout(() => {
-//         gkey.value += 1;
-//     }, 50)
-// })
 
 </script>
         
 <template>
-    <div class="min-h-full h-max bg-gray-100" :key="gkey">
+    <div class="min-h-full h-max bg-gray-100">
 
         <Head :title="title" />
 
