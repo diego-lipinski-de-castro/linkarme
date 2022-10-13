@@ -67,7 +67,7 @@ class SellerController extends Controller
      */
     public function edit(Seller $seller)
     {
-        return view('sellers.edit', [
+        return Inertia::render('Sellers/Edit', [
             'seller' => $seller,
         ]);
     }

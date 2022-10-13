@@ -29,7 +29,7 @@ class StoreClientRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'password' => ['required'],
-            'full' => ['nullable', 'boolean'],
+            'full' => ['required', 'boolean'],
         ];
     }
 

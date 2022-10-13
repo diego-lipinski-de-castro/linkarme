@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
@@ -17,7 +18,7 @@ class CategoryController extends Controller
     {
         $categories = Category::orderBy('name')->paginate();
 
-        return view('categories.index', [
+        return Inertia::render('Categories/Index', [
             'categories' => $categories,
         ]);
     }
@@ -29,7 +30,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return Inertia::render('Categories/Create');
     }
 
     /**
@@ -42,7 +43,7 @@ class CategoryController extends Controller
     {
         Category::create($request->validated());
 
-        return redirect(route('categories.index'));
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -64,7 +65,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit', [
+        return Inertia::render('Categories/Edit', [
             'category' => $category,
         ]);
     }
@@ -80,7 +81,7 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
 
-        return redirect(route('categories.index'));
+        return redirect()->route('categories.index');
     }
 
     /**

@@ -32,7 +32,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('clients.create');
+        return Inertia::render('Clients/Create');
     }
 
     /**
@@ -43,10 +43,9 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        dd($request->all());
         Client::create($request->validated());
 
-        return redirect(route('clients.index'));
+        return redirect()->route('clients.index');
     }
 
     /**
@@ -68,7 +67,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        return view('clients.edit', [
+        return Inertia::render('Clients/Edit', [
             'client' => $client,
         ]);
     }
@@ -84,7 +83,7 @@ class ClientController extends Controller
     {
         $client->update($request->validated());
 
-        return redirect(route('clients.index'));
+        return redirect()->route('clients.index');
     }
 
     /**

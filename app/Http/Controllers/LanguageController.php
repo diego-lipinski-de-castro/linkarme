@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLanguageRequest;
 use App\Http\Requests\UpdateLanguageRequest;
 use App\Models\Language;
+use Inertia\Inertia;
 
 class LanguageController extends Controller
 {
@@ -17,7 +18,7 @@ class LanguageController extends Controller
     {
         $languages = Language::orderBy('name')->paginate();
 
-        return view('languages.index', [
+        return Inertia::render('Languages/Index', [
             'languages' => $languages,
         ]);
     }
@@ -29,7 +30,7 @@ class LanguageController extends Controller
      */
     public function create()
     {
-        return view('languages.create');
+        return Inertia::render('Languages/Create');
     }
 
     /**
@@ -42,7 +43,7 @@ class LanguageController extends Controller
     {
         Language::create($request->validated());
 
-        return redirect(route('languages.index'));
+        return redirect()->route('languages.index');
     }
 
     /**
@@ -64,7 +65,7 @@ class LanguageController extends Controller
      */
     public function edit(Language $language)
     {
-        return view('languages.edit', [
+        return Inertia::render('Languages/Edit', [
             'language' => $language,
         ]);
     }
@@ -80,7 +81,7 @@ class LanguageController extends Controller
     {
         $language->update($request->validated());
 
-        return redirect(route('languages.index'));
+        return redirect()->route('languages.index');
     }
 
     /**

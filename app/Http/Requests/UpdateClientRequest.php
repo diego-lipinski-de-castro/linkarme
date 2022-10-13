@@ -34,18 +34,6 @@ class UpdateClientRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'full' => ! blank($this->full),
-        ]);
-    }
-
-    /**
      * Get the validated data from the request.
      *
      * @param  string|null  $key

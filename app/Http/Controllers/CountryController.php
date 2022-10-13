@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
 use App\Models\Country;
+use Inertia\Inertia;
 
 class CountryController extends Controller
 {
@@ -20,7 +21,7 @@ class CountryController extends Controller
             ->orderBy('name')
             ->paginate();
 
-        return view('countries.index', [
+        return Inertia::render('Countries/Index', [
             'countries' => $countries,
         ]);
     }
@@ -32,7 +33,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        return view('countries.create');
+        return Inertia::render('Countries/Create');
     }
 
     /**
@@ -45,7 +46,7 @@ class CountryController extends Controller
     {
         Country::create($request->validated());
 
-        return redirect(route('countries.index'));
+        return redirect()->route('countries.index');
     }
 
     /**
@@ -67,7 +68,7 @@ class CountryController extends Controller
      */
     public function edit(Country $country)
     {
-        return view('countries.edit', [
+        return Inertia::render('Countries/Edit', [
             'country' => $country,
         ]);
     }
@@ -83,7 +84,7 @@ class CountryController extends Controller
     {
         $country->update($request->validated());
 
-        return redirect(route('countries.index'));
+        return redirect()->route('countries.index');
     }
 
     /**

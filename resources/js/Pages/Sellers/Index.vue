@@ -12,7 +12,10 @@ import {
     ArrowLongRightIcon,
 } from '@heroicons/vue/20/solid'
 
-import { debounce } from 'debounce';
+import {
+    PencilSquareIcon,
+    TrashIcon
+} from '@heroicons/vue/24/outline'
 
 const props = defineProps({
     title: String,
@@ -25,6 +28,13 @@ const links = computed(() => {
     _links.pop()
     return _links
 })
+
+const destroy = (seller) => {
+    Inertia.delete(route('sellers.destroy', seller), {
+        preserveScroll: true,
+        preserveState: true,
+    })
+}
 
 </script>
         
@@ -124,7 +134,15 @@ const links = computed(() => {
                                     </td>
 
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                        
+                                        <div class="flex space-x-2">
+                                            <Link :href="route('sellers.edit', seller.id)" class="text-blue-500 hover:text-blue-700">
+                                                <PencilSquareIcon class="h-5 w-5"/>
+                                            </Link>
+
+                                            <button @click="destroy(seller.id)" class="text-red-500 hover:text-red-700">
+                                                <TrashIcon class="h-5 w-5"/>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>

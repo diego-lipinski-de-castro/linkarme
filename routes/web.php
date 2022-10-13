@@ -97,17 +97,16 @@ Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()
 Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);
 
 // orders
-
 Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
 Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
 
 Route::resource('orders', OrderController::class)->middleware(['auth']);
 
-// sellers
-Route::resource('sellers', SellerController::class)->middleware(['auth']);
-
 // clients
 Route::resource('clients', ClientController::class)->middleware(['auth']);
+
+// sellers
+Route::resource('sellers', SellerController::class)->middleware(['auth']);
 
 // misc
 Route::resource('categories', CategoryController::class)->middleware(['auth']);
