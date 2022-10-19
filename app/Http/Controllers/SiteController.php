@@ -29,6 +29,8 @@ class SiteController extends Controller
      */
     public function index()
     {
+        $coins = config('coins');
+
         $pending = Site::ofStatus('PENDING')->count();
         $offers = Offer::count();
 
@@ -86,6 +88,7 @@ class SiteController extends Controller
             ->appends(request()->query());
 
         return Inertia::render('Sites/Index', [
+            'coins' => $coins,
             'pending' => $pending,
             'offers' => $offers,
             'sites' => $sites,
@@ -171,7 +174,7 @@ class SiteController extends Controller
 
         $coins = config('coins');
 
-        return view('sites.create', [
+        return Inertia::render('Sites/Create', [
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
@@ -190,7 +193,7 @@ class SiteController extends Controller
     {
         Site::create($request->validated());
 
-        return redirect(route('sites.index'));
+        return redirect()->route('sites.index');
     }
 
     /**

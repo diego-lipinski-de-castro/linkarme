@@ -3,7 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
     Dialog,
@@ -33,6 +33,7 @@ import {
     ShieldCheckIcon,
     UserGroupIcon,
     XMarkIcon,
+    PencilSquareIcon,
 } from '@heroicons/vue/24/outline'
 import {
     BanknotesIcon,
@@ -44,17 +45,21 @@ import {
 } from '@heroicons/vue/20/solid'
 
 import { debounce } from 'debounce';
-
 import { trans } from 'laravel-vue-i18n';
+import { useCoinStore } from '@/stores/coin'
 
 import vueFilePond from 'vue-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
+
+const coinStore = useCoinStore()
 
 const props = defineProps({
     title: String,
     sites: Object,
+    coins: Object,
     countries: Array,
     languages: Array,
     categories: Array,
@@ -178,7 +183,7 @@ const uploadSites = (fieldName, file, metadata, load, error, progress, abort) =>
 }
 
 watch(openImportDialog, (n, o) => {
-    if(!n) {
+    if (!n) {
         setTimeout(() => {
             importFinished.value = false
             Inertia.reload({
@@ -188,6 +193,11 @@ watch(openImportDialog, (n, o) => {
     }
 })
 
+onMounted(() => {
+    tippy('[data-tippy-content]', {
+        interactive: true,
+    });
+})
 </script>
         
 <template>
@@ -212,8 +222,9 @@ watch(openImportDialog, (n, o) => {
                             <h3 class="text-center font-medium text-gray-900">Importar sites</h3>
 
                             <div class="mt-4 mx-auto w-96">
-                                <file-pond ref="importFilepond" :server="{ process: uploadSites }" :instantUpload="true" :allowRevert="false"
-                                    accepted-file-types="text/csv" :dropOnPage="true" :dropOnElement="false" :dropValidation="true"/>
+                                <file-pond ref="importFilepond" :server="{ process: uploadSites }" :instantUpload="true"
+                                    :allowRevert="false" accepted-file-types="text/csv" :dropOnPage="true"
+                                    :dropOnElement="false" :dropValidation="true" />
                             </div>
 
                             <div v-if="importFinished" class="mt-8">
@@ -246,10 +257,14 @@ watch(openImportDialog, (n, o) => {
                                                     <td
                                                         class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 border-l">
                                                         {{ failure.attribute }}</td>
-                                                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900 border-l">{{
-                                                    failure.values[failure.attribute] ?? '-' }}</td>
-                                                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 border-l">{{
-                                                    failure.errors[0]}}</td>
+                                                    <td
+                                                        class="whitespace-nowrap px-2 py-2 text-sm text-gray-900 border-l">
+                                                        {{
+                                                        failure.values[failure.attribute] ?? '-' }}</td>
+                                                    <td
+                                                        class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 border-l">
+                                                        {{
+                                                        failure.errors[0]}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -288,7 +303,7 @@ watch(openImportDialog, (n, o) => {
                 <div class="flex space-x-3">
                     <Link :href="route('sites.create')"
                         class="flex max-w-xs items-center rounded-md bg-indigo-500 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-indigo-700">
-                        <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
+                    <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
                     </Link>
 
                     <button @click="openImportDialog = true"
@@ -732,12 +747,21 @@ watch(openImportDialog, (n, o) => {
                                                 @onClick='(column) => sort = column' />
                                         </div>
                                     </th>
+
+                                    <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
+
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
                                     <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                        {{ site.formatted_sale }}
+                                        
+                                        <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                            <span v-if="site.sale_coin != coinStore.coin"  class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                                            <span> {{ site.sale_coin != coinStore.coin ? '~' : null }} {{ $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) / 100, coins[coinStore.coin]) }}</span>
+                                        </span>
                                     </td>
                                     <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
                                         <a :href="route('sites.edit', site.id)"
@@ -804,6 +828,15 @@ watch(openImportDialog, (n, o) => {
                                     <td v-show="columns[11].visible"
                                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                         {{ site.formatted_inserted_at }}
+                                    </td>
+
+                                    <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                        <div class="flex space-x-2">
+                                            <Link :href="route('sites.edit', site.id)"
+                                                class="text-blue-500 hover:text-blue-700">
+                                            <PencilSquareIcon class="h-5 w-5" />
+                                            </Link>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
