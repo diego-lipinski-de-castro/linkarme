@@ -757,7 +757,6 @@ onMounted(() => {
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
                                     <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                        
                                         <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
                                             <span v-if="site.sale_coin != coinStore.coin"  class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
                                             <span> {{ site.sale_coin != coinStore.coin ? '~' : null }} {{ $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) / 100, coins[coinStore.coin]) }}</span>

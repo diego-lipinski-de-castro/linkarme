@@ -3,7 +3,7 @@ import ClientLayout from '@/Layouts/ClientLayout.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
     Dialog,
@@ -46,10 +46,14 @@ import {
 import { debounce } from 'debounce';
 
 import { trans } from 'laravel-vue-i18n';
+import { useCoinStore } from '@/stores/coin'
+
+const coinStore = useCoinStore()
 
 const props = defineProps({
     title: String,
     sites: Object,
+    coins: Object,
     favorites: Array,
     countries: Array,
     languages: Array,
@@ -154,6 +158,12 @@ const toggleFavorite = async (site) => {
         preserveScroll: true,
     })
 }
+
+onMounted(() => {
+    tippy('[data-tippy-content]', {
+        interactive: true,
+    });
+})
 
 </script>
     
@@ -689,7 +699,10 @@ const toggleFavorite = async (site) => {
                                         </button>
                                     </td>
                                     <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                        {{ site.formatted_sale }}
+                                        <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                            <span v-if="site.sale_coin != coinStore.coin"  class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                                            <span> {{ site.sale_coin != coinStore.coin ? '~' : null }} {{ $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) / 100, coins[coinStore.coin]) }}</span>
+                                        </span>
                                     </td>
                                     <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                         <Link :href="route('client.sites.edit', site.id)"
