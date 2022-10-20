@@ -8,17 +8,10 @@ const languageDetector = new LanguageDetector();
 languageDetector.addDetector(detector);
 
 export const i18nextPromise = i18next
-	// i18next-http-backend
-	// loads translations from your server
-	// https://github.com/i18next/i18next-http-backend
 	.use(Backend)
-	// detect user language
-	// learn more: https://github.com/i18next/i18next-browser-languageDetector
 	.use(languageDetector)
-	// init i18next
-	// for all options read: https://www.i18next.com/overview/configuration-options
 	.init({
-		debug: true,
+		debug: false,
 		fallbackLng: 'en',
 		supportedLngs: ['en', 'pt'],
         backend: {

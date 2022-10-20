@@ -43,6 +43,7 @@ import {
 import { trans } from 'laravel-vue-i18n';
 import { useLanguageStore } from '@/stores/language'
 import { useCoinStore } from '@/stores/coin'
+import { i18nextPromise } from "@/i18n.js";
 
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
@@ -77,7 +78,7 @@ const setCoin = async (coin) => {
     });
 }
 
-
+await i18nextPromise
 </script>
     
 <template>

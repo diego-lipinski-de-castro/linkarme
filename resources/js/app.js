@@ -13,14 +13,16 @@ import piniaPersist from 'pinia-plugin-persist'
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css'; // optional for styling
 import i18n from "./i18n";
+import AppSuspense from '@/Layouts/AppSuspense.vue'
+import Spinner from '@/Components/Spinner.vue'
 
 window.tippy = tippy
 
-const appName =
-    window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
-
 const pinia = createPinia()
 pinia.use(piniaPersist)
+
+const appName =
+    window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -55,6 +57,8 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(money)
             .use(pinia)
+            .component('AppSuspense', AppSuspense)
+            .component('Spinner', Spinner)
             .mount(el);
     },
 });

@@ -83,11 +83,11 @@ const setCoin = async (coin) => {
     });
 }
 
-// await i18nextPromise
-
+await i18nextPromise
 </script>
         
 <template>
+
     <div class="min-h-full h-max bg-gray-100">
 
         <Head :title="title" />
@@ -283,15 +283,15 @@ const setCoin = async (coin) => {
                                         class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 
                                         <!-- <MenuItem v-slot="{ active }">
-                                    <a href="#"
-                                        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
-                                        Profile</a>
-                                    </MenuItem>
+    <a href="#"
+        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
+        Profile</a>
+    </MenuItem>
 
-                                    <MenuItem v-slot="{ active }">
-                                    <a href="#"
-                                        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
-                                    </MenuItem> -->
+    <MenuItem v-slot="{ active }">
+    <a href="#"
+        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
+    </MenuItem> -->
 
                                         <MenuItem v-slot="{ active }">
                                         <form method="POST" @submit.prevent="logout">
@@ -321,5 +321,6 @@ const setCoin = async (coin) => {
         </div>
 
     </div>
+
 </template>
         
