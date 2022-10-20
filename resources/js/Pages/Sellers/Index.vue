@@ -112,7 +112,7 @@ const destroy = (seller) => {
 
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
-                                        {{ $t('E-mail') }}
+                                        {{ $t('Email') }}
                                     </th>
 
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"

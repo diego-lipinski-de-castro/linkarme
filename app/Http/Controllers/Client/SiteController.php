@@ -26,6 +26,8 @@ class SiteController extends Controller
      */
     public function index(Request $request)
     {
+        $coins = config('coins');
+
         $favorites = auth()->user()->favorites_ids;
 
         $countries = Country::query()
@@ -78,6 +80,7 @@ class SiteController extends Controller
 
         return Inertia::render('Client/Sites/Index', [
             'sites' => $sites,
+            'coins' => $coins,
             'favorites' => $favorites,
             'countries' => $countries,
             'languages' => $languages,

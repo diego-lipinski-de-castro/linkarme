@@ -5,13 +5,9 @@ const coins = ["USD", "BRL", 'EUR'];
 
 export const useCoinStore = defineStore("coin", {
     state: () => ({
-        _coin: "USD",
-        _ratios: {}
+        coin: "USD",
+        ratios: {}
     }),
-    getters: {
-        coin: (state) => state._coin,
-        ratios: (state) => state._ratios,
-    },
     actions: {
         async setCoin(coin) {
             if (!coins.includes(coin)) return;
@@ -19,7 +15,7 @@ export const useCoinStore = defineStore("coin", {
             for(const c of coins) {
 
                 if(coin == c) {
-                    this._ratios[c] = 1
+                    this.ratios[c] = 1
                     continue
                 }
 
@@ -30,10 +26,10 @@ export const useCoinStore = defineStore("coin", {
                     },
                 })
 
-                this._ratios[c] = parseFloat(res.data[`${coin}${c}`].ask)
+                this.ratios[c] = parseFloat(res.data[`${coin}${c}`].ask)
             }
 
-            this._coin = coin;
+            this.coin = coin;
         },
     },
     persist: {

@@ -7,11 +7,12 @@ import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import money, { format } from "v-money3";
-import { i18nVue } from "laravel-vue-i18n";
+// import { i18nVue } from "laravel-vue-i18n";
 import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css'; // optional for styling
+import i18n from "./i18n";
 
 window.tippy = tippy
 
@@ -29,7 +30,7 @@ createInertiaApp({
             import.meta.glob("./Pages/**/*.vue")
         ),
     setup({ el, app, props, plugin }) {
-        const _app = createApp({ render: () => h(app, props) });
+        const _app = i18n(createApp({ render: () => h(app, props) }));
 
         _app.config.globalProperties.$filters = {
             currency(v, f = {
@@ -53,15 +54,6 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(money)
-            .use(i18nVue, {
-                // lang: 'pt-BR',
-                lang: window.localStorage.getItem("language") || "en",
-                // fallbackLang: 'pt-BR',
-                resolve: (lang) => {
-                    const langs = import.meta.globEager("../../lang/*.json");
-                    return langs[`../../lang/${lang}.json`].default;
-                },
-            })
             .use(pinia)
             .mount(el);
     },

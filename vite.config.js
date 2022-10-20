@@ -6,6 +6,11 @@ export default defineConfig({
     build: {
         target: 'esnext',
     },
+    optimizeDeps: {
+        esbuildOptions: {
+          target: ['esnext'],
+        },
+      },
     plugins: [
         laravel({
             input: 'resources/js/app.js',

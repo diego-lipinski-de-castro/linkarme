@@ -1,21 +1,18 @@
 import { defineStore } from "pinia";
-import { loadLanguageAsync } from 'laravel-vue-i18n';
+import i18next from 'i18next';
 
-const languages = ['en', 'pt-BR']
+const languages = ['en', 'pt']
 
 export const useLanguageStore = defineStore("language", {
     state: () => ({
-        _language: 'en',
+        language: 'en',
     }),
-    getters: {
-        language: (state) => state._language
-    },
     actions: {
         async loadLanguage(language) {
             if(!languages.includes(language)) return
 
-            await loadLanguageAsync(language)
-            this._language = language
+            await i18next.changeLanguage(language);
+            this.language = language
         },
     },
     persist: {

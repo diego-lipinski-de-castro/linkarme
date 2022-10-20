@@ -59,7 +59,7 @@ const generatePassword = () => {
                 </div>
 
                 <div>
-                    <InputLabel for="email" :value="$t('E-mail')" />
+                    <InputLabel for="email" :value="$t('Email')" />
                     <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required autofocus autocomplete="email" />
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
