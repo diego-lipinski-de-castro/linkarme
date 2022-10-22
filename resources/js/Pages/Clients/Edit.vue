@@ -36,7 +36,7 @@ const generatePassword = () => {
 </script>
         
 <template>
-    <AppLayout :title="$t('Edit client')">
+    <AppSuspense><AppLayout :title="$t('Edit client')">
         <template #uppermenu>
             
         </template>
@@ -94,6 +94,6 @@ const generatePassword = () => {
                 </div>
             </form>
         </div>
-    </AppLayout>
+    </AppLayout></AppSuspense>
 </template>
         

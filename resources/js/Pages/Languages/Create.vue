@@ -18,7 +18,7 @@ const submit = () => {
 </script>
         
 <template>
-    <AppLayout :title="$t('Add language')">
+    <AppSuspense><AppLayout :title="$t('Add language')">
         <template #uppermenu>
             
         </template>
@@ -47,6 +47,6 @@ const submit = () => {
                 </div>
             </form>
         </div>
-    </AppLayout>
+    </AppLayout></AppSuspense>
 </template>
         

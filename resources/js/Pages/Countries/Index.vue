@@ -40,7 +40,7 @@ const destroy = (country) => {
         
 <template>
 
-    <AppLayout :title="$t('Countries')">
+    <AppSuspense><AppLayout :title="$t('Countries')">
         <template #uppermenu>
         </template>
 
@@ -165,6 +165,6 @@ const destroy = (country) => {
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </AppLayout></AppSuspense>
 </template>
         

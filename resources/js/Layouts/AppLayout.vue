@@ -83,6 +83,7 @@ const setCoin = async (coin) => {
     });
 }
 
+await coinStore.setCoin(coinStore.coin)
 await i18nextPromise
 </script>
         

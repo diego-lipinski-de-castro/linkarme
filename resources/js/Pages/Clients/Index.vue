@@ -40,7 +40,7 @@ const destroy = (client) => {
         
 <template>
 
-    <AppLayout title="Clientes">
+    <AppSuspense><AppLayout title="Clientes">
         <template #uppermenu>
         </template>
 
@@ -181,6 +181,6 @@ const destroy = (client) => {
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </AppLayout></AppSuspense>
 </template>
         

@@ -40,7 +40,7 @@ const destroy = (category) => {
         
 <template>
 
-    <AppLayout :title="$t('Categories')">
+    <AppSuspense><AppLayout :title="$t('Categories')">
         <template #uppermenu>
         </template>
 
@@ -165,6 +165,6 @@ const destroy = (category) => {
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </AppLayout></AppSuspense>
 </template>
         
