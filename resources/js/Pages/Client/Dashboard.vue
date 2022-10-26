@@ -51,14 +51,14 @@ const list = [
 
 const greeting = computed(() => {
     const hour = new Date().getHours();
-    const welcomeTypes = [trans('Good morning'), trans('Good afternoon'), trans('Good evening')];
-    let welcomeText = '';
+    const welcomeTypes = ['Good morning', 'Good afternoon', 'Good evening'];
+   let welcomeText = '';
 
     if (hour < 12) welcomeText = welcomeTypes[0];
     else if (hour < 18) welcomeText = welcomeTypes[1];
     else welcomeText = welcomeTypes[2];
 
-    return welcomeText
+    return trans(welcomeText)
 })
 
 const toggleFavorite = async (site) => {

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import i18next from 'i18next';
 
-const languages = ['en', 'pt']
+const languages = ['en', 'pt', 'es']
 
 export const useLanguageStore = defineStore("language", {
     state: () => ({

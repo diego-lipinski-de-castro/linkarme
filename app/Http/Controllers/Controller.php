@@ -13,7 +13,7 @@ class Controller extends BaseController
 
     public function locale($locale)
     {
-        if(!in_array($locale, ['en', 'pt'])) {
+        if(!in_array($locale, ['en', 'pt', 'es'])) {
             abort(404);
         }
 

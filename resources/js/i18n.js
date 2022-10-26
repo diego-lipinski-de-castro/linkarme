@@ -13,7 +13,7 @@ export const i18nextPromise = i18next
 	.init({
 		debug: false,
 		fallbackLng: 'en',
-		supportedLngs: ['en', 'pt'],
+		supportedLngs: ['en', 'pt', 'es'],
         backend: {
             loadPath: '/api/locales/{{lng}}',
         },
