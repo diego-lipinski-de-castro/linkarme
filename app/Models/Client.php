@@ -54,9 +54,9 @@ class Client extends Authenticatable
         'profile_photo_url',
     ];
     
-    public function notes()
+    public function note()
     {
-        return $this->hasMany(Note::class);
+        return $this->morphOne(Note::class, 'owner');
     }
 
     public function favorites()

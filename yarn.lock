@@ -3729,14 +3729,6 @@ laravel-vite-plugin@^0.6.0:
   dependencies:
     vite-plugin-full-reload "^1.0.1"
 
-laravel-vue-i18n@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/laravel-vue-i18n/-/laravel-vue-i18n-2.3.0.tgz#0c06300f9bd8f4bf54f7fe4760f2ebbfaeeac62c"
-  integrity sha512-udpyhKtg08SzY0yetsa7MLhn+5ZHYsWHRFsCkpoAGiyIhNjo+u7UGuKFJmr4pbVQl4vgN1L6UlogHi0HHVMw6Q==
-  dependencies:
-    php-parser "3.1.0"
-    vue "^3.2.38"
-
 lilconfig@^2.0.3, lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/lilconfig/-/lilconfig-2.0.6.tgz#32a384558bd58af3d4c6e077dd1ad1d397bc69d4"
@@ -4328,11 +4320,6 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
-
-php-parser@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.0.tgz#5ca8e0bac9846e85233a26e3162fdfc4fb9a0a58"
-  integrity sha512-EwtoPSCqggAgTcPbV4YXsvUjYRQCZCxsQzxa7z8RX8rJ8bWAglMMi1tFNxdzwf5uNPFWFjHYhXA3REuWKzgMuw==
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -5587,7 +5574,7 @@ vue-style-loader@^4.1.3:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue@^3.2.31, vue@^3.2.38:
+vue@^3.2.31:
   version "3.2.41"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.41.tgz#ed452b8a0f7f2b962f055c8955139c28b1c06806"
   integrity sha512-uuuvnrDXEeZ9VUPljgHkqB5IaVO8SxhPpqF2eWOukVrBnRBx2THPSGQBnVRt0GrIG1gvCmFXMGbd7FqcT1ixNQ==

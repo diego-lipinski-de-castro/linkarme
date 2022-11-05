@@ -20,8 +20,8 @@ class Note extends Model
         return $this->belongsTo(Site::class);
     }
 
-    public function client()
+    public function owner()
     {
-        return $this->belongsTo(Client::class);
+        return $this->morphTo();
     }
 }

@@ -40,27 +40,28 @@ import {
     ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
 import { ref } from 'vue';
-import { trans } from 'laravel-vue-i18n';
+import { useTranslation } from "i18next-vue";
 import { useLanguageStore } from '@/stores/language'
 import { useCoinStore } from '@/stores/coin'
 import { i18nextPromise } from "@/i18n.js";
 
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
+const { t } = useTranslation();
 
 defineProps({
     title: String,
 });
 
 const navigation = [
-    // { name: trans('Dashboard'), href: route('dashboard'), icon: ComputerDesktopIcon, current: route().current('dashboard') },
-    { name: trans('Sites'), href: route('sites.index'), icon: ClockIcon, current: route().current('sites.index') },
-    // { name: trans('Orders'), href: route('orders.index'), icon: ScaleIcon, current: route().current('orders.index') },
-    { name: trans('Clients'), href: route('clients.index'), icon: ClockIcon, current: route().current('clients.index') },
-    { name: trans('Sellers'), href: route('sellers.index'), icon: ClockIcon, current: route().current('sellers.index') },
-    { name: trans('Categories'), href: route('categories.index'), icon: ClockIcon, current: route().current('categories.index') },
-    { name: trans('Languages'), href: route('languages.index'), icon: ClockIcon, current: route().current('languages.index') },
-    { name: trans('Countries'), href: route('countries.index'), icon: ClockIcon, current: route().current('countries.index') },
+    // { name: t('Dashboard'), href: route('dashboard'), icon: ComputerDesktopIcon, current: route().current('dashboard') },
+    { name: t('Sites'), href: route('sites.index'), icon: ClockIcon, current: route().current('sites.index') },
+    // { name: t('Orders'), href: route('orders.index'), icon: ScaleIcon, current: route().current('orders.index') },
+    { name: t('Clients'), href: route('clients.index'), icon: ClockIcon, current: route().current('clients.index') },
+    { name: t('Sellers'), href: route('sellers.index'), icon: ClockIcon, current: route().current('sellers.index') },
+    { name: t('Categories'), href: route('categories.index'), icon: ClockIcon, current: route().current('categories.index') },
+    { name: t('Languages'), href: route('languages.index'), icon: ClockIcon, current: route().current('languages.index') },
+    { name: t('Countries'), href: route('countries.index'), icon: ClockIcon, current: route().current('countries.index') },
 ]
 
 const sidebarOpen = ref(false)

@@ -45,7 +45,7 @@ import {
 } from '@heroicons/vue/20/solid'
 
 import { debounce } from 'debounce';
-import { trans } from 'laravel-vue-i18n';
+import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
 
 import vueFilePond from 'vue-filepond';
@@ -56,6 +56,7 @@ import AppSuspense from '../../Layouts/AppSuspense.vue';
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
 const coinStore = useCoinStore()
+const { t } = useTranslation();
 
 const props = defineProps({
     title: String,
@@ -76,20 +77,20 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'sale', label: trans('Price'), visible: true },
-    { key: 'url', label: trans('Domain'), visible: true },
-    { key: 'da', label: trans('DA'), visible: true },
-    { key: 'dr', label: trans('DR'), visible: true },
-    { key: 'gambling', label: trans('Gambling'), visible: true },
-    { key: 'sponsor', label: trans('Sponsor'), visible: true },
-    { key: 'cripto', label: trans('Cripto'), visible: true },
-    { key: 'ssl', label: trans('SSL'), visible: true },
-    { key: 'category', label: trans('Category'), visible: true },
-    // { key: 'banner', label: trans('Banners'), visible: true },
-    // { key: 'menu', label: trans('Links menu'), visible: true },
-    { key: 'obs', label: trans('Obs'), visible: true },
-    { key: 'example', label: trans('Example'), visible: true },
-    { key: 'inserted_at', label: trans('Upload data'), visible: true },
+    { key: 'sale', label: t('Price'), visible: true },
+    { key: 'url', label: t('Domain'), visible: true },
+    { key: 'da', label: t('DA'), visible: true },
+    { key: 'dr', label: t('DR'), visible: true },
+    { key: 'gambling', label: t('Gambling'), visible: true },
+    { key: 'sponsor', label: t('Sponsor'), visible: true },
+    { key: 'cripto', label: t('Cripto'), visible: true },
+    { key: 'ssl', label: t('SSL'), visible: true },
+    { key: 'category', label: t('Category'), visible: true },
+    // { key: 'banner', label: t('Banners'), visible: true },
+    // { key: 'menu', label: t('Links menu'), visible: true },
+    { key: 'obs', label: t('Obs'), visible: true },
+    { key: 'example', label: t('Example'), visible: true },
+    { key: 'inserted_at', label: t('Upload data'), visible: true },
 ];
 
 const _columns =

@@ -23,8 +23,10 @@ import {
     CheckCircleIcon,
     ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
-import { trans } from 'laravel-vue-i18n';
+import { useTranslation } from "i18next-vue";
 import AppSuspense from '../../Layouts/AppSuspense.vue';
+
+const { t } = useTranslation();
 
 const props = defineProps({
     title: String,
@@ -38,15 +40,15 @@ const props = defineProps({
 });
 
 const cards = [
-    { name: trans('Orders'), href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
-    { name: trans('Sites used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
-    { name: trans('Sites never used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
+    { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
+    { name: t('Sites used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
+    { name: t('Sites never used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
 ]
 
 const list = [
-    { label: trans('Favorites'), sites: props.favs, href: route('client.sites.index') },
-    { label: trans('New sites'), sites: props.new, href: route('client.sites.index') },
-    { label: trans('Recommended'), sites: props.recommended, href: route('client.sites.index') },
+    { label: t('Favorites'), sites: props.favs, href: route('client.sites.index') },
+    { label: t('New sites'), sites: props.new, href: route('client.sites.index') },
+    { label: t('Recommended'), sites: props.recommended, href: route('client.sites.index') },
 ];
 
 const greeting = computed(() => {

@@ -29,7 +29,6 @@ class Site extends Model implements Auditable
         'name',
         'description',
         'obs',
-        'admin_obs',
         'da',
         'dr',
         'traffic',
@@ -65,6 +64,7 @@ class Site extends Model implements Auditable
         'paypal',
         'instagram',
         'facebook',
+        'deleted_at',
     ];
 
     protected $casts = [

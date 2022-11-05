@@ -7,6 +7,10 @@ use App\Http\Controllers\Client\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Client\Auth\NewPasswordController;
 use App\Http\Controllers\Client\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Client\Auth\VerifyEmailController;
+use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\NotificationController;
+use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\SiteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,27 +21,31 @@ Route::group([
 ], function () {
 
     // 
-    Route::get('dashboard', [\App\Http\Controllers\Client\DashboardController::class, 'index'])
+    Route::get('dashboard', [DashboardController::class, 'index'])
         ->name('dashboard')
         ->middleware(['auth:client']);
 
-    Route::get('sites', [\App\Http\Controllers\Client\SiteController::class, 'index'])
+    Route::get('notifications', [NotificationController::class, 'index'])
+        ->name('notifications')
+        ->middleware(['auth:client']);
+
+    Route::get('sites', [SiteController::class, 'index'])
         ->name('sites.index')
         ->middleware(['auth:client']);
 
-    Route::post('sites/{site}/favorite', [\App\Http\Controllers\Client\SiteController::class, 'favorite'])
+    Route::post('sites/{site}/favorite', [SiteController::class, 'favorite'])
         ->name('sites.favorite')
         ->middleware(['auth:client']);
 
-    Route::get('sites/{site}/edit', [\App\Http\Controllers\Client\SiteController::class, 'edit'])
+    Route::get('sites/{site}/edit', [SiteController::class, 'edit'])
         ->name('sites.edit')
         ->middleware(['auth:client']);
 
-    Route::put('sites/{site}', [\App\Http\Controllers\Client\SiteController::class, 'update'])
+    Route::put('sites/{site}', [SiteController::class, 'update'])
         ->name('sites.update')
         ->middleware(['auth:client']);
 
-    Route::get('orders', [\App\Http\Controllers\Client\OrderController::class, 'index'])
+    Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index')
         ->middleware(['auth:client']);
 

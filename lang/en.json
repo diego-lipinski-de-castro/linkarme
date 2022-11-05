@@ -929,5 +929,14 @@
     "Sellers": "Sellers",
     "Categories": "Categories",
     "Languages": "Languages",
-    "Countries": "Countries"
+    "Countries": "Countries",
+    "Owner name": "Owner name",
+    "Owner email": "Owner email",
+    "Owner phone": "Owner phone",
+    "Site bank": "Bank",
+    "Site pix": "PIX",
+    "Site paypal": "Paypal",
+    "Site phone": "Phone",
+    "Site instagram": "Instagram",
+    "Site facebook": "Facebook"
 }

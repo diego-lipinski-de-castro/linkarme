@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Filters\FilterLimiter;
 use App\Filters\NewFilter;
-use App\Filters\SuggestionFilter;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Imports\SitesImport;
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Country;
 use App\Models\Language;
 use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
+use App\Notifications\SiteUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -149,7 +152,7 @@ class SiteController extends Controller
             ->paginate(50)
             ->appends(request()->query());
 
-        return view('sites.index', [
+        return Inertia::render('Sites/Index', [
             'pending' => $pending,
             'offers' => $offers,
             'sites' => $sites,
@@ -231,7 +234,7 @@ class SiteController extends Controller
 
         $coins = config('coins');
 
-        return view('sites.edit', [
+        return Inertia::render('Sites/Edit', [
             'site' => $site,
             'categories' => $categories,
             'languages' => $languages,
@@ -252,9 +255,15 @@ class SiteController extends Controller
     {
         $site = Site::withTrashed()->findOrFail($id);
 
-        $site->update($request->validated());
+        DB::transaction(function () use($site, $request) {
+            $site->update($request->validated());
 
-        return redirect(route('sites.index'));
+            $last = $site->audits()->latest()->first();
+
+            Notification::send(Client::all(), new SiteUpdated($site, $last));
+        });
+
+        return redirect()->route('sites.index');
     }
 
     /**
@@ -269,7 +278,7 @@ class SiteController extends Controller
 
         $site->forceDelete();
 
-        return back();
+        return redirect()->route('sites.index');
     }
 
     public function toggle($id)
@@ -277,6 +286,28 @@ class SiteController extends Controller
         $site = Site::withTrashed()->findOrFail($id);
 
         $site->trashed() ? $site->restore() : $site->delete();
+
+        return back();
+    }
+
+    public function approve($id)
+    {
+        $site = Site::withTrashed()->findOrFail($id);
+
+        $site->update([
+            'status' => 'APPROVED',
+        ]);
+
+        return back();
+    }
+
+    public function reject($id)
+    {
+        $site = Site::withTrashed()->findOrFail($id);
+
+        $site->update([
+            'status' => 'REJECTED',
+        ]);
 
         return back();
     }
@@ -331,28 +362,6 @@ class SiteController extends Controller
 
         $request->session()->flash('importFailures', $importFailures);
         $request->session()->flash('importDiff', $diff);
-
-        return back();
-    }
-
-    public function approve($id)
-    {
-        $site = Site::withTrashed()->findOrFail($id);
-
-        $site->update([
-            'status' => 'APPROVED',
-        ]);
-
-        return back();
-    }
-
-    public function reject($id)
-    {
-        $site = Site::withTrashed()->findOrFail($id);
-
-        $site->update([
-            'status' => 'REJECTED',
-        ]);
 
         return back();
     }

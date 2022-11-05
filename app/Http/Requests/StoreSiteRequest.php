@@ -31,7 +31,6 @@ class StoreSiteRequest extends FormRequest
             'description' => 'nullable|string|max:255',
 
             'obs' => 'nullable|string|max:600',
-            'admin_obs' => 'nullable|string|max:600',
 
             'da' => 'nullable|integer',
             'dr' => 'nullable|integer',

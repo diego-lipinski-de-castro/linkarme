@@ -105,7 +105,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'name' => null,
             'description' => null,
             'obs' => $row['observacoes'],
-            'admin_obs' => $row['notas'],
+            // 'admin_obs' => $row['notas'],
             'da' => $row['da'],
             'dr' => $row['dr'],
             'traffic' => null,

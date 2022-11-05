@@ -40,22 +40,23 @@ import {
     ChevronDownIcon,
     ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
-import { trans } from 'laravel-vue-i18n';
+import { useTranslation } from "i18next-vue";
 import { useLanguageStore } from '@/stores/language'
 import { useCoinStore } from '@/stores/coin'
 import { i18nextPromise } from "@/i18n.js";
 
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
+const { t } = useTranslation();
 
 defineProps({
     title: String,
 })
 
 const navigation = [
-    { name: trans('Dashboard'), href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
-    { name: trans('Sites'), href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
-    { name: trans('Orders'), href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
+    { name: t('Dashboard'), href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
+    { name: t('Sites'), href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
+    { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
 ]
 
 const sidebarOpen = ref(false)
@@ -262,11 +263,12 @@ await i18nextPromise
                                 </transition>
                             </Menu>
 
-                            <!-- <button type="button"
-                                class="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                <span class="sr-only">View notifications</span>
-                                <BellIcon class="h-6 w-6" aria-hidden="true" />
-                            </button> -->
+                            <div class="relative ml-3">
+                                <Link :href="route('client.notifications')" class="block rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    <span class="sr-only">View notifications</span>
+                                    <BellIcon class="h-6 w-6" aria-hidden="true" />
+                                </Link>
+                            </div>
 
                             <Menu as="div" class="relative ml-3">
                                 <div>

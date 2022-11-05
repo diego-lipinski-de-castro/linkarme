@@ -918,5 +918,14 @@
     "Sellers": "Vendedores",
     "Categories": "Categorias",
     "Languages": "Linguagens",
-    "Countries": "Países"
+    "Countries": "Países",
+    "Owner name": "Nome dono",
+    "Owner email": "E-mail dono",
+    "Owner phone": "Telefone dono",
+    "Site bank": "Informações bancárias",
+    "Site pix": "PIX",
+    "Site paypal": "Paypal",
+    "Site phone": "Telefone",
+    "Site instagram": "Instagram",
+    "Site facebook": "Facebook"
 }
