@@ -60,7 +60,7 @@ const greeting = computed(() => {
     else if (hour < 18) welcomeText = welcomeTypes[1];
     else welcomeText = welcomeTypes[2];
 
-    return trans(welcomeText)
+    return t(welcomeText)
 })
 
 const toggleFavorite = async (site) => {
@@ -146,7 +146,7 @@ const toggleFavorite = async (site) => {
                             </div>
                             <div class="bg-gray-50 px-5 py-3">
                                 <Link :href="card.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">
-                                See all</Link>
+                                {{ $t('See all') }}</Link>
                             </div>
                         </div>
                     </div>
@@ -163,7 +163,7 @@ const toggleFavorite = async (site) => {
                                     $t('Soon') }}</span>
                                 </li>
                                 <li v-else v-for="(site, index) in item.sites" :key="index">
-                                    <Link :href="route('client.sites.edit', site.id)"
+                                    <Link :href="route('client.sites.show', site.id)"
                                         class="block bg-white px-4 py-4 hover:bg-gray-50">
                                     <span class="flex items-center space-x-4">
                                         <span class="flex flex-1 space-x-2 truncate">
@@ -200,13 +200,13 @@ const toggleFavorite = async (site) => {
                                         </thead>
                                         <tbody class="divide-y divide-gray-200 bg-white">
                                             <tr v-if="item.sites.length == 0">
-                                                <td colspan="3" class="text-center text-gray-500 italic py-2">Em breve
+                                                <td colspan="3" class="text-center text-gray-500 italic py-2">{{ $t('Soon') }}
                                                 </td>
                                             </tr>
                                             <tr v-else v-for="(site, index) in item.sites" :key="index"
                                                 class="bg-white">
                                                 <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                                    <Link :href="route('client.sites.edit', site.id)"
+                                                    <Link :href="route('client.sites.show', site.id)"
                                                         class="text-gray-500 hover:text-gray-900">
                                                     {{ site.url }}
                                                     </Link>

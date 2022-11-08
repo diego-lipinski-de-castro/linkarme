@@ -1,6 +1,7 @@
 <script setup>
 import ClientLayout from '@/Layouts/ClientLayout.vue';
-import TableSortButton from '@/Components/TableSortButton.vue';
+import SiteUpdated from '@/Components/Notifications/SiteUpdated.vue';
+import SiteAdded from '@/Components/Notifications/SiteAdded.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, ref, watch } from 'vue'
@@ -64,153 +65,36 @@ const links = computed(() => {
         <ClientLayout title="Notificações">
 
             <div>
-
-                <div
-                    class="flex justify-between items-center pt-6">
+                <div v-if="unreadNotifications.length > 0" class="flex justify-between items-center pt-6">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        {{ $t('Unseen') }}
+                        {{ $t('New notifications') }}
                     </h2>
                 </div>
 
-                <ul role="list" class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
+                <ul v-if="unreadNotifications.length > 0" role="list"
+                    class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
                     <li v-for="(notification, index) in unreadNotifications" :key="index">
-                        <div class="flex space-x-3 px-4 py-4 sm:px-6">
-                            <div class="flex-1 space-y-1">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-sm font-medium">{{ notification.data.site_url }}</h3>
-                                    <p class="text-sm text-gray-500">{{ new
-                                            Date(notification.created_at).toLocaleString()
-                                    }}</p>
-                                </div>
-                                <p v-for="(value, attribute) in notification.data.audit_modified" :key="attribute"
-                                    class="text-sm text-gray-500">
-                                    <template v-if="!value.old">
-                                        <span v-if="value.new" class="break-words">
-                                            O campo
-                                            <strong>{{
-                                                    attribute
-                                            }}</strong>
-                                            foi atualizado para
-                                            <strong>{{
-                                                    value.new
-                                            }}</strong>.
-                                        </span>
-
-                                        <span v-else class="break-words">
-                                            O campo
-                                            <strong>{{
-                                                    attribute
-                                            }}</strong>
-                                            foi atualizado para em
-                                            branco.
-                                        </span>
-                                    </template>
-
-                                    <span v-else-if="!value.new" class="break-words">
-                                        O campo
-                                        <strong>{{
-                                                attribute
-                                        }}</strong>
-                                        foi atualizado de
-                                        <strong>{{
-                                                value.old
-                                        }}</strong>
-                                        para em branco.
-                                    </span>
-
-                                    <span v-else class="break-words">
-                                        O campo
-                                        <strong>{{
-                                                attribute
-                                        }}</strong>
-                                        foi atualizado de
-                                        <strong>{{
-                                                value.old
-                                        }}</strong>
-                                        para
-                                        <strong>{{
-                                                value.new
-                                        }}</strong>.
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
+                        <SiteAdded v-if="notification.type == 'App\\Notifications\\SiteAdded'" :notification="notification"/>
+                        <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification"/>
                     </li>
                 </ul>
 
-                <div class="flex justify-between items-center pt-12">
+                <div v-if="notifications.data.length > 0" class="flex justify-between items-center pt-12">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        {{ $t('Seen') }}
+                        {{ $t('Old notifications') }}
                     </h2>
                 </div>
 
-                <ul role="list" class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
+                <ul v-if="notifications.data.length > 0" role="list"
+                    class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
                     <li v-for="(notification, index) in notifications.data" :key="index">
-                        <div class="flex space-x-3 px-4 py-4 sm:px-6">
-                            <div class="flex-1 space-y-1">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-sm font-medium">{{ notification.data.site_url }}</h3>
-                                    <p class="text-sm text-gray-500">{{ new
-                                            Date(notification.created_at).toLocaleString()
-                                    }}</p>
-                                </div>
-                                <p v-for="(value, attribute) in notification.data.audit_modified" :key="attribute"
-                                    class="text-sm text-gray-500">
-                                    <template v-if="!value.old">
-                                        <span v-if="value.new" class="break-words">
-                                            O campo
-                                            <strong>{{
-                                                    attribute
-                                            }}</strong>
-                                            foi atualizado para
-                                            <strong>{{
-                                                    value.new
-                                            }}</strong>.
-                                        </span>
-
-                                        <span v-else class="break-words">
-                                            O campo
-                                            <strong>{{
-                                                    attribute
-                                            }}</strong>
-                                            foi atualizado para em
-                                            branco.
-                                        </span>
-                                    </template>
-
-                                    <span v-else-if="!value.new" class="break-words">
-                                        O campo
-                                        <strong>{{
-                                                attribute
-                                        }}</strong>
-                                        foi atualizado de
-                                        <strong>{{
-                                                value.old
-                                        }}</strong>
-                                        para em branco.
-                                    </span>
-
-                                    <span v-else class="break-words">
-                                        O campo
-                                        <strong>{{
-                                                attribute
-                                        }}</strong>
-                                        foi atualizado de
-                                        <strong>{{
-                                                value.old
-                                        }}</strong>
-                                        para
-                                        <strong>{{
-                                                value.new
-                                        }}</strong>.
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
+                        <SiteAdded v-if="notification.type == 'App\\Notifications\\SiteAdded'" :notification="notification"/>
+                        <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification"/>
                     </li>
                 </ul>
 
-                <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
+                <nav v-if="notifications.data.length > 0"
+                    class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
                     <div class="-mt-px flex w-0 flex-1">
                         <Link :href="notifications.prev_page_url"
                             class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">

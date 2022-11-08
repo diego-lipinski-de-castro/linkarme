@@ -20,7 +20,7 @@ const submit = () => {
     form.transform(data => ({
         ...data,
         remember: form.remember ? 'on' : '',
-    })).post(route('client.login'), {
+    })).post(route('seller.login'), {
         onFinish: () => form.reset('password'),
     });
 };
@@ -54,7 +54,7 @@ const submit = () => {
                                 <InputError class="mt-2" :message="form.errors.password" />
                             </div>
 
-                            <Link v-if="canResetPassword" :href="route('client.password.request')" class="w-min whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500">{{ $t('Forgot your password?') }}</Link>
+                            <Link v-if="canResetPassword" :href="route('seller.password.request')" class="w-min whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500">{{ $t('Forgot your password?') }}</Link>
 
                             <div>
                                 <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit"

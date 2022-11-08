@@ -843,7 +843,7 @@ onMounted(() => {
                                             <div class="flex space-x-2">
                                                 <Link :href="route('sites.edit', site.id)"
                                                     class="text-blue-500 hover:text-blue-700">
-                                                <PencilSquareIcon class="h-5 w-5" />
+                                                    <PencilSquareIcon class="h-5 w-5" />
                                                 </Link>
                                             </div>
                                         </td>

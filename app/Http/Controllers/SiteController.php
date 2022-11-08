@@ -14,6 +14,7 @@ use App\Models\Language;
 use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
+use App\Notifications\SiteAdded;
 use App\Notifications\SiteUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -194,7 +195,10 @@ class SiteController extends Controller
      */
     public function store(StoreSiteRequest $request)
     {
-        Site::create($request->validated());
+        DB::transaction(function () use($request) {
+            $site = Site::create($request->validated());
+            Notification::send(Client::all(), new SiteAdded($site));
+        });
 
         return redirect()->route('sites.index');
     }

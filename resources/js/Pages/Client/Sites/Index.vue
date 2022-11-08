@@ -564,7 +564,7 @@ onMounted(() => {
                     <ul role="list" class="divide-y divide-gray-200">
 
                         <li v-for="(site, index) in sites.data" :key="index">
-                            <Link :href="route('client.sites.edit', site.id)"
+                            <Link :href="route('client.sites.show', site.id)"
                                 class="block bg-white px-4 py-4 hover:bg-gray-50">
                             <span class="flex items-center space-x-4">
                                 <span class="flex flex-1 space-x-2 truncate">
@@ -715,7 +715,7 @@ onMounted(() => {
                                             </span>
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <Link :href="route('client.sites.edit', site.id)"
+                                            <Link :href="route('client.sites.show', site.id)"
                                                 class="text-gray-500 hover:text-gray-900">
                                             {{ site.url }}
                                             </Link>

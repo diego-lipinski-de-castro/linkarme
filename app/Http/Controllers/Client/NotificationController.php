@@ -10,12 +10,10 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        // auth()->user()->unreadNotifications->markAsRead();
-
-        // auth()->user()->unreadNotifications()->update(['read_at' => now()]);
-
         $notifications = auth()->user()->notifications()->paginate(10);
         $unreadNotifications = auth()->user()->unreadNotifications;
+
+        auth()->user()->unreadNotifications()->update(['read_at' => now()]);
 
         return Inertia::render('Client/Notifications', [
             'notifications' => $notifications,

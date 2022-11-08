@@ -54,15 +54,15 @@ defineProps({
 })
 
 const navigation = [
-    { name: t('Dashboard'), href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
-    { name: t('Sites'), href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
-    { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
+    { name: t('Dashboard'), href: route('seller.dashboard'), icon: ComputerDesktopIcon, current: route().current('seller.dashboard') },
+    { name: t('Sites'), href: route('seller.sites.index'), icon: ClockIcon, current: route().current('seller.sites.index') },
+    { name: t('Orders'), href: route('seller.orders.index'), icon: ScaleIcon, current: route().current('seller.orders.index') },
 ]
 
 const sidebarOpen = ref(false)
 
 const logout = () => {
-    Inertia.post(route('client.logout'))
+    Inertia.post(route('seller.logout'))
 }
 
 const setCoin = async (coin) => {

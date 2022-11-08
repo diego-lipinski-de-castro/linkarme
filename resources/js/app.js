@@ -34,6 +34,9 @@ createInertiaApp({
         const _app = i18n(createApp({ render: () => h(app, props) }));
 
         _app.config.globalProperties.$filters = {
+            capitalize(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+            },
             currency(v, f = {
                 prefix: 'R$ ',
                 suffix: '',

@@ -37,11 +37,11 @@ Route::group([
         ->name('sites.favorite')
         ->middleware(['auth:client']);
 
-    Route::get('sites/{site}/edit', [SiteController::class, 'edit'])
-        ->name('sites.edit')
+    Route::get('sites/{site}', [SiteController::class, 'show'])
+        ->name('sites.show')
         ->middleware(['auth:client']);
 
-    Route::put('sites/{site}', [SiteController::class, 'update'])
+    Route::put('sites/{site}/note', [SiteController::class, 'update'])
         ->name('sites.update')
         ->middleware(['auth:client']);
 

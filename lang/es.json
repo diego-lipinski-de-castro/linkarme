@@ -939,5 +939,16 @@
     "Site paypal": "Paypal",
     "Site phone": "Telefone",
     "Site instagram": "Instagram",
-    "Site facebook": "Facebook"
+    "Site facebook": "Facebook",
+    "Good morning": "Buenos dias",
+    "Good afternoon": "Buenas tardes",
+    "Good evening": "Buenas noches",
+    "See all": "Ver todo",
+    "attributes": {
+        "new": "{{attribute}} foi atualizado para {{new}}.",
+        "blank": "{{attribute}} foi atualizado para em branco.",
+        "to_blank": "{{attribute}} foi atualizado de {{old}} para em branco.",
+        "updated": "{{attribute}} foi atualizado de {{old}} para {{new}}."
+    },
+    "Recently added": "Recently added"
 }

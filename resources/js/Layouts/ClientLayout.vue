@@ -264,7 +264,10 @@ await i18nextPromise
                             </Menu>
 
                             <div class="relative ml-3">
-                                <Link :href="route('client.notifications')" class="block rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <Link :href="route('client.notifications')" :class="[
+                                    route().current('client.notifications') ? 'text-gray-700' : 'text-gray-400 hover:text-gray-500',
+                                    'block rounded-full bg-white p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                                ]">
                                     <span class="sr-only">View notifications</span>
                                     <BellIcon class="h-6 w-6" aria-hidden="true" />
                                 </Link>

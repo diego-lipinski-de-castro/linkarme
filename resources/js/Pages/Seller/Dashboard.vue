@@ -40,15 +40,15 @@ const props = defineProps({
 });
 
 const cards = [
-    { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
-    { name: t('Sites used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
-    { name: t('Sites never used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
+    { name: t('Orders'), href: route('seller.orders.index'), icon: ScaleIcon, amount: props.orders },
+    { name: t('Sites used'), href: route('seller.sites.index'), icon: ScaleIcon, amount: props.usedCount },
+    { name: t('Sites never used'), href: route('seller.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
 ]
 
 const list = [
-    { label: t('Favorites'), sites: props.favs, href: route('client.sites.index') },
-    { label: t('New sites'), sites: props.new, href: route('client.sites.index') },
-    { label: t('Recommended'), sites: props.recommended, href: route('client.sites.index') },
+    { label: t('Favorites'), sites: props.favs, href: route('seller.sites.index') },
+    { label: t('New sites'), sites: props.new, href: route('seller.sites.index') },
+    { label: t('Recommended'), sites: props.recommended, href: route('seller.sites.index') },
 ];
 
 const greeting = computed(() => {
@@ -60,11 +60,11 @@ const greeting = computed(() => {
     else if (hour < 18) welcomeText = welcomeTypes[1];
     else welcomeText = welcomeTypes[2];
 
-    return trans(welcomeText)
+    return t(welcomeText)
 })
 
 const toggleFavorite = async (site) => {
-    Inertia.post(route('client.sites.favorite', site), null, {
+    Inertia.post(route('seller.sites.favorite', site), null, {
         preserveScroll: true,
     })
 }
@@ -163,7 +163,7 @@ const toggleFavorite = async (site) => {
                                     $t('Soon') }}</span>
                                 </li>
                                 <li v-else v-for="(site, index) in item.sites" :key="index">
-                                    <Link :href="route('client.sites.edit', site.id)"
+                                    <Link :href="route('seller.sites.edit', site.id)"
                                         class="block bg-white px-4 py-4 hover:bg-gray-50">
                                     <span class="flex items-center space-x-4">
                                         <span class="flex flex-1 space-x-2 truncate">
@@ -206,7 +206,7 @@ const toggleFavorite = async (site) => {
                                             <tr v-else v-for="(site, index) in item.sites" :key="index"
                                                 class="bg-white">
                                                 <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                                    <Link :href="route('client.sites.edit', site.id)"
+                                                    <Link :href="route('seller.sites.edit', site.id)"
                                                         class="text-gray-500 hover:text-gray-900">
                                                     {{ site.url }}
                                                     </Link>

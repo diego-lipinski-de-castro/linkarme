@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Site extends Model implements Auditable
@@ -120,6 +121,64 @@ class Site extends Model implements Auditable
                 $site->sale_updated_at = now();
             }
         });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transformAudit(array $data): array
+    {
+        // old
+        if (Arr::has($data, 'old_values.gambling')) {
+            $data['old_values']['gambling'] = (bool) $data['old_values']['gambling'];
+        }
+
+        if (Arr::has($data, 'old_values.cdb')) {
+            $data['old_values']['cdb'] = (bool) $data['old_values']['cdb'];
+        }
+
+        if (Arr::has($data, 'old_values.cripto')) {
+            $data['old_values']['cripto'] = (bool) $data['old_values']['cripto'];
+        }
+
+        if (Arr::has($data, 'old_values.sponsor')) {
+            $data['old_values']['sponsor'] = (bool) $data['old_values']['sponsor'];
+        }
+
+        if (Arr::has($data, 'old_values.menu')) {
+            $data['old_values']['menu'] = (bool) $data['old_values']['menu'];
+        }
+
+        if (Arr::has($data, 'old_values.banner')) {
+            $data['old_values']['banner'] = (bool) $data['old_values']['banner'];
+        }
+
+        // new
+        if (Arr::has($data, 'new_values.gambling')) {
+            $data['new_values']['gambling'] = (bool) $data['new_values']['gambling'];
+        }
+
+        if (Arr::has($data, 'new_values.cdb')) {
+            $data['new_values']['cdb'] = (bool) $data['new_values']['cdb'];
+        }
+
+        if (Arr::has($data, 'new_values.cripto')) {
+            $data['new_values']['cripto'] = (bool) $data['new_values']['cripto'];
+        }
+
+        if (Arr::has($data, 'new_values.sponsor')) {
+            $data['new_values']['sponsor'] = (bool) $data['new_values']['sponsor'];
+        }
+
+        if (Arr::has($data, 'new_values.menu')) {
+            $data['new_values']['menu'] = (bool) $data['new_values']['menu'];
+        }
+
+        if (Arr::has($data, 'new_values.banner')) {
+            $data['new_values']['banner'] = (bool) $data['new_values']['banner'];
+        }
+
+        return $data;
     }
 
     public function seller()

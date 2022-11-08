@@ -50,6 +50,7 @@ import { useCoinStore } from '@/stores/coin'
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
 
 const coinStore = useCoinStore()
+const { t } = useTranslation()
 
 const props = defineProps({
     title: String,
@@ -69,31 +70,31 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'sale', label: trans('Price'), visible: true },
-    { key: 'url', label: trans('Domain'), visible: true },
-    { key: 'da', label: trans('DA'), visible: true },
-    { key: 'dr', label: trans('DR'), visible: true },
-    { key: 'gambling', label: trans('Gambling'), visible: true },
-    { key: 'sponsor', label: trans('Sponsor'), visible: true },
-    { key: 'cripto', label: trans('Cripto'), visible: true },
-    { key: 'ssl', label: trans('SSL'), visible: true },
-    { key: 'category', label: trans('Category'), visible: true },
-    // { key: 'banner', label: trans('Banners'), visible: true },
-    // { key: 'menu', label: trans('Links menu'), visible: true },
-    { key: 'obs', label: trans('Obs'), visible: true },
-    { key: 'example', label: trans('Example'), visible: true },
-    { key: 'inserted_at', label: trans('Upload data'), visible: true },
+    { key: 'sale', label: t('Price'), visible: true },
+    { key: 'url', label: t('Domain'), visible: true },
+    { key: 'da', label: t('DA'), visible: true },
+    { key: 'dr', label: t('DR'), visible: true },
+    { key: 'gambling', label: t('Gambling'), visible: true },
+    { key: 'sponsor', label: t('Sponsor'), visible: true },
+    { key: 'cripto', label: t('Cripto'), visible: true },
+    { key: 'ssl', label: t('SSL'), visible: true },
+    { key: 'category', label: t('Category'), visible: true },
+    // { key: 'banner', label: t('Banners'), visible: true },
+    // { key: 'menu', label: t('Links menu'), visible: true },
+    { key: 'obs', label: t('Obs'), visible: true },
+    { key: 'example', label: t('Example'), visible: true },
+    { key: 'inserted_at', label: t('Upload data'), visible: true },
 ];
 
 const _columns =
-    localStorage.getItem('client.sites.index.columns') ?
-        unionBy(JSON.parse(localStorage.getItem('client.sites.index.columns')), _defaultColumns, 'key')
+    localStorage.getItem('seller.sites.index.columns') ?
+        unionBy(JSON.parse(localStorage.getItem('seller.sites.index.columns')), _defaultColumns, 'key')
         : _defaultColumns
 
 const columns = ref(_columns)
 
 watch(columns, (n, o) => {
-    localStorage.setItem('client.sites.index.columns', JSON.stringify(columns.value))
+    localStorage.setItem('seller.sites.index.columns', JSON.stringify(columns.value))
 }, {
     deep: true,
 })
@@ -130,7 +131,7 @@ watch(filters, debounce((n, o) => {
 })
 
 const get = async () => {
-    Inertia.get(route('client.sites.index'), {
+    Inertia.get(route('seller.sites.index'), {
         sort: sort.value,
         filter: {
             sale: filters.value.sale,
@@ -154,7 +155,7 @@ const get = async () => {
 }
 
 const toggleFavorite = async (site) => {
-    Inertia.post(route('client.sites.favorite', site), null, {
+    Inertia.post(route('seller.sites.favorite', site), null, {
         preserveScroll: true,
     })
 }
@@ -563,7 +564,7 @@ onMounted(() => {
                     <ul role="list" class="divide-y divide-gray-200">
 
                         <li v-for="(site, index) in sites.data" :key="index">
-                            <Link :href="route('client.sites.edit', site.id)"
+                            <Link :href="route('seller.sites.edit', site.id)"
                                 class="block bg-white px-4 py-4 hover:bg-gray-50">
                             <span class="flex items-center space-x-4">
                                 <span class="flex flex-1 space-x-2 truncate">
@@ -714,7 +715,7 @@ onMounted(() => {
                                             </span>
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <Link :href="route('client.sites.edit', site.id)"
+                                            <Link :href="route('seller.sites.edit', site.id)"
                                                 class="text-gray-500 hover:text-gray-900">
                                             {{ site.url }}
                                             </Link>

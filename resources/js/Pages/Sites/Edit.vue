@@ -58,7 +58,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('sites.update', site.id));
+    form.put(route('sites.update', site.id));
 }
 
 const toggle = () => {

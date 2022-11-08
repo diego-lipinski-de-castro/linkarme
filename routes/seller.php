@@ -6,6 +6,7 @@ use App\Http\Controllers\Seller\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Seller\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Seller\Auth\NewPasswordController;
 use App\Http\Controllers\Seller\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\Seller\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,11 @@ Route::group([
     'prefix' => 'vendedores',
     'as' => 'seller.',
 ], function () {
+
+    Route::get('dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard')
+        ->middleware(['auth:seller']);
+
     Route::get('sites', [SiteController::class, 'index'])
         ->name('sites.index')
         ->middleware(['auth:seller']);

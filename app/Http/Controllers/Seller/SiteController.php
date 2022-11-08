@@ -13,6 +13,7 @@ use App\Models\Offer;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -56,7 +57,7 @@ class SiteController extends Controller
             ->paginate(50)
             ->appends(request()->query());
 
-        return view('seller.sites.index', [
+        return Inertia::render('Seller/Sites/Index', [
             'sites' => $sites,
             'countries' => $countries,
             'languages' => $languages,
@@ -77,7 +78,7 @@ class SiteController extends Controller
 
         $coins = config('coins');
 
-        return view('seller.sites.create', [
+        return Inertia::render('Seller/Sites/Create', [
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
@@ -97,7 +98,7 @@ class SiteController extends Controller
             'seller_id' => auth()->id(),
         ]));
 
-        return redirect(route('seller.sites.index'));
+        return redirect()->route('seller.sites.index');
     }
 
     public function edit($id)
@@ -116,7 +117,7 @@ class SiteController extends Controller
 
         $coins = config('coins');
 
-        return view('seller.sites.edit', [
+        return Inertia::render('Seller/Sites/Edit', [
             'site' => $site,
             'countries' => $countries,
             'languages' => $languages,
@@ -134,7 +135,7 @@ class SiteController extends Controller
 
         $site->update($request->validated());
 
-        return redirect(route('seller.sites.index'));
+        return redirect()->route('seller.sites.index');
     }
 
     /**
@@ -198,6 +199,6 @@ class SiteController extends Controller
             'cost' => $validated['offer_cost'],
         ]);
 
-        return redirect(route('seller.sites.index'));
+        return redirect()->route('seller.sites.index');
     }
 }

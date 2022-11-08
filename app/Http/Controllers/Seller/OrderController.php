@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderController extends Controller
@@ -25,7 +26,7 @@ class OrderController extends Controller
             ->paginate(15)
             ->appends(request()->query());
 
-        return view('seller.orders.index', [
+        return Inertia::render('Seller/Orders/Index', [
             'orders' => $orders,
         ]);
     }

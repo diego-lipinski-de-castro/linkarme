@@ -94,7 +94,7 @@ class SiteController extends Controller
      * @param  \App\Models\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function edit(Site $site)
+    public function show(Site $site)
     {
         $site->load([
             'category',
@@ -102,29 +102,15 @@ class SiteController extends Controller
             'country',
         ]);
 
-        $categories = Category::all();
-        $languages = Language::all();
-        $countries = Country::all();
-
         $coins = config('coins');
 
         $note = auth()->user()->notes()->where('site_id', $site->id)->first();
 
-        return Inertia::render('client.sites.edit', [
+        return Inertia::render('Client/Sites/Show', [
             'site' => $site,
-            'note' => $note,
-            'categories' => $categories,
-            'languages' => $languages,
-            'countries' => $countries,
             'coins' => $coins,
+            'note' => $note,
         ]);
-    }
-
-    public function favorite(Site $site)
-    {
-        auth()->user()->favorites()->toggle([$site->id]);
-
-        return back();
     }
 
     /**
@@ -132,10 +118,18 @@ class SiteController extends Controller
      */
     public function update(Request $request, Site $site)
     {
-        Note::updateOrCreate(
-            ['client_id' => auth()->id(), 'site_id' => $site->id],
-            ['text' => $request->input('text')]
-        );
+        auth()->user()->notes()->updateOrCreate([
+            'site_id' => $site->id
+        ], [
+            'text' => $request->input('text')
+        ]);
+
+        return back();
+    }
+
+    public function favorite(Site $site)
+    {
+        auth()->user()->favorites()->toggle([$site->id]);
 
         return back();
     }
