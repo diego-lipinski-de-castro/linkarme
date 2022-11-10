@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -12,20 +13,23 @@ class DashboardController extends Controller
             [
                 'label' => 'Pedidos em aberto',
                 'value' => Order::status('WAITING')->count(),
+                'link' => route('orders.index'),
             ],
             [
                 'label' => 'Pedidos esse mês',
                 'value' => Order::whereMonth('created_at', date('m'))->count(),
+                'link' => route('orders.index'),
             ],
             [
                 'label' => 'Pedidos no total',
                 'value' => Order::count(),
+                'link' => route('orders.index'),
             ],
         ];
 
         $data = json_decode(json_encode($data));
 
-        return view('dashboard', [
+        return Inertia::render('Dashboard', [
             'data' => $data,
         ]);
     }

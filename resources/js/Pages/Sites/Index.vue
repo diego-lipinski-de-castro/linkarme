@@ -67,6 +67,8 @@ const props = defineProps({
     categories: Array,
     importFailures: Object,
     importDiff: Number,
+    pendingCount: Number,
+    offersCount: Number,
 });
 
 const links = computed(() => {
@@ -256,18 +258,20 @@ onMounted(() => {
                                                     <tr v-for="(failure, index) in importFailures" :key="index">
                                                         <td
                                                             class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6">
-                                                            {{failure.row }}</td>
+                                                            {{ failure.row }}</td>
                                                         <td
                                                             class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 border-l">
                                                             {{ failure.attribute }}</td>
                                                         <td
                                                             class="whitespace-nowrap px-2 py-2 text-sm text-gray-900 border-l">
                                                             {{
-                                                            failure.values[failure.attribute] ?? '-' }}</td>
+                                                                    failure.values[failure.attribute] ?? '-'
+                                                            }}</td>
                                                         <td
                                                             class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 border-l">
                                                             {{
-                                                            failure.errors[0]}}</td>
+                                                                    failure.errors[0]
+                                                            }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -297,65 +301,79 @@ onMounted(() => {
             </template>
 
             <template #header>
-                <div
-                    class="flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        Sites
-                    </h2>
+                <div class="flex flex-col">
+                    <div class="w-full flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                            Sites
+                        </h2>
 
-                    <div class="flex space-x-3">
-                        <Link :href="route('sites.create')"
-                            class="flex max-w-xs items-center rounded-md bg-indigo-500 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-indigo-700">
-                        <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
+                        <div class="flex space-x-3">
+                            <Link :href="route('sites.create')"
+                                class="flex max-w-xs items-center rounded-md bg-indigo-500 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-indigo-700">
+                            <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
+                            </Link>
+
+                            <button @click="openImportDialog = true"
+                                class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Import') }}</span>
+                                <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                            </button>
+
+                            <a :href="route('sites.export')"
+                                class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export') }}</span>
+                                <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
+                                    aria-hidden="true" />
+                            </a>
+
+                            <Menu as="div" class="relative">
+                                <div class="hidden sm:block">
+                                    <MenuButton
+                                        class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                        <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Columns') }}</span>
+                                        <ChevronDownIcon class="ml-1 h-5 w-5 flex-shrink-0 text-gray-400"
+                                            aria-hidden="true" />
+                                    </MenuButton>
+                                </div>
+                                <transition enter-active-class="transition ease-out duration-100"
+                                    enter-from-class="transform opacity-0 scale-95"
+                                    enter-to-class="transform opacity-100 scale-100"
+                                    leave-active-class="transition ease-in duration-75"
+                                    leave-from-class="transform opacity-100 scale-100"
+                                    leave-to-class="transform opacity-0 scale-95">
+                                    <MenuItems
+                                        class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                                        <div v-for="(column, index) in columns" :key="index"
+                                            class="px-4 py-2 relative flex">
+                                            <div class="flex items-center h-5">
+                                                <input v-model="column.visible" :value="column.key" :id="column.key"
+                                                    :name="column.key" type="checkbox"
+                                                    class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                            </div>
+
+                                            <div class="ml-3 text-sm">
+                                                <label :for="column.key" class="font-medium text-gray-700">{{
+                                                        column.label
+                                                }}</label>
+                                            </div>
+                                        </div>
+
+                                    </MenuItems>
+                                </transition>
+                            </Menu>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col px-4 sm:px-6 lg:px-8 pt-6">
+                        <Link v-if="pendingCount > 0" :href="route('sites.index', { 'filter[of_status]': 'PENDING' })"
+                            class="text-sm font-medium text-blue-500 hover:text-blue-700">{{ pendingCount }} sites
+                            aguardando aprovação.</Link>
+
+                        <Link v-if="offersCount > 0" :href="route('sites.offers')"
+                            class="text-sm font-medium text-blue-500 hover:text-blue-700"> 
+                            {{ offersCount > 1 ? `${offersCount} novas ofertas de valor` : `${offersCount} nova oferta de valor` }}
                         </Link>
-
-                        <button @click="openImportDialog = true"
-                            class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                            <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Import') }}</span>
-                            <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                        </button>
-
-                        <a :href="route('sites.export')"
-                            class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                            <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export') }}</span>
-                            <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                        </a>
-
-                        <Menu as="div" class="relative">
-                            <div class="hidden sm:block">
-                                <MenuButton
-                                    class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Columns') }}</span>
-                                    <ChevronDownIcon class="ml-1 h-5 w-5 flex-shrink-0 text-gray-400"
-                                        aria-hidden="true" />
-                                </MenuButton>
-                            </div>
-                            <transition enter-active-class="transition ease-out duration-100"
-                                enter-from-class="transform opacity-0 scale-95"
-                                enter-to-class="transform opacity-100 scale-100"
-                                leave-active-class="transition ease-in duration-75"
-                                leave-from-class="transform opacity-100 scale-100"
-                                leave-to-class="transform opacity-0 scale-95">
-                                <MenuItems
-                                    class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-
-                                    <div v-for="(column, index) in columns" :key="index"
-                                        class="px-4 py-2 relative flex">
-                                        <div class="flex items-center h-5">
-                                            <input v-model="column.visible" :value="column.key" :id="column.key"
-                                                :name="column.key" type="checkbox"
-                                                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                                        </div>
-
-                                        <div class="ml-3 text-sm">
-                                            <label :for="column.key" class="font-medium text-gray-700">{{ column.label
-                                            }}</label>
-                                        </div>
-                                    </div>
-
-                                </MenuItems>
-                            </transition>
-                        </Menu>
                     </div>
                 </div>
             </template>
@@ -638,7 +656,7 @@ onMounted(() => {
                     <ul role="list" class="divide-y divide-gray-200">
 
                         <li v-for="(site, index) in sites.data" :key="index">
-                            <a :href="route('sites.edit', site.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
+                            <Link :href="route('sites.edit', site.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
                                 <span class="flex items-center space-x-4">
                                     <span class="flex flex-1 space-x-2 truncate">
                                         <span class="text-sm text-gray-500">
@@ -647,7 +665,7 @@ onMounted(() => {
                                     </span>
                                     <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </span>
-                            </a>
+                            </Link>
                         </li>
 
                     </ul>
@@ -768,15 +786,16 @@ onMounted(() => {
                                                 <span v-if="site.sale_coin != coinStore.coin"
                                                     class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
                                                 <span> {{ site.sale_coin != coinStore.coin ? '~' : null }} {{
-                                                $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) /
-                                                100, coins[coinStore.coin]) }}</span>
+                                                        $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) /
+                                                            100, coins[coinStore.coin])
+                                                }}</span>
                                             </span>
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="route('sites.edit', site.id)"
+                                            <Link :href="route('sites.edit', site.id)"
                                                 class="text-gray-500 hover:text-gray-900">
                                                 {{ site.url }}
-                                            </a>
+                                            </Link>
                                         </td>
                                         <td v-show="columns[2].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
@@ -840,10 +859,10 @@ onMounted(() => {
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <div class="flex space-x-2">
+                                            <div class="flex justify-end space-x-2">
                                                 <Link :href="route('sites.edit', site.id)"
                                                     class="text-blue-500 hover:text-blue-700">
-                                                    <PencilSquareIcon class="h-5 w-5" />
+                                                <PencilSquareIcon class="h-5 w-5" />
                                                 </Link>
                                             </div>
                                         </td>

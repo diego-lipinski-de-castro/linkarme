@@ -47,13 +47,7 @@ import {
 import { debounce } from 'debounce';
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
-
-import vueFilePond from 'vue-filepond';
-import 'filepond/dist/filepond.min.css';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
-
-const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
 const coinStore = useCoinStore()
 const { t } = useTranslation();
@@ -509,7 +503,7 @@ onMounted(() => {
                     <ul role="list" class="divide-y divide-gray-200">
 
                         <li v-for="(site, index) in sites.data" :key="index">
-                            <a :href="route('sites.edit', site.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
+                            <Link :href="route('sites.edit', site.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
                                 <span class="flex items-center space-x-4">
                                     <span class="flex flex-1 space-x-2 truncate">
                                         <span class="text-sm text-gray-500">
@@ -518,7 +512,7 @@ onMounted(() => {
                                     </span>
                                     <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </span>
-                            </a>
+                            </Link>
                         </li>
 
                     </ul>
@@ -644,10 +638,10 @@ onMounted(() => {
                                             </span>
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="route('seller.sites.edit', site.id)"
+                                            <Link :href="route('seller.sites.edit', site.id)"
                                                 class="text-gray-500 hover:text-gray-900">
                                                 {{ site.url }}
-                                            </a>
+                                            </Link>
                                         </td>
                                         <td v-show="columns[2].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">

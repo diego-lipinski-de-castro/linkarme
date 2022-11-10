@@ -73,7 +73,6 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 Route::post('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']); // ok
 Route::get('sites/export', [SiteController::class, 'export'])->name('sites.export')->middleware(['auth']); // ok
 
-Route::get('sites/requests', [SiteController::class, 'requests'])->name('sites.requests')->middleware(['auth']);
 Route::get('sites/offers', [OfferController::class, 'index'])->name('sites.offers')->middleware(['auth']);
 
 Route::post('sites/offers/{offer}', [OfferController::class, 'accept'])->name('offers.accept')->middleware(['auth']);

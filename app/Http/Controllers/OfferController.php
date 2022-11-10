@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper;
 use App\Models\Offer;
+use Inertia\Inertia;
 
 class OfferController extends Controller
 {
@@ -18,7 +19,7 @@ class OfferController extends Controller
             ])
             ->get();
 
-        return view('sites.offers', [
+        return Inertia::render('Sites/Offers', [
             'offers' => $offers,
         ]);
     }

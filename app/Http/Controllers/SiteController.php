@@ -35,8 +35,8 @@ class SiteController extends Controller
     {
         $coins = config('coins');
 
-        $pending = Site::ofStatus('PENDING')->count();
-        $offers = Offer::count();
+        $pendingCount = Site::ofStatus('PENDING')->count();
+        $offersCount = Offer::count();
 
         $countries = Country::query()
             ->whereHas('sites')
@@ -58,6 +58,7 @@ class SiteController extends Controller
             ->get();
 
         $sites = QueryBuilder::for(Site::class)
+            // ->ofStatus('PENDING')
             ->withTrashed()
             ->with('category')
             ->defaultSort('url')
@@ -87,14 +88,16 @@ class SiteController extends Controller
                 'menu',
                 AllowedFilter::custom('new', new NewFilter),
                 // AllowedFilter::custom('suggestion', new SuggestionFilter),
+
+                AllowedFilter::scope('of_status'),
             ])
             ->paginate(50)
             ->appends(request()->query());
 
         return Inertia::render('Sites/Index', [
             'coins' => $coins,
-            'pending' => $pending,
-            'offers' => $offers,
+            'pendingCount' => $pendingCount,
+            'offersCount' => $offersCount,
             'sites' => $sites,
             'countries' => $countries,
             'languages' => $languages,
@@ -102,65 +105,6 @@ class SiteController extends Controller
             'sellers' => $sellers,
             'importFailures' => session('importFailures'),
             'importDiff' => session('importDiff'),
-        ]);
-    }
-
-    public function requests()
-    {
-        $pending = Site::ofStatus('PENDING')->count();
-        $offers = Offer::count();
-
-        $countries = Country::query()
-            ->whereHas('sites')
-            ->orderBy('name')
-            ->get();
-
-        $languages = Language::query()
-            ->whereHas('sites')
-            ->orderBy('name')
-            ->get();
-
-        $categories = Category::query()
-            ->whereHas('sites')
-            ->orderBy('name')
-            ->get();
-
-        $sellers = Seller::query()
-            ->orderBy('name')
-            ->get();
-
-        $sites = QueryBuilder::for(Site::class)
-            // ->ofStatus('PENDING')
-            ->withTrashed()
-            ->with('category')
-            ->defaultSort('url')
-            ->allowedSorts(['url', 'da', 'dr', 'tf'])
-            ->allowedFilters([
-                'url',
-                AllowedFilter::exact('country_id'),
-                AllowedFilter::exact('language_id'),
-                AllowedFilter::custom('da', new FilterLimiter),
-                AllowedFilter::custom('dr', new FilterLimiter),
-                AllowedFilter::custom('traffic', new FilterLimiter),
-                AllowedFilter::custom('tf', new FilterLimiter),
-                AllowedFilter::exact('category_id'),
-                AllowedFilter::exact('seller_id'),
-                'ssl',
-                'gambling',
-                'sponsor',
-                'cripto',
-            ])
-            ->paginate(50)
-            ->appends(request()->query());
-
-        return Inertia::render('Sites/Index', [
-            'pending' => $pending,
-            'offers' => $offers,
-            'sites' => $sites,
-            'countries' => $countries,
-            'languages' => $languages,
-            'categories' => $categories,
-            'sellers' => $sellers,
         ]);
     }
 

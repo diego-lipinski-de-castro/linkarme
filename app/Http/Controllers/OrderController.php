@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Seller;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -49,7 +50,7 @@ class OrderController extends Controller
             ->paginate(15)
             ->appends(request()->query());
 
-        return view('orders.index', [
+        return Inertia::render('Orders/Index', [
             'orders' => $orders,
             'statuses' => $statuses,
             'sites' => $sites,
@@ -79,7 +80,7 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('orders.create', [
+        return Inertia::render('Orders/Create', [
             'statuses' => $statuses,
             'sites' => $sites,
             'clients' => $clients,
@@ -97,7 +98,7 @@ class OrderController extends Controller
     {
         Order::create($request->validated());
 
-        return redirect(route('orders.index'));
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -139,7 +140,7 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('orders.edit', [
+        return Inertia::render('Orders/Edit', [
             'order' => $order,
             'statuses' => $statuses,
             'sites' => $sites,
@@ -159,7 +160,7 @@ class OrderController extends Controller
     {
         $order->update($request->validated());
 
-        return redirect(route('orders.index'));
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -173,11 +174,6 @@ class OrderController extends Controller
         $order->delete();
 
         return back();
-    }
-
-    public function import()
-    {
-        return view('orders.import');
     }
 
     public function importSubmit(Request $request)
@@ -211,8 +207,9 @@ class OrderController extends Controller
 
         $diff = $after - $before;
 
-        return back()
-            ->with('failures', $importFailures)
-            ->with('diff', $diff);
+        $request->session()->flash('importFailures', $importFailures);
+        $request->session()->flash('importDiff', $diff);
+
+        return back();
     }
 }
