@@ -236,6 +236,8 @@ class SiteController extends Controller
         $countries = Country::orderBy('name')->get();
         $sellers = Seller::orderBy('name')->get();
 
+        $note = auth()->user()->notes()->where('site_id', $site->id)->first();
+
         $coins = config('coins');
 
         return Inertia::render('Sites/Edit', [
@@ -245,6 +247,7 @@ class SiteController extends Controller
             'countries' => $countries,
             'sellers' => $sellers,
             'coins' => $coins,
+            'note' => $note,
         ]);
     }
 

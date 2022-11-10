@@ -21,7 +21,7 @@ const form = useForm({
 })
 
 const submit = () => {
-    form.put(route('client.sites.update', site.id), {
+    form.put(route('client.notes.update', site.id), {
         preserveScroll: true,
         preserveState: true,
     })

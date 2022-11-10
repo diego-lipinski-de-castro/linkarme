@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import SellerLayout from '@/Layouts/SellerLayout.vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed } from 'vue'
@@ -39,9 +39,6 @@ const form = useForm({
     cost: site.cost,
     cost_coin: site.cost_coin,
 
-    sale: site.sale,
-    sale_coin: site.sale_coin,
-
     last_posted: site.last_posted,
     seller_id: site.seller_id,
 
@@ -59,26 +56,17 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(route('sites.update', site.id));
-}
-
-const toggle = () => {
-    form.post(route('sites.toggle', site.id));
-}
-
-const destroy = () => {
-    form.delete(route('sites.destroy', site.id));
+    form.put(route('seller.sites.update', site.id));
 }
 
 const costFormat = computed(() => coins[form.cost_coin])
-const saleFormat = computed(() => coins[form.sale_coin])
 
 const noteForm = useForm({
     text: note?.text ?? '',
 })
 
 const submitNote = () => {
-    noteForm.put(route('notes.update', site.id), {
+    noteForm.put(route('seller.notes.update', site.id), {
         preserveScroll: true,
         preserveState: true,
     })
@@ -88,7 +76,7 @@ const submitNote = () => {
         
 <template>
     <AppSuspense>
-        <AppLayout :title="$t('Edit site')">
+        <SellerLayout :title="$t('Edit site')">
             <template #header>
                 <div
                     class="flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
@@ -102,32 +90,6 @@ const submitNote = () => {
                         'text-green-500': site.status == 'APPROVED',
                         'text-red-500': site.status == 'REJECTED',
                     }]">{{ site.formatted_status }}</span>
-
-                    <div class="flex items-center">
-
-                        <div class="flex space-x-2 justify-end">
-                            <form @submit.prevent="toggle" class="space-x-2 flex">
-
-                                <button v-if="site.deleted_at != null" type="submit"
-                                    class="text-sm font-medium bg-green-500 hover:bg-green-700 px-2 py-1 rounded-md text-white">
-                                    Reativar
-                                </button>
-
-                                <button v-else type="submit"
-                                    class="text-sm font-medium bg-yellow-500 hover:bg-yellow-700 px-2 py-1 rounded-md text-white">
-                                    Inativar
-                                </button>
-
-                            </form>
-
-                            <form v-if="site.deleted_at != null" @submit.prevent="destroy" class="flex items-center">
-                                <button type="submit"
-                                    class="text-sm font-medium bg-red-500 hover:bg-red-700 px-2 py-1 rounded-md text-white">
-                                    Apagar
-                                </button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </template>
 
@@ -290,7 +252,7 @@ const submitNote = () => {
                             </div>
                         </div>
 
-                        <div class="col-span-3">
+                        <div class="col-span-6">
                             <InputLabel for="cost" :value="$t('Cost')" />
 
                             <div class="mt-1 relative rounded-md shadow-sm">
@@ -309,27 +271,6 @@ const submitNote = () => {
                             </div>
 
                             <InputError class="mt-2" :message="form.errors.cost" />
-                        </div>
-
-                        <div class="col-span-3">
-                            <InputLabel for="sale" :value="$t('Sale')" />
-
-                            <div class="mt-1 relative rounded-md shadow-sm">
-                                <input v-model.lazy="form.sale" v-money3="saleFormat" type="text" name="sale" id="sale"
-                                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-
-                                <div class="absolute inset-y-0 right-0 flex items-center">
-                                    <label for="sale_coin" class="sr-only">Moeda</label>
-                                    <select v-model="form.sale_coin" id="sale_coin" name="sale_coin"
-                                        class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                        <option value="BRL">BRL</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="USD">USD</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <InputError class="mt-2" :message="form.errors.sale" />
                         </div>
 
                         <div class="col-span-6">
@@ -418,13 +359,6 @@ const submitNote = () => {
                         </div>
 
                         <div class="col-span-6 flex justify-end">
-
-                            <a v-if="site.status == 'PENDING'" :href="route('sites.reject', site.id)"
-                                class="bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Rejeitar</a>
-
-                            <a v-if="site.status == 'PENDING'" :href="route('sites.approve', site.id)"
-                                class="ml-2  bg-green-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Aprovar</a>
-
                             <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit"
                                 class="ml-2 flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{
                                         $t('Save')
@@ -435,7 +369,7 @@ const submitNote = () => {
             </div>
 
             
-        </AppLayout>
+        </SellerLayout>
     </AppSuspense>
 </template>
         

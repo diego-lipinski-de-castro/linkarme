@@ -8,6 +8,7 @@ use App\Http\Controllers\Client\Auth\NewPasswordController;
 use App\Http\Controllers\Client\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Client\Auth\VerifyEmailController;
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\NoteController;
 use App\Http\Controllers\Client\NotificationController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\SiteController;
@@ -41,9 +42,7 @@ Route::group([
         ->name('sites.show')
         ->middleware(['auth:client']);
 
-    Route::put('sites/{site}/note', [SiteController::class, 'update'])
-        ->name('sites.update')
-        ->middleware(['auth:client']);
+    Route::put('sites/{site}/note', [NoteController::class, 'update'])->name('notes.update')->middleware(['auth:client']);
 
     Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index')

@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SellerController;
@@ -85,6 +86,8 @@ Route::get('sites/{site}/rejeitar', [SiteController::class, 'reject'])->withTras
 
 Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth']);
 Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth']);
+
+Route::put('sites/{site}/note', [NoteController::class, 'update'])->name('notes.update')->middleware(['auth']);
 
 // orders
 Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);

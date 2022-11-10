@@ -59,8 +59,8 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function note()
+    public function notes()
     {
-        return $this->morphOne(Note::class, 'owner');
+        return $this->morphMany(Note::class, 'owner');
     }
 }

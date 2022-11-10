@@ -148,13 +148,13 @@ await i18nextPromise
                     </div>
                     <nav class="sidebar mt-5 flex flex-1 flex-col overflow-y-auto" aria-label="Sidebar">
                         <div class="space-y-1 px-2">
-                            <a v-for="item in navigation" :key="item.name" :href="item.href"
+                            <Link v-for="item in navigation" :key="item.name" :href="item.href"
                                 :class="[item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:text-white hover:bg-indigo-600', 'group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md']"
                                 :aria-current="item.current ? 'page' : undefined">
                                 <component :is="item.icon" class="mr-4 h-6 w-6 flex-shrink-0 text-indigo-200"
                                     aria-hidden="true" />
                                 {{ item.name }}
-                            </a>
+                            </Link>
                         </div>
                         <div class="mt-6 pt-6 border-t border-indigo-800">
                             <slot name="submenu" />

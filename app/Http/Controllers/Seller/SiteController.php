@@ -26,6 +26,8 @@ class SiteController extends Controller
      */
     public function index(Request $request)
     {
+        $coins = config('coins');
+
         $countries = Country::orderBy('name')->get();
         $languages = Language::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
@@ -59,6 +61,7 @@ class SiteController extends Controller
 
         return Inertia::render('Seller/Sites/Index', [
             'sites' => $sites,
+            'coins' => $coins,
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,
@@ -115,6 +118,8 @@ class SiteController extends Controller
         $languages = Language::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
 
+        $note = auth()->user()->notes()->where('site_id', $site->id)->first();
+
         $coins = config('coins');
 
         return Inertia::render('Seller/Sites/Edit', [
@@ -123,6 +128,7 @@ class SiteController extends Controller
             'languages' => $languages,
             'categories' => $categories,
             'coins' => $coins,
+            'note' => $note,
         ]);
     }
 

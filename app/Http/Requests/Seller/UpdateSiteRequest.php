@@ -80,14 +80,6 @@ class UpdateSiteRequest extends FormRequest
             'url' => Str::contains($this->url, '://') ?
                 str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
                 str_replace('www.', '', parse_url($this->url, PHP_URL_PATH)),
-
-            'gambling' => ! blank($this->gambling),
-            'cdb' => ! blank($this->cdb),
-            'cripto' => ! blank($this->cripto),
-            'sponsor' => ! blank($this->sponsor),
-            'menu' => ! blank($this->menu),
-            'banner' => ! blank($this->banner),
-
             'cost' => Helper::extractNumbersFromString($this->cost),
             'sale' => Helper::extractNumbersFromString($this->sale),
         ]);

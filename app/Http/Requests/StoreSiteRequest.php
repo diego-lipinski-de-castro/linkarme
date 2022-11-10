@@ -36,11 +36,11 @@ class StoreSiteRequest extends FormRequest
             'dr' => 'nullable|integer',
             'traffic' => 'nullable|integer',
             'tf' => 'nullable|integer',
-            'country' => 'nullable|string',
-            'language' => 'nullable|string',
+
             'category_id' => 'nullable|integer|exists:categories,id',
             'language_id' => 'nullable|integer|exists:languages,id',
             'country_id' => 'nullable|integer|exists:countries,id',
+
             'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
 
             'gambling' => 'nullable|boolean',

@@ -6,7 +6,9 @@ use App\Http\Controllers\Seller\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Seller\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Seller\Auth\NewPasswordController;
 use App\Http\Controllers\Seller\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Seller\Auth\VerifyEmailController;
 use App\Http\Controllers\Seller\DashboardController;
+use App\Http\Controllers\Seller\NoteController;
 use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\Seller\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -44,8 +46,17 @@ Route::group([
         ->name('sites.update')
         ->middleware(['auth:seller']);
 
-    Route::delete('sites/{site}', [SiteController::class, 'destroy'])->withTrashed()->name('sites.destroy')->middleware(['auth:seller']);
-    Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrashed()->name('sites.toggle')->middleware(['auth:seller']);
+    Route::delete('sites/{site}', [SiteController::class, 'destroy'])
+        ->withTrashed()
+        ->name('sites.destroy')
+        ->middleware(['auth:seller']);
+
+    Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])
+        ->withTrashed()
+        ->name('sites.toggle')
+        ->middleware(['auth:seller']);
+
+    Route::put('sites/{site}/note', [NoteController::class, 'update'])->name('notes.update')->middleware(['auth:seller']);
 
     Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index')
