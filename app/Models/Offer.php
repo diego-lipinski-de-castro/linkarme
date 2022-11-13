@@ -15,6 +15,7 @@ class Offer extends Model implements Auditable
         'seller_id',
         'site_id',
         'cost',
+        'cost_coin',
     ];
 
     public function seller()

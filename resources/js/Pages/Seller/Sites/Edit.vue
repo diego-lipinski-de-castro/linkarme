@@ -8,13 +8,12 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 
-const { site, coins, categories, languages, countries, sellers, note } = defineProps({
+const { site, coins, categories, languages, countries, note } = defineProps({
     site: Object,
     coins: Object,
     categories: Array,
     languages: Array,
     countries: Array,
-    sellers: Array,
     note: Object,
 });
 
@@ -40,7 +39,6 @@ const form = useForm({
     cost_coin: site.cost_coin,
 
     last_posted: site.last_posted,
-    seller_id: site.seller_id,
 
     obs: site.obs,
 
@@ -277,23 +275,6 @@ const submitNote = () => {
                             <InputLabel for="last_posted" value="Último post" />
                             <TextInput id="last_posted" v-model="form.last_posted" type="date" class="mt-1 block w-full" />
                             <InputError class="mt-2" :message="form.errors.last_posted" />
-                        </div>
-
-                        <div class="col-span-6">
-                            <label for="seller_id" class="block text-sm font-medium text-gray-700">{{ $t('Seller')
-                            }}</label>
-                            <div class="mt-1">
-                                <select v-model="form.seller_id" id="seller_id" name="seller_id"
-                                    class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                                    <option :value="null">Selecione</option>
-                                    <option v-for="(seller, index) in sellers" :key="index" :value="seller.id">{{
-                                            seller.name
-                                    }}</option>
-                                </select>
-                            </div>
-
-                            <InputError class="mt-2" :message="form.errors.seller_id" />
-
                         </div>
 
                         <div class="col-span-6">

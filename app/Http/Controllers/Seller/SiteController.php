@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Filters\FilterLimiter;
+use App\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\StoreSiteRequest;
 use App\Http\Requests\Seller\UpdateSiteRequest;
@@ -186,7 +187,8 @@ class SiteController extends Controller
     {
         $validated = $request->validate([
             'url' => 'required',
-            'offer_cost' => 'required',
+            'cost' => 'required',
+            'cost_coin' => 'required|in:BRL,EUR,USD',
         ]);
 
         $url = Str::contains($validated['url'], '://') ?
@@ -202,7 +204,8 @@ class SiteController extends Controller
         Offer::create([
             'seller_id' => auth()->id(),
             'site_id' => $site->id,
-            'cost' => $validated['offer_cost'],
+            'cost' => Helper::extractNumbersFromString($validated['cost']),
+            'cost_coin' => $validated['cost_coin'],
         ]);
 
         return redirect()->route('seller.sites.index');

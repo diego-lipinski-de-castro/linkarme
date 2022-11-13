@@ -4,57 +4,19 @@ import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, ref, watch } from 'vue'
-import unionBy from 'lodash/unionBy'
-import {
-    Dialog,
-    DialogPanel,
-    DialogTitle,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    TransitionChild,
-    TransitionRoot,
-    Switch, SwitchGroup, SwitchLabel,
-} from '@headlessui/vue'
-
-import { ArrowLongLeftIcon, ArrowLongRightIcon, CloudArrowDownIcon, CloudArrowUpIcon } from '@heroicons/vue/20/solid'
-
-import {
-    Bars3CenterLeftIcon,
-    BellIcon,
-    ClockIcon,
-    CogIcon,
-    CreditCardIcon,
-    DocumentChartBarIcon,
-    HomeIcon,
-    QuestionMarkCircleIcon,
-    ScaleIcon,
-    ShieldCheckIcon,
-    UserGroupIcon,
-    XMarkIcon,
-    PencilSquareIcon,
-} from '@heroicons/vue/24/outline'
-import {
-    BanknotesIcon,
-    BuildingOfficeIcon,
-    CheckCircleIcon,
-    ChevronDownIcon,
-    ChevronRightIcon,
-    MagnifyingGlassIcon,
-} from '@heroicons/vue/20/solid'
-
-import { debounce } from 'debounce';
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
-
+import {
+    ChevronRightIcon,
+} from '@heroicons/vue/20/solid'
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 const coinStore = useCoinStore()
-const { t } = useTranslation();
+const { t } = useTranslation()
 
 const props = defineProps({
     title: String,
-    offers: Object,
+    offers: Array,
+    coins: Object,
 });
 
 const accept = (offer) => {
@@ -140,26 +102,32 @@ onMounted(() => {
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr v-for="(offer, index) in offers" :key="index" class="bg-white">
+                                    <tr v-if="offers.length == 0">
+                                        <td colspan="6" class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 text-center italic">
+                                            {{ $t('No new offers.') }}
+                                        </td>
+                                    </tr>
+
+                                    <tr v-else v-for="(offer, index) in offers" :key="index" class="bg-white">
                                         <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 hover:text-gray-900">
-                                            {{ offer?.site?.url ?? '-' }}
+                                            <a :href="route('sites.edit', offer.site.id)" target="_blank">{{ offer.site.url ?? '-' }}</a>
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ offer?.site?.formatted_cost ?? '-' }}
+                                            {{ $filters.currency(offer.site.cost / 100, coins[offer.site.cost_coin]) }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ offer?.site?.seller?.name ?? '-' }}
+                                            {{ offer.site.seller.name ?? '-' }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ offer.cost ?? '-' }}
+                                            {{ $filters.currency(offer.cost / 100, coins[offer.cost_coin]) }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ offer?.seller?.name ?? '-' }}
+                                            {{ offer.seller.name ?? '-' }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
@@ -167,12 +135,12 @@ onMounted(() => {
 
                                                 <form @submit.prevent="accept(offer.id)">
                                                     <button
-                                                        class="px-2 py-1 font-medium rounded-md bg-green-500 text-white">Aprovar</button>
+                                                        class="px-2 py-1 font-medium rounded-md bg-green-500 hover:bg-green-600 transition-colors text-white">Aprovar</button>
                                                 </form>
 
                                                 <form @submit.prevent="reject(offer.id)">
                                                     <button
-                                                        class="px-2 py-1 font-medium rounded-md bg-red-500 text-white">Recusar</button>
+                                                        class="px-2 py-1 font-medium rounded-md bg-red-500 hover:bg-red-600 transition-colors text-white">Recusar</button>
                                                 </form>
 
                                             </div>

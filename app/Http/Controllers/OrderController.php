@@ -38,6 +38,11 @@ class OrderController extends Controller
             ->get();
 
         $orders = QueryBuilder::for(Order::class)
+            ->with([
+                'site',
+                'client',
+                'seller',
+            ])
             ->defaultSort('-created_at')
             // ->allowedSorts([])
             ->allowedFilters([
@@ -176,10 +181,10 @@ class OrderController extends Controller
         return back();
     }
 
-    public function importSubmit(Request $request)
+    public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|file',
+            'file' => 'required|file|mimes:csv',
         ]);
 
         $before = Order::count();

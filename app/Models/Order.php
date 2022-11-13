@@ -44,6 +44,14 @@ class Order extends Model implements Auditable
         'comission' => 'integer',
     ];
 
+    protected $appends = [
+        'formatted_charged',
+        'formatted_paid',
+        'formatted_markup',
+        'formatted_comission',
+        'formatted_status',
+    ];
+
     public function site()
     {
         return $this->belongsTo(Site::class);

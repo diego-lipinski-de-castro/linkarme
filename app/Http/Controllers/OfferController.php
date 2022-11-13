@@ -10,6 +10,8 @@ class OfferController extends Controller
 {
     public function index()
     {
+        $coins = config('coins');
+
         $offers = Offer::query()
             ->with([
                 'seller',
@@ -21,6 +23,7 @@ class OfferController extends Controller
 
         return Inertia::render('Sites/Offers', [
             'offers' => $offers,
+            'coins' => $coins,
         ]);
     }
 

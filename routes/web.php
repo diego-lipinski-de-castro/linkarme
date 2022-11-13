@@ -89,8 +89,7 @@ Route::post('sites/{site}/toggle', [SiteController::class, 'toggle'])->withTrash
 Route::put('sites/{site}/note', [NoteController::class, 'update'])->name('notes.update')->middleware(['auth']);
 
 // orders
-Route::get('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
-Route::post('orders/import', [OrderController::class, 'importSubmit'])->name('orders.importSubmit')->middleware(['auth']);
+Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
 
 Route::resource('orders', OrderController::class)->middleware(['auth']);
 

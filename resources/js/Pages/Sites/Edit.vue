@@ -329,6 +329,8 @@ const submitNote = () => {
                                 </div>
                             </div>
 
+                            <p :class="['mt-2 ml-2 text-sm font-medium', site.positive ? 'text-green-500' : 'text-red-500']">Sugerido: {{ site.formatted_suggested }}</p>
+
                             <InputError class="mt-2" :message="form.errors.sale" />
                         </div>
 

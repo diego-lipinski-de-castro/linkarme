@@ -27,6 +27,10 @@ class RedirectIfAuthenticated
                     return redirect(RouteServiceProvider::CLIENT_HOME);
                 }
 
+                if ($guard == 'seller') {
+                    return redirect(RouteServiceProvider::SELLER_HOME);
+                }
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }

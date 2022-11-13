@@ -27,6 +27,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->string('cost');
+            $table->enum('cost_coin', ['BRL', 'EUR', 'USD'])->default('BRL');
 
             $table->timestamps();
         });

@@ -20,6 +20,10 @@ class Authenticate extends Middleware
                 return route('client.login');
             }
 
+            if($request->is('vendedores*')) {
+                return route('seller.login');
+            }
+
             return route('login');
         }
     }

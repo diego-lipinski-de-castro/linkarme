@@ -96,12 +96,11 @@ class Site extends Model implements Auditable
 
     protected $appends = [
         'formatted_status',
-        'formatted_cost',
-        'formatted_sale',
         'formatted_suggested',
         'formatted_diff',
         'formatted_inserted_at',
         'formatted_updated_at',
+        'positive',
     ];
 
     protected static function booted()
@@ -242,16 +241,6 @@ class Site extends Model implements Auditable
         return self::STATUSES[$this->status];
     }
 
-    public function getFormattedCostAttribute()
-    {
-        return 'R$ '.number_format($this->cost / 100, 2, ',', '.');
-    }
-
-    public function getFormattedSaleAttribute()
-    {
-        return 'R$ '.number_format($this->sale / 100, 2, ',', '.');
-    }
-
     public function getFormattedSuggestedAttribute()
     {
         return 'R$ '.number_format($this->suggested / 100, 2, ',', '.');
@@ -259,7 +248,7 @@ class Site extends Model implements Auditable
 
     public function getPositiveAttribute()
     {
-        return $this->suggested > $this->sale;
+        return $this->suggested < $this->sale;
     }
 
     public function getFormattedDiffAttribute()
