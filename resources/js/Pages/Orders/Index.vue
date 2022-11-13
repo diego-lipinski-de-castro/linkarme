@@ -616,12 +616,7 @@ watch(openImportDialog, (n, o) => {
                                             class="whitespace-nowrap px-6 py-4 text-sm"
                                         >
                                             <a
-                                                :href="
-                                                    route(
-                                                        'sites.edit',
-                                                        order.site.id
-                                                    )
-                                                "
+                                                :href="order.url"
                                                 target="_blank"
                                                 class="text-gray-500 hover:text-gray-900"
                                             >

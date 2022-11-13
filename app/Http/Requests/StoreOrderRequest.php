@@ -53,6 +53,7 @@ class StoreOrderRequest extends FormRequest
             'charged' => Helper::extractNumbersFromString($this->charged),
             'paid' => Helper::extractNumbersFromString($this->paid),
             'markup' => Helper::extractNumbersFromString($this->markup),
+            'comission' => Helper::extractNumbersFromString($this->comission),
         ]);
     }
 }

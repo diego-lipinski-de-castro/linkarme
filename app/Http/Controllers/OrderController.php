@@ -71,6 +71,8 @@ class OrderController extends Controller
      */
     public function create()
     {
+        $coins = config('coins');
+
         $statuses = Order::STATUSES;
 
         $sites = Site::query()
@@ -86,6 +88,7 @@ class OrderController extends Controller
             ->get();
 
         return Inertia::render('Orders/Create', [
+            'coins' => $coins,
             'statuses' => $statuses,
             'sites' => $sites,
             'clients' => $clients,
@@ -131,6 +134,8 @@ class OrderController extends Controller
             'seller',
         ]);
 
+        $coins = config('coins');
+
         $statuses = Order::STATUSES;
 
         $sites = Site::query()
@@ -147,6 +152,7 @@ class OrderController extends Controller
 
         return Inertia::render('Orders/Edit', [
             'order' => $order,
+            'coins' => $coins,
             'statuses' => $statuses,
             'sites' => $sites,
             'clients' => $clients,
