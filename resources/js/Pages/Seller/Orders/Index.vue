@@ -1,5 +1,5 @@
 <script setup>
-import ClientLayout from "@/Layouts/ClientLayout.vue";
+import SellerLayout from "@/Layouts/SellerLayout.vue";
 import TableSortButton from "@/Components/TableSortButton.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
@@ -63,7 +63,7 @@ const props = defineProps({
     orders: Object,
     statuses: Object,
     sites: Array,
-    sellers: Array,
+    clients: Array,
 });
 
 const links = computed(() => {
@@ -75,16 +75,19 @@ const links = computed(() => {
 
 const _defaultColumns = [
     { key: "url", label: t("Url"), visible: true },
+    { key: "client", label: t("Client"), visible: true },
     { key: "seller", label: t("Seller"), visible: true },
     { key: "charged", label: t("Charged"), visible: true },
     { key: "paid", label: t("Paid"), visible: true },
+    { key: "markup", label: t("Markup"), visible: true },
+    { key: "comission", label: t("Comission"), visible: true },
     { key: "status", label: t("Status"), visible: true },
     { key: "created_at", label: t("Created at"), visible: true },
 ];
 
-const _columns = localStorage.getItem("client.orders.index.columns")
+const _columns = localStorage.getItem("seller.orders.index.columns")
     ? unionBy(
-          JSON.parse(localStorage.getItem("client.orders.index.columns")),
+          JSON.parse(localStorage.getItem("seller.orders.index.columns")),
           _defaultColumns,
           "key"
       )
@@ -96,7 +99,7 @@ watch(
     columns,
     (n, o) => {
         localStorage.setItem(
-            "client.orders.index.columns",
+            "seller.orders.index.columns",
             JSON.stringify(columns.value)
         );
     },
@@ -131,7 +134,7 @@ watch(
 
 const get = async () => {
     Inertia.get(
-        route("client.orders.index"),
+        route("seller.orders.index"),
         {
             sort: sort.value,
             filter: {
@@ -148,7 +151,7 @@ const get = async () => {
 
 <template>
     <AppSuspense>
-        <ClientLayout :title="$t('Orders')">
+        <SellerLayout :title="$t('Orders')">
             <template #uppermenu>
                 <!-- <div class="flex w-full md:ml-0">
                     <label for="search" class="sr-only">Search</label>
@@ -175,6 +178,16 @@ const get = async () => {
                         </h2>
 
                         <div class="flex space-x-3">
+                            <Link
+                                :href="route('orders.create')"
+                                class="flex max-w-xs items-center rounded-md bg-indigo-500 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 p-2 hover:bg-indigo-700"
+                            >
+                                <span
+                                    class="px-1 text-sm font-medium text-white"
+                                    >{{ $t("Add order") }}</span
+                                >
+                            </Link>
+
                             <Menu as="div" class="relative">
                                 <div class="hidden sm:block">
                                     <MenuButton
@@ -301,31 +314,52 @@ const get = async () => {
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
-                                            {{ $t("Seller") }}
+                                            {{ $t("Client") }}
                                         </th>
                                         <th
                                             v-show="columns[2].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
-                                            {{ $t("Charged") }}
+                                            {{ $t("Seller") }}
                                         </th>
                                         <th
                                             v-show="columns[3].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
-                                            {{ $t("Paid") }}
+                                            {{ $t("Charged") }}
                                         </th>
                                         <th
                                             v-show="columns[4].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
-                                            {{ $t("Status") }}
+                                            {{ $t("Paid") }}
                                         </th>
                                         <th
                                             v-show="columns[5].visible"
+                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col"
+                                        >
+                                            {{ $t("Markup") }}
+                                        </th>
+                                        <th
+                                            v-show="columns[6].visible"
+                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col"
+                                        >
+                                            {{ $t("Comission") }}
+                                        </th>
+                                        <th
+                                            v-show="columns[7].visible"
+                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col"
+                                        >
+                                            {{ $t("Status") }}
+                                        </th>
+                                        <th
+                                            v-show="columns[8].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
@@ -362,32 +396,55 @@ const get = async () => {
                                             v-show="columns[1].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
-                                            {{ order.seller?.name ?? "-" }}
+                                            {{ order.client?.name ?? "-" }}
                                         </td>
 
                                         <td
                                             v-show="columns[2].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
-                                            {{ order.formatted_charged ?? "-" }}
+                                            {{ order.seller?.name ?? "-" }}
                                         </td>
 
                                         <td
                                             v-show="columns[3].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
-                                            {{ order.formatted_paid ?? "-" }}
+                                            {{ order.formatted_charged ?? "-" }}
                                         </td>
 
                                         <td
                                             v-show="columns[4].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
-                                            {{ order.formatted_status ?? "-" }}
+                                            {{ order.formatted_paid ?? "-" }}
                                         </td>
 
                                         <td
                                             v-show="columns[5].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
+                                        >
+                                            {{ order.formatted_markup ?? "-" }}
+                                        </td>
+
+                                        <td
+                                            v-show="columns[6].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
+                                        >
+                                            {{
+                                                order.formatted_comission ?? "-"
+                                            }}
+                                        </td>
+
+                                        <td
+                                            v-show="columns[7].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
+                                        >
+                                            {{ order.formatted_status ?? "-" }}
+                                        </td>
+
+                                        <td
+                                            v-show="columns[8].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
                                             {{
@@ -400,7 +457,18 @@ const get = async () => {
                                         <td
                                             class="whitespace-nowrap px-6 py-4 text-sm"
                                         >
-                                            
+                                            <div
+                                                class="flex justify-end space-x-2"
+                                            >
+                                                <Link
+                                                    href="#"
+                                                    class="text-blue-500 hover:text-blue-700"
+                                                >
+                                                    <PencilSquareIcon
+                                                        class="h-5 w-5"
+                                                    />
+                                                </Link>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -453,6 +521,6 @@ const get = async () => {
                     </div>
                 </div>
             </div>
-        </ClientLayout>
+        </SellerLayout>
     </AppSuspense>
 </template>

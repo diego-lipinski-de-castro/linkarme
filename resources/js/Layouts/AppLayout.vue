@@ -115,7 +115,7 @@ await i18nextPromise
                             <DialogPanel class="relative flex w-full max-w-xs flex-1 flex-col bg-indigo-700 pt-5 pb-4">
 
                                 <div class="flex flex-shrink-0 items-center px-4">
-                                    <ApplicationLogo white class="block h-8 w-auto" />
+                                    <ApplicationLogo white class="block h-14 w-auto" />
                                 </div>
                                 <nav class="mt-5 h-full flex-shrink-0 overflow-y-auto" aria-label="Sidebar">
                                     <div class="space-y-1 px-2">
@@ -144,7 +144,7 @@ await i18nextPromise
             <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
                 <div class="flex flex-grow flex-col overflow-y-auto bg-indigo-700 pt-5 pb-4">
                     <div class="flex flex-shrink-0 items-center px-4">
-                        <ApplicationLogo white class="block h-8 w-auto" />
+                        <ApplicationLogo white class="block h-14 w-auto" />
                     </div>
                     <nav class="sidebar mt-5 flex flex-1 flex-col overflow-y-auto" aria-label="Sidebar">
                         <div class="space-y-1 px-2">
@@ -209,12 +209,12 @@ await i18nextPromise
                                         </button>
                                         </MenuItem>
 
-                                        <MenuItem v-slot="{ active }">
+                                        <!-- <MenuItem v-slot="{ active }">
                                         <button @click="setCoin('EUR')"
                                             :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">
                                             EUR
                                         </button>
-                                        </MenuItem>
+                                        </MenuItem> -->
 
                                     </MenuItems>
                                 </transition>

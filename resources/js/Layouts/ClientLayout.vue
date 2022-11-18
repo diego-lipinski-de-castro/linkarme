@@ -79,6 +79,7 @@ const setCoin = async (coin) => {
     });
 }
 
+await coinStore.setCoin(coinStore.coin)
 await i18nextPromise
 </script>
     
@@ -200,11 +201,11 @@ await i18nextPromise
                                             </button>
                                         </MenuItem>
 
-                                        <MenuItem v-slot="{ active }">
+                                        <!-- <MenuItem v-slot="{ active }">
                                             <button @click="setCoin('EUR')" :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">
                                                 EUR
                                             </button>
-                                        </MenuItem>
+                                        </MenuItem> -->
 
                                     </MenuItems>
                                 </transition>

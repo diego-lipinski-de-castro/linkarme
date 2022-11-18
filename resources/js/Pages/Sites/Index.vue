@@ -3,7 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
     Dialog,
@@ -197,9 +197,11 @@ watch(openImportDialog, (n, o) => {
 })
 
 onMounted(() => {
-    tippy('[data-tippy-content]', {
-        interactive: true,
-    });
+    setTimeout(() => {
+        tippy('[data-tippy-content]', {
+            interactive: true,
+        });
+    }, 100)
 })
 </script>
         

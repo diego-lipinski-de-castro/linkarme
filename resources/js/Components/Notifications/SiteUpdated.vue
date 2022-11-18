@@ -4,14 +4,19 @@ import { Inertia } from "@inertiajs/inertia";
 import { useTranslation } from "i18next-vue";
 import { getCurrentInstance } from 'vue'
 
-const { notification } = defineProps({
+const { notification, coins } = defineProps({
     notification: Object,
+    coins: Object,
 });
 
 const app = getCurrentInstance()
 
 const attributes = {
-    sale: (value) => app.appContext.config.globalProperties.$filters.currency(value / 100),
+    sale: (value, frame) => {
+        const format = notification.data.audit_modified.sale_coin[frame];
+
+        return app.appContext.config.globalProperties.$filters.currency(value / 100, coins[format]);
+    },
     gambling: (value) => value,
     cdb: (value) => value,
     cripto: (value) => value,
@@ -19,7 +24,6 @@ const attributes = {
     menu: (value) => value,
     banner: (value) => value,
 }
-
 </script>
     
 <template>
@@ -38,7 +42,7 @@ const attributes = {
 
                     <template v-if="Object.hasOwnProperty(value.old)">
                         <span v-if="!Object.hasOwnProperty(value.new)" class="break-words"
-                            v-html="$t('attributes.new', { interpolation: { escapeValue: false }, attribute: `<strong>${$filters.capitalize(attribute)}</strong>`, new: `<strong>${attributes[attribute](value.new)}</strong>` })">
+                            v-html="$t('attributes.new', { interpolation: { escapeValue: false }, attribute: `<strong>${$filters.capitalize(attribute)}</strong>`, new: `<strong>${attributes[attribute](value.new, 'new')}</strong>` })">
                         </span>
 
                         <span v-else class="break-words"
@@ -47,12 +51,12 @@ const attributes = {
                     </template>
 
                     <span v-else-if="Object.hasOwnProperty(value.new)" class="break-words"
-                        v-html="$t('attributes.to_blank', { interpolation: { escapeValue: false }, attribute: `<strong>${$filters.capitalize(attribute)}</strong>`, old: `<strong>${attributes[attribute](value.old)}</strong>` })">
+                        v-html="$t('attributes.to_blank', { interpolation: { escapeValue: false }, attribute: `<strong>${$filters.capitalize(attribute)}</strong>`, old: `<strong>${attributes[attribute](value.old, 'old')}</strong>` })">
                     </span>
 
                     <span v-else class="break-words" v-html="$t('attributes.updated', {
                         interpolation: { escapeValue: false },
-                        attribute: `<strong>${$filters.capitalize(attribute)}</strong>`, old: `<strong>${attributes[attribute](value.old)}</strong>`, new: `<strong>${attributes[attribute](value.new)}</strong>`
+                        attribute: `<strong>${$filters.capitalize(attribute)}</strong>`, old: `<strong>${attributes[attribute](value.old, 'old')}</strong>`, new: `<strong>${attributes[attribute](value.new, 'new')}</strong>`
                     })">
                     </span>
 

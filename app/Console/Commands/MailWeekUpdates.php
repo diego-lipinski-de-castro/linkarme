@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Console\Commands;
+
+use App\Mail\WeekUpdates;
+use App\Models\Client;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use OwenIt\Auditing\Models\Audit;
+
+class MailWeekUpdates extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'mail:week';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Send week updates emails';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        $updates = Audit::query()
+            ->where('auditable_type', 'App\\Models\\Site')
+            ->whereIn('event', ['created', 'updated'])
+            ->whereBetween('created_at', [
+                now()->subWeek()->format('Y-m-d'),
+                // now()->subDay()->format('Y-m-d'),
+                now()->addDay()->format('Y-m-d'),
+            ])
+            ->get();
+
+        $clients = Client::query()
+            ->get();
+
+        Log::debug($clients);
+
+        foreach($clients as $client){
+                Mail::to($client)->send(new WeekUpdates($updates));
+        }
+
+        return 0;
+    }
+}

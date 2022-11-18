@@ -49,6 +49,7 @@ const props = defineProps({
     title: String,
     notifications: Object,
     unreadNotifications: Array,
+    coins: Object,
 });
 
 const links = computed(() => {
@@ -75,7 +76,7 @@ const links = computed(() => {
                     class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
                     <li v-for="(notification, index) in unreadNotifications" :key="index">
                         <SiteAdded v-if="notification.type == 'App\\Notifications\\SiteAdded'" :notification="notification"/>
-                        <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification"/>
+                        <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification" :coins="coins"/>
                     </li>
                 </ul>
 
@@ -89,7 +90,7 @@ const links = computed(() => {
                     class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
                     <li v-for="(notification, index) in notifications.data" :key="index">
                         <SiteAdded v-if="notification.type == 'App\\Notifications\\SiteAdded'" :notification="notification"/>
-                        <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification"/>
+                        <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification" :coins="coins"/>
                     </li>
                 </ul>
 

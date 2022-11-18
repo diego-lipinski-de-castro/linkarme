@@ -65,6 +65,7 @@ class Site extends Model implements Auditable
         'paypal',
         'instagram',
         'facebook',
+        
         'deleted_at',
     ];
 
@@ -152,6 +153,14 @@ class Site extends Model implements Auditable
             $data['old_values']['banner'] = (bool) $data['old_values']['banner'];
         }
 
+        if (!Arr::has($data, 'old_values.cost_coin')) {
+            $data['old_values']['cost_coin'] = $this->cost_coin;
+        }
+
+        if (!Arr::has($data, 'old_values.sale_coin')) {
+            $data['old_values']['sale_coin'] = $this->sale_coin;
+        }
+
         // new
         if (Arr::has($data, 'new_values.gambling')) {
             $data['new_values']['gambling'] = (bool) $data['new_values']['gambling'];
@@ -175,6 +184,14 @@ class Site extends Model implements Auditable
 
         if (Arr::has($data, 'new_values.banner')) {
             $data['new_values']['banner'] = (bool) $data['new_values']['banner'];
+        }
+
+        if (!Arr::has($data, 'new_values.cost_coin')) {
+            $data['new_values']['cost_coin'] = $this->cost_coin;
+        }
+
+        if (!Arr::has($data, 'new_values.sale_coin')) {
+            $data['new_values']['sale_coin'] = $this->sale_coin;
         }
 
         return $data;

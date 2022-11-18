@@ -10,6 +10,8 @@ class NotificationController extends Controller
 {
     public function index()
     {
+        $coins = config('coins');
+
         $notifications = auth()->user()->notifications()->paginate(10);
         $unreadNotifications = auth()->user()->unreadNotifications;
 
@@ -18,6 +20,7 @@ class NotificationController extends Controller
         return Inertia::render('Client/Notifications', [
             'notifications' => $notifications,
             'unreadNotifications' => $unreadNotifications,
+            'coins' => $coins,
         ]);
     }
 }

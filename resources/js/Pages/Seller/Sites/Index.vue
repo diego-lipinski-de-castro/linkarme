@@ -149,9 +149,11 @@ const get = async () => {
 }
 
 onMounted(() => {
-    tippy('[data-tippy-content]', {
-        interactive: true,
-    });
+    setTimeout(() => {
+        tippy('[data-tippy-content]', {
+            interactive: true,
+        });
+    }, 100)
 })
 </script>
         

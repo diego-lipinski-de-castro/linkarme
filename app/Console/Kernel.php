@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MailWeekUpdates;
 use App\Jobs\CheckOrdersUrl;
 use App\Jobs\CheckSites;
 use Illuminate\Console\Scheduling\Schedule;
@@ -23,6 +24,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new CheckOrdersUrl)->twiceDaily(1, 13);
         $schedule->job(new CheckSites)->twiceDaily(1, 13);
+
+        // $schedule->command(MailWeekUpdates::class)->weeklyOn(1, '6:00');
     }
 
     /**
