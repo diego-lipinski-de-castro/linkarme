@@ -31,8 +31,11 @@ class WeekUpdates extends Mailable
     public function build()
     {
         return $this
+            ->subject('WeekUpdates')
             ->view('emails.week-updates', [
                 'updates' => $this->updates,
+                'coins' => config('coins'),
+                'subject' => 'WeekUpdates',
             ]);
     }
 }
