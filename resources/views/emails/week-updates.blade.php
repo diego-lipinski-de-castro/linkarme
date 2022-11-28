@@ -44,6 +44,11 @@
 
                                     }
 
+                                    if(in_array($attribute, ['gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner'])) {
+                                        $value['old'] = (bool) $value['old'];
+                                        $value['new'] = (bool) $value['new'];
+                                    }
+
                                 @endphp
 
                                 @if(in_array($attribute, ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner']))

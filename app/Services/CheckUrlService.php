@@ -17,6 +17,8 @@ class CheckUrlService
         $code = null;
         $validSsl = null;
 
+        // GuzzleHttp\Exception\ConnectException
+
         try {
             $code = (new \GuzzleHttp\Client())->request('GET', $url, [
                 'connect_timeout' => 10,
@@ -31,6 +33,9 @@ class CheckUrlService
 
             $code = null;
         }
+
+        // Spatie\SslCertificate\Exceptions\CouldNotDownloadCertificate\HostDoesNotExist
+        // Spatie\SslCertificate\Exceptions\CouldNotDownloadCertificate\UnknownError
 
         try {
             $validSsl = SslCertificate::createForHostName($url)->isValid();

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\WeekUpdates;
 use App\Models\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
@@ -43,11 +44,22 @@ class MailWeekUpdates extends Command
             ])
             ->whereHas('auditable')
             ->get()
+            // ->filter(function ($item) {
+
+            //     return Arr::hasAny(
+            //         $item->getModified(), 
+            //         ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner']
+            //     );
+            // })
             ->transform(function ($item) {
                 $item->modified = $item->getModified();
 
                 return $item;
             });
+
+        Log::debug($updates);
+
+        return 0;
 
         $clients = Client::query()
             ->get();
