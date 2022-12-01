@@ -59,8 +59,8 @@ class SiteController extends Controller
             ->allowedFilters([
                 AllowedFilter::custom('sale', new FilterLimiter),
                 'url',
-                // AllowedFilter::exact('country_id'),
-                // AllowedFilter::exact('language_id'),
+                AllowedFilter::exact('country_id'),
+                AllowedFilter::exact('language_id'),
                 AllowedFilter::custom('da', new FilterLimiter),
                 AllowedFilter::custom('dr', new FilterLimiter),
                 // AllowedFilter::custom('traffic', new FilterLimiter),

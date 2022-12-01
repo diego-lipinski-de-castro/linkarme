@@ -11,6 +11,7 @@ import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css'; // optional for styling
+import 'tippy.js/themes/light.css';
 import i18n from "./i18n";
 import AppSuspense from '@/Layouts/AppSuspense.vue'
 import Spinner from '@/Components/Spinner.vue'

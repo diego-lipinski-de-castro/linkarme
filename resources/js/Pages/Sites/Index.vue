@@ -18,7 +18,7 @@ import {
     Switch, SwitchGroup, SwitchLabel,
 } from '@headlessui/vue'
 
-import { ArrowLongLeftIcon, ArrowLongRightIcon, CloudArrowDownIcon, CloudArrowUpIcon } from '@heroicons/vue/20/solid'
+import { ArrowLongLeftIcon, ArrowLongRightIcon, CloudArrowDownIcon, CloudArrowUpIcon, FunnelIcon } from '@heroicons/vue/20/solid'
 
 import {
     Bars3CenterLeftIcon,
@@ -42,6 +42,7 @@ import {
     ChevronDownIcon,
     ChevronRightIcon,
     MagnifyingGlassIcon,
+    ChevronUpIcon,
 } from '@heroicons/vue/20/solid'
 
 import { debounce } from 'debounce';
@@ -69,6 +70,7 @@ const props = defineProps({
     importDiff: Number,
     pendingCount: Number,
     offersCount: Number,
+    sellers: Array,
 });
 
 const links = computed(() => {
@@ -115,15 +117,16 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const sort = ref(params.sort ?? 'url')
 
 const filters = ref({
-    url: params["filter[url]"] ?? null,
-    da: { from: params["filter[da][from]"] ?? null, to: params["filter[da][to]"] ?? null },
-    dr: { from: params["filter[dr][from]"] ?? null, to: params["filter[dr][to]"] ?? null },
-    // traffic: { from: params["filter[traffic][from]"] ?? null, to: params["filter[traffic][to]"] ?? null },
+    seller_id: params["filter[seller_id]"] ?? null,
+    url: params["filter[url]"] ?? '',
+    da: { from: params["filter[da][from]"] ?? '', to: params["filter[da][to]"] ?? '' },
+    dr: { from: params["filter[dr][from]"] ?? '', to: params["filter[dr][to]"] ?? '' },
+    traffic: { from: params["filter[traffic][from]"] ?? '', to: params["filter[traffic][to]"] ?? '' },
     gambling: params["filter[gambling]"] == 'true',
     sponsor: params["filter[sponsor]"] == 'true',
     cripto: params["filter[cripto]"] == 'true',
-    // ssl: params["filter[ssl]"] == 'true',
-    // banner: params["filter[banner]"] == 'true',
+    ssl: params["filter[ssl]"] == 'true',
+    banner: params["filter[banner]"] == 'true',
     menu: params["filter[menu]"] == 'true',
     new: params["filter[new]"] == 'true',
 })
@@ -131,6 +134,7 @@ const filters = ref({
 watch(sort, (n, o) => get());
 
 watch(filters, debounce((n, o) => {
+    console.log(n)
     get()
 }, 400), {
     deep: true,
@@ -140,16 +144,17 @@ const get = async () => {
     Inertia.get(route('sites.index'), {
         sort: sort.value,
         filter: {
-            url: filters.value.url,
+            seller_id: filters.value.seller_id,
+            // url: filters.value.url,
             da: filters.value.da,
-            dr: filters.value.dr,
-            gambling: filters.value.gambling,
-            sponsor: filters.value.sponsor,
-            cripto: filters.value.cripto,
-            ssl: filters.value.ssl,
-            banner: filters.value.banner,
-            menu: filters.value.menu,
-            new: filters.value.new,
+            // dr: filters.value.dr,
+            // gambling: filters.value.gambling,
+            // sponsor: filters.value.sponsor,
+            // cripto: filters.value.cripto,
+            // ssl: filters.value.ssl,
+            // banner: filters.value.banner,
+            // menu: filters.value.menu,
+            // new: filters.value.new,
         },
     }, {
         preserveState: true,
@@ -196,12 +201,39 @@ watch(openImportDialog, (n, o) => {
     }
 })
 
+const filterDa = () => {
+    const fromInput = document.getElementById('da-from')
+    const toInput = document.getElementById('da-to')
+
+    filters.value.da.from = fromInput.value
+    filters.value.da.to = toInput.value
+
+    daTippy[0].hide(250);
+}
+
+let daTippy;
+
 onMounted(() => {
     setTimeout(() => {
         tippy('[data-tippy-content]', {
             interactive: true,
         });
-    }, 100)
+
+        daTippy = tippy('#da-tippy', {
+            content(reference) {
+                console.log(reference)
+                const id = reference.getAttribute('data-template');
+                const template = document.getElementById(id);
+                template.style.display = 'block'
+                return template;
+            },
+            interactive: true,
+            allowHTML: true,
+            placement: 'bottom',
+            maxWidth: 'none',
+            theme: 'light',
+        });
+    }, 1000)
 })
 </script>
         
@@ -382,18 +414,32 @@ onMounted(() => {
 
             <template #submenu>
                 <div class="mb-12 px-4">
+                    <span class="block text-sm font-medium text-white">{{ $t('Sellers') }}</span>
+
+                    <select v-model="filters.seller_id" class="mt-4 w-full border-0 rounded-md">
+                        <option :value="null">Todos</option>
+                        <option v-for="(seller, index) in sellers" :key="index" :value="seller.id">{{ seller.name }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-12 px-4">
                     <span class="block text-sm font-medium text-white">DA range</span>
 
                     <div class="ml-2 flex items-center mt-4">
                         <label for="from_da" class="w-24 text-sm font-medium text-white">from</label>
-                        <input v-model="filters.da.from" id="from_da" name="from_da" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.da.from++"/>
+                        <input v-model="filters.da.from" id="from_da" name="from_da" type="text"
+                            class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.da.from--"/>
                     </div>
 
                     <div class="ml-2 flex items-center mt-2">
                         <label for="to_da" class="w-24 text-sm font-medium text-white">to</label>
-                        <input v-model="filters.da.to" id="to_da" name="to_da" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.da.to++"/>
+                        <input v-model="filters.da.to" id="to_da" name="to_da" type="text"
+                            class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.da.to--"/>
                     </div>
                 </div>
 
@@ -402,14 +448,19 @@ onMounted(() => {
 
                     <div class="ml-2 flex items-center mt-4">
                         <label for="from_dr" class="w-24 text-sm font-medium text-white">from</label>
-                        <input v-model="filters.dr.from" id="from_dr" name="from_dr" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.dr.from++"/>
+                        <input v-model="filters.dr.from" id="from_dr" name="from_dr" type="text"
+                            class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.dr.from--"/>
                     </div>
 
                     <div class="ml-2 flex items-center mt-2">
                         <label for="to_dr" class="w-24 text-sm font-medium text-white">to</label>
-                        <input v-model="filters.dr.to" id="to_dr" name="to_dr" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.dr.to++"/>
+                        <input v-model="filters.dr.to" id="to_dr" name="to_dr" type="text"
+                            class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.dr.to--"/>
                     </div>
                 </div>
 
@@ -693,7 +744,7 @@ onMounted(() => {
                                 <thead>
                                     <tr>
                                         <th v-show="columns[0].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Price') }}</span>
@@ -703,7 +754,7 @@ onMounted(() => {
                                         </th>
 
                                         <th v-show="columns[1].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Domain') }}</span>
@@ -712,17 +763,37 @@ onMounted(() => {
                                             </div>
                                         </th>
                                         <th v-show="columns[2].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('DA') }}</span>
-                                                <TableSortButton column='da' :current="sort"
-                                                    @onClick='(column) => sort = column' />
+                                            <div class="flex flex-col">
+                                                <div class="flex group">
+                                                    <span class="block">{{ $t('DA') }}</span>
+                                                    <TableSortButton column='da' :current="sort"
+                                                        @onClick='(column) => sort = column' />
+                                                </div>
+                                                
+                                                <div id="da-tippy-content" style="display: none;">
+                                                    <div class="flex flex-col items-end px-2 py-2">
+                                                        <div class="flex items-center">
+                                                            <input id="da-from" :value="filters.da.from" type="number" class="w-20 border-gray-300 rounded-md font-normal text-xs text-gray-500" :placeholder="$t('from')">
+                                                            <span class="block mx-2">~</span>
+                                                            <input id="da-to" :value="filters.da.to" type="number" class="w-20 border-gray-300 rounded-md font-normal text-xs text-gray-500" :placeholder="$t('to')">
+                                                        </div>
+                                                        <button @click="filterDa" type="button" class="w-min mt-2 text-[12px] text-blue-500 italic font-normal">{{ $t('apply') }}</button>
+                                                    </div>
+                                                </div>
+
+                                                <span id="da-tippy" data-template="da-tippy-content" class="cursor-pointer block mt-1 text-[12px] font-normal text-gray-500 italic">
+                                                    <span v-if="filters.da.from == '' && filters.da.to == ''" class="w-4 h-4 text-gray-500">add filter</span>
+                                                    <span v-else-if="filters.da.from == '' && filters.da.to != ''"> {{ '<' }} {{ filters.da.to }}</span>
+                                                    <span v-else-if="filters.da.from != '' && filters.da.to == ''">{{ '>' }} {{ filters.da.from }}</span>
+                                                    <span v-else>{{ filters.da.from }} ~ {{ filters.da.to }}</span>
+                                                </span>
                                             </div>
                                         </th>
 
                                         <th v-show="columns[3].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('DR') }}</span>
@@ -731,31 +802,31 @@ onMounted(() => {
                                             </div>
                                         </th>
                                         <th v-show="columns[4].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Gambling') }}</th>
                                         <th v-show="columns[5].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Sponsor') }}</th>
                                         <th v-show="columns[6].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Cripto') }}</th>
                                         <th v-show="columns[7].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('SSL') }}</th>
                                         <th v-show="columns[8].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Category') }}</th>
                                         <!-- <th v-show="columns[9].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Banners') }}</th>
                                         <th v-show="columns[10].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Links') }} menu</th> -->
                                         <th v-show="columns[9].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Obs') }}</th>
                                         <th v-show="columns[10].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Example') }}</span>
@@ -764,7 +835,7 @@ onMounted(() => {
                                             </div>
                                         </th>
                                         <th v-show="columns[11].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Upload data') }}</span>
@@ -773,7 +844,7 @@ onMounted(() => {
                                             </div>
                                         </th>
 
-                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        <th class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
 
                                         </th>
