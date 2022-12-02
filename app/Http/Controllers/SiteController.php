@@ -71,8 +71,8 @@ class SiteController extends Controller
                 'inserted_at',
             ])
             ->allowedFilters([
-                AllowedFilter::exact('seller_id'),
                 'url',
+                AllowedFilter::exact('seller_id'),
                 AllowedFilter::exact('country_id'),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::custom('da', new FilterLimiter),

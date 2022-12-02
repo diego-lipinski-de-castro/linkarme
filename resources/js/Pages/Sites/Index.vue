@@ -117,8 +117,8 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const sort = ref(params.sort ?? 'url')
 
 const filters = ref({
-    seller_id: params["filter[seller_id]"] ?? null,
     url: params["filter[url]"] ?? '',
+    seller_id: params["filter[seller_id]"] ?? null,
     da: { from: params["filter[da][from]"] ?? '', to: params["filter[da][to]"] ?? '' },
     dr: { from: params["filter[dr][from]"] ?? '', to: params["filter[dr][to]"] ?? '' },
     traffic: { from: params["filter[traffic][from]"] ?? '', to: params["filter[traffic][to]"] ?? '' },
@@ -144,8 +144,8 @@ const get = async () => {
     Inertia.get(route('sites.index'), {
         sort: sort.value,
         filter: {
+            url: filters.value.url,
             seller_id: filters.value.seller_id,
-            // url: filters.value.url,
             da: filters.value.da,
             // dr: filters.value.dr,
             // gambling: filters.value.gambling,
