@@ -57,6 +57,18 @@ class SiteController extends Controller
             ->orderBy('name')
             ->get();
 
+        $filters = [
+            'da' => [
+                'from' => Site::min('da'),
+                'to' => Site::max('da'),
+            ],
+
+            'dr' => [
+                'from' => Site::min('dr'),
+                'to' => Site::max('dr'),
+            ],
+        ];
+
         $sites = QueryBuilder::for(Site::class)
             // ->ofStatus('PENDING')
             ->withTrashed()
@@ -97,6 +109,7 @@ class SiteController extends Controller
 
         return Inertia::render('Sites/Index', [
             'coins' => $coins,
+            'filters' => $filters,
             'pendingCount' => $pendingCount,
             'offersCount' => $offersCount,
             'sites' => $sites,
