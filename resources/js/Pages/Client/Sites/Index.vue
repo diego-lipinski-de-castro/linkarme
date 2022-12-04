@@ -120,7 +120,7 @@ const filters = ref({
     menu: params["filter[menu]"] == 'true',
     new: params["filter[new]"] == 'true',
     favorites: params["filter[favorites]"] == 'true',
-    country_id: params["filter[country_id]"] ?? null,
+    // country_id: params["filter[country_id]"] ?? null,
     language_id: params["filter[language_id]"] ?? null,
 })
 
@@ -150,9 +150,9 @@ const get = async () => {
             // banner: filters.value.banner,
             // menu: filters.value.menu,
             new: filters.value.new,
-            ...(filters.value.country_id !== null && {
-                country_id: filters.value.country_id,
-            }),
+            // ...(filters.value.country_id !== null && {
+            //     country_id: filters.value.country_id,
+            // }),
             ...(filters.value.language_id !== null && {
                 language_id: filters.value.language_id,
             }),
@@ -244,9 +244,9 @@ onMounted(() => {
 
                     <div class="ml-2 flex items-center mt-4">
                         <select v-model="filters.language_id" class="w-full border-0 rounded-md">
-                            <option :value="null">Todos</option>
+                            <option :value="null">{{ $t('All') }}</option>
                             <option v-for="(language, index) in languages" :key="index" :value="language.id">
-                                {{language.name}}
+                                {{ language.name }}
                             </option>
                         </select>
                     </div>
@@ -420,6 +420,19 @@ onMounted(() => {
             </template>
 
             <template #submenu-mobile>
+                <div class="mb-12 px-4">
+                    <span class="block text-sm font-medium text-white">{{ $t('Language') }}</span>
+
+                    <div class="ml-2 flex items-center mt-4">
+                        <select v-model="filters.language_id" class="w-full border-0 rounded-md">
+                            <option :value="null">{{ $t('All') }}</option>
+                            <option v-for="(language, index) in languages" :key="index" :value="language.id">
+                                {{ language.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                
                 <div class="mb-12 px-4">
                     <span class="block text-sm font-medium text-white">Price range</span>
 

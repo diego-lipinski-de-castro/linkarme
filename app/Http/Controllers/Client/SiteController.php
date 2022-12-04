@@ -57,10 +57,10 @@ class SiteController extends Controller
                 // AllowedSort::custom('orders_count', new OrderCountSort()),
             ])
             ->allowedFilters([
-                AllowedFilter::custom('sale', new FilterLimiter),
                 'url',
                 AllowedFilter::exact('country_id'),
                 AllowedFilter::exact('language_id'),
+                AllowedFilter::custom('sale', new FilterLimiter),
                 AllowedFilter::custom('da', new FilterLimiter),
                 AllowedFilter::custom('dr', new FilterLimiter),
                 // AllowedFilter::custom('traffic', new FilterLimiter),
