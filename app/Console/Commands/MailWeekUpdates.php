@@ -38,9 +38,11 @@ class MailWeekUpdates extends Command
             ->where('auditable_type', 'App\\Models\\Site')
             ->whereIn('event', ['created', 'updated'])
             ->whereBetween('created_at', [
-                now()->subWeek()->format('Y-m-d'),
+                // now()->subWeek()->format('Y-m-d'),
                 // now()->subDay()->format('Y-m-d'),
-                now()->addDay()->format('Y-m-d'),
+
+                now()->subYear()->format('Y-m-d'),
+                now()->addYear()->format('Y-m-d'),
             ])
             ->whereHas('auditable')
             ->get()
@@ -59,13 +61,15 @@ class MailWeekUpdates extends Command
 
         Log::debug($updates);
 
-        return 0;
+        if(count($updates) == 0) {
+            return 0;
+        }
 
         $clients = Client::query()
             ->get();
 
         foreach($clients as $client){
-                Mail::to($client)->send(new WeekUpdates($updates));
+            Mail::to($client)->send(new WeekUpdates($updates));
         }
 
         return 0;

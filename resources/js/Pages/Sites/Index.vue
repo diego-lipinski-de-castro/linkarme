@@ -135,7 +135,6 @@ const filters = ref({
 watch(sort, (n, o) => get());
 
 watch(filters, debounce((n, o) => {
-    console.log(n)
     get()
 }, 400), {
     deep: true,
@@ -222,7 +221,6 @@ onMounted(() => {
 
         daTippy = tippy('#da-tippy', {
             content(reference) {
-                console.log(reference)
                 const id = reference.getAttribute('data-template');
                 const template = document.getElementById(id);
                 template.style.display = 'block'
@@ -402,11 +400,11 @@ onMounted(() => {
 
                     <div class="flex flex-col px-4 sm:px-6 lg:px-8 pt-6">
                         <Link v-if="pendingCount > 0" :href="route('sites.index', { 'filter[of_status]': 'PENDING' })"
-                            class="text-sm font-medium text-blue-500 hover:text-blue-700">{{ pendingCount }} sites
+                            class="w-fit text-sm font-medium text-blue-500 hover:text-blue-700">{{ pendingCount }} sites
                             aguardando aprovação.</Link>
 
                         <Link v-if="offersCount > 0" :href="route('sites.offers')"
-                            class="text-sm font-medium text-blue-500 hover:text-blue-700"> 
+                            class="w-fit text-sm font-medium text-blue-500 hover:text-blue-700"> 
                             {{ offersCount > 1 ? `${offersCount} novas ofertas de valor` : `${offersCount} nova oferta de valor` }}
                         </Link>
                     </div>

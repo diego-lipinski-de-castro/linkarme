@@ -155,7 +155,7 @@ class SiteController extends Controller
     {
         DB::transaction(function () use($request) {
             $site = Site::create($request->validated());
-            Notification::send(Client::all(), new SiteAdded($site));
+            // Notification::send(Client::all(), new SiteAdded($site));
         });
 
         return redirect()->route('sites.index');
@@ -259,9 +259,13 @@ class SiteController extends Controller
     {
         $site = Site::withTrashed()->findOrFail($id);
 
-        $site->update([
-            'status' => 'APPROVED',
-        ]);
+        DB::transaction(function () use($site) {
+            $site->update([
+                'status' => 'APPROVED',
+            ]);
+    
+            Notification::send(Client::all(), new SiteAdded($site));
+        });
 
         return back();
     }
@@ -273,6 +277,8 @@ class SiteController extends Controller
         $site->update([
             'status' => 'REJECTED',
         ]);
+
+        // notify?
 
         return back();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\Client\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -67,5 +68,10 @@ class Client extends Authenticatable
     public function getFavoritesIdsAttribute()
     {
         return $this->favorites->pluck('id')->toArray();
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

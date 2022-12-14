@@ -129,7 +129,7 @@ watch(filters, debounce((n, o) => {
 })
 
 const get = async () => {
-    Inertia.get(route('sites.index'), {
+    Inertia.get(route('seller.sites.index'), {
         sort: sort.value,
         filter: {
             url: filters.value.url,

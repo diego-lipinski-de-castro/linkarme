@@ -2,6 +2,12 @@
 
 namespace App;
 
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
+use Illuminate\Support\Facades\Log;
+
 class Helper
 {
     public static function extractNumbersFromString(?string $value): int
@@ -18,38 +24,20 @@ class Helper
         return json_decode(file_get_contents($json), true);
     }
 
-    static function formatinr($input)
+    public static function formatCurrency(float $floatcurr, string $curr = "USD")
     {
-        //CUSTOM FUNCTION TO GENERATE ##,##,###.##
-        $dec = "";
-        $pos = strpos($input, ".");
-        if ($pos === false) {
-            //no decimals   
-        } else {
-            //decimals
-            $dec = substr(round(substr($input, $pos), 2), 1);
-            $input = substr($input, 0, $pos);
-        }
-        $num = substr($input, -3); //get the last 3 digits
-        $input = substr($input, 0, -3); //omit the last 3 digits already stored in $num
-        while (strlen($input) > 0) //loop the process - further get digits 2 by 2
-        {
-            $num = substr($input, -2) . "," . $num;
-            $input = substr($input, 0, -2);
-        }
-        return $num . $dec;
-    }
+        $newCurr = (int) ($floatcurr * 100);
 
-    public static function formatCurrency($floatcurr, $curr = "USD")
-    {
-        $currencies['BRL'] = array(2, ',', '.');          //  Brazilian Real
-        $currencies['EUR'] = array(2, ',', '.');          //  Euro
-        $currencies['USD'] = array(2, '.', ',');          //  US Dollar
+        $options['BRL'] = 'pt_BR';
+        $options['EUR'] = 'nl_NL';
+        $options['USD'] = 'en_US';
 
-        if ($curr == "INR") {
-            return self::formatinr($floatcurr);
-        } else {
-            return number_format($floatcurr, $currencies[$curr][0], $currencies[$curr][1], $currencies[$curr][2]);
-        }
+        $money = new Money($newCurr, new Currency($curr));
+        $currencies = new ISOCurrencies();
+
+        $numberFormatter = new \NumberFormatter($options[$curr], \NumberFormatter::CURRENCY);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
+
+        return $moneyFormatter->format($money); // outputs $1.00
     }
 }

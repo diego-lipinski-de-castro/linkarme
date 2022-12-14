@@ -51,7 +51,7 @@
 
                                 @endphp
 
-                                @if(in_array($attribute, ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner']))
+                                @if(in_array($attribute, ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner', 'status']))
 
                                     <p class="text-sm text-gray-500">
 

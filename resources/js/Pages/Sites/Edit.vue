@@ -29,12 +29,12 @@ const form = useForm({
     country_id: site.country_id,
     link_type: site.link_type,
 
-    gambling: site.gambling,
-    cdb: site.cdb,
-    cripto: site.cripto,
-    sponsor: site.sponsor,
-    menu: site.menu,
-    banner: site.banner,
+    gambling: site.gambling ?? false,
+    cdb: site.cdb ?? false,
+    cripto: site.cripto ?? false,
+    sponsor: site.sponsor ?? false,
+    menu: site.menu ?? false,
+    banner: site.banner ?? false,
 
     cost: site.cost,
     cost_coin: site.cost_coin,
@@ -59,7 +59,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(route('sites.update', site.id));
+    console.log(form.data())
+
+    form.put(route('sites.update', site.id), {
+        onError(error) {
+            console.log(error)
+        }
+    });
 }
 
 const toggle = () => {

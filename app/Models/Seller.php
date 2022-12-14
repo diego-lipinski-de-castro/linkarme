@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\Seller\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,8 +11,10 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Seller extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
     use HasProfilePhoto;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -56,5 +59,10 @@ class Seller extends Authenticatable
     public function notes()
     {
         return $this->morphMany(Note::class, 'owner');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
