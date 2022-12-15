@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Filters\FilterLimiter;
+use App\Filters\NewFilter;
 use App\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\StoreSiteRequest;
@@ -57,7 +58,7 @@ class SiteController extends Controller
                 'sponsor',
                 'cripto',
                 'menu',
-                'new',
+                AllowedFilter::custom('new', new NewFilter),
             ])
             ->paginate(50)
             ->appends(request()->query());
