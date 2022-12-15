@@ -56,6 +56,8 @@ class SiteController extends Controller
                 'gambling',
                 'sponsor',
                 'cripto',
+                'menu',
+                'new',
             ])
             ->paginate(50)
             ->appends(request()->query());
