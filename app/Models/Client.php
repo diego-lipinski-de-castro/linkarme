@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Notifications\Client\ResetPasswordNotification;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
-class Client extends Authenticatable
+class Client extends Authenticatable implements HasLocalePreference
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasProfilePhoto;
@@ -24,6 +25,7 @@ class Client extends Authenticatable
         'email',
         'password',
         'full',
+        'locale',
     ];
 
     /**
@@ -54,7 +56,17 @@ class Client extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-    
+
+    /**
+     * Get the user's preferred locale.
+     *
+     * @return string
+     */
+    public function preferredLocale()
+    {
+        return $this->locale ?? 'en';
+    }
+
     public function notes()
     {
         return $this->morphMany(Note::class, 'owner');

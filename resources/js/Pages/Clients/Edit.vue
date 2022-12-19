@@ -22,6 +22,7 @@ const form = useForm({
     name: client.name,
     email: client.email,
     password: client.password,
+    locale: client.locale ?? null,
     full: client.full,
 })
 
@@ -80,6 +81,22 @@ const generatePassword = () => {
                         <button @click="generatePassword" type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">{{ $t('Generate') }}</button>
                     </div>
                     <InputError class="mt-2" :message="form.errors.password" />
+                </div>
+
+                <div>
+                    <InputLabel for="locale" :value="$t('Locale')"/>
+                    <div class="mt-1">
+
+                        <select v-model="form.locale" id="locale" name="locale" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option :value="null">Selecione</option>
+                            <option value="pt">Português</option>
+                            <option value="en">Inglês</option>
+                            <option value="es">Espanhol</option>
+                        </select>
+
+                    </div>
+
+                    <InputError class="mt-2" :message="form.errors.locale"/>
                 </div>
 
                 <div>

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Mail\WeekUpdates;
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +18,7 @@ class MailWeekUpdates extends Command
      *
      * @var string
      */
-    protected $signature = 'mail:week';
+    protected $signature = 'mail:week {--id=*} {--locale=en}';
 
     /**
      * The console command description.
@@ -33,6 +34,9 @@ class MailWeekUpdates extends Command
      */
     public function handle()
     {
+        $ids = $this->option('id');
+        $locale = $this->option('locale');
+
         $updates = Audit::query()
             ->with('auditable')
             ->where('auditable_type', 'App\\Models\\Site')
@@ -59,9 +63,15 @@ class MailWeekUpdates extends Command
                 return $item;
             });
 
-        Log::debug($updates);
-
         if(count($updates) == 0) {
+            return 0;
+        }
+
+        if(count($ids) > 0) {
+            foreach($ids as $user){
+                Mail::to(User::find($user))->locale($locale)->send(new WeekUpdates($updates));
+            }
+
             return 0;
         }
 

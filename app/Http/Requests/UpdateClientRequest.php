@@ -30,6 +30,7 @@ class UpdateClientRequest extends FormRequest
             // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'password' => ['nullable'],
             'full' => ['required', 'boolean'],
+            'locale' => ['nullable'],
         ];
     }
 
