@@ -53,6 +53,7 @@ class Site extends Model implements Auditable
         'last_posted',
         'inserted_at',
         'seller_id',
+        'team',
         'status',
         'deleted_why',
         'suggested',

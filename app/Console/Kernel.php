@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
         $schedule->job(new CheckSites)->twiceDaily(1, 13);
 
         // $schedule->command(MailWeekUpdates::class)->weeklyOn(1, '6:00');
+
+        // $schedule->command(MailWeekUpdates::class, ['--id=1', '--id=3'])->dailyAt(1, '6:00');
     }
 
     /**

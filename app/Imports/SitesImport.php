@@ -76,7 +76,11 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
         $language = null;
         $category = null;
 
-        $country = Country::firstWhere('name', $row['pais']);
+        if (! blank($row['pais'])) {
+            $country = Country::firstOrCreate([
+                'name' => $row['pais'],
+            ]);
+        }
 
         if (! blank($row['linguagem'])) {
             $language = Language::firstOrCreate([

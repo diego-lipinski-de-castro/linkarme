@@ -136,7 +136,7 @@ const get = async () => {
     Inertia.get(route('client.sites.index'), {
         sort: sort.value,
         filter: {
-            // url: filters.value.url,
+            url: filters.value.url,
             sale: filters.value.sale,
             da: filters.value.da,
             dr: filters.value.dr,
