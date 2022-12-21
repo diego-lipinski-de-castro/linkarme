@@ -108,11 +108,11 @@ class SiteController extends Controller
             ->appends(request()->query());
 
         return Inertia::render('Sites/Index', [
+            'sites' => $sites,
             'coins' => $coins,
             'filters' => $filters,
             'pendingCount' => $pendingCount,
             'offersCount' => $offersCount,
-            'sites' => $sites,
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,

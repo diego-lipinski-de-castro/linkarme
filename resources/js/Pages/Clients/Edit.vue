@@ -22,7 +22,8 @@ const form = useForm({
     name: client.name,
     email: client.email,
     password: client.password,
-    locale: client.locale ?? null,
+    locale: client.locale ?? 'en',
+    coin: client.coin ?? 'USD',
     full: client.full,
 })
 
@@ -88,10 +89,24 @@ const generatePassword = () => {
                     <div class="mt-1">
 
                         <select v-model="form.locale" id="locale" name="locale" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                            <option :value="null">Selecione</option>
-                            <option value="pt">Português</option>
                             <option value="en">Inglês</option>
                             <option value="es">Espanhol</option>
+                            <option value="pt">Português</option>
+                        </select>
+
+                    </div>
+
+                    <InputError class="mt-2" :message="form.errors.locale"/>
+                </div>
+
+                <div>
+                    <InputLabel for="coin" :value="$t('Coin')"/>
+                    <div class="mt-1">
+
+                        <select v-model="form.coin" id="coin" name="coin" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="BRL">BRL</option>
+                            <option value="EUR">EUR</option>
+                            <option value="USD">USD</option>
                         </select>
 
                     </div>

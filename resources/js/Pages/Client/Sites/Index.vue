@@ -60,6 +60,7 @@ const props = defineProps({
     countries: Array,
     languages: Array,
     categories: Array,
+    filters: Object,
 });
 
 const links = computed(() => {
@@ -106,10 +107,10 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const sort = ref(params.sort ?? 'url')
 
 const filters = ref({
-    sale: { from: params["filter[sale][from]"] ?? null, to: params["filter[sale][to]"] ?? null },
     url: params["filter[url]"] ?? null,
-    da: { from: params["filter[da][from]"] ?? null, to: params["filter[da][to]"] ?? null },
-    dr: { from: params["filter[dr][from]"] ?? null, to: params["filter[dr][to]"] ?? null },
+    sale: { from: params["filter[sale][from]"] ?? props.filters.sale.from, to: params["filter[sale][to]"] ?? props.filters.sale.to },
+    da: { from: params["filter[da][from]"] ?? props.filters.da.from, to: params["filter[da][to]"] ?? props.filters.da.to },
+    dr: { from: params["filter[dr][from]"] ?? props.filters.dr.from, to: params["filter[dr][to]"] ?? props.filters.dr.to },
     // traffic: { from: params["filter[traffic][from]"] ?? null, to: params["filter[traffic][to]"] ?? null },
     favorites: params["filter[favorites]"] == 'true',
     gambling: params["filter[gambling]"] == 'true',
@@ -137,22 +138,18 @@ const get = async () => {
         sort: sort.value,
         filter: {
             url: filters.value.url,
-            sale: filters.value.sale,
+            sale: {
+                from: filters.value.sale.from * 100,
+                to: filters.value.sale.to * 100,
+            },
             da: filters.value.da,
             dr: filters.value.dr,
+            gambling: filters.value.gambling,
+            sponsor: filters.value.sponsor,
+            new: filters.value.new,
             ...(filters.value.favorites && {
                 favorites: filters.value.favorites,
             }),
-            gambling: filters.value.gambling,
-            sponsor: filters.value.sponsor,
-            // cripto: filters.value.cripto,
-            // ssl: filters.value.ssl,
-            // banner: filters.value.banner,
-            // menu: filters.value.menu,
-            new: filters.value.new,
-            // ...(filters.value.country_id !== null && {
-            //     country_id: filters.value.country_id,
-            // }),
             ...(filters.value.language_id !== null && {
                 language_id: filters.value.language_id,
             }),
@@ -173,7 +170,7 @@ onMounted(() => {
         tippy('[data-tippy-content]', {
             interactive: true,
         });
-    }, 100)
+    }, 500)
 })
 
 </script>
@@ -258,18 +255,18 @@ onMounted(() => {
                     <div class="ml-2 flex items-center mt-4">
                         <label for="from_sale" class="w-24 text-sm font-medium text-white">from</label>
 
-                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" />
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.sale.from++"/>
                         <input v-model="filters.sale.from" id="from_sale" name="from_sale" type="text"
-                            class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
-                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" />
+                            class="mx-2 w-[7rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white border-opacity-50 focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.sale.from--"/>
                     </div>
 
                     <div class="ml-2 flex items-center mt-2">
                         <label for="to_sale" class="w-24 text-sm font-medium text-white">to</label>
-                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" />
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.sale.to++"/>
                         <input v-model="filters.sale.to" id="to_sale" name="to_sale" type="text"
-                            class="mx-2 w-[5rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
-                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" />
+                            class="mx-2 w-[7rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white border-opacity-50 focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.sale.to--"/>
                     </div>
                 </div>
 
@@ -278,14 +275,20 @@ onMounted(() => {
 
                     <div class="ml-2 flex items-center mt-4">
                         <label for="from_da" class="w-24 text-sm font-medium text-white">from</label>
+
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.da.from++"/>
                         <input v-model="filters.da.from" id="from_da" name="from_da" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                            class="mx-2 w-[7rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white border-opacity-50 focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.da.from--"/>
                     </div>
 
                     <div class="ml-2 flex items-center mt-2">
                         <label for="to_da" class="w-24 text-sm font-medium text-white">to</label>
+
+                        <ChevronUpIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.da.to++"/>
                         <input v-model="filters.da.to" id="to_da" name="to_da" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                            class="mx-2 w-[7rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white border-opacity-50 focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.da.to--"/>
                     </div>
                 </div>
 
@@ -294,14 +297,20 @@ onMounted(() => {
 
                     <div class="ml-2 flex items-center mt-4">
                         <label for="from_dr" class="w-24 text-sm font-medium text-white">from</label>
+
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.dr.from++"/>
                         <input v-model="filters.dr.from" id="from_dr" name="from_dr" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                            class="mx-2 w-[7rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white border-opacity-50 focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.dr.from--"/>
                     </div>
 
                     <div class="ml-2 flex items-center mt-2">
                         <label for="to_dr" class="w-24 text-sm font-medium text-white">to</label>
+
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-green-500" @click="filters.dr.to++"/>
                         <input v-model="filters.dr.to" id="to_dr" name="to_dr" type="number"
-                            class="w-24 bg-transparent text-sm font-medium text-white border-0 border-b border-white focus:border-white focus:ring-0" />
+                            class="mx-2 w-[7rem] bg-transparent text-sm font-medium text-white border-0 border-b border-white border-opacity-50 focus:border-white focus:ring-0" />
+                        <ChevronDownIcon class="cursor-pointer h-10 w-10 text-red-500" @click="filters.dr.to--"/>
                     </div>
                 </div>
 

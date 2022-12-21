@@ -26,6 +26,7 @@ class Client extends Authenticatable implements HasLocalePreference
         'password',
         'full',
         'locale',
+        'coin',
     ];
 
     /**

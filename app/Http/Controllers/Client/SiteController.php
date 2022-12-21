@@ -40,6 +40,23 @@ class SiteController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
+        $filters = [
+            'sale' => [
+                'from' => Site::min('sale'),
+                'to' => Site::max('sale'),
+            ],
+
+            'da' => [
+                'from' => Site::min('da'),
+                'to' => Site::max('da'),
+            ],
+
+            'dr' => [
+                'from' => Site::min('dr'),
+                'to' => Site::max('dr'),
+            ],
+        ];
+
         $sites = QueryBuilder::for(Site::class)
             // ->ofStatus('APPROVED')
             ->withCount([
@@ -81,6 +98,7 @@ class SiteController extends Controller
         return Inertia::render('Client/Sites/Index', [
             'sites' => $sites,
             'coins' => $coins,
+            'filters' => $filters,
             'favorites' => $favorites,
             'countries' => $countries,
             'languages' => $languages,

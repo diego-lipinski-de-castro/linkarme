@@ -30,7 +30,8 @@ class StoreClientRequest extends FormRequest
             // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'password' => ['required'],
             'full' => ['required', 'boolean'],
-            'locale' => ['nullable'],
+            'locale' => ['nullable', 'in:en,es,pt'],
+            'coin' => ['nullable', 'in:BRL,EUR,USD'],
         ];
     }
 
