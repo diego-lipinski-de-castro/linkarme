@@ -60,6 +60,8 @@ class UpdateSiteRequest extends FormRequest
 
             'seller_id' => 'nullable|integer|exists:sellers,id',
 
+            'team' => 'nullable',
+
             'owner_name' => 'nullable',
             'owner_email' => 'nullable',
             'owner_phone' => 'nullable',

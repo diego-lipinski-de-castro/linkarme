@@ -10,6 +10,7 @@ use App\Http\Controllers\Seller\Auth\VerifyEmailController;
 use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\NoteController;
 use App\Http\Controllers\Seller\OrderController;
+use App\Http\Controllers\Seller\ProfileController;
 use App\Http\Controllers\Seller\SiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -102,4 +103,21 @@ Route::group([
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                     ->name('logout');
     });
+
+    // profile
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->middleware('auth:seller')
+        ->name('profile.show');
+
+    Route::put('/profile-information', [ProfileController::class, 'update'])
+        ->middleware('auth:seller')
+        ->name('profile-information.update');
+
+    Route::delete('/profile-photo', [ProfileController::class, 'destroyPhoto'])
+        ->middleware('auth:seller')
+        ->name('current-user-photo.destroy');
+
+    Route::put('/password', [ProfileController::class, 'updatePassword'])
+        ->middleware('auth:seller')
+        ->name('password.update');
 });

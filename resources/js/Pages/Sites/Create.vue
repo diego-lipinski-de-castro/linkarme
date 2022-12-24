@@ -42,6 +42,7 @@ const form = useForm({
 
     last_posted: '',
     seller_id: null,
+    team: '',
 
     obs: '',
 
@@ -245,7 +246,7 @@ const saleFormat = computed(() => coins[form.sale_coin])
                     </div>
 
                     <div class="col-span-6">
-                        <label for="seller_id" class="block text-sm font-medium text-gray-700">{{ $t('Seller') }}</label>
+                        <label for="seller_id" class="block text-sm font-medium text-gray-700">{{ $t('Vendedor') }}</label>
                         <div class="mt-1">
                             <select v-model="form.seller_id" id="seller_id" name="seller_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                 <option :value="null">Selecione</option>
@@ -255,6 +256,12 @@ const saleFormat = computed(() => coins[form.sale_coin])
 
                         <InputError class="mt-2" :message="form.errors.seller_id"/>
 
+                    </div>
+
+                    <div class="col-span-6">
+                        <InputLabel for="team" :value="$t('Atendimento')"/>
+                        <textarea id="team" v-model="form.team" type="text" rows="3" class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring-indigo-200 sm:text-sm"></textarea>
+                        <InputError class="mt-2" :message="form.errors.team"/>
                     </div>
 
                     <div class="col-span-6">

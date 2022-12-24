@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\NoteController;
 use App\Http\Controllers\Client\NotificationController;
 use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\SiteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -99,4 +100,21 @@ Route::group([
     Route::post('/atualizar-senha', [PasswordResetLinkController::class, 'submit'])
         ->middleware('auth:client')
         ->name('password.submit');
+
+    // profile
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->middleware('auth:client')
+        ->name('profile.show');
+
+    Route::put('/profile-information', [ProfileController::class, 'update'])
+        ->middleware('auth:client')
+        ->name('profile-information.update');
+
+    Route::delete('/profile-photo', [ProfileController::class, 'destroyPhoto'])
+        ->middleware('auth:client')
+        ->name('current-user-photo.destroy');
+
+    Route::put('/password', [ProfileController::class, 'updatePassword'])
+        ->middleware('auth:client')
+        ->name('password.update');
 });

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();
+            $table->string('profile_photo_path', 2048)->nullable();
             $table->boolean('full')->default(false);
             $table->timestamps();
         });

@@ -18,25 +18,8 @@ import {
 } from '@headlessui/vue'
 
 import {
-    Bars3CenterLeftIcon,
-    BellIcon,
-    ClockIcon,
-    CogIcon,
-    CreditCardIcon,
-    DocumentChartBarIcon,
-    HomeIcon,
-    QuestionMarkCircleIcon,
-    ScaleIcon,
-    ShieldCheckIcon,
-    UserGroupIcon,
-    XMarkIcon,
-} from '@heroicons/vue/24/outline'
-import {
     ArrowLongLeftIcon,
     ArrowLongRightIcon,
-    BanknotesIcon,
-    BuildingOfficeIcon,
-    CheckCircleIcon,
     ChevronDownIcon,
     ChevronRightIcon,
     ChevronUpIcon,
@@ -164,15 +147,6 @@ const toggleFavorite = async (site) => {
         preserveScroll: true,
     })
 }
-
-onMounted(() => {
-    setTimeout(() => {
-        tippy('[data-tippy-content]', {
-            interactive: true,
-        });
-    }, 500)
-})
-
 </script>
     
 <template>
@@ -749,11 +723,7 @@ onMounted(() => {
                                             </button>
                                         </td>
                                         <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <span
-                                                :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
-                                                class="relative flex space-x-2 items-center">
-                                                <span v-if="site.sale_coin != coinStore.coin"
-                                                    class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                                            <span class="relative flex space-x-2 items-center">
                                                 <span> {{ site.sale_coin != coinStore.coin ? '~' : null }} {{
                                                 $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) /
                                                 100, coins[coinStore.coin]) }}</span>

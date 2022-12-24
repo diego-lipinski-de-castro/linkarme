@@ -59,6 +59,8 @@ class StoreSiteRequest extends FormRequest
 
             'seller_id' => 'nullable|integer|exists:sellers,id',
 
+            'team' => 'nullable',
+
             'owner_name' => 'nullable',
             'owner_email' => 'nullable',
             'owner_phone' => 'nullable',
@@ -66,7 +68,7 @@ class StoreSiteRequest extends FormRequest
             'bank' => 'nullable',
             'pix' => 'nullable',
 
-            'phone' => 'nullable',
+            'phone' => 'nullable', 
             'paypal' => 'nullable',
             'instagram' => 'nullable',
             'facebook' => 'nullable',
