@@ -76,7 +76,7 @@ const submit = () => {
 
                         <div class="col-span-6">
                             <InputLabel for="category" :value="$t('Category')" />
-                            <TextInput disabled id="category" :value="site.category.name" type="text"
+                            <TextInput disabled id="category" :value="site.category?.name" type="text"
                                 class="disabled:opacity-50 mt-1 block w-full" required autofocus
                                 autocomplete="category" />
 
@@ -113,14 +113,14 @@ const submit = () => {
 
                         <div class="col-span-3">
                             <InputLabel for="language" :value="$t('Language')" />
-                            <TextInput disabled id="language" :value="site.language.name" type="text"
+                            <TextInput disabled id="language" :value="site.language?.name" type="text"
                                 class="disabled:opacity-50 mt-1 block w-full" required autofocus
                                 autocomplete="language" />
                         </div>
 
                         <div class="col-span-3">
                             <InputLabel for="country" :value="$t('Country')" />
-                            <TextInput disabled id="country" :value="site.country.name" type="text"
+                            <TextInput disabled id="country" :value="site.country?.name" type="text"
                                 class="disabled:opacity-50 mt-1 block w-full" required autofocus
                                 autocomplete="country" />
                         </div>
