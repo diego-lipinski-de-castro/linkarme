@@ -71,7 +71,7 @@ const destroy = (category) => {
                 <ul role="list" class="divide-y divide-gray-200">
 
                     <li v-for="(category, index) in categories.data" :key="index">
-                        <a :href="route('categories.edit', category.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
+                        <Link :href="route('categories.edit', category.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
                             <span class="flex items-center space-x-4">
                                 <span class="flex flex-1 space-x-2 truncate">
                                     <span class="text-sm text-gray-500">
@@ -80,7 +80,7 @@ const destroy = (category) => {
                                 </span>
                                 <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             </span>
-                        </a>
+                        </Link>
                     </li>
 
                 </ul>
@@ -119,10 +119,10 @@ const destroy = (category) => {
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-for="(category, index) in categories.data" :key="index" class="bg-white">
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                        <a :href="route('categories.edit', category.id)"
+                                        <Link :href="route('categories.edit', category.id)"
                                             class="text-gray-500 hover:text-gray-900">
                                             {{ category.name }}
-                                        </a>
+                                        </Link>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <div class="flex space-x-2">

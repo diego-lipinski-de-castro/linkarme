@@ -74,7 +74,7 @@ const destroy = (seller) => {
                     <ul role="list" class="divide-y divide-gray-200">
 
                         <li v-for="(seller, index) in sellers.data" :key="index">
-                            <a :href="route('sellers.edit', seller.id)"
+                            <Link :href="route('sellers.edit', seller.id)"
                                 class="block bg-white px-4 py-4 hover:bg-gray-50">
                                 <span class="flex items-center space-x-4">
                                     <span class="flex flex-1 space-x-2 truncate">
@@ -84,7 +84,7 @@ const destroy = (seller) => {
                                     </span>
                                     <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </span>
-                            </a>
+                            </Link>
                         </li>
 
                     </ul>
@@ -128,10 +128,10 @@ const destroy = (seller) => {
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(seller, index) in sellers.data" :key="index" class="bg-white">
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="route('sellers.edit', seller.id)"
+                                            <Link :href="route('sellers.edit', seller.id)"
                                                 class="text-gray-500 hover:text-gray-900">
                                                 {{ seller.name }}
-                                            </a>
+                                            </Link>
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ seller.email ?? '-' }}

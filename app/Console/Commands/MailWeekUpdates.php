@@ -50,13 +50,17 @@ class MailWeekUpdates extends Command
             ])
             ->whereHas('auditable')
             ->get()
-            // ->filter(function ($item) {
+            ->filter(function ($item) {
 
-            //     return Arr::hasAny(
-            //         $item->getModified(), 
-            //         ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner']
-            //     );
-            // })
+                if($item->event == 'updated') {
+                    return Arr::hasAny(
+                        $item->getModified(), 
+                        ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner', 'status']
+                    );
+                }
+
+                return true;
+            })
             ->transform(function ($item) {
                 $item->modified = $item->getModified();
 
