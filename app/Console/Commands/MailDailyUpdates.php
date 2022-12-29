@@ -11,21 +11,21 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
 
-class MailWeekUpdates extends Command
+class MailDailyUpdates extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'mail:week {--id=*} {--locale=en}';
+    protected $signature = 'mail:daily {--id=*} {--locale=en}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send week updates emails';
+    protected $description = 'Send daily updates emails';
 
     /**
      * Execute the console command.
@@ -41,10 +41,7 @@ class MailWeekUpdates extends Command
             ->with('auditable')
             ->where('auditable_type', 'App\\Models\\Site')
             ->whereIn('event', ['created', 'updated'])
-            ->whereBetween('created_at', [
-                now()->subWeek()->format('Y-m-d'),
-                now()->subDay()->format('Y-m-d'),
-            ])
+            ->whereDate('created_at', now()->subDay()->format('Y-m-d'))
             ->whereHas('auditable')
             ->get()
             ->filter(function ($item) {
@@ -77,7 +74,7 @@ class MailWeekUpdates extends Command
         }
 
         $clients = Client::query()
-            ->where('notify_updates_via_email', 'WEEKLY')
+            ->where('notify_updates_via_email', 'DAILY')
             ->get();
 
         foreach($clients as $client){

@@ -27,6 +27,7 @@ class Client extends Authenticatable implements HasLocalePreference
         'full',
         'locale',
         'coin',
+        'notify_updates_via_email',
     ];
 
     /**

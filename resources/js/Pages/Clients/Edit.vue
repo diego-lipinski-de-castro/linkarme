@@ -25,6 +25,7 @@ const form = useForm({
     locale: client.locale ?? 'en',
     coin: client.coin ?? 'USD',
     full: client.full,
+    notify_updates_via_email: client.notify_updates_via_email,
 })
 
 const submit = () => {
@@ -118,6 +119,21 @@ const generatePassword = () => {
                     <InputLabel for="full" :value="$t('Full')"/>
                     <Checkbox id="full" v-model:checked="form.full" name="full" />
                     <InputError class="mt-2" :message="form.errors.full" />
+                </div>
+
+                <div>
+                    <InputLabel for="notify_updates_via_email" :value="$t('E-mail notifications')"/>
+                    <div class="mt-1">
+
+                        <select v-model="form.notify_updates_via_email" id="notify_updates_via_email" name="notify_updates_via_email" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option :value="null">Disabled</option>
+                            <option value="DAILY">Daily</option>
+                            <option value="WEEKLY">Weekly</option>
+                        </select>
+
+                    </div>
+
+                    <InputError class="mt-2" :message="form.errors.locale"/>
                 </div>
 
                 <div class="flex justify-end">

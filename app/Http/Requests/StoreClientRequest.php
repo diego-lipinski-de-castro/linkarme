@@ -32,6 +32,7 @@ class StoreClientRequest extends FormRequest
             'full' => ['required', 'boolean'],
             'locale' => ['nullable', 'in:en,es,pt'],
             'coin' => ['nullable', 'in:BRL,EUR,USD'],
+            'notify_updates_via_email' => ['nullable', 'in:DAILY,WEEKLY,MONTHLY'],
         ];
     }
 

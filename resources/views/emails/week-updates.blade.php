@@ -1,6 +1,6 @@
 <x-mail :subject="$subject">
 
-    <ul role="list" class="divide-y divide-gray-200 bg-white rounded-md shadow">
+    <ul role="list" class="divide-y bg-white rounded-md shadow">
         @foreach($updates as $audit)
             <li>
 
