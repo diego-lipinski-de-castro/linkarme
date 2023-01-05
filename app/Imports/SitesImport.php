@@ -39,8 +39,6 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
      */
     public function model(array $row)
     {
-        dd($row);
-
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
