@@ -67,7 +67,7 @@ const _defaultColumns = [
     // { key: 'menu', label: t('Links menu'), visible: true },
     { key: 'obs', label: t('Obs'), visible: true },
     { key: 'example', label: t('Example'), visible: true },
-    { key: 'inserted_at', label: t('Upload data'), visible: true },
+    { key: 'inserted_at', label: t('Upload date'), visible: true },
 ];
 
 const _columns =
@@ -695,7 +695,7 @@ const toggleFavorite = async (site) => {
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
-                                                <span class="block">{{$t('Upload data')}}</span>
+                                                <span class="block">{{$t('Upload date')}}</span>
                                                 <TableSortButton column='inserted_at' :current="sort"
                                                     @onClick='(column) => sort = column' />
                                             </div>

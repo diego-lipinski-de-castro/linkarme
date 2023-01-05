@@ -260,7 +260,7 @@ const saleFormat = computed(() => coins[form.sale_coin])
 
                     <div class="col-span-6">
                         <InputLabel for="team" :value="$t('Atendimento')"/>
-                        <textarea id="team" v-model="form.team" type="text" rows="3" class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring-indigo-200 sm:text-sm"></textarea>
+                        <TextInput id="team" v-model="form.team" type="text" class="mt-1 block w-full" />
                         <InputError class="mt-2" :message="form.errors.team"/>
                     </div>
 

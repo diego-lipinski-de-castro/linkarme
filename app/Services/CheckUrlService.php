@@ -29,7 +29,7 @@ class CheckUrlService
                 'debug' => true,
             ])->getStatusCode();
         } catch (Exception $e) {
-            Log::debug($e);
+            Log::channel('checkers')->debug($e);
 
             $code = null;
         }
@@ -40,7 +40,7 @@ class CheckUrlService
         try {
             $validSsl = SslCertificate::createForHostName($url)->isValid();
         } catch (Exception $e) {
-            Log::debug($e);
+            Log::channel('checkers')->debug($e);
 
             $validSsl = false;
         }

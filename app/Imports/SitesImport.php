@@ -131,6 +131,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
+            'team' => $row['responsavel'],
 
             'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
             'banner' => strtolower($row['banners']) == 'sim' ? true : false,
@@ -155,10 +156,12 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     {
         return [
             'inclusao' => ['required', 'date_format:d/m/Y'],
+            'atualizacao' => ['nullable', 'date_format:d/m/Y'],
             'dominio' => [],
             'da' => ['nullable', 'integer'],
             'dr' => ['nullable', 'integer'],
             'atendimento' => [],
+            'responsavel' => [],
             'custo' => [],
             'venda' => [],
             'categorias' => [],
