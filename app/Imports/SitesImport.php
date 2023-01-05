@@ -39,6 +39,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
      */
     public function model(array $row)
     {
+        dd($row);
+
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
@@ -130,7 +132,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'sale_coin' => $saleCoin,
             // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
-            'last_updated_at' => Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
+            'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
             'team' => $row['responsavel'],
 
@@ -150,6 +152,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'facebook' => $row['facebook'],
 
             'deleted_at' => strtolower($row['ativo']) == 'sim' ? null : now(),
+
+            'status' => 'APPROVED',
         ]);
     }
 

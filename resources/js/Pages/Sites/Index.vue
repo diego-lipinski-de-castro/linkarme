@@ -861,7 +861,10 @@ onMounted(() => {
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
                                             <Link :href="route('sites.edit', site.id)"
-                                                class="text-gray-500 hover:text-gray-900">
+                                                :class="[{
+                                                    'text-gray-500 hover:text-gray-900': site.deleted_at === null,
+                                                    'text-red-500 hover:text-red-700': site.deleted_at !== null,
+                                                }]">
                                                 {{ site.url }}
                                             </Link>
                                         </td>

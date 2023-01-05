@@ -35,7 +35,11 @@ class SiteController extends Controller
     {
         $coins = config('coins');
 
-        $pendingCount = Site::ofStatus('PENDING')->count();
+        $pendingCount = Site::query()
+            ->withTrashed()
+            ->ofStatus('PENDING')
+            ->count();
+
         $offersCount = Offer::count();
 
         $countries = Country::query()
@@ -69,9 +73,13 @@ class SiteController extends Controller
             ],
         ];
 
+        $filter = request()->query('filter');
+
         $sites = QueryBuilder::for(Site::class)
-            // ->ofStatus('PENDING')
             ->withTrashed()
+            ->when(! isset($filter['of_status']), function ($query) {
+                $query->ofStatus('APPROVED');
+            })
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([
