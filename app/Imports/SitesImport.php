@@ -129,25 +129,25 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'cost_coin' => $costCoin,
             'sale_coin' => $saleCoin,
             // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
-            'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
-            'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
+            'inserted_at' => Carbon::createFromFormat('j/n/Y', $row['inclusao'])->format('Y-m-d'),
+            'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('j/n/Y', $row['atualizacao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
             'team' => $row['responsavel'],
 
             'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
             'banner' => strtolower($row['banners']) == 'sim' ? true : false,
 
-            'owner_name' => $row['dono_do_site'],
-            'owner_email' => $row['email'],
-            'owner_phone' => $row['whats'],
+            'owner_name' => optional($row)['dono_do_site'],
+            'owner_email' => optional($row)['email'],
+            'owner_phone' => optional($row)['whats'],
 
-            'bank' => $row['dados_bancarios'],
-            'pix' => $row['pix'],
+            'bank' => optional($row)['dados_bancarios'],
+            'pix' => optional($row)['pix'],
 
-            'phone' => $row['telefone'],
-            'paypal' => $row['paypal'],
-            'instagram' => $row['instagram'],
-            'facebook' => $row['facebook'],
+            'phone' => optional($row)['telefone'],
+            'paypal' => optional($row)['paypal'],
+            'instagram' => optional($row)['instagram'],
+            'facebook' => optional($row)['facebook'],
 
             'deleted_at' => strtolower($row['ativo']) == 'sim' ? null : now(),
 
@@ -158,8 +158,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     public function rules(): array
     {
         return [
-            'inclusao' => ['required', 'date_format:d/m/Y'],
-            'atualizacao' => ['nullable', 'date_format:d/m/Y'],
+            'inclusao' => ['required', 'date_format:j/n/Y'],
+            'atualizacao' => ['nullable', 'date_format:j/n/Y'],
             'dominio' => [],
             'da' => ['nullable', 'integer'],
             'dr' => ['nullable', 'integer'],
