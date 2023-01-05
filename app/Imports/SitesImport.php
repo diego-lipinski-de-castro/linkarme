@@ -130,6 +130,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'sale_coin' => $saleCoin,
             // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+            'last_updated_at' => Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
             'team' => $row['responsavel'],
 

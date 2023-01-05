@@ -94,6 +94,7 @@ class Site extends Model implements Auditable
         'banner' => 'boolean',
 
         'inserted_at' => 'date',
+        'last_updated_at' => 'date',
     ];
 
     protected $appends = [

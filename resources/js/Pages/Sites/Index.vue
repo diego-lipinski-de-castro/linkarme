@@ -833,7 +833,7 @@ onMounted(() => {
                                             class="align-baseline whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
-                                                <span class="block">{{ $t('UploUpload datead data') }}</span>
+                                                <span class="block">{{ $t('Upload date') }}</span>
                                                 <TableSortButton column='inserted_at' :current="sort"
                                                     @onClick='(column) => sort = column' />
                                             </div>
