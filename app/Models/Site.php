@@ -109,6 +109,8 @@ class Site extends Model implements Auditable
     protected static function booted()
     {
         static::creating(function ($site) {
+            $site->url = trim($site->url);
+            
             if (blank($site->inserted_at)) {
                 $site->inserted_at = now();
             }
@@ -117,6 +119,8 @@ class Site extends Model implements Auditable
         });
 
         static::updating(function ($site) {
+            $site->url = trim($site->url);
+
             $site->suggested = ($site->cost) + ($site->cost * 0.25) + (560.33 * 100);
 
             if ($site->isDirty('sale')) {

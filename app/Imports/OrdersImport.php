@@ -40,6 +40,12 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
     {
         $url = $row['url'];
 
+        // $domain = Str::contains($row['url'], '://') ?
+        //     str_replace('www.', '', parse_url($row['url'], PHP_URL_HOST)) :
+        //     str_replace('www.', '', parse_url('http://' . $row['url'], PHP_URL_HOST));
+
+        // $site = Site::where('url', $domain)->first();
+
         $site = Site::whereRaw("LOCATE(sites.url, '$url') > 0")->first();
 
         if (blank($site)) {
