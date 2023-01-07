@@ -129,8 +129,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'cost_coin' => $costCoin,
             'sale_coin' => $saleCoin,
             // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
-            'inserted_at' => Carbon::createFromFormat('j/n/Y', $row['inclusao'])->format('Y-m-d'),
-            'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('j/n/Y', $row['atualizacao'])->format('Y-m-d'),
+            'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+            'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
             'team' => $row['responsavel'],
 
@@ -158,8 +158,8 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
     public function rules(): array
     {
         return [
-            'inclusao' => ['required', 'date_format:j/n/Y'],
-            'atualizacao' => ['nullable', 'date_format:j/n/Y'],
+            'inclusao' => ['required', 'date_format:d/m/Y'],
+            'atualizacao' => ['nullable', 'date_format:d/m/Y'],
             'dominio' => [],
             'da' => ['nullable', 'integer'],
             'dr' => ['nullable', 'integer'],
