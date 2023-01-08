@@ -121,6 +121,7 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
             'paid' => $paid,
             'markup' => $charged - $paid,
             'comission' => $comission,
+            'company' => $row['empresa'], 
             'status' => $status,
         ]);
     }
@@ -138,6 +139,7 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
             'valor_cobrado' => ['required'],
             'valor_pago' => ['required'],
             'comissao' => ['required'],
+            'empresa' => [],
         ];
     }
 

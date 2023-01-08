@@ -37,6 +37,7 @@ class Order extends Model implements Auditable
         'paid',
         'markup',
         'comission',
+        'company',
         'status',
     ];
 

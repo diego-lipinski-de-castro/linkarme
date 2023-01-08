@@ -39,6 +39,7 @@ class StoreOrderRequest extends FormRequest
             'paid' => 'nullable',
             'markup' => 'nullable',
             'comission' => 'nullable',
+            'company' => 'nullable', 
         ];
     }
 
