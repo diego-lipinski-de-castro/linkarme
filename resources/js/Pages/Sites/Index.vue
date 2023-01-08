@@ -853,10 +853,11 @@ onMounted(() => {
                                                 class="relative flex space-x-2 items-center">
                                                 <span v-if="site.sale_coin != coinStore.coin"
                                                     class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                                                <span> {{ site.sale_coin != coinStore.coin ? '~' : null }} {{
-                                                        $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) /
-                                                            100, coins[coinStore.coin])
-                                                }}</span>
+                                                <span>
+                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }} 
+                                                    <!-- {{ $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) / 100, coins[coinStore.coin]) }} -->
+                                                    {{ $filters.currency((Math.round((site.sale / coinStore.ratios[site.sale_coin]) / 5) * 5) / 100, coins[coinStore.coin]) }}
+                                                </span>
                                             </span>
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">

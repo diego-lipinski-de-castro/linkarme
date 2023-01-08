@@ -724,9 +724,11 @@ const toggleFavorite = async (site) => {
                                         </td>
                                         <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                             <span class="relative flex space-x-2 items-center">
-                                                <span> {{ site.sale_coin != coinStore.coin ? '~' : null }} {{
-                                                $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) /
-                                                100, coins[coinStore.coin]) }}</span>
+                                                <span>
+                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }} 
+                                                    <!-- {{ $filters.currency((site.sale / coinStore.ratios[site.sale_coin]) / 100, coins[coinStore.coin]) }} -->
+                                                    {{ $filters.currency((Math.round((site.sale / coinStore.ratios[site.sale_coin]) / 5) * 5) / 100, coins[coinStore.coin]) }}
+                                                </span>
                                             </span>
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">

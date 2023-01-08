@@ -27,6 +27,8 @@ export const useCoinStore = defineStore('coin', {
                         },
                     })
 
+                    console.log(res.data[`${coin}${c}`].ask);
+
                     this.ratios[c] = parseFloat(res.data[`${coin}${c}`].ask)
                 } catch (error) {
                     this.ratios[c] = 0

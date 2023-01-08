@@ -52,6 +52,17 @@ class Order extends Model implements Auditable
         'formatted_status',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($order) {
+            $order->url = trim($order->url);
+        });
+
+        static::updating(function ($order) {
+            $order->url = trim($order->url);
+        });
+    }
+
     public function site()
     {
         return $this->belongsTo(Site::class);

@@ -61,6 +61,8 @@ class OrderController extends Controller
             'sites' => $sites,
             'clients' => $clients,
             'sellers' => $sellers,
+            'importFailures' => session('importFailures'),
+            'importDiff' => session('importDiff'),
         ]);
     }
 
