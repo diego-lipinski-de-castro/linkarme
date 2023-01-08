@@ -56,6 +56,17 @@ class Seller extends Authenticatable
         'profile_photo_url',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($seller) {
+            $seller->name = trim($seller->name);
+        });
+
+        static::updating(function ($seller) {
+            $seller->name = trim($seller->name);
+        });
+    }
+
     public function notes()
     {
         return $this->morphMany(Note::class, 'owner');

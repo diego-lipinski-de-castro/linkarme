@@ -97,8 +97,6 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
             $client = Client::where('name', 'LIKE', '%'.$row['cliente'].'%')->first();
 
             if (blank($client)) {
-                Log::debug('add client: ' . $row['cliente']);
-
                 $client = Client::create([
                     'name' => $row['cliente'],
                 ]);
@@ -109,8 +107,6 @@ class OrdersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidati
             $seller = Seller::where('name', 'LIKE', '%'.$row['vendedor'].'%')->first();
 
             if (blank($seller)) {
-                Log::debug('add seller: ' . $row['vendedor']);
-
                 $seller = Seller::create([
                     'name' => $row['vendedor'],
                 ]);

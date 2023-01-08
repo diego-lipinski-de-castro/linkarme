@@ -69,6 +69,17 @@ class Client extends Authenticatable implements HasLocalePreference
         return $this->locale ?? 'en';
     }
 
+    protected static function booted()
+    {
+        static::creating(function ($client) {
+            $client->name = trim($client->name);
+        });
+
+        static::updating(function ($client) {
+            $client->name = trim($client->name);
+        });
+    }
+
     public function notes()
     {
         return $this->morphMany(Note::class, 'owner');
