@@ -30,25 +30,23 @@ class DashboardController extends Controller
         $favs = Site::query()
             ->authFavorites()
             ->join('favorites', 'favorites.site_id', '=', 'sites.id')   
-            ->orderBy('favorites.created_at', 'desc')
+            ->orderByRaw('favorites.created_at DESC')
             ->take(10)
             ->get()
-            ->sortByDesc('dr')
             ->values();
         
         $new = Site::query()
             ->where('inserted_at', '>', now()->subDays(60)->endOfDay())
-            ->orderBy('dr', 'desc')
+            ->orderByRaw('dr DESC, da DESC, traffic DESC')
             ->take(10)
             ->get();
 
         $recommended = Site::query()
             ->withCount('orders')
-            ->having('orders_count', '>', 5)
             ->whereDoesntHave('orders', function ($query) {
                 $query->ofClient(auth()->id());
             })
-            ->orderBy('dr', 'desc')
+            ->orderByRaw('orders_count DESC, dr DESC, da DESC, traffic DESC')
             ->take(10)
             ->get();
 
