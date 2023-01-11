@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Filters\FilterLimiter;
-use App\Filters\NewFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
-use App\Models\Note;
 use App\Models\Site;
-use App\Sorts\OrderCountSort;
+use App\Sorts\NewSort;
+use App\Sorts\RecommendedSort;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -42,26 +41,24 @@ class SiteController extends Controller
 
         $filters = [
             'sale' => [
-                'from' => Site::min('sale'),
-                'to' => Site::max('sale'),
+                'from' => Site::ofStatus('APPROVED')->min('sale'),
+                'to' => Site::ofStatus('APPROVED')->max('sale'),
             ],
 
             'da' => [
-                'from' => Site::min('da'),
-                'to' => Site::max('da'),
+                'from' => Site::ofStatus('APPROVED')->min('da'),
+                'to' => Site::ofStatus('APPROVED')->max('da'),
             ],
 
             'dr' => [
-                'from' => Site::min('dr'),
-                'to' => Site::max('dr'),
+                'from' => Site::ofStatus('APPROVED')->min('dr'),
+                'to' => Site::ofStatus('APPROVED')->max('dr'),
             ],
         ];
 
         $sites = QueryBuilder::for(Site::class)
-            // ->ofStatus('APPROVED')
-            ->withCount([
-                'orders' => fn ($q) => $q->ofClient(auth()->id()),
-            ])
+            ->ofStatus('APPROVED')
+            ->withCount('orders')
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([
@@ -71,7 +68,8 @@ class SiteController extends Controller
                 'dr',
                 'traffic',
                 'inserted_at',
-                // AllowedSort::custom('orders_count', new OrderCountSort()),
+                AllowedSort::custom('recommended', new RecommendedSort()),
+                AllowedSort::custom('new', new NewSort()),
             ])
             ->allowedFilters([
                 'url',
@@ -89,8 +87,10 @@ class SiteController extends Controller
                 'cripto',
                 'banner',
                 'menu',
+                AllowedFilter::scope('new', 'auth_new'),
+                AllowedFilter::scope('used', 'auth_used'),
                 AllowedFilter::scope('favorites', 'auth_favorites'),
-                AllowedFilter::custom('new', new NewFilter),
+                AllowedFilter::scope('recommended', 'auth_recommended'),
             ])
             ->paginate(50)
             ->appends(request()->query());

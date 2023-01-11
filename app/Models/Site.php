@@ -243,11 +243,37 @@ class Site extends Model implements Auditable
         return $query->where('status', $status);
     }
 
+    public function scopeAuthNew($query)
+    {
+        return $query
+            ->where('inserted_at', '>', now()->subDays(60)->endOfDay())
+            ->whereDoesntHave('orders', function ($query) {
+                $query->ofClient(auth()->id());
+            });
+    }
+
+    public function scopeAuthUsed($query, $used = true)
+    {
+        $where = $used ? 'whereHas' : 'whereDoesntHave';
+
+        return $query->{$where}('orders', function ($query) {
+            $query->ofClient(auth()->id());
+        });
+    }
+
     public function scopeAuthFavorites($query)
     {
         return $query->whereHas('favorites', function ($query) {
             $query->where('clients.id', auth()->id());
         });
+    }
+
+    public function scopeAuthRecommended($query)
+    {
+        return $query
+            ->whereDoesntHave('orders', function ($query) {
+                $query->ofClient(auth()->id());
+            });
     }
 
     public function scopeOfSeller($query, $seller)

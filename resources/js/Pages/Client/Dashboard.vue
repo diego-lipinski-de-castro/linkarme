@@ -41,14 +41,14 @@ const props = defineProps({
 
 const cards = [
     { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, amount: props.orders },
-    { name: t('Sites used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.usedCount },
-    { name: t('Sites never used'), href: route('client.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
+    { name: t('Sites used'), href: route('client.sites.index', { _query: { 'filter[used]': 'true' } }), icon: ScaleIcon, amount: props.usedCount },
+    { name: t('Sites never used'), href: route('client.sites.index', { _query: { 'filter[used]': 'false' } }), icon: ScaleIcon, amount: props.unusedCount },
 ]
 
 const list = [
-    { label: t('Favorites'), sites: props.favs, href: route('client.sites.index') },
-    { label: t('New sites'), sites: props.new, href: route('client.sites.index') },
-    { label: t('Recommended'), sites: props.recommended, href: route('client.sites.index') },
+    { label: t('Favorites'), sites: props.favs, href: route('client.sites.index', { _query: { 'filter[favorites]': 'true' } }) },
+    { label: t('New sites'), sites: props.new, href: route('client.sites.index', { _query: { 'filter[new]': 'true', 'sort': 'new' } }) },
+    { label: t('Recommended'), sites: props.recommended, href: route('client.sites.index', { _query: { 'filter[recommended]': 'true', 'sort': 'recommended' } }) },
 ];
 
 const greeting = computed(() => {

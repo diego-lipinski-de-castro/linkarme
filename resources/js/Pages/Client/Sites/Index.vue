@@ -170,7 +170,7 @@ const toggleFavorite = async (site) => {
                 <div
                     class="flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        Sites
+                        {{ sites.total }}&nbsp;Sites
                     </h2>
 
                     <Menu as="div" class="relative ml-3">

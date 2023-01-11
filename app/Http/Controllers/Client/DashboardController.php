@@ -22,6 +22,7 @@ class DashboardController extends Controller
             ->count();
             
         $unusedCount = Site::query()
+            ->ofStatus('APPROVED')
             ->whereDoesntHave('orders', function ($query) {
                 $query->ofClient(auth()->id());
             })
@@ -36,12 +37,17 @@ class DashboardController extends Controller
             ->values();
         
         $new = Site::query()
+            ->ofStatus('APPROVED')
             ->where('inserted_at', '>', now()->subDays(60)->endOfDay())
+            ->whereDoesntHave('orders', function ($query) {
+                $query->ofClient(auth()->id());
+            })
             ->orderByRaw('dr DESC, da DESC, traffic DESC')
             ->take(10)
             ->get();
 
         $recommended = Site::query()
+            ->ofStatus('APPROVED')
             ->withCount('orders')
             ->whereDoesntHave('orders', function ($query) {
                 $query->ofClient(auth()->id());
