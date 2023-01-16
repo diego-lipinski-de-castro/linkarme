@@ -19,10 +19,6 @@
                 @endif
 
                 @if($audit->event == 'updated')
-                    <!-- {{ $audit }} -->
-
-                    <!-- const format = notification.data.audit_modified.sale_coin[frame]; -->
-                    <!-- return app.appContext.config.globalProperties.$filters.currency(value / 100, coins[format]); -->
 
                     <div class="flex space-x-3 px-4 py-4 sm:px-6">
                         <div class="flex-1 space-y-1">
@@ -30,8 +26,6 @@
                                 <h3 class="text-sm font-medium">{{ $audit->auditable->url }}</h3>
                                 <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
                             </div>
-                            
-                            <!-- v-for="(value, attribute) in notification.data.audit_modified" -->
 
                             @foreach($audit->modified as $attribute => $value)
 

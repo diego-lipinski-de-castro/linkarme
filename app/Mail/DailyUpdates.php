@@ -32,7 +32,7 @@ class DailyUpdates extends Mailable
     {
         return $this
             ->subject('DailyUpdates')
-            ->view('emails.daily-updates', [
+            ->view('emails.updates', [
                 'updates' => $this->updates,
                 'coins' => config('coins'),
                 'subject' => 'DailyUpdates',

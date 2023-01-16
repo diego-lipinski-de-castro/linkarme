@@ -32,7 +32,7 @@ class WeekUpdates extends Mailable
     {
         return $this
             ->subject('WeekUpdates')
-            ->view('emails.week-updates', [
+            ->view('emails.updates', [
                 'updates' => $this->updates,
                 'coins' => config('coins'),
                 'subject' => 'WeekUpdates',
