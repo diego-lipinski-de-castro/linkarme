@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\WeekUpdates;
+use App\Mail\DailyUpdates;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -49,7 +49,7 @@ class MailDailyUpdates extends Command
                 if($item->event == 'updated') {
                     return Arr::hasAny(
                         $item->getModified(), 
-                        ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner', 'status']
+                        ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
                     );
                 }
 
@@ -67,7 +67,7 @@ class MailDailyUpdates extends Command
 
         if(count($ids) > 0) {
             foreach($ids as $user){
-                Mail::to(User::find($user))->locale($locale)->send(new WeekUpdates($updates));
+                Mail::to(User::find($user))->locale($locale)->send(new DailyUpdates($updates));
             }
 
             return 0;
@@ -78,7 +78,7 @@ class MailDailyUpdates extends Command
             ->get();
 
         foreach($clients as $client){
-            Mail::to($client)->send(new WeekUpdates($updates));
+            Mail::to($client)->send(new DailyUpdates($updates));
         }
 
         return 0;

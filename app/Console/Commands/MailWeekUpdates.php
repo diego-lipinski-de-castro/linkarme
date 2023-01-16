@@ -43,7 +43,7 @@ class MailWeekUpdates extends Command
             ->whereIn('event', ['created', 'updated'])
             ->whereBetween('created_at', [
                 now()->subWeek()->format('Y-m-d'),
-                now()->subDay()->format('Y-m-d'),
+                now()->addDay()->format('Y-m-d'),
             ])
             ->whereHas('auditable')
             ->get()
@@ -52,7 +52,7 @@ class MailWeekUpdates extends Command
                 if($item->event == 'updated') {
                     return Arr::hasAny(
                         $item->getModified(), 
-                        ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner', 'status']
+                        ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
                     );
                 }
 

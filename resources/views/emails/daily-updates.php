@@ -38,23 +38,19 @@
                                 @php
 
                                     if($attribute == 'sale') {
-
                                         $value['old'] = App\Helper::formatCurrency($value['old'] / 100, $audit->modified['sale_coin']['old']);
                                         $value['new'] = App\Helper::formatCurrency($value['new'] / 100, $audit->modified['sale_coin']['new']);
-
                                     }
 
-                                    if(in_array($attribute, ['gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner'])) {
+                                    if(in_array($attribute, ['gambling', 'cdb', 'cripto', 'sponsor'])) {
                                         $value['old'] = (bool) $value['old'];
                                         $value['new'] = (bool) $value['new'];
                                     }
 
                                 @endphp
 
-                                @if(in_array($attribute, ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'menu', 'banner', 'status']))
-
+                                @if($attribute == 'sale')
                                     <p class="text-sm text-gray-500">
-
                                         @if(isset($value['old']) && isset($value['new']))
                                         <span class="break-words">
                                             {{
@@ -88,16 +84,42 @@
                                             }}
                                         </span>
                                         @endif
+                                    </p>
+                                @endif
 
-                                        <!-- <span class="break-words">
+                                @if(in_array($attribute, ['gambling', 'cdb', 'cripto', 'sponsor']))
+                                <p class="text-sm text-gray-500">
+                                    @if(isset($value['old']) && isset($value['new']))
+                                        
+                                        @if($value['new'] == true)
+                                        <span class="break-words">
                                             {{
-                                                __('email.attributes.blank', [
+                                                __('email.attributes.bool_true', [
                                                     'attribute' => $attribute,
+                                                    'old' => $value['old'],
+                                                    'new' => $value['new'],
                                                 ])
                                             }}
-                                        </span> -->
+                                        </span>
+                                        @endif
 
-                                    </p>
+                                        @if($value['new'] == false)
+                                        <span class="break-words">
+                                            {{
+                                                __('email.attributes.bool_false', [
+                                                    'attribute' => $attribute,
+                                                    'old' => $value['old'],
+                                                    'new' => $value['new'],
+                                                ])
+                                            }}
+                                        </span>
+                                        @endif
+
+                                    @endif
+                                </p>
+                                @endif
+
+                                @if($attribute == 'status')
                                 @endif
                             @endforeach
                         </div>

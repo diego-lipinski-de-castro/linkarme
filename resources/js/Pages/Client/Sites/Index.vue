@@ -3,17 +3,13 @@ import ClientLayout from '@/Layouts/ClientLayout.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
-    Dialog,
-    DialogPanel,
     Menu,
     MenuButton,
     MenuItem,
     MenuItems,
-    TransitionChild,
-    TransitionRoot,
     Switch, SwitchGroup, SwitchLabel,
 } from '@headlessui/vue'
 
@@ -89,9 +85,9 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 const sort = ref(params.sort ?? 'url')
 
-const filters = ref({
+const filters = reactive({
     url: params["filter[url]"] ?? null,
-    sale: { from: params["filter[sale][from]"] ?? props.filters.sale.from, to: params["filter[sale][to]"] ?? props.filters.sale.to },
+    sale: { from: params["filter[sale][from]"] ? (params["filter[sale][from]"]) : props.filters.sale.from, to: params["filter[sale][to]"] ? (params["filter[sale][to]"]) : props.filters.sale.to},
     da: { from: params["filter[da][from]"] ?? props.filters.da.from, to: params["filter[da][to]"] ?? props.filters.da.to },
     dr: { from: params["filter[dr][from]"] ?? props.filters.dr.from, to: params["filter[dr][to]"] ?? props.filters.dr.to },
     // traffic: { from: params["filter[traffic][from]"] ?? null, to: params["filter[traffic][to]"] ?? null },
@@ -104,13 +100,25 @@ const filters = ref({
     menu: params["filter[menu]"] == 'true',
     new: params["filter[new]"] == 'true',
     favorites: params["filter[favorites]"] == 'true',
+    recommended: params["filter[recommended]"] == 'true',
     // country_id: params["filter[country_id]"] ?? null,
     language_id: params["filter[language_id]"] ?? null,
 })
 
 watch(sort, (n, o) => get());
 
-watch(filters, debounce((n, o) => {
+watch(() => ({ ...filters }), debounce((n, o) => {
+
+    if(n.new !== o.new) {
+        sort.value = n.new === true ? 'new' : 'url';
+        return;
+    }
+
+    if(n.recommended !== o.recommended) {
+        sort.value = n.recommended === true ? 'recommended' : 'url';
+        return;
+    }
+
     get()
 }, 400), {
     deep: true,
@@ -120,21 +128,26 @@ const get = async () => {
     Inertia.get(route('client.sites.index'), {
         sort: sort.value,
         filter: {
-            url: filters.value.url,
+            url: filters.url,
             sale: {
-                from: filters.value.sale.from * 100,
-                to: filters.value.sale.to * 100,
+                from: filters.sale.from,
+                to: filters.sale.to,
             },
-            da: filters.value.da,
-            dr: filters.value.dr,
-            gambling: filters.value.gambling,
-            sponsor: filters.value.sponsor,
-            new: filters.value.new,
-            ...(filters.value.favorites && {
-                favorites: filters.value.favorites,
+            da: filters.da,
+            dr: filters.dr,
+            gambling: filters.gambling,
+            sponsor: filters.sponsor,
+            ...(filters.new && {
+                new: filters.new,
             }),
-            ...(filters.value.language_id !== null && {
-                language_id: filters.value.language_id,
+            ...(filters.favorites && {
+                favorites: filters.favorites,
+            }),
+            ...(filters.recommended && {
+                recommended: filters.recommended,
+            }),
+            ...(filters.language_id !== null && {
+                language_id: filters.language_id,
             }),
         },
     }, {
@@ -318,6 +331,18 @@ const toggleFavorite = async (site) => {
 
                 <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                     <SwitchLabel as="span">
+                        <span class="text-sm font-medium text-white">Recommended</span>
+                    </SwitchLabel>
+
+                    <Switch v-model="filters.recommended"
+                        :class="[filters.recommended ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                        <span aria-hidden="true"
+                            :class="[filters.recommended ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                    </Switch>
+                </SwitchGroup>
+
+                <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                    <SwitchLabel as="span">
                         <span class="text-sm font-medium text-white">Gambling</span>
                     </SwitchLabel>
 
@@ -489,6 +514,18 @@ const toggleFavorite = async (site) => {
                         :class="[filters.favorites ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
                         <span aria-hidden="true"
                             :class="[filters.favorites ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                    </Switch>
+                </SwitchGroup>
+
+                <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                    <SwitchLabel as="span">
+                        <span class="text-sm font-medium text-white">Recommended</span>
+                    </SwitchLabel>
+
+                    <Switch v-model="filters.recommended"
+                        :class="[filters.recommended ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                        <span aria-hidden="true"
+                            :class="[filters.recommended ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
                     </Switch>
                 </SwitchGroup>
 
