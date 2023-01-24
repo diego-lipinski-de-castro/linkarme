@@ -55,6 +55,8 @@ class StoreSiteRequest extends FormRequest
 
             'last_posted' => 'nullable|date',
 
+            'team' => 'nullable',
+
             'owner_name' => 'nullable',
             'owner_email' => 'nullable',
             'owner_phone' => 'nullable',

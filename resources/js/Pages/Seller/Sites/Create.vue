@@ -40,6 +40,8 @@ const form = useForm({
 
     last_posted: '',
 
+    team: '',
+
     obs: '',
 
     owner_name: '',
@@ -129,7 +131,7 @@ const offerCostFormat = computed(() => coins[offerForm.cost_coin])
                                         <div class="mt-1 relative rounded-md shadow-sm">
                                             <input v-model.lazy="offerForm.cost" v-money3="offerCostFormat" type="text"
                                                 name="cost" id="cost"
-                                                class="w-full focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                                                class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
 
                                             <div class="absolute inset-y-0 right-0 flex items-center">
                                                 <label for="cost_coin" class="sr-only">Moeda</label>
@@ -335,6 +337,12 @@ const offerCostFormat = computed(() => coins[offerForm.cost_coin])
                         <InputLabel for="last_posted" value="Último post" />
                         <TextInput id="last_posted" v-model="form.last_posted" type="date" class="mt-1 block w-full" />
                         <InputError class="mt-2" :message="form.errors.last_posted" />
+                    </div>
+
+                    <div class="col-span-6">
+                        <InputLabel for="team" :value="$t('Atendimento')"/>
+                        <TextInput id="team" v-model="form.team" type="text" class="mt-1 block w-full" />
+                        <InputError class="mt-2" :message="form.errors.team"/>
                     </div>
 
                     <div class="col-span-6">

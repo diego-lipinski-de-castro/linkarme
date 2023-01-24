@@ -40,6 +40,8 @@ const form = useForm({
 
     last_posted: site.last_posted,
 
+    team: site.team,
+
     obs: site.obs,
 
     owner_name: site.owner_name,
@@ -275,6 +277,12 @@ const submitNote = () => {
                             <InputLabel for="last_posted" value="Último post" />
                             <TextInput id="last_posted" v-model="form.last_posted" type="date" class="mt-1 block w-full" />
                             <InputError class="mt-2" :message="form.errors.last_posted" />
+                        </div>
+
+                        <div class="col-span-6">
+                            <InputLabel for="team" :value="$t('Atendimento')"/>
+                            <TextInput id="team" v-model="form.team" type="text" class="mt-1 block w-full" />
+                            <InputError class="mt-2" :message="form.errors.team"/>
                         </div>
 
                         <div class="col-span-6">
