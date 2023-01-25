@@ -15,7 +15,7 @@ class NoteController extends Controller
         auth()->user()->notes()->updateOrCreate([
             'site_id' => $site->id
         ], [
-            'text' => $request->input('text')
+            'text' => $request->input('text', ''),
         ]);
 
         return back();

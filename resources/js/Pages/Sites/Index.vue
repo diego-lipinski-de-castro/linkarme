@@ -879,31 +879,19 @@ onMounted(() => {
                                         </td>
                                         <td v-show="columns[4].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            <div class="flex justify-center">
-                                                <span
-                                                    :class="['block h-2 w-2 rounded-full', site.gambling ? 'bg-green-300' : 'bg-red-300']"></span>
-                                            </div>
+                                            {{ $t(site.gambling ? 'Yes' : 'No') }}
                                         </td>
                                         <td v-show="columns[5].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            <div class="flex justify-center">
-                                                <span
-                                                    :class="['block h-2 w-2 rounded-full', site.sponsor ? 'bg-green-300' : 'bg-red-300']"></span>
-                                            </div>
+                                            {{ $t(site.sponsor ? 'Yes' : 'No') }}
                                         </td>
                                         <td v-show="columns[6].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            <div class="flex justify-center">
-                                                <span
-                                                    :class="['block h-2 w-2 rounded-full', site.cripto ? 'bg-green-300' : 'bg-red-300']"></span>
-                                            </div>
+                                            {{ $t(site.cripto ? 'Yes' : 'No') }}
                                         </td>
                                         <td v-show="columns[7].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            <div class="flex justify-center">
-                                                <span
-                                                    :class="['block h-2 w-2 rounded-full', site.ssl ? 'bg-green-300' : 'bg-red-300']"></span>
-                                            </div>
+                                            {{ $t(site.ssl ? 'Yes' : 'No') }}
                                         </td>
                                         <td v-show="columns[8].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
