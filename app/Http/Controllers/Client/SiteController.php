@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Filters\FilterLimiter;
+use App\Filters\UrlFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
@@ -72,7 +73,7 @@ class SiteController extends Controller
                 AllowedSort::custom('new', new NewSort()),
             ])
             ->allowedFilters([
-                'url',
+                AllowedFilter::custom('url', new UrlFilter),
                 AllowedFilter::exact('country_id'),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::custom('sale', new FilterLimiter),

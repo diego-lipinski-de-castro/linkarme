@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Filters\FilterLimiter;
 use App\Filters\NewFilter;
+use App\Filters\UrlFilter;
 use App\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\StoreSiteRequest;
@@ -45,7 +46,7 @@ class SiteController extends Controller
                 'tf',
             ])
             ->allowedFilters([
-                'url',
+                AllowedFilter::custom('url', new UrlFilter),
                 AllowedFilter::exact('country_id'),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::custom('da', new FilterLimiter),

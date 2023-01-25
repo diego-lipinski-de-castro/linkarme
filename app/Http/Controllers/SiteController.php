@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\FilterLimiter;
 use App\Filters\NewFilter;
+use App\Filters\UrlFilter;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Imports\SitesImport;
@@ -91,7 +92,7 @@ class SiteController extends Controller
                 'inserted_at',
             ])
             ->allowedFilters([
-                'url',
+                AllowedFilter::custom('url', new UrlFilter),
                 AllowedFilter::exact('seller_id'),
                 AllowedFilter::exact('country_id'),
                 AllowedFilter::exact('language_id'),
