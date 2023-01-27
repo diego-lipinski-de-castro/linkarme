@@ -76,7 +76,6 @@ const links = computed(() => {
 const _defaultColumns = [
     { key: "url", label: t("Url"), visible: true },
     { key: "seller", label: t("Seller"), visible: true },
-    { key: "charged", label: t("Charged"), visible: true },
     { key: "paid", label: t("Paid"), visible: true },
     { key: "status", label: t("Status"), visible: true },
     { key: "created_at", label: t("Created at"), visible: true },
@@ -304,13 +303,6 @@ const get = async () => {
                                             {{ $t("Seller") }}
                                         </th>
                                         <th
-                                            v-show="columns[2].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
-                                            {{ $t("Charged") }}
-                                        </th>
-                                        <th
                                             v-show="columns[3].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
@@ -363,13 +355,6 @@ const get = async () => {
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
                                             {{ order.seller?.name ?? "-" }}
-                                        </td>
-
-                                        <td
-                                            v-show="columns[2].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
-                                            {{ order.formatted_charged ?? "-" }}
                                         </td>
 
                                         <td

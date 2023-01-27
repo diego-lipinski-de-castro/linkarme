@@ -16,6 +16,8 @@ use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
 use App\Notifications\SiteAdded;
+use App\Notifications\SiteDeleted;
+use App\Notifications\SiteRestored;
 use App\Notifications\SiteUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -259,8 +261,14 @@ class SiteController extends Controller
     {
         $site = Site::withTrashed()->findOrFail($id);
 
-        $site->trashed() ? $site->restore() : $site->delete();
-
+        if($site->trashed()) {
+            $site->restore();
+            Notification::send(Client::all(), new SiteRestored($site));
+        } else {
+            $site->delete();
+            Notification::send(Client::all(), new SiteDeleted($site));
+        }
+        
         return back();
     }
 

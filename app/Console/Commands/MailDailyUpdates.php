@@ -40,7 +40,7 @@ class MailDailyUpdates extends Command
         $updates = Audit::query()
             ->with('auditable')
             ->where('auditable_type', 'App\\Models\\Site')
-            ->whereIn('event', ['created', 'updated'])
+            ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereDate('created_at', now()->subDay()->format('Y-m-d'))
             ->whereHas('auditable')
             ->get()

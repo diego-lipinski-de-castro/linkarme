@@ -3,21 +3,7 @@
     <ul role="list" class="divide-y bg-white rounded-md shadow">
         @foreach($updates as $audit)
             <li>
-
-                @if($audit->event == 'created')
-                    <div class="flex space-x-3 px-4 py-4 sm:px-6">
-                        <div class="flex-1 space-y-1">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-medium">{{ $audit->auditable->url }}</h3>
-                                <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
-                            </div>
-                            <p class="text-sm text-gray-500">
-                                {{ __('Recently added') }}
-                            </p>
-                        </div>
-                    </div>
-                @endif
-
+                
                 @if($audit->event == 'updated')
 
                     <div class="flex space-x-3 px-4 py-4 sm:px-6">
@@ -113,9 +99,50 @@
                                 </p>
                                 @endif
 
-                                @if($attribute == 'status')
+                                @if($attribute == 'status' && $value['new'] == 'APPROVED')
+                                <p class="text-sm text-gray-500">
+                                    <span class="break-words">
+                                        {{ __('Recently added') }}
+                                    </span>
+                                </p>
                                 @endif
                             @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                @if($audit->event == 'deleted')
+
+                    <div class="flex space-x-3 px-4 py-4 sm:px-6">
+                        <div class="flex-1 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-medium">{{ $audit->auditable->url }}</h3>
+                                <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
+                            </div>
+
+                            <p class="text-sm text-gray-500">
+                                <span class="break-words">
+                                    {{ __('Was deleted') }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                @endif
+
+                @if($audit->event == 'restored')
+
+                    <div class="flex space-x-3 px-4 py-4 sm:px-6">
+                        <div class="flex-1 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-medium">{{ $audit->auditable->url }}</h3>
+                                <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
+                            </div>
+
+                            <p class="text-sm text-gray-500">
+                                <span class="break-words">
+                                    {{ __('Was restored') }}
+                                </span>
+                            </p>
                         </div>
                     </div>
                 @endif

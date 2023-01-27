@@ -40,7 +40,7 @@ class MailWeekUpdates extends Command
         $updates = Audit::query()
             ->with('auditable')
             ->where('auditable_type', 'App\\Models\\Site')
-            ->whereIn('event', ['created', 'updated'])
+            ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereBetween('created_at', [
                 now()->subWeek()->format('Y-m-d'),
                 now()->addDay()->format('Y-m-d'),

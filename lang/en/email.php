@@ -9,5 +9,8 @@ return [
         'bool_true' => 'Now accepts links related to :attribute.',
         'bool_false' => 'Does not accepts links related to :attribute.'
     ],
-    'Recently added' => 'Recently added'
+    'Recently added' => 'Recently added',
+    'Was removed' => 'Was removed',
+    'Was deleted' => 'Was deleted',
+    'Was restored' => 'Was restored',
 ];

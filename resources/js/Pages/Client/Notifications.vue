@@ -2,6 +2,8 @@
 import ClientLayout from '@/Layouts/ClientLayout.vue';
 import SiteUpdated from '@/Components/Notifications/SiteUpdated.vue';
 import SiteAdded from '@/Components/Notifications/SiteAdded.vue';
+import SiteDeleted from '@/Components/Notifications/SiteDeleted.vue';
+import SiteRestored from '@/Components/Notifications/SiteRestored.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, ref, watch } from 'vue'
@@ -76,6 +78,8 @@ const links = computed(() => {
                     class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
                     <li v-for="(notification, index) in unreadNotifications" :key="index">
                         <SiteAdded v-if="notification.type == 'App\\Notifications\\SiteAdded'" :notification="notification"/>
+                        <SiteDeleted v-if="notification.type == 'App\\Notifications\\SiteDeleted'" :notification="notification"/>
+                        <SiteRestored v-if="notification.type == 'App\\Notifications\\SiteRestored'" :notification="notification"/>
                         <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification" :coins="coins"/>
                     </li>
                 </ul>
@@ -90,6 +94,8 @@ const links = computed(() => {
                     class="mt-6 divide-y divide-gray-200 bg-white rounded-md shadow">
                     <li v-for="(notification, index) in notifications.data" :key="index">
                         <SiteAdded v-if="notification.type == 'App\\Notifications\\SiteAdded'" :notification="notification"/>
+                        <SiteDeleted v-if="notification.type == 'App\\Notifications\\SiteDeleted'" :notification="notification"/>
+                        <SiteRestored v-if="notification.type == 'App\\Notifications\\SiteRestored'" :notification="notification"/>
                         <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification" :coins="coins"/>
                     </li>
                 </ul>

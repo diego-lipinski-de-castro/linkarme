@@ -9,5 +9,8 @@ return [
         'bool_true' => 'Agora aceita mais artigos relacionados a :attribute.',
         'bool_false' => 'Não aceita mais artigos relacionados a :attribute.'
     ],
-    'Recently added' => 'Adicionado recentemente'
+    'Recently added' => 'Adicionado recentemente',
+    'Was removed' => 'Foi removido',
+    'Was deleted' => 'Foi desativado',
+    'Was restored' => 'Foi reativado',
 ];
