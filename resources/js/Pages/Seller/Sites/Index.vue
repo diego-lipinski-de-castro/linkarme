@@ -141,7 +141,9 @@ const get = async () => {
             ssl: filters.value.ssl,
             banner: filters.value.banner,
             menu: filters.value.menu,
-            new: filters.value.new,
+            ...(filters.value.new === true && {
+                new: filters.value.new,
+            }),
         },
     }, {
         preserveState: true,

@@ -112,7 +112,6 @@ class SiteController extends Controller
                 'menu',
                 AllowedFilter::custom('new', new NewFilter),
                 // AllowedFilter::custom('suggestion', new SuggestionFilter),
-
                 AllowedFilter::scope('of_status'),
             ])
             ->paginate(50)
@@ -175,10 +174,10 @@ class SiteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Site  $site
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Site $site)
+    public function show($id)
     {
         //
     }

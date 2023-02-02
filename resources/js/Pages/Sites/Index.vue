@@ -150,7 +150,9 @@ const get = async () => {
             dr: filters.value.dr,
             gambling: filters.value.gambling,
             sponsor: filters.value.sponsor,
-            new: filters.value.new,
+            ...(filters.value.new === true && {
+                new: filters.value.new,
+            }),
         },
     }, {
         preserveState: true,
