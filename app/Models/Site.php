@@ -203,6 +203,15 @@ class Site extends Model implements Auditable
         return $data;
     }
 
+    public function setSaleAttribute($value)
+    {
+        if(blank($value)) {
+            $this->attributes['sale'] = 0;
+        } else {
+            $this->attributes['sale'] = $value;
+        }
+    }
+
     public function seller()
     {
         return $this->belongsTo(Seller::class);
