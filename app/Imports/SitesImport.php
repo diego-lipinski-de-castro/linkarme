@@ -160,7 +160,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
         return [
             'inclusao' => ['required', 'date_format:d/m/Y'],
             'atualizacao' => ['nullable', 'date_format:d/m/Y'],
-            'dominio' => [],
+            'dominio' => ['required'],
             'da' => ['nullable', 'integer'],
             'dr' => ['nullable', 'integer'],
             'atendimento' => [],

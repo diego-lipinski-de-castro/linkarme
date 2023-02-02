@@ -6,46 +6,18 @@ import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, ref, watch } from "vue";
 import unionBy from "lodash/unionBy";
 import {
-    Dialog,
-    DialogPanel,
-    DialogTitle,
     Menu,
     MenuButton,
     MenuItem,
     MenuItems,
-    TransitionChild,
-    TransitionRoot,
-    Switch,
-    SwitchGroup,
-    SwitchLabel,
 } from "@headlessui/vue";
 
 import {
     ArrowLongLeftIcon,
     ArrowLongRightIcon,
-    CloudArrowDownIcon,
-    CloudArrowUpIcon,
 } from "@heroicons/vue/20/solid";
 
 import {
-    Bars3CenterLeftIcon,
-    BellIcon,
-    ClockIcon,
-    CogIcon,
-    CreditCardIcon,
-    DocumentChartBarIcon,
-    HomeIcon,
-    QuestionMarkCircleIcon,
-    ScaleIcon,
-    ShieldCheckIcon,
-    UserGroupIcon,
-    XMarkIcon,
-    PencilSquareIcon,
-} from "@heroicons/vue/24/outline";
-import {
-    BanknotesIcon,
-    BuildingOfficeIcon,
-    CheckCircleIcon,
     ChevronDownIcon,
     ChevronRightIcon,
     MagnifyingGlassIcon,

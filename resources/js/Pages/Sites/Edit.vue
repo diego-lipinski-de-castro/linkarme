@@ -60,8 +60,6 @@ const form = useForm({
 });
 
 const submit = () => {
-    console.log(form.data())
-
     form.put(route('sites.update', site.id), {
         onError(error) {
             console.log(error)

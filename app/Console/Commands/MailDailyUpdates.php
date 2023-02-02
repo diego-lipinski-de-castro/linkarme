@@ -37,6 +37,7 @@ class MailDailyUpdates extends Command
         $ids = $this->option('id');
         $locale = $this->option('locale');
 
+        // maybe use notifications table?
         $updates = Audit::query()
             ->with('auditable')
             ->where('auditable_type', 'App\\Models\\Site')

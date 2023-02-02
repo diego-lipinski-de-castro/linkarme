@@ -348,6 +348,8 @@ class SiteController extends Controller
 
         $diff = $after - $before;
 
+        // notify sites diff added
+
         $request->session()->flash('importFailures', $importFailures);
         $request->session()->flash('importDiff', $diff);
 
