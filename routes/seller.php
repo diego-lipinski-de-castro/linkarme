@@ -19,6 +19,8 @@ Route::group([
     'as' => 'seller.',
 ], function () {
 
+    Route::redirect('/', '/vendedores/login');
+
     Route::get('dashboard', [DashboardController::class, 'index'])
         ->name('dashboard')
         ->middleware(['auth:seller']);

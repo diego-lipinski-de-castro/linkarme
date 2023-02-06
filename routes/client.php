@@ -22,6 +22,8 @@ Route::group([
     'as' => 'client.',
 ], function () {
 
+    Route::redirect('/', '/clientes/login');
+
     // 
     Route::get('dashboard', [DashboardController::class, 'index'])
         ->name('dashboard')
