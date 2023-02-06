@@ -258,7 +258,7 @@ const get = async () => {
                             class="min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg"
                         >
                             <table class="min-w-full divide-y divide-gray-200">
-                                <thead>
+                                <thead>                                    
                                     <tr>
                                         <th
                                             v-show="columns[0].visible"
@@ -275,21 +275,21 @@ const get = async () => {
                                             {{ $t("Seller") }}
                                         </th>
                                         <th
-                                            v-show="columns[3].visible"
+                                            v-show="columns[2].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
                                             {{ $t("Paid") }}
                                         </th>
                                         <th
-                                            v-show="columns[4].visible"
+                                            v-show="columns[3].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
                                             {{ $t("Status") }}
                                         </th>
                                         <th
-                                            v-show="columns[5].visible"
+                                            v-show="columns[4].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col"
                                         >
@@ -330,21 +330,21 @@ const get = async () => {
                                         </td>
 
                                         <td
-                                            v-show="columns[3].visible"
+                                            v-show="columns[2].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
                                             {{ order.formatted_paid ?? "-" }}
                                         </td>
 
                                         <td
-                                            v-show="columns[4].visible"
+                                            v-show="columns[3].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
                                             {{ order.formatted_status ?? "-" }}
                                         </td>
 
                                         <td
-                                            v-show="columns[5].visible"
+                                            v-show="columns[4].visible"
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
                                         >
                                             {{
