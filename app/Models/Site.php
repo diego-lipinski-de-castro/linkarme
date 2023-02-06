@@ -115,13 +115,13 @@ class Site extends Model implements Auditable
                 $site->inserted_at = now();
             }
 
-            $site->suggested = ($site->cost) + ($site->cost * 0.25) + (560.33 * 100);
+            $site->suggested = ($site->cost) + ($site->cost * 0.30) + (675 * 100);
         });
 
         static::updating(function ($site) {
             $site->url = trim($site->url);
 
-            $site->suggested = ($site->cost) + ($site->cost * 0.25) + (560.33 * 100);
+            $site->suggested = ($site->cost) + ($site->cost * 0.30) + (675 * 100);
 
             if ($site->isDirty('sale')) {
                 $site->sale_updated_at = now();
