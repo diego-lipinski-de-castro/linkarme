@@ -53,8 +53,8 @@ return new class extends Migration
             $table->boolean('broken')->nullable();
             $table->boolean('ssl')->nullable();
 
-            $table->integer('cost')->nullable();
-            $table->integer('sale')->nullable();
+            $table->integer('cost')->default(0);
+            $table->integer('sale')->default(0);
 
             $table->enum('cost_coin', ['BRL', 'EUR', 'USD'])->default('BRL');
             $table->enum('sale_coin', ['BRL', 'EUR', 'USD'])->default('BRL');

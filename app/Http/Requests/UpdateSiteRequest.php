@@ -26,7 +26,7 @@ class UpdateSiteRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => 'required|string|min:1|max:255',
+            'url' => 'required|string|min:1|max:255|unique:sites,url',
             'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
 
@@ -84,9 +84,9 @@ class UpdateSiteRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'url' => Str::contains($this->url, '://') ?
-                str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
-                str_replace('www.', '', parse_url($this->url, PHP_URL_PATH)),
+            'url' => trim(Str::contains($this->url, '://') ?
+            str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
+            str_replace('www.', '', parse_url($this->url, PHP_URL_PATH))),
             'cost' => Helper::extractNumbersFromString($this->cost),
             'sale' => Helper::extractNumbersFromString($this->sale),
         ]);

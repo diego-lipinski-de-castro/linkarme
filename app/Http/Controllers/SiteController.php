@@ -164,8 +164,12 @@ class SiteController extends Controller
     public function store(StoreSiteRequest $request)
     {
         DB::transaction(function () use($request) {
-            $site = Site::create($request->validated());
-            // Notification::send(Client::all(), new SiteAdded($site));
+            
+            $site = Site::create(array_merge($request->validated(), [
+                'status' => 'APPROVED',
+            ]));
+
+            Notification::send(Client::all(), new SiteAdded($site));
         });
 
         return redirect()->route('sites.index');

@@ -104,6 +104,7 @@ class SiteController extends Controller
     {
         Site::create(array_merge($request->validated(), [
             'seller_id' => auth()->id(),
+            'status' => 'PENDING',
         ]));
 
         return redirect()->route('seller.sites.index');
