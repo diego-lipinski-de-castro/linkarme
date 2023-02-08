@@ -26,7 +26,7 @@ class UpdateSiteRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => 'required|string|min:1|max:255|unique:sites,url',
+            'url' => 'required|string|min:1|max:255|unique:sites,url,' . $this->id,
             'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
 

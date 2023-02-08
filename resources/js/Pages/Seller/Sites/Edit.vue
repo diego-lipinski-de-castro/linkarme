@@ -18,6 +18,7 @@ const { site, coins, categories, languages, countries, note } = defineProps({
 });
 
 const form = useForm({
+    id: site.id,
     url: site.url,
     category_id: site.category_id,
     da: site.da,
