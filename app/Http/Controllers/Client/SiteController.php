@@ -12,6 +12,7 @@ use App\Models\Site;
 use App\Sorts\NewSort;
 use App\Sorts\RecommendedSort;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -40,22 +41,40 @@ class SiteController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
+        $query = request()->query();
+
         $filters = [
-            'sale' => [
-                'from' => Site::ofStatus('APPROVED')->min('sale'),
-                'to' => Site::ofStatus('APPROVED')->max('sale'),
-            ],
+            'sort' => Arr::get($query, 'sort', 'url'),
+            'filter' => [
+                'url' => Arr::get($query, 'filter.url', ''),
 
-            'da' => [
-                'from' => Site::ofStatus('APPROVED')->min('da'),
-                'to' => Site::ofStatus('APPROVED')->max('da'),
-            ],
+                'sale' => [
+                    'from' => Arr::get($query, 'filter.sale.from', Site::ofStatus('APPROVED')->min('sale')),
+                    'to' => Arr::get($query, 'filter.sale.to', Site::ofStatus('APPROVED')->max('sale')),
+                ],
 
-            'dr' => [
-                'from' => Site::ofStatus('APPROVED')->min('dr'),
-                'to' => Site::ofStatus('APPROVED')->max('dr'),
+                'da' => [
+                    'from' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->min('da')),
+                    'to' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->max('da')),
+                ],
+
+                'dr' => [
+                    'from' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->min('dr')),
+                    'to' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->max('dr')),
+                ],
+
+                'gambling' => filter_var(Arr::get($query, 'filter.gambling', false), FILTER_VALIDATE_BOOL),
+                'sponsor' => filter_var(Arr::get($query, 'filter.sponsor', false), FILTER_VALIDATE_BOOL),
+
+                'favorites' => filter_var(Arr::get($query, 'filter.favorites', false), FILTER_VALIDATE_BOOL),
+                'recommended' => filter_var(Arr::get($query, 'filter.recommended', false), FILTER_VALIDATE_BOOL),
+                'new' => filter_var(Arr::get($query, 'filter.new', false), FILTER_VALIDATE_BOOL),
+
+                'language_id' => Arr::get($query, 'filter.language_id', []),
             ],
         ];
+
+        // dd([$query, $filters]);
 
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('APPROVED')
@@ -63,40 +82,31 @@ class SiteController extends Controller
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([
-                'sale',
                 'url',
+                'sale',
                 'da',
                 'dr',
-                'traffic',
                 'inserted_at',
                 AllowedSort::custom('recommended', new RecommendedSort()),
                 AllowedSort::custom('new', new NewSort()),
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                AllowedFilter::exact('country_id'),
-                AllowedFilter::exact('language_id'),
-                AllowedFilter::custom('sale', new FilterLimiter),
-                AllowedFilter::custom('da', new FilterLimiter),
-                AllowedFilter::custom('dr', new FilterLimiter),
+                AllowedFilter::custom('sale', new FilterLimiter, null, ''),
+                AllowedFilter::custom('da', new FilterLimiter, null, ''),
+                AllowedFilter::custom('dr', new FilterLimiter, null, ''),
                 // AllowedFilter::custom('traffic', new FilterLimiter),
-                // AllowedFilter::custom('tf', new FilterLimiter),
-                // AllowedFilter::exact('category_id'),
-                'ssl',
                 'gambling',
                 'sponsor',
-                'cripto',
-                'banner',
-                'menu',
-                AllowedFilter::scope('new', 'auth_new'),
-                AllowedFilter::scope('used', 'auth_used'),
                 AllowedFilter::scope('favorites', 'auth_favorites'),
                 AllowedFilter::scope('recommended', 'auth_recommended'),
+                AllowedFilter::scope('new', 'auth_new'),
+                AllowedFilter::exact('language_id'),
             ])
             ->paginate(50)
             ->appends(request()->query());
 
-        return Inertia::render('Client/Sites/Index', [
+        return Inertia::render('Client/Sites/IndexNew', [
             'sites' => $sites,
             'coins' => $coins,
             'filters' => $filters,

@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import ApplicationLogoNew from '@/Components/ApplicationLogoNew.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -39,7 +39,7 @@ const submit = () => {
                 <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
                     
                     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-                        <ApplicationLogo class="mx-auto h-12 w-auto" />
+                        <ApplicationLogoNew class="mx-auto h-12 w-auto" />
                     </div>
 
                     <form @submit.prevent="submit" class="mt-8 space-y-6">
@@ -52,7 +52,7 @@ const submit = () => {
                             <label for="email" class="block text-sm font-medium text-gray-700">{{ $t('Email') }}</label>
                             <div class="mt-1">
                                 <input v-model="form.email" id="email" name="email" type="email" autocomplete="email" required
-                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" />
                             </div>
                             <InputError class="mt-2" :message="form.errors.email" />
                         </div>
@@ -62,20 +62,20 @@ const submit = () => {
                             <div class="mt-1">
                                 <input v-model="form.password" id="password" name="password" type="password" autocomplete="current-password"
                                     required
-                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" />
                             </div>
                             <InputError class="mt-2" :message="form.errors.password" />
                         </div>
 
                         <div class="flex items-center justify-between">
                             <div class="text-sm">
-                                <Link v-if="canResetPassword" :href="route('client.password.request')" class="font-medium text-indigo-600 hover:text-indigo-500">{{ $t('Forgot your password?') }}</Link>
+                                <Link v-if="canResetPassword" :href="route('client.password.request')" class="font-medium text-blue-600 hover:text-blue-500 transition-colors">{{ $t('Forgot your password?') }}</Link>
                             </div>
                         </div>
 
                         <div>
                             <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit"
-                                class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ $t('Login') }}</button>
+                                class="flex w-full justify-center rounded-md border border-transparent bg-zinc-900 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 transition-colors">{{ $t('Login') }}</button>
                         </div>
                     </form>
 

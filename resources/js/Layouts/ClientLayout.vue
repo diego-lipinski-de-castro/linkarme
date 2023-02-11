@@ -196,7 +196,7 @@ await i18nextPromise
                                         class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 
                                         <MenuItem v-slot="{ active }">
-                                        <Link :href="route('client.profile.show')" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ $t('Profile') }}</Link>
+                                            <Link :href="route('client.profile.show')" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ $t('Profile') }}</Link>
                                         </MenuItem>
 
                                         <!-- <MenuItem v-slot="{ active }">
@@ -205,11 +205,11 @@ await i18nextPromise
                                         </MenuItem> -->
 
                                         <MenuItem v-slot="{ active }">
-                                        <form method="POST" @submit.prevent="logout">
-                                            <button
-                                                :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">{{
-                                                $t('Logout') }}</button>
-                                        </form>
+                                            <form method="POST" @submit.prevent="logout">
+                                                <button
+                                                    :class="[active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700 text-left']">{{
+                                                    $t('Logout') }}</button>
+                                            </form>
                                         </MenuItem>
 
                                     </MenuItems>

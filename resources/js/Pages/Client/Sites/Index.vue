@@ -365,6 +365,18 @@ const toggleFavorite = async (site) => {
                     </Switch>
                 </SwitchGroup>
 
+                <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
+                    <SwitchLabel as="span">
+                        <span class="text-sm font-medium text-white">New</span>
+                    </SwitchLabel>
+
+                    <Switch v-model="filters.new"
+                        :class="[filters.new ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
+                        <span aria-hidden="true"
+                            :class="[filters.new ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                    </Switch>
+                </SwitchGroup>
+
                 <!-- <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
                 <SwitchLabel as="span">
                     <span class="text-sm font-medium text-white">Cripto</span>
@@ -412,18 +424,6 @@ const toggleFavorite = async (site) => {
                         :class="[filters.menu ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
                 </Switch>
             </SwitchGroup> -->
-
-                <SwitchGroup as="div" class="my-6 px-4 flex justify-between items-center">
-                    <SwitchLabel as="span">
-                        <span class="text-sm font-medium text-white">New</span>
-                    </SwitchLabel>
-
-                    <Switch v-model="filters.new"
-                        :class="[filters.new ? 'bg-pink-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2']">
-                        <span aria-hidden="true"
-                            :class="[filters.new ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
-                    </Switch>
-                </SwitchGroup>
 
             </template>
 
