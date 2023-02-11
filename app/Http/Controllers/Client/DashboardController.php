@@ -11,7 +11,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $favorites = auth()->user()->favorites_ids;
+        $coins = config('coins');
+
+        $notifications = auth()->user()->notifications()->take(5)->get();
 
         $orders = Order::ofClient(auth()->id())->count();
 
@@ -27,23 +29,15 @@ class DashboardController extends Controller
                 $query->ofClient(auth()->id());
             })
             ->count();
-
-        $favs = Site::query()
-            ->authFavorites()
-            ->join('favorites', 'favorites.site_id', '=', 'sites.id')   
-            ->orderByRaw('favorites.created_at DESC')
-            ->take(10)
-            ->get()
-            ->values();
         
-        $new = Site::query()
+        $news = Site::query()
             ->ofStatus('APPROVED')
             ->where('inserted_at', '>', now()->subDays(60)->endOfDay())
             ->whereDoesntHave('orders', function ($query) {
                 $query->ofClient(auth()->id());
             })
             ->orderByRaw('dr DESC, da DESC, traffic DESC')
-            ->take(10)
+            ->take(5)
             ->get();
 
         $recommended = Site::query()
@@ -53,16 +47,30 @@ class DashboardController extends Controller
                 $query->ofClient(auth()->id());
             })
             ->orderByRaw('orders_count DESC, dr DESC, da DESC, traffic DESC')
-            ->take(10)
+            ->take(5)
             ->get();
 
-        return Inertia::render('Client/Dashboard', [
+        $favorites = Site::query()
+            ->authFavorites()
+            ->join('favorites', 'favorites.site_id', '=', 'sites.id')   
+            ->orderByRaw('favorites.created_at DESC')
+            ->take(5)
+            ->get()
+            ->values();
+
+        return Inertia::render('Client/DashboardNew', [
+            'coins' => $coins,
+
+            'notifications' => $notifications,
+
             'orders' => $orders,
+
             'usedCount' => $usedCount,
-            'favs' => $favs,
             'unusedCount' => $unusedCount,
-            'new' => $new,
+            
+            'news' => $news,
             'recommended' => $recommended,
+
             'favorites' => $favorites,
         ]);
     }

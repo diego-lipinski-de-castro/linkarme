@@ -32,6 +32,13 @@ import {
 import {
     ChevronDownIcon,
     ChevronRightIcon,
+    XCircleIcon,
+    IdentificationIcon,
+    HeartIcon,
+    FlagIcon,
+    Cog6ToothIcon,
+    CurrencyDollarIcon,
+    BugAntIcon,
 } from '@heroicons/vue/20/solid'
 import { useTranslation } from "i18next-vue";
 import { useLanguageStore } from '@/stores/language'
@@ -164,13 +171,66 @@ await i18nextPromise
                                             leave-from-class="transform opacity-100 scale-100"
                                             leave-to-class="transform opacity-0 scale-95">
                                             <MenuItems
-                                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md overflow-hidden bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                                                <span class="flex flex-col px-4 py-4">
+                                                    <span class="text-xs text-gray-500">{{ $t('Signed in as') }}</span>
+                                                    <span class="text-sm font-bold">{{ $page.props.user.name }}</span>
+                                                </span>
+
+                                                <hr>
+
                                                 <MenuItem v-slot="{ active }">
-                                                    <Link :href="route('client.profile.show')" :class="[active ? 'bg-gray-100' : '', 'block py-2 px-4 text-sm text-gray-700']">{{ $t('Profile') }}</Link>
+                                                    <Link :href="route('client.profile.show')" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 mt-2 py-2 px-4 text-sm text-gray-700']">
+                                                        <IdentificationIcon class="h-5 w-5"/>
+                                                        <span>{{ $t('Account settings') }}</span>
+                                                    </Link>
                                                 </MenuItem>
 
                                                 <MenuItem v-slot="{ active }">
-                                                    <button @submit.prevent="logout" :class="[active ? 'bg-gray-100' : '', 'block py-2 px-4 text-sm text-gray-700 w-full text-left']">{{ $t('Logout') }}</button>
+                                                    <Link href="#" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
+                                                        <HeartIcon class="h-5 w-5"/>
+                                                        <span>{{ $t('Favorites') }}</span>
+                                                    </Link>
+                                                </MenuItem>
+
+                                                <MenuItem v-slot="{ active }">
+                                                    <Link href="#" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
+                                                        <FlagIcon class="h-5 w-5"/>
+                                                        <span>{{ $t('Interest list') }}</span>
+                                                    </Link>
+                                                </MenuItem>
+
+                                                <MenuItem v-slot="{ active }">
+                                                    <Link href="#" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
+                                                        <Cog6ToothIcon class="h-5 w-5"/>
+                                                        <span>{{ $t('Your projects') }}</span>
+                                                    </Link>
+                                                </MenuItem>
+
+                                                <MenuItem v-slot="{ active }">
+                                                    <Link href="#" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
+                                                        <CurrencyDollarIcon class="h-5 w-5"/>
+                                                        <span>{{ $t('Orders') }}</span>
+                                                    </Link>
+                                                </MenuItem>
+
+                                                <MenuItem v-slot="{ active }">
+                                                    <Link href="#" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 mb-2 py-2 px-4 text-sm text-gray-700']">
+                                                        <div class="w-5">
+                                                            <BugAntIcon class="h-5 w-5"/>
+                                                        </div>
+                                                        <span>{{ $t('Bug report and suggestions') }}</span>
+                                                    </Link>
+                                                </MenuItem>
+
+                                                <hr>
+
+                                                <MenuItem>
+                                                    <button @submit.prevent="logout" class="bg-gray-100 flex px-4 py-4 text-sm text-gray-700 w-full space-x-2">
+                                                        <XCircleIcon class="h-5 w-5"/>
+                                                        <span>{{ $t('Sign out') }}</span>
+                                                    </button>
                                                 </MenuItem>
                                             </MenuItems>
                                         </transition>
@@ -186,7 +246,7 @@ await i18nextPromise
                                 v-for="item in navigation"
                                 :key="item.name" as="a" 
                                 :href="item.href"
-                                :class="[item.current ? 'bg-blue-900 text-white' : 'text-white hover:bg-blue-700 hover:bg-opacity-50', 'block rounded-md py-2 px-3 text-base font-medium']"
+                                :class="[item.current ? 'bg-blue-900 text-white' : 'text-white hover:bg-blue-700 hover:bg-opacity-50', 'transition-colors block rounded-md py-2 px-3 text-base font-medium']"
                                 :aria-current="item.current ? 'page' : undefined">
                                 {{ item.name }}
                             </DisclosureButton>
@@ -228,7 +288,7 @@ await i18nextPromise
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div class="flex space-x-4">
                             <a v-for="item in navigation" :key="item.name" :href="item.href"
-                                :class="[item.current ? 'bg-blue-900 text-white' : 'text-white hover:bg-blue-700 hover:bg-opacity-50', 'rounded-md py-2 px-3 text-sm font-medium']"
+                                :class="[item.current ? 'bg-blue-900 text-white' : 'text-white hover:bg-blue-700 hover:bg-opacity-50', 'transition-colors rounded-md py-2 px-3 text-sm font-medium']"
                                 :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
                         </div>
                     </div>
@@ -240,6 +300,14 @@ await i18nextPromise
                     <slot />
                 </div>
             </main>
+
+            <footer class="bg-blue-900">
+                <div class="flex justify-end items-center space-x-12 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                    <span class="text-white">&#169; {{ new Date().getFullYear() }} Linking. {{ $t('All rights reserved.') }}</span>
+
+                    <img class="h-10" src="@/assets/images/footer-logo.png" alt="Slogan">
+                </div>
+            </footer>
         </div>
 
     </div>
