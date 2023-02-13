@@ -128,7 +128,7 @@ const toggleFavorite = async (site) => {
                     <h2 class="text-lg font-medium leading-6 text-gray-900">{{ $t('Overview') }}</h2>
                     <div class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                         <!-- Card -->
-                        <div v-for="card in cards" :key="card.name" class="overflow-hidden rounded-lg bg-white shadow">
+                        <div v-for="card in cards" :key="card.name" class="overflow-hidden rounded-md bg-white shadow">
                             <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
@@ -183,7 +183,7 @@ const toggleFavorite = async (site) => {
                         <div class="hidden sm:block">
                             <div class="mt-2 flex flex-col">
                                 <div
-                                    class="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+                                    class="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-md">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead>
                                             <tr>

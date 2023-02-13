@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Client;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Jenssegers\Agent\Agent;
 
 class ProfileController extends Controller
 {
@@ -21,9 +24,57 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
-    public function show()
+    public function show(Request $request)
     {
-        return Inertia::render('Client/Profile/Show');
+        return Inertia::render('Client/Profile/ShowNew', [
+            'sessions' => $this->sessions($request)->all(),
+        ]);
+    }
+
+    /**
+     * Get the current sessions.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Support\Collection
+     */
+    public function sessions(Request $request)
+    {
+        if (config('session.driver') !== 'database') {
+            return collect();
+        }
+
+        return collect(
+            DB::connection(config('session.connection'))->table(config('session.table', 'sessions'))
+                    ->where('user_id', $request->user()->getAuthIdentifier())
+                    ->orderBy('last_activity', 'desc')
+                    ->get()
+        )->map(function ($session) use ($request) {
+            $agent = $this->createAgent($session);
+
+            return (object) [
+                'agent' => [
+                    'is_desktop' => $agent->isDesktop(),
+                    'platform' => $agent->platform(),
+                    'browser' => $agent->browser(),
+                ],
+                'ip_address' => $session->ip_address,
+                'is_current_device' => $session->id === $request->session()->getId(),
+                'last_active' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
+            ];
+        });
+    }
+
+    /**
+     * Create a new agent instance from the given session.
+     *
+     * @param  mixed  $session
+     * @return \Jenssegers\Agent\Agent
+     */
+    protected function createAgent($session)
+    {
+        return tap(new Agent, function ($agent) use ($session) {
+            $agent->setUserAgent($session->user_agent);
+        });
     }
 
     /**

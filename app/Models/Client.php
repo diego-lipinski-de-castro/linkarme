@@ -7,13 +7,17 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
 class Client extends Authenticatable implements HasLocalePreference
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
     use HasProfilePhoto;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -93,6 +97,16 @@ class Client extends Authenticatable implements HasLocalePreference
     public function getFavoritesIdsAttribute()
     {
         return $this->favorites->pluck('id')->toArray();
+    }
+
+    public function interests()
+    {
+        return $this->belongsToMany(Site::class, 'interests')->withTimestamps();
+    }
+
+    public function getInterestsIdsAttribute()
+    {
+        return $this->interests->pluck('id')->toArray();
     }
 
     public function sendPasswordResetNotification($token)

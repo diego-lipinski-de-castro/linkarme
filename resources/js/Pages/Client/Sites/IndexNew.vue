@@ -158,7 +158,7 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
     <AppSuspense>
         <ClientLayoutNew title="Sites">
             <div>
-                <div class="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
+                <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
                     <div class="flex flex-col min-h-48">
 
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Search websites') }}</h2>
@@ -367,7 +367,7 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
                         </div>
 
                         <div
-                            class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg">
+                            class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-md">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>

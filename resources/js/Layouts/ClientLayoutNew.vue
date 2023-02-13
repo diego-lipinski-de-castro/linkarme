@@ -161,7 +161,7 @@ await i18nextPromise
                                             <MenuButton
                                                 class="flex rounded-full bg-blue-600 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
                                                 <span class="sr-only">Open user menu</span>
-                                                <img class="h-8 w-8 rounded-full" :src="$page.props.user.profile_photo_url" alt="" />
+                                                <img class="h-8 w-8 rounded-full" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
                                             </MenuButton>
                                         </div>
                                         <transition enter-active-class="transition ease-out duration-100"
@@ -227,7 +227,7 @@ await i18nextPromise
                                                 <hr>
 
                                                 <MenuItem>
-                                                    <button @submit.prevent="logout" class="bg-gray-100 flex px-4 py-4 text-sm text-gray-700 w-full space-x-2">
+                                                    <button @click="logout" class="bg-gray-100 flex px-4 py-4 text-sm text-gray-700 w-full space-x-2">
                                                         <XCircleIcon class="h-5 w-5"/>
                                                         <span>{{ $t('Sign out') }}</span>
                                                     </button>
