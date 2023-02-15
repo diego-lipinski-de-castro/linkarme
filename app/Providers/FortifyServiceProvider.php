@@ -21,7 +21,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // if(request()->is('/clientes/*')) {
+        //     config()->set('fortify.guard', 'client');
+        // }
+
+        // if(request()->is('/vendedores/*')) {
+        //     config()->set('fortify.guard', 'seller');
+        // }
     }
 
     /**

@@ -6,7 +6,13 @@ import SectionBorder from '@/Components/SectionBorder.vue';
 import TwoFactorAuthenticationForm from '@/Pages/Client/Profile/PartialsNew/TwoFactorAuthenticationForm.vue';
 import UpdatePasswordForm from '@/Pages/Client/Profile/PartialsNew/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from '@/Pages/Client/Profile/PartialsNew/UpdateProfileInformationForm.vue';
+import UpdateCompanyForm from '@/Pages/Client/Profile/PartialsNew/UpdateCompanyForm.vue';
+import UpdateEmailForm from '@/Pages/Client/Profile/PartialsNew/UpdateEmailForm.vue';
 import { Link } from '@inertiajs/inertia-vue3';
+import {
+    UserCircleIcon,
+    KeyIcon,
+} from '@heroicons/vue/24/outline'
 
 defineProps({
     sessions: Array,
@@ -61,19 +67,66 @@ defineProps({
                     </div>
 
                 </div>
+
+                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
+                    <div class="flex items-center space-x-2 px-5">
+                        <div class="w-10">
+                            <UserCircleIcon class="h-8 w-8"/>
+                        </div>
+
+                        <div>
+                            <span class="block font-bold">{{ $t('Account settings') }}</span>
+                            <span class="block text-xs text-gray-400">{{ $t('This is all about you :)') }}</span>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-5">
+
+                    <div class="px-5 py-5">
+                        <UpdateProfileInformationForm :user="$page.props.user" class="ml-12 mr-16"/>
+                    </div>
+
+                    <hr>
+
+                    <div class="px-5 bg-stone-100 py-5">
+                        <UpdateCompanyForm :user="$page.props.user" class="ml-12 mr-16"/>
+                    </div>
+
+                    <hr>
+
+                    <div class="px-5 py-5">
+                        <UpdateEmailForm :user="$page.props.user" class="ml-12 mr-16"/>
+                    </div>
+
+                    <hr>
+
+                    <div class="px-5 bg-stone-100 py-5">
+                        <UpdateProfileInformationForm :user="$page.props.user" class="ml-12 mr-16"/>
+                    </div>
+                </div>
+
+                <div v-if="$page.props.jetstream.canUpdatePassword" class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow pt-5">
+                    <div class="flex items-center space-x-2 px-5">
+                        <div class="w-10">
+                            <KeyIcon class="h-8 w-8"/>
+                        </div>
+
+                        <div>
+                            <span class="block font-bold">{{ $t('Change password') }}</span>
+                            <span class="block text-xs text-gray-400">{{ $t('Your password must be at least 8 characters long') }}</span>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-5">
+
+                    <div class="px-5 py-5">
+                        <UpdatePasswordForm class="ml-12 mr-16"/>
+                    </div>
+                </div>
             </div>
 
-            <div>
+            <!-- <div>
                 <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <div v-if="$page.props.jetstream.canUpdateProfileInformation">
-                        <UpdateProfileInformationForm :user="$page.props.user" />
-                        <SectionBorder />
-                    </div>
-
-                    <div v-if="$page.props.jetstream.canUpdatePassword">
-                        <UpdatePasswordForm class="mt-10 sm:mt-0" />
-                        <SectionBorder />
-                    </div>
 
                     <div>
                         <TwoFactorAuthenticationForm class="mt-10 sm:mt-0" />
@@ -88,8 +141,9 @@ defineProps({
                     <div>
                         <DeleteUserForm class="mt-10 sm:mt-0" />
                     </div>
+                    
                 </div>
-            </div>
+            </div> -->
         </ClientLayoutNew>
     </AppSuspense>
 </template>

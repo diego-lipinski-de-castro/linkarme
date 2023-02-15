@@ -88,9 +88,21 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         $input = $request->validateWithBag('updateProfileInformation', [
+            'first_name' => [],
+            'last_name' => [],
             'name' => ['required', 'string', 'max:255'],
+            'birthday' => [],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'company_name' => [],
+            'website_url' => [],
+            'address_country' => [],
+            'address_state' => [],
+            'address_street_name' => [],
+            'address_street_number' => [],
+            'address_number' => [],
+            'address_zipcode' => [],
+            'phone' => [],
         ]);
 
         if (isset($input['photo'])) {
