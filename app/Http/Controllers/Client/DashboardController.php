@@ -58,7 +58,7 @@ class DashboardController extends Controller
             ->get()
             ->values();
 
-        return Inertia::render('Client/DashboardNew', [
+        return Inertia::render('Client/Dashboard', [
             'coins' => $coins,
 
             'notifications' => $notifications,

@@ -106,7 +106,7 @@ class SiteController extends Controller
             ->paginate(50)
             ->appends(request()->query());
 
-        return Inertia::render('Client/Sites/IndexNew', [
+        return Inertia::render('Client/Sites/Index', [
             'sites' => $sites,
             'coins' => $coins,
             'filters' => $filters,

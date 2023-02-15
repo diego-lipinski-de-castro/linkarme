@@ -26,7 +26,7 @@ class ProfileController extends Controller
      */
     public function show(Request $request)
     {
-        return Inertia::render('Client/Profile/ShowNew', [
+        return Inertia::render('Client/Profile/Show', [
             'sessions' => $this->sessions($request)->all(),
         ]);
     }

@@ -697,13 +697,13 @@ const toggleFavorite = async (site) => {
                                         </th>
                                         <th v-show="columns[4].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{$t('Gambling')}}</th>
+                                            scope="col">{{$t('Accepts gambling')}}</th>
                                         <th v-show="columns[5].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{$t('Sponsor')}}</th>
+                                            scope="col">{{$t('Marked as Sponsored')}}</th>
                                         <th v-show="columns[6].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{$t('Cripto')}}</th>
+                                            scope="col">{{$t('Accepts crypto')}}</th>
                                         <th v-show="columns[7].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{$t('SSL')}}</th>
