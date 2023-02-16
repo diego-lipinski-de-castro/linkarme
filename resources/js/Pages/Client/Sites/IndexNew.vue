@@ -3,7 +3,7 @@ import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
     Menu,
@@ -60,12 +60,12 @@ const _defaultColumns = [
     { key: 'dr', label: t('DR'), visible: true },
     { key: 'gambling', label: t('Gambling'), visible: true },
     { key: 'sponsor', label: t('Sponsor'), visible: true },
-    { key: 'cripto', label: t('Cripto'), visible: true },
-    { key: 'ssl', label: t('SSL'), visible: true },
-    { key: 'category', label: t('Category'), visible: true },
+    { key: 'cripto', label: t('Cripto'), visible: false },
+    { key: 'ssl', label: t('SSL'), visible: false },
+    { key: 'category', label: t('Category'), visible: false },
     { key: 'obs', label: t('Obs'), visible: true },
-    { key: 'example', label: t('Example'), visible: true },
-    { key: 'inserted_at', label: t('Upload date'), visible: true },
+    { key: 'example', label: t('Example'), visible: false },
+    { key: 'inserted_at', label: t('Upload date'), visible: false },
 ];
 
 const _columns =
@@ -95,8 +95,6 @@ const filters = reactive({
     new: props.filters.filter.new,
     language_id: props.filters.filter.language_id,
 })
-
-console.log(filters)
 
 watch(sort, (n, o) => get());
 
@@ -152,6 +150,12 @@ const toggleFavorite = async (site) => {
 }
 
 const coinFormat = computed(() => props.coins[coinStore.coin])
+
+onMounted(() => {
+    setTimeout(() => {
+        tippy('[data-tippy-content]');
+    }, 100)
+})
 </script>
 
 <template>
@@ -161,7 +165,16 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
                 <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
                     <div class="flex flex-col min-h-48">
 
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Search websites') }}</h2>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10">
+                                <MagnifyingGlassIcon class="h-8 w-8"/>
+                            </div>
+
+                            <div>
+                                <h2 class="text-xl font-bold leading-tight">{{ $t('Search websites') }}</h2>
+                                <span class="block text-xs text-gray-400">{{ $t('Choose filters to start') }}</span>
+                            </div>
+                        </div>
 
                         <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-x-6">
                             <div class="col-span-2 flex flex-col">
@@ -349,19 +362,21 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
 
                         <hr class="my-5">
 
-                        <div class="flex items-center">
+                        <div class="flex flex-col">
                             <span class="font-bold text-sm whitespace-nowrap">{{ $t('Column filter:') }}</span>
-                            <div v-for="(column, index) in columns" :key="index" class="px-4 py-2 relative flex">
-                                <div class="flex items-center h-5">
-                                    <input v-model="column.visible" :value="column.key" :id="column.key"
-                                        :name="column.key" type="checkbox"
-                                        class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" />
-                                </div>
+                            <div class="mt-2 flex flex-wrap">
+                                <div v-for="(column, index) in columns" :key="index" class="px-4 py-2 relative flex">
+                                    <div class="flex items-center h-5">
+                                        <input v-model="column.visible" :value="column.key" :id="column.key"
+                                            :name="column.key" type="checkbox"
+                                            class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" />
+                                    </div>
 
-                                <div class="ml-2 text-sm">
-                                    <label :for="column.key" class="font-medium text-gray-700 whitespace-nowrap">{{
-                                        column.label
-                                    }}</label>
+                                    <div class="ml-2 text-sm">
+                                        <label :for="column.key" class="font-medium text-gray-700 whitespace-nowrap">{{
+                                            column.label
+                                        }}</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -371,8 +386,6 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"></th>
                                         <th v-show="columns[0].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
@@ -453,28 +466,12 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
+                                        <th class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
-                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <button @click="toggleFavorite(site.id)">
-                                                <svg v-if="favorites.includes(site.id)"
-                                                    xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6"
-                                                    viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd"
-                                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-
-                                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                    stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                </svg>
-                                            </button>
-                                        </td>
                                         <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                             <span class="relative flex space-x-2 items-center">
                                                 <span>
@@ -521,7 +518,7 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
                                         </td>
                                         <td v-show="columns[8].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.category?.name ?? '-' }}
+                                            <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
                                         </td>
                                         <!-- <td v-show="columns[9].visible"
                                     class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
@@ -542,6 +539,24 @@ const coinFormat = computed(() => props.coins[coinStore.coin])
                                         <td v-show="columns[11].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ site.formatted_inserted_at }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            <button @click="toggleFavorite(site.id)">
+                                                <svg v-if="favorites.includes(site.id)"
+                                                    xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6"
+                                                    viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+
+                                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                </svg>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>

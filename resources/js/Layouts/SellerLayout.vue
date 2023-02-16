@@ -23,22 +23,12 @@ import {
     Bars3CenterLeftIcon,
     BellIcon,
     ClockIcon,
-    CogIcon,
-    CreditCardIcon,
-    DocumentChartBarIcon,
-    QuestionMarkCircleIcon,
     ScaleIcon,
-    ShieldCheckIcon,
-    UserGroupIcon,
     XMarkIcon,
     ComputerDesktopIcon
 } from '@heroicons/vue/24/outline'
 import {
-    BanknotesIcon,
-    BuildingOfficeIcon,
-    CheckCircleIcon,
     ChevronDownIcon,
-    ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
 import { useTranslation } from "i18next-vue";
 import { useLanguageStore } from '@/stores/language'

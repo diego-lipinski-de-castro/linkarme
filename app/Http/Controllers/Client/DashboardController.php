@@ -55,10 +55,9 @@ class DashboardController extends Controller
             ->join('favorites', 'favorites.site_id', '=', 'sites.id')   
             ->orderByRaw('favorites.created_at DESC')
             ->take(5)
-            ->get()
-            ->values();
+            ->get();
 
-        return Inertia::render('Client/Dashboard', [
+        return Inertia::render('Client/DashboardNew', [
             'coins' => $coins,
 
             'notifications' => $notifications,

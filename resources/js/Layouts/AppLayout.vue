@@ -1,13 +1,8 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Inertia } from '@inertiajs/inertia';
-import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
-import ApplicationMark from '@/Components/ApplicationMark.vue';
+import { Head, Link } from '@inertiajs/inertia-vue3';
 import Banner from '@/Components/Banner.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {
     Dialog,
     DialogPanel,
@@ -20,24 +15,12 @@ import {
 } from '@headlessui/vue'
 import {
     Bars3CenterLeftIcon,
-    BellIcon,
     ClockIcon,
-    CogIcon,
-    CreditCardIcon,
-    DocumentChartBarIcon,
-    QuestionMarkCircleIcon,
     ScaleIcon,
-    ShieldCheckIcon,
-    UserGroupIcon,
-    XMarkIcon,
     ComputerDesktopIcon
 } from '@heroicons/vue/24/outline'
 import {
-    BanknotesIcon,
-    BuildingOfficeIcon,
-    CheckCircleIcon,
     ChevronDownIcon,
-    ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
 import { ref } from 'vue';
 import { useTranslation } from "i18next-vue";

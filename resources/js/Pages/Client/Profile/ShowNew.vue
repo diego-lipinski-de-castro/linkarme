@@ -8,10 +8,13 @@ import UpdatePasswordForm from '@/Pages/Client/Profile/PartialsNew/UpdatePasswor
 import UpdateProfileInformationForm from '@/Pages/Client/Profile/PartialsNew/UpdateProfileInformationForm.vue';
 import UpdateCompanyForm from '@/Pages/Client/Profile/PartialsNew/UpdateCompanyForm.vue';
 import UpdateEmailForm from '@/Pages/Client/Profile/PartialsNew/UpdateEmailForm.vue';
+import UpdateContactForm from '@/Pages/Client/Profile/PartialsNew/UpdateContactForm.vue';
+import UpdateInvoiceForm from '@/Pages/Client/Profile/PartialsNew/UpdateInvoiceForm.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import {
     UserCircleIcon,
     KeyIcon,
+    CurrencyDollarIcon,
 } from '@heroicons/vue/24/outline'
 
 defineProps({
@@ -101,7 +104,26 @@ defineProps({
                     <hr>
 
                     <div class="px-5 bg-stone-100 py-5">
-                        <UpdateProfileInformationForm :user="$page.props.user" class="ml-12 mr-16"/>
+                        <UpdateContactForm :user="$page.props.user" class="ml-12 mr-16"/>
+                    </div>
+                </div>
+
+                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow pt-5">
+                    <div class="flex items-center space-x-2 px-5">
+                        <div class="w-10">
+                            <CurrencyDollarIcon class="h-8 w-8"/>
+                        </div>
+
+                        <div>
+                            <span class="block font-bold">{{ $t('Invoice info') }}</span>
+                            <span class="block text-xs text-gray-400">{{ $t('Make sure these fields are filled in correctly') }}</span>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-5">
+
+                    <div class="px-5 py-5">
+                        <UpdateInvoiceForm :user="$page.props.user" class="ml-12 mr-16"/>
                     </div>
                 </div>
 

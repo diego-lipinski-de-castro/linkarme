@@ -13,8 +13,25 @@ class Category extends Model
         'name',
     ];
 
+    protected $appends = [
+        'title',
+        'subtitle',
+    ];
+
     public function sites()
     {
         return $this->hasMany(Site::class);
+    }
+
+    public function getTitleAttribute()
+    {
+        return trim(explode('(', $this->name)[0]);
+    }
+
+    public function getSubtitleAttribute()
+    {
+        if(!isset(explode('(', $this->name)[1])) return null;
+
+        return rtrim(trim(explode('(', $this->name)[1]), ')');
     }
 }

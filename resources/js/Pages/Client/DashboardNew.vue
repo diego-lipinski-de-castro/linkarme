@@ -24,6 +24,8 @@ import {
     BellAlertIcon,
     CloudArrowUpIcon,
     HandThumbUpIcon,
+FlagIcon,
+Cog6ToothIcon,
 } from '@heroicons/vue/24/outline'
 import {
     BanknotesIcon,
@@ -251,18 +253,18 @@ const toggleFavorite = async (site) => {
                 <div class="overflow-hidden rounded-md bg-white shadow h-fit py-5">
                     <div class="flex items-center space-x-2 px-5">
                         <div class="w-10">
-                            <CloudArrowUpIcon class="h-8 w-8"/>
+                            <Cog6ToothIcon class="h-8 w-8"/>
                         </div>
 
                         <div>
-                            <span class="block font-bold">{{ $t('Your favorites') }}</span>
-                            <span class="block text-xs text-gray-400">{{ $t('The best of the best') }}</span>
+                            <span class="block font-bold">{{ $t('Your projects') }}</span>
+                            <span class="block text-xs text-gray-400">{{ $t('Find here your selections') }}</span>
                         </div>
                     </div>
 
-                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-b border-gray-300 border-opacity-50">
+                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-gray-300 border-opacity-50">
                         <table class="w-full">
-                            <thead>
+                            <!-- <thead>
                                 <tr>
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">{{ $t('Domain') }}
@@ -274,9 +276,15 @@ const toggleFavorite = async (site) => {
                                         scope="col">{{ $t('DR') }}
                                     </th>
                                 </tr>
-                            </thead>
+                            </thead> -->
                             <tbody class="divide-y divide-gray-300 divide-opacity-50">
-                                <tr v-for="(site, index) in favorites" :key="index">
+                                <tr>
+                                    <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic text-center">
+                                        {{ $t('Coming soon...') }}
+                                    </td>
+                                </tr>
+
+                                <tr v-for="(site, index) in []" :key="index">
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
@@ -294,27 +302,27 @@ const toggleFavorite = async (site) => {
                         </table>
                     </div>
 
-                    <div class="text-right px-5 mt-5">
+                    <!-- <div class="text-right px-5 mt-5">
                         <Link :href="route('client.sites.index', { _query: { 'filter[favorites]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!--  -->
                 <div class="overflow-hidden rounded-md bg-white shadow h-fit py-5">
                     <div class="flex items-center space-x-2 px-5">
                         <div class="w-10">
-                            <CloudArrowUpIcon class="h-8 w-8"/>
+                            <FlagIcon class="h-8 w-8"/>
                         </div>
 
                         <div>
-                            <span class="block font-bold">{{ $t('Your favorites') }}</span>
-                            <span class="block text-xs text-gray-400">{{ $t('The best of the best') }}</span>
+                            <span class="block font-bold">{{ $t('Your interests') }}</span>
+                            <span class="block text-xs text-gray-400">{{ $t('Websites that you saved to take a look later') }}</span>
                         </div>
                     </div>
 
-                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-b border-gray-300 border-opacity-50">
+                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-gray-300 border-opacity-50">
                         <table class="w-full">
-                            <thead>
+                            <!-- <thead>
                                 <tr>
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">{{ $t('Domain') }}
@@ -326,9 +334,14 @@ const toggleFavorite = async (site) => {
                                         scope="col">{{ $t('DR') }}
                                     </th>
                                 </tr>
-                            </thead>
+                            </thead> -->
                             <tbody class="divide-y divide-gray-300 divide-opacity-50">
-                                <tr v-for="(site, index) in favorites" :key="index">
+                                <tr>
+                                    <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic text-center">
+                                        {{ $t('Coming soon...') }}
+                                    </td>
+                                </tr>
+                                <tr v-for="(site, index) in []" :key="index">
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
@@ -346,9 +359,9 @@ const toggleFavorite = async (site) => {
                         </table>
                     </div>
 
-                    <div class="text-right px-5 mt-5">
+                    <!-- <div class="text-right px-5 mt-5">
                         <Link :href="route('client.sites.index', { _query: { 'filter[favorites]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="overflow-hidden rounded-md bg-white shadow h-fit py-5">

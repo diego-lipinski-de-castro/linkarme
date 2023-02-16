@@ -66,20 +66,6 @@ const logout = () => {
     Inertia.post(route('client.logout'))
 }
 
-const setCoin = async (coin) => {
-    await coinStore.setCoin(coin);
-
-    [...document.querySelectorAll('*')].forEach(node => {
-        if (node._tippy) {
-            node._tippy.destroy();
-        }
-    });
-
-    tippy('[data-tippy-content]', {
-        interactive: true,
-    });
-}
-
 await languageStore.loadLanguage(user.value.locale)
 await coinStore.setCoin(user.value.coin)
 await i18nextPromise

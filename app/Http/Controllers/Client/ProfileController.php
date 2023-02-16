@@ -26,7 +26,7 @@ class ProfileController extends Controller
      */
     public function show(Request $request)
     {
-        return Inertia::render('Client/Profile/Show', [
+        return Inertia::render('Client/Profile/ShowNew', [
             'sessions' => $this->sessions($request)->all(),
         ]);
     }
@@ -94,6 +94,7 @@ class ProfileController extends Controller
             'birthday' => [],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            
             'company_name' => [],
             'website_url' => [],
             'address_country' => [],
@@ -102,7 +103,18 @@ class ProfileController extends Controller
             'address_street_number' => [],
             'address_number' => [],
             'address_zipcode' => [],
+            
             'phone' => [],
+
+            'invoice_company_name' => [],
+            'invoice_vat_number' => [],
+            'invoice_paypal' => [],
+            'invoice_address_country' => [],
+            'invoice_address_state' => [],
+            'invoice_address_street_name' => [],
+            'invoice_address_street_number' => [],
+            'invoice_address_number' => [],
+            'invoice_address_zipcode' => [],
         ]);
 
         if (isset($input['photo'])) {

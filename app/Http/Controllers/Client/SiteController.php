@@ -74,8 +74,6 @@ class SiteController extends Controller
             ],
         ];
 
-        // dd([$query, $filters]);
-
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('APPROVED')
             ->withCount('orders')
@@ -106,7 +104,7 @@ class SiteController extends Controller
             ->paginate(50)
             ->appends(request()->query());
 
-        return Inertia::render('Client/Sites/Index', [
+        return Inertia::render('Client/Sites/IndexNew', [
             'sites' => $sites,
             'coins' => $coins,
             'filters' => $filters,
