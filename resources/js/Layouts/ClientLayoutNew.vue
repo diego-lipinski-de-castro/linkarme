@@ -119,9 +119,41 @@ await i18nextPromise
                             </div> -->
 
                             <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
-                                <button class="justify-center rounded-md border border-transparent bg-blue-900 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-900 hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-                                    {{ $t('Talk to our experts') }}
-                                </button>
+                                <Menu as="div" class="relative flex-shrink-0">
+                                    <MenuButton class="flex items-center justify-center rounded-md border border-transparent bg-blue-900 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-900 hover:bg-opacity-75 focus:outline-none transition-colors">
+                                        <span>{{ $t('Talk to our experts') }}</span>
+                                        <ChevronDownIcon class="ml-3 h-4 w-4"/>
+                                    </MenuButton>
+
+                                    <transition enter-active-class="transition ease-out duration-100"
+                                        enter-from-class="transform opacity-0 scale-95"
+                                        enter-to-class="transform opacity-100 scale-100"
+                                        leave-active-class="transition ease-in duration-75"
+                                        leave-from-class="transform opacity-100 scale-100"
+                                        leave-to-class="transform opacity-0 scale-95">
+                                        <MenuItems
+                                            class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md overflow-hidden bg-white border border-gray-300 shadow-sm focus:outline-none">
+
+                                            <MenuItem v-slot="{ active }">
+                                                <a target="_blank" href="https://wa.me/5547989104747?text=Ol%C3%A1%21+Preciso+de+ajuda+para+logar+no+sistema" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm font-bold text-gray-700']">
+                                                    <span>{{ $t('Whatsapp') }}</span>
+                                                </a>
+                                            </MenuItem>
+
+                                            <MenuItem v-slot="{ active }">
+                                                <a target="_blank" href="https://t.me/maxpiress" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm font-bold text-gray-700']">
+                                                    <span>{{ $t('Telegram') }}</span>
+                                                </a>
+                                            </MenuItem>
+
+                                            <MenuItem v-slot="{ active }">
+                                                <a target="_blank" href="https://msng.link/o/?maxpires=sk" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm font-bold text-gray-700']">
+                                                    <span>{{ $t('Skype') }}</span>
+                                                </a>
+                                            </MenuItem>
+                                        </MenuItems>
+                                    </transition>
+                                </Menu>
                             </div>
 
                             <div class="flex lg:hidden">
@@ -188,7 +220,7 @@ await i18nextPromise
                                                 </MenuItem>
 
                                                 <MenuItem v-slot="{ active }">
-                                                    <Link href="#" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
+                                                    <Link :href="route('client.projects.index')" :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
                                                         <Cog6ToothIcon class="h-5 w-5"/>
                                                         <span>{{ $t('Your projects') }}</span>
                                                     </Link>

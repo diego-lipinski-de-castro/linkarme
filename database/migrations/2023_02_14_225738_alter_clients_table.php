@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('birthday')->nullable();
+            
             $table->string('company_name')->nullable();
             $table->string('website_url')->nullable();
             $table->string('address_country')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('address_street_number')->nullable();
             $table->string('address_number')->nullable();
             $table->string('address_zipcode')->nullable();
+
             $table->string('phone')->nullable();
 
             $table->string('invoice_company_name')->nullable();
@@ -36,6 +38,11 @@ return new class extends Migration
             $table->string('invoice_address_street_number')->nullable();
             $table->string('invoice_address_number')->nullable();
             $table->string('invoice_address_zipcode')->nullable();
+
+            $table->string('contact')->nullable();
+            $table->string('contact_where')->nullable();
+            $table->string('contact_id')->nullable();
+            $table->string('contact_how')->nullable();
         });
     }
 

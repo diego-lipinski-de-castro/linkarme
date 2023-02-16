@@ -40,6 +40,7 @@ const props = defineProps({
     sites: Object,
     coins: Object,
     favorites: Array,
+    interests: Array,
     countries: Array,
     languages: Array,
     categories: Array,
@@ -91,6 +92,7 @@ const filters = reactive({
     gambling: props.filters.filter.gambling,
     sponsor: props.filters.filter.sponsor,
     favorites: props.filters.filter.favorites,
+    interests: props.filters.filter.interests,
     recommended: props.filters.filter.recommended,
     new: props.filters.filter.new,
     language_id: props.filters.filter.language_id,
@@ -130,6 +132,9 @@ const get = async () => {
             ...(filters.favorites && {
                 favorites: filters.favorites,
             }),
+            ...(filters.interests && {
+                interests: filters.interests,
+            }),
             ...(filters.recommended && {
                 recommended: filters.recommended,
             }),
@@ -145,6 +150,12 @@ const get = async () => {
 
 const toggleFavorite = async (site) => {
     Inertia.post(route('client.sites.favorite', site), null, {
+        preserveScroll: true,
+    })
+}
+
+const toggleInterest = async (site) => {
+    Inertia.post(route('client.sites.interest', site), null, {
         preserveScroll: true,
     })
 }
@@ -276,7 +287,7 @@ onMounted(() => {
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">Favorites</span>
+                                        <span class="text-sm font-medium self-center">{{ $t('Favorites') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.favorites"
@@ -288,7 +299,19 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">Recommended</span>
+                                        <span class="text-sm font-medium self-center">{{ $t('Interests') }}</span>
+                                    </SwitchLabel>
+
+                                    <Switch v-model="filters.interests"
+                                        :class="[filters.interests ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        <span aria-hidden="true"
+                                            :class="[filters.interests ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                                    </Switch>
+                                </SwitchGroup>
+
+                                <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
+                                    <SwitchLabel as="span" class="flex h-full">
+                                        <span class="text-sm font-medium self-center">{{ $t('Recommended') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.recommended"
@@ -300,7 +323,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">Gambling</span>
+                                        <span class="text-sm font-medium self-center">{{ $t('Gambling') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.gambling"
@@ -312,7 +335,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">Sponsor</span>
+                                        <span class="text-sm font-medium self-center">{{ $t('Sponsor') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.sponsor"
@@ -324,7 +347,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">New</span>
+                                        <span class="text-sm font-medium self-center">{{ $t('New') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.new"
@@ -541,22 +564,34 @@ onMounted(() => {
                                             {{ site.formatted_inserted_at }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <button @click="toggleFavorite(site.id)">
-                                                <svg v-if="favorites.includes(site.id)"
-                                                    xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6"
-                                                    viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd"
-                                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
+                                            <div class="flex space-x-4">
+                                                <button @click="toggleFavorite(site.id)">
+                                                    <svg v-if="favorites.includes(site.id)"
+                                                        xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6"
+                                                        viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd"
+                                                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
 
-                                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                    stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                </svg>
-                                            </button>
+                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                    </svg>
+                                                </button>
+
+                                                <button @click="toggleInterest(site.id)">
+                                                    <svg v-if="interests.includes(site.id)" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="text-blue-500 w-[22px] h-[22px]">
+                                                        <path fill-rule="evenodd" d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z" clip-rule="evenodd" />
+                                                    </svg>
+
+                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[22px] h-[22px]">
+                                                        <path fill-rule="evenodd" d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

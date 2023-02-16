@@ -30,6 +30,7 @@ class SiteController extends Controller
         $coins = config('coins');
 
         $favorites = auth()->user()->favorites_ids;
+        $interests = auth()->user()->interests_ids;
 
         $countries = Country::query()
             ->orderBy('name')
@@ -67,6 +68,7 @@ class SiteController extends Controller
                 'sponsor' => filter_var(Arr::get($query, 'filter.sponsor', false), FILTER_VALIDATE_BOOL),
 
                 'favorites' => filter_var(Arr::get($query, 'filter.favorites', false), FILTER_VALIDATE_BOOL),
+                'interests' => filter_var(Arr::get($query, 'filter.interests', false), FILTER_VALIDATE_BOOL),
                 'recommended' => filter_var(Arr::get($query, 'filter.recommended', false), FILTER_VALIDATE_BOOL),
                 'new' => filter_var(Arr::get($query, 'filter.new', false), FILTER_VALIDATE_BOOL),
 
@@ -97,6 +99,7 @@ class SiteController extends Controller
                 'gambling',
                 'sponsor',
                 AllowedFilter::scope('favorites', 'auth_favorites'),
+                AllowedFilter::scope('interests', 'auth_interests'),
                 AllowedFilter::scope('recommended', 'auth_recommended'),
                 AllowedFilter::scope('new', 'auth_new'),
                 AllowedFilter::exact('language_id'),
@@ -109,6 +112,7 @@ class SiteController extends Controller
             'coins' => $coins,
             'filters' => $filters,
             'favorites' => $favorites,
+            'interests' => $interests,
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,
@@ -157,6 +161,13 @@ class SiteController extends Controller
     public function favorite(Site $site)
     {
         auth()->user()->favorites()->toggle([$site->id]);
+
+        return back();
+    }
+
+    public function interest(Site $site)
+    {
+        auth()->user()->interests()->toggle([$site->id]);
 
         return back();
     }

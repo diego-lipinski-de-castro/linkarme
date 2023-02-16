@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -88,33 +89,38 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         $input = $request->validateWithBag('updateProfileInformation', [
-            'first_name' => [],
-            'last_name' => [],
+            'first_name' => ['nullable'],
+            'last_name' => ['nullable'],
             'name' => ['required', 'string', 'max:255'],
-            'birthday' => [],
+            'birthday' => ['nullable'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             
-            'company_name' => [],
-            'website_url' => [],
-            'address_country' => [],
-            'address_state' => [],
-            'address_street_name' => [],
-            'address_street_number' => [],
-            'address_number' => [],
-            'address_zipcode' => [],
-            
-            'phone' => [],
+            'company_name' => ['nullable'],
+            'website_url' => ['nullable'],
+            'address_country' => ['nullable'],
+            'address_state' => ['nullable'],
+            'address_street_name' => ['nullable'],
+            'address_street_number' => ['nullable'],
+            'address_number' => ['nullable'],
+            'address_zipcode' => ['nullable'],
 
-            'invoice_company_name' => [],
-            'invoice_vat_number' => [],
-            'invoice_paypal' => [],
-            'invoice_address_country' => [],
-            'invoice_address_state' => [],
-            'invoice_address_street_name' => [],
-            'invoice_address_street_number' => [],
-            'invoice_address_number' => [],
-            'invoice_address_zipcode' => [],
+            'phone' => ['nullable'],
+
+            'invoice_company_name' => ['nullable'],
+            'invoice_vat_number' => ['nullable'],
+            'invoice_paypal' => ['nullable'],
+            'invoice_address_country' => ['nullable'],
+            'invoice_address_state' => ['nullable'],
+            'invoice_address_street_name' => ['nullable'],
+            'invoice_address_street_number' => ['nullable'],
+            'invoice_address_number' => ['nullable'],
+            'invoice_address_zipcode' => ['nullable'],
+
+            'contact' => ['nullable'],
+            'contact_where' => ['nullable'],
+            'contact_id' => ['nullable'],
+            'contact_how' => ['nullable'],
         ]);
 
         if (isset($input['photo'])) {
@@ -125,10 +131,7 @@ class ProfileController extends Controller
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
         } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ])->save();
+            $user->forceFill(Arr::except($input, ['photo']))->save();
         }
 
         return back()->with('status', 'profile-information-updated');

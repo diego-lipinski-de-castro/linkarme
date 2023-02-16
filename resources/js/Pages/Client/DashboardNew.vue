@@ -54,6 +54,7 @@ const props = defineProps({
     recommended: Array,
 
     favorites: Array,
+    interests: Array,
 });
 
 const cards = [
@@ -322,7 +323,7 @@ const toggleFavorite = async (site) => {
 
                     <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-gray-300 border-opacity-50">
                         <table class="w-full">
-                            <!-- <thead>
+                            <thead v-if="interests.length > 0">
                                 <tr>
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">{{ $t('Domain') }}
@@ -334,14 +335,14 @@ const toggleFavorite = async (site) => {
                                         scope="col">{{ $t('DR') }}
                                     </th>
                                 </tr>
-                            </thead> -->
+                            </thead>
                             <tbody class="divide-y divide-gray-300 divide-opacity-50">
-                                <tr>
+                                <tr v-if="interests.length == 0">
                                     <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic text-center">
-                                        {{ $t('Coming soon...') }}
+                                        {{ $t('Add websites to your list of interests and they will show here') }}
                                     </td>
                                 </tr>
-                                <tr v-for="(site, index) in []" :key="index">
+                                <tr v-else v-for="(site, index) in interests" :key="index">
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
@@ -359,9 +360,9 @@ const toggleFavorite = async (site) => {
                         </table>
                     </div>
 
-                    <!-- <div class="text-right px-5 mt-5">
-                        <Link :href="route('client.sites.index', { _query: { 'filter[favorites]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
-                    </div> -->
+                    <div v-if="interests.length > 0" class="text-right px-5 mt-5">
+                        <Link :href="route('client.sites.index', { _query: { 'filter[interests]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
+                    </div>
                 </div>
 
                 <div class="overflow-hidden rounded-md bg-white shadow h-fit py-5">
@@ -378,7 +379,7 @@ const toggleFavorite = async (site) => {
 
                     <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-b border-gray-300 border-opacity-50">
                         <table class="w-full">
-                            <thead>
+                            <thead v-if="favorites.length > 0">
                                 <tr>
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">{{ $t('Domain') }}
@@ -392,7 +393,12 @@ const toggleFavorite = async (site) => {
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-300 divide-opacity-50">
-                                <tr v-for="(site, index) in favorites" :key="index">
+                                <tr v-if="favorites.length == 0">
+                                    <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic text-center">
+                                        {{ $t('Mark websites as your favorite and they will show here') }}
+                                    </td>
+                                </tr>
+                                <tr v-else v-for="(site, index) in favorites" :key="index">
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
@@ -410,7 +416,7 @@ const toggleFavorite = async (site) => {
                         </table>
                     </div>
 
-                    <div class="text-right px-5 mt-5">
+                    <div v-if="favorites.length > 0" class="text-right px-5 mt-5">
                         <Link :href="route('client.sites.index', { _query: { 'filter[favorites]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
                     </div>
                 </div>

@@ -228,6 +228,11 @@ class Site extends Model implements Auditable
         return $this->belongsToMany(Client::class, 'favorites')->withTimestamps();
     }
 
+    public function interests()
+    {
+        return $this->belongsToMany(Client::class, 'interests')->withTimestamps();
+    }
+
     public function checks()
     {
         return $this->morphMany(Check::class, 'checkable');
@@ -264,6 +269,13 @@ class Site extends Model implements Auditable
     public function scopeAuthFavorites($query)
     {
         return $query->whereHas('favorites', function ($query) {
+            $query->where('clients.id', auth()->id());
+        });
+    }
+
+    public function scopeAuthInterests($query)
+    {
+        return $query->whereHas('interests', function ($query) {
             $query->where('clients.id', auth()->id());
         });
     }

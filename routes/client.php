@@ -20,6 +20,7 @@ use App\Http\Controllers\Client\NoteController;
 use App\Http\Controllers\Client\NotificationController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ProfileController;
+use App\Http\Controllers\Client\ProjectController;
 use App\Http\Controllers\Client\SiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,10 @@ Route::group([
         ->name('sites.favorite')
         ->middleware(['auth:client']);
 
+    Route::post('sites/{site}/interest', [SiteController::class, 'interest'])
+        ->name('sites.interest')
+        ->middleware(['auth:client']);
+
     Route::get('sites/{site}', [SiteController::class, 'show'])
         ->name('sites.show')
         ->middleware(['auth:client']);
@@ -56,6 +61,10 @@ Route::group([
 
     Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index')
+        ->middleware(['auth:client']);
+
+    Route::get('projects', [ProjectController::class, 'index'])
+        ->name('projects.index')
         ->middleware(['auth:client']);
 
     // guest

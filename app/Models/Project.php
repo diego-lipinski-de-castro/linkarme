@@ -15,10 +15,20 @@ class Project extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'site_id',
+        'client_id',
         'name',
         'color',
     ];
+
+    public function scopeOfClient($query, $client)
+    {
+        return $query->where('client_id', $client);
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 
     public function sites()
     {

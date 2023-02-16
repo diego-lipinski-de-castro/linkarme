@@ -57,6 +57,13 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $interests = Site::query()
+            ->authInterests()
+            ->join('interests', 'interests.site_id', '=', 'sites.id')   
+            ->orderByRaw('interests.created_at DESC')
+            ->take(5)
+            ->get();
+
         return Inertia::render('Client/DashboardNew', [
             'coins' => $coins,
 
@@ -71,6 +78,7 @@ class DashboardController extends Controller
             'recommended' => $recommended,
 
             'favorites' => $favorites,
+            'interests' => $interests,
         ]);
     }
 }

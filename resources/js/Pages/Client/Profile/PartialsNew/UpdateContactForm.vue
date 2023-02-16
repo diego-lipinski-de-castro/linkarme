@@ -25,10 +25,10 @@ const form = useForm({
 
     phone: props.user.phone,
     
-    contact: null,
-    contact_where: null,
-    contact_id: null,
-    contact_how: null,
+    contact: props.user.contact,
+    contact_where: props.user.contact_where,
+    contact_id: props.user.contact_id,
+    contact_how: props.user.contact_how,
 });
 
 const updateProfileInformation = () => {
