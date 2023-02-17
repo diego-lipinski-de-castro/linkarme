@@ -25,4 +25,53 @@ class ProjectController extends Controller
             'projects' => $projects,
         ]);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $input = $request->validate([
+            'name' => 'required',
+            'color' => 'required',
+        ]);
+
+        Project::create(array_merge($input, [
+            'client_id' => auth()->id(),
+        ]));
+
+        return back();
+    }
+
+    /**
+     * Update an existing project resource in storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Project $project, Request $request)
+    {
+        $input = $request->validate([
+            'name' => 'required',
+            'color' => 'required',
+        ]);
+
+        $project->update($input);
+
+        return back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Project $project)
+    {
+        $project->delete();
+
+        return back();
+    }
 }

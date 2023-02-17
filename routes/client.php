@@ -67,6 +67,18 @@ Route::group([
         ->name('projects.index')
         ->middleware(['auth:client']);
 
+    Route::post('projects', [ProjectController::class, 'store'])
+        ->name('projects.store')
+        ->middleware(['auth:client']);
+
+    Route::put('projects/{project}/edit', [ProjectController::class, 'update'])
+        ->name('projects.update')
+        ->middleware(['auth:client']);
+
+    Route::delete('projects/{project}', [ProjectController::class, 'destroy'])
+        ->name('projects.destroy')
+        ->middleware(['auth:client']);
+
     // guest
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])
         ->middleware('guest:client')

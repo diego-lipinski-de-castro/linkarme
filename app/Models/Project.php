@@ -20,6 +20,10 @@ class Project extends Model
         'color',
     ];
 
+    protected $appends = [
+        'short_name',
+    ];
+
     public function scopeOfClient($query, $client)
     {
         return $query->where('client_id', $client);
@@ -33,5 +37,12 @@ class Project extends Model
     public function sites()
     {
         return $this->belongsToMany(Site::class, 'project_site')->withTimestamps();
+    }
+
+    public function getShortNameAttribute()
+    {
+        return trim(collect(explode(' ', $this->name))->map(function ($segment) {
+            return mb_substr($segment, 0, 1);
+        })->join(' '));
     }
 }

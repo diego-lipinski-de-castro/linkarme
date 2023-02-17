@@ -38,7 +38,10 @@
         "pinia": "^2.0.23",
         "pinia-plugin-persist": "^1.0.0",
         "tippy.js": "^6.3.7",
+        "tsparticles": "^2.9.3",
         "v-money3": "^3.22.1",
-        "vue-filepond": "^7.0.3"
+        "vue-accessible-color-picker": "^4.1.2",
+        "vue-filepond": "^7.0.3",
+        "vue3-particles": "^2.9.3"
     }
 }
