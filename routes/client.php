@@ -45,6 +45,10 @@ Route::group([
         ->name('sites.index')
         ->middleware(['auth:client']);
 
+    Route::get('sites-list', [SiteController::class, 'list'])
+        ->name('sites.list')
+        ->middleware(['auth:client']);
+
     Route::post('sites/{site}/favorite', [SiteController::class, 'favorite'])
         ->name('sites.favorite')
         ->middleware(['auth:client']);
@@ -59,6 +63,7 @@ Route::group([
 
     Route::put('sites/{site}/note', [NoteController::class, 'update'])->name('notes.update')->middleware(['auth:client']);
 
+    // 
     Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index')
         ->middleware(['auth:client']);

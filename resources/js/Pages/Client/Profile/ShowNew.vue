@@ -32,7 +32,7 @@ defineProps({
                     
                     <div class="grid grid-cols-5">
                         
-                        <div class="col-span-3 px-5 py-6 sm:px-6 flex flex-col space-y-2">
+                        <div v-if="false" class="col-span-3 px-5 py-6 sm:px-6 flex flex-col space-y-2 border-r border-gray-300 border-opacity-50">
                             <span class="text-sm text-gray-900">{{ $t('Your current Linking consultant') }}</span>
                             <span class="flex items-center space-x-2">
                                 <img class="h-8 w-8 rounded-full" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
@@ -40,7 +40,14 @@ defineProps({
                             </span>
                         </div>
 
-                        <div class="col-span-2 px-5 py-6 sm:px-6 border-l border-gray-300 border-opacity-50 flex flex-col">
+                        <div class="col-span-3 px-5 py-6 sm:px-6 flex flex-col space-y-2 border-r border-gray-300 border-opacity-50">
+                            <span class="text-sm text-gray-900">{{ $t('Your current Linking consultant') }}</span>
+                            <span class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-400 italic">{{ $t('Coming soon...') }}</span>
+                            </span>
+                        </div>
+
+                        <div class="col-span-2 px-5 py-6 sm:px-6 flex flex-col">
                             <span class="text-sm font-bold text-blue-700">{{ $t('So far, you have') }}</span>
                             <span class="text-sm text-gray-500">377 {{ $t('orders') }}</span>
                             <span class="text-sm text-gray-500">228 {{ $t('sites used') }}</span>
@@ -52,19 +59,19 @@ defineProps({
                     <hr>
                     
                     <div class="px-5 py-6 sm:px-6 flex justify-between">
-                        <Link href="#" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
+                        <Link :href="route('client.orders.index')" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
                             {{ $t('Your orders') }}
                         </Link>
 
-                        <Link href="#" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
+                        <Link :href="route('client.projects.index')" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
                             {{ $t('Your projects') }}
                         </Link>
 
-                        <Link href="#" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
+                        <Link :href="route('client.sites.list', { _query: { 'filter[favorites]': 'true' } })" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
                             {{ $t('Your favorites') }}
                         </Link>
 
-                        <Link href="#" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
+                        <Link :href="route('client.sites.list', { _query: { 'filter[interests]': 'true' } })" class="px-8 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-bold">
                             {{ $t('Your interests') }}
                         </Link>
                     </div>

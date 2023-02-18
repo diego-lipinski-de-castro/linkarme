@@ -73,7 +73,7 @@ const onSelect = (project) => {
 
                         <ul role="list" class="mt-6 grid grid-cols-1 sm:grid-cols-4 gap-5 sm:gap-6">
                             <li v-for="(project, index) in projects" :key="index" class="col-span-1 rounded-md shadow-sm flex">
-                                <Link href="#" class="w-full flex hover:opacity-75 transition-opacity">
+                                <Link :href="route('client.sites.list', { _query: { 'filter[project]': project.id  } })" class="w-full flex hover:opacity-75 transition-opacity">
                                     <div :style="{ 'background-color': project.color }" class="flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md">{{ project.short_name }}</div>
 
                                     <div class="flex flex-1 items-center justify-between truncate bg-white border-t border-b border-gray-200">

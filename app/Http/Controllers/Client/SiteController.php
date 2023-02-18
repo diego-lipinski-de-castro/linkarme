@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\Project;
 use App\Models\Site;
 use App\Sorts\NewSort;
 use App\Sorts\RecommendedSort;
@@ -116,6 +117,68 @@ class SiteController extends Controller
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list(Request $request)
+    {
+        $coins = config('coins');
+
+        $favorites = auth()->user()->favorites_ids;
+        $interests = auth()->user()->interests_ids;
+
+        $query = request()->query();
+
+        $filters = [
+            'sort' => Arr::get($query, 'sort', 'url'),
+            'filter' => array_filter([
+                'favorites' => filter_var(Arr::get($query, 'filter.favorites', false), FILTER_VALIDATE_BOOL),
+                'interests' => filter_var(Arr::get($query, 'filter.interests', false), FILTER_VALIDATE_BOOL),
+                'project' => filter_var(Arr::get($query, 'filter.project', null), FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE),
+            ], fn($v, $k) => !blank($v), ARRAY_FILTER_USE_BOTH),
+        ];
+
+        $project = null;
+
+        if(Arr::has($filters, 'filter.project')) {
+            $project = Project::query()
+                ->ofClient(auth()->id())
+                ->where('id', Arr::get($filters, 'filter.project'))
+                ->firstOrFail();
+        }
+
+        $sites = QueryBuilder::for(Site::class)
+            ->ofStatus('APPROVED')
+            ->withCount('orders')
+            ->with('category')
+            ->defaultSort('url')
+            ->allowedSorts([
+                'url',
+                'sale',
+                'da',
+                'dr',
+                'inserted_at',
+            ])
+            ->allowedFilters([
+                AllowedFilter::scope('favorites', 'auth_favorites'),
+                AllowedFilter::scope('interests', 'auth_interests'),
+                AllowedFilter::scope('project', 'auth_project'),
+            ])
+            ->paginate(50)
+            ->appends(request()->query());
+
+        return Inertia::render('Client/Sites/List', [
+            'sites' => $sites,
+            'coins' => $coins,
+            'filters' => $filters,
+            'favorites' => $favorites,
+            'interests' => $interests,
+            'project' => $project,
         ]);
     }
 

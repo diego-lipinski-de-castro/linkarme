@@ -26,7 +26,7 @@ class Project extends Model
 
     public function scopeOfClient($query, $client)
     {
-        return $query->where('client_id', $client);
+        return $query->where('projects.client_id', $client);
     }
 
     public function client()

@@ -55,6 +55,8 @@ const props = defineProps({
 
     favorites: Array,
     interests: Array,
+
+    projects: Array,
 });
 
 const cards = [
@@ -66,7 +68,7 @@ const cards = [
 const greeting = computed(() => {
     const hour = new Date().getHours();
     const welcomeTypes = ['Good morning', 'Good afternoon', 'Good evening'];
-   let welcomeText = '';
+    let welcomeText = '';
 
     if (hour < 12) welcomeText = welcomeTypes[0];
     else if (hour < 18) welcomeText = welcomeTypes[1];
@@ -265,47 +267,40 @@ const toggleFavorite = async (site) => {
 
                     <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-gray-300 border-opacity-50">
                         <table class="w-full">
-                            <!-- <thead>
+                            <thead v-if="projects.length > 0">
                                 <tr>
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">{{ $t('Domain') }}
+                                        scope="col">{{ $t('Name') }}
                                     </th>
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">{{ $t('DA') }}
-                                    </th>
-                                    <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">{{ $t('DR') }}
+                                        scope="col">{{ $t('Sites') }}
                                     </th>
                                 </tr>
-                            </thead> -->
+                            </thead>
                             <tbody class="divide-y divide-gray-300 divide-opacity-50">
-                                <tr>
+                                <tr v-if="projects.length == 0">
                                     <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic text-center">
-                                        {{ $t('Coming soon...') }}
+                                        {{ $t('Create new projects and they will show here') }}
                                     </td>
                                 </tr>
 
-                                <tr v-for="(site, index) in []" :key="index">
+                                <tr v-else v-for="(project, index) in projects" :key="index">
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                        <Link :href="route('client.sites.show', site.id)"
-                                            class="text-gray-500 hover:text-gray-900">
-                                        {{ site.url }}
+                                        <Link :href="route('client.sites.list', { _query: { 'filter[project]': project.id  } })" class="text-gray-500 hover:text-gray-900">
+                                            {{ project.name }}
                                         </Link>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.da ?? '-' }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                        {{ site.dr ?? '-' }}
+                                        {{ project.sites_count ?? '-' }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- <div class="text-right px-5 mt-5">
-                        <Link :href="route('client.sites.index', { _query: { 'filter[favorites]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
-                    </div> -->
+                    <div v-if="projects.length > 0" class="text-right px-5 mt-5">
+                        <Link :href="route('client.projects.index')" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
+                    </div>
                 </div>
 
                 <!--  -->

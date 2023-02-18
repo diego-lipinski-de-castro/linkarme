@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Project;
 use App\Models\Site;
 use Inertia\Inertia;
 
@@ -64,6 +65,13 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $projects = Project::query()
+            ->ofClient(auth()->id())
+            ->withCount('sites')
+            ->orderBy('sites_count', 'DESC')
+            ->take(5)
+            ->get();
+
         return Inertia::render('Client/DashboardNew', [
             'coins' => $coins,
 
@@ -79,6 +87,8 @@ class DashboardController extends Controller
 
             'favorites' => $favorites,
             'interests' => $interests,
+
+            'projects' => $projects,
         ]);
     }
 }

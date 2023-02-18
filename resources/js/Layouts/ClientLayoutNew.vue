@@ -134,19 +134,22 @@ await i18nextPromise
 
         <Banner />
 
-        <div class="min-h-full h-max ">
+        <!-- min-h-full h-max -->
+        <div class="flex flex-col h-screen justify-between">
 
 
             <div class="relative bg-gradient-to-b from-blue-700 via-blue-500 to-blue-400 pb-32">
                 <div class="absolute inset-0">
-                    <Particles id="tsparticles" class="w-full h-full" :particlesInit="particlesInit" :options="particlesOptions"/>
+                    <Particles id="tsparticles" class="w-full h-full" :particlesInit="particlesInit"
+                        :options="particlesOptions" />
                 </div>
 
-                <Disclosure as="nav" class="relative z-10 border-b border-white border-opacity-50 lg:border-none" v-slot="{ open }">
+                <Disclosure as="nav" class="relative z-10 border-b border-white border-opacity-50 lg:border-none"
+                    v-slot="{ open }">
                     <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                         <div
                             class="relative flex h-16 items-center justify-between lg:border-b lg:border-blue-400 lg:border-opacity-25">
-                            <div class="flex items-center px-2 lg:px-0">
+                            <Link :href="route('client.dashboard')" class="flex items-center px-2 lg:px-0">
                                 <div class="flex space-x-2 flex-shrink-0">
                                     <img class="block h-8" src="@/assets/images/header-logo.png" alt="Linkarme" />
 
@@ -154,21 +157,21 @@ await i18nextPromise
                                         <img class="block h-2" src="@/assets/images/linking-slogan.png" alt="Slogan" />
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                             <!-- <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
-                                            <div class="w-full max-w-lg lg:max-w-xs">
-                                                <label for="search" class="sr-only">Search</label>
-                                                <div class="relative text-gray-400 focus-within:text-gray-600">
-                                                    <div
-                                                        class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                        <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+                                                <div class="w-full max-w-lg lg:max-w-xs">
+                                                    <label for="search" class="sr-only">Search</label>
+                                                    <div class="relative text-gray-400 focus-within:text-gray-600">
+                                                        <div
+                                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                            <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+                                                        </div>
+                                                        <input id="search"
+                                                            class="block w-full rounded-md border border-transparent bg-white py-2 pl-10 pr-3 leading-5 text-gray-900 placeholder-gray-500 focus:border-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 sm:text-sm"
+                                                            placeholder="Search" type="search" name="search" />
                                                     </div>
-                                                    <input id="search"
-                                                        class="block w-full rounded-md border border-transparent bg-white py-2 pl-10 pr-3 leading-5 text-gray-900 placeholder-gray-500 focus:border-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 sm:text-sm"
-                                                        placeholder="Search" type="search" name="search" />
                                                 </div>
-                                            </div>
-                                        </div> -->
+                                            </div> -->
 
                             <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
                                 <Menu as="div" class="relative flex-shrink-0">
@@ -225,10 +228,10 @@ await i18nextPromise
                             <div class="hidden lg:ml-4 lg:block">
                                 <div class="flex items-center">
                                     <!-- <button type="button"
-                                                    class="flex-shrink-0 rounded-full bg-blue-600 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
-                                                    <span class="sr-only">View notifications</span>
-                                                    <BellIcon class="h-6 w-6" aria-hidden="true" />
-                                                </button> -->
+                                                        class="flex-shrink-0 rounded-full bg-blue-600 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
+                                                        <span class="sr-only">View notifications</span>
+                                                        <BellIcon class="h-6 w-6" aria-hidden="true" />
+                                                    </button> -->
 
                                     <!-- Profile dropdown -->
                                     <Menu as="div" class="relative flex-shrink-0">
@@ -265,7 +268,8 @@ await i18nextPromise
                                                 </MenuItem>
 
                                                 <MenuItem v-slot="{ active }">
-                                                <Link href="#"
+                                                <Link
+                                                    :href="route('client.sites.list', { _query: { 'filter[favorites]': 'true' } })"
                                                     :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
                                                 <HeartIcon class="h-5 w-5" />
                                                 <span>{{ $t('Favorites') }}</span>
@@ -273,7 +277,8 @@ await i18nextPromise
                                                 </MenuItem>
 
                                                 <MenuItem v-slot="{ active }">
-                                                <Link href="#"
+                                                <Link
+                                                    :href="route('client.sites.list', { _query: { 'filter[interests]': 'true' } })"
                                                     :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
                                                 <FlagIcon class="h-5 w-5" />
                                                 <span>{{ $t('Interest list') }}</span>
@@ -371,7 +376,7 @@ await i18nextPromise
                 </header>
             </div>
 
-            <main class="-mt-32 relative">
+            <main class="-mt-32 mb-auto relative">
                 <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
                     <slot />
                 </div>
@@ -387,5 +392,4 @@ await i18nextPromise
             </footer>
         </div>
 
-    </div>
-</template>
+</div></template>

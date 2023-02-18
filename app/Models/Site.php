@@ -243,6 +243,11 @@ class Site extends Model implements Auditable
         return $this->hasMany(Order::class);
     }
 
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_site')->withTimestamps();
+    }
+
     public function scopeOfStatus($query, $status)
     {
         return $query->where('status', $status);
@@ -291,6 +296,13 @@ class Site extends Model implements Auditable
     public function scopeOfSeller($query, $seller)
     {
         return $query->where('seller_id', $seller);
+    }
+
+    public function scopeAuthProject($query, $project)
+    {
+        return $query->whereHas('projects', function ($query) use ($project) {
+            $query->ofClient(auth()->id())->where('projects.id', $project);
+        });
     }
 
     public function getFormattedStatusAttribute()
