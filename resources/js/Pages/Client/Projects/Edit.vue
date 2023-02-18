@@ -58,7 +58,9 @@ const updateColor = (event) => {
 <template>
     <TransitionRoot as="template" :show="show">
         <Dialog as="div" class="relative z-10" @close="close">
-            <div class="fixed inset-0" />
+            <TransitionChild as="template" enter="ease-in-out duration-500" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in-out duration-500" leave-from="opacity-100" leave-to="opacity-0">
+                <div class="fixed inset-0 bg-black bg-opacity-25 transition-opacity" />
+            </TransitionChild>
 
             <div class="fixed inset-0 overflow-hidden">
                 <div class="absolute inset-0 overflow-hidden">
