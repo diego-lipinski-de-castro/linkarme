@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CountryController;
@@ -66,6 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 });
+
+Route::get('audits', [AuditController::class, 'index'])->name('audits.index')->middleware(['auth']);
+Route::get('audits-filter', [AuditController::class, 'filter'])->name('audits.filter')->middleware(['auth']);
+Route::get('audits/{audit}', [AuditController::class, 'show'])->name('audits.show')->middleware(['auth']);
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 
