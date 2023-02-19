@@ -31,9 +31,8 @@ const attributes = {
         <div class="flex-1 space-y-1">
             <div class="flex items-center justify-between">
                 <h3 class="text-sm font-medium">{{ notification.data.site_url }}</h3>
-                <p class="text-sm text-gray-500">{{ new
-                        Date(notification.created_at).toLocaleString()
-                }}</p>
+                <!-- <p class="text-sm text-gray-500">{{ new Date(notification.created_at).toLocaleString() }}</p> -->
+                <p class="text-sm text-gray-500">{{ notification.diff }}</p>
             </div>
             <p v-for="(value, attribute) in notification.data.audit_modified" :key="attribute"
                 class="text-sm text-gray-500">

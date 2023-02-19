@@ -258,13 +258,6 @@ onMounted(() => {
                                 </span>
 
                                 <div class="mt-4 flex space-x-4">
-                                    <!-- <select v-model="filters.language_id" class="w-full border-0 rounded-md">
-                                        <option :value="null">{{ $t('All') }}</option>
-                                        <option v-for="(language, index) in languages" :key="index" :value="language.id">
-                                            {{ language.name }}
-                                        </option>
-                                    </select> -->
-
                                     <div class="flex flex-col space-y-2">
                                         <div v-for="(language, index) in languages" :key="index" class="relative flex items-start">
                                             <div class="flex h-5 items-center">

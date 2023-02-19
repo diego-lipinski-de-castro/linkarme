@@ -18,6 +18,9 @@ import {
 } from '@heroicons/vue/24/outline'
 
 defineProps({
+    orders: Number,
+    usedCount: Number,
+    unusedCount: Number,
     sessions: Array,
 });
 
@@ -49,9 +52,9 @@ defineProps({
 
                         <div class="col-span-2 px-5 py-6 sm:px-6 flex flex-col">
                             <span class="text-sm font-bold text-blue-700">{{ $t('So far, you have') }}</span>
-                            <span class="text-sm text-gray-500">377 {{ $t('orders') }}</span>
-                            <span class="text-sm text-gray-500">228 {{ $t('sites used') }}</span>
-                            <span class="text-sm text-gray-500">3921 {{ $t('sites never used') }}</span>
+                            <span class="text-sm text-gray-500">{{ orders }} {{ $t('orders') }}</span>
+                            <span class="text-sm text-gray-500">{{ usedCount }} {{ $t('sites used') }}</span>
+                            <span class="text-sm text-gray-500">{{ unusedCount }} {{ $t('sites never used') }}</span>
                         </div>
 
                     </div>

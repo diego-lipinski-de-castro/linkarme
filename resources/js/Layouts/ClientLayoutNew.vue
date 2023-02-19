@@ -128,14 +128,14 @@ await i18nextPromise
 </script>
 
 <template>
-    <div class="min-h-full h-max bg-gray-100">
+    <div>
 
         <Head :title="title" />
 
         <Banner />
 
         <!-- min-h-full h-max -->
-        <div class="flex flex-col h-screen justify-between">
+        <div class="flex flex-col h-screen">
 
 
             <div class="relative bg-gradient-to-b from-blue-700 via-blue-500 to-blue-400 pb-32">

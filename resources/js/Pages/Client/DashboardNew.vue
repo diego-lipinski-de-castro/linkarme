@@ -356,7 +356,7 @@ const toggleFavorite = async (site) => {
                     </div>
 
                     <div v-if="interests.length > 0" class="text-right px-5 mt-5">
-                        <Link :href="route('client.sites.index', { _query: { 'filter[interests]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
+                        <Link :href="route('client.sites.list', { _query: { 'filter[interests]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
                     </div>
                 </div>
 
@@ -412,7 +412,7 @@ const toggleFavorite = async (site) => {
                     </div>
 
                     <div v-if="favorites.length > 0" class="text-right px-5 mt-5">
-                        <Link :href="route('client.sites.index', { _query: { 'filter[favorites]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
+                        <Link :href="route('client.sites.list', { _query: { 'filter[favorites]': 'true' } })" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('View all') }}</Link>
                     </div>
                 </div>
                 <!--  -->

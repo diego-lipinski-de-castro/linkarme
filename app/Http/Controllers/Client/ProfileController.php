@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Client;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
@@ -27,7 +29,27 @@ class ProfileController extends Controller
      */
     public function show(Request $request)
     {
+        $orders = Order::ofClient(auth()->id())->count();
+
+        $usedCount = Site::query()
+            ->whereHas('orders', function ($query) {
+                $query->ofClient(auth()->id());
+            })
+            ->count();
+            
+        $unusedCount = Site::query()
+            ->ofStatus('APPROVED')
+            ->whereDoesntHave('orders', function ($query) {
+                $query->ofClient(auth()->id());
+            })
+            ->count();
+
         return Inertia::render('Client/Profile/ShowNew', [
+            'orders' => $orders,
+
+            'usedCount' => $usedCount,
+            'unusedCount' => $unusedCount,
+            
             'sessions' => $this->sessions($request)->all(),
         ]);
     }
