@@ -14,7 +14,12 @@ import {
     MagnifyingGlassIcon,
     HomeIcon,
 } from '@heroicons/vue/20/solid'
-
+import {
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+} from '@headlessui/vue'
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
@@ -44,8 +49,8 @@ const _defaultColumns = [
     { key: 'url', label: t('Domain'), visible: true },
     { key: 'da', label: t('DA'), visible: true },
     { key: 'dr', label: t('DR'), visible: true },
-    { key: 'gambling', label: t('Gambling'), visible: true },
-    { key: 'sponsor', label: t('Sponsor'), visible: true },
+    { key: 'gambling', label: t('Accepts gambling'), visible: true },
+    { key: 'sponsor', label: t('Marked as sponsored'), visible: true },
     { key: 'cripto', label: t('Cripto'), visible: false },
     { key: 'ssl', label: t('SSL'), visible: false },
     { key: 'category', label: t('Category'), visible: false },
@@ -230,7 +235,7 @@ const content = computed(() => {
                                 <thead>
                                     <tr>
                                         <th v-show="columns[0].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Price') }}</span>
@@ -240,7 +245,7 @@ const content = computed(() => {
                                         </th>
 
                                         <th v-show="columns[1].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Domain') }}</span>
@@ -249,7 +254,7 @@ const content = computed(() => {
                                             </div>
                                         </th>
                                         <th v-show="columns[2].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('DA') }}</span>
@@ -259,7 +264,7 @@ const content = computed(() => {
                                         </th>
 
                                         <th v-show="columns[3].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('DR') }}</span>
@@ -268,31 +273,31 @@ const content = computed(() => {
                                             </div>
                                         </th>
                                         <th v-show="columns[4].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Gambling') }}</th>
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Accepts gambling') }}</th>
                                         <th v-show="columns[5].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Sponsor') }}</th>
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Marked as sponsored') }}</th>
                                         <th v-show="columns[6].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Cripto') }}</th>
                                         <th v-show="columns[7].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('SSL') }}</th>
                                         <th v-show="columns[8].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Category') }}</th>
                                         <!-- <th v-show="columns[9].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">{{$t('Banners')}}</th>
                                     <th v-show="columns[10].visible"
-                                        class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                        class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">Links {{$t('menu')}}</th> -->
                                         <th v-show="columns[9].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Obs') }}</th>
                                         <th v-show="columns[10].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Example') }}</span>
@@ -301,7 +306,7 @@ const content = computed(() => {
                                             </div>
                                         </th>
                                         <th v-show="columns[11].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
                                                 <span class="block">{{ $t('Upload date') }}</span>
@@ -309,8 +314,12 @@ const content = computed(() => {
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"></th>
+                                        <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Add to favorites') }}</th>
+                                        <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Add to interest list') }}</th>
+                                        <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Add to a project') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
@@ -384,43 +393,69 @@ const content = computed(() => {
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ site.formatted_inserted_at }}
                                         </td>
-                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <div class="flex space-x-4">
-                                                <button @click="toggleFavorite(site.id)">
-                                                    <svg v-if="favorites.includes(site.id)"
-                                                        xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6"
-                                                        viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
+                                        <td class="px-4 py-4 text-sm text-gray-500">
+                                            <button @click="toggleFavorite(site.id)">
+                                                <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg"
+                                                    class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
 
-                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                        stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                    </svg>
-                                                </button>
+                                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                </svg>
+                                            </button>
+                                        </td>
 
-                                                <button @click="toggleInterest(site.id)">
-                                                    <svg v-if="interests.includes(site.id)"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                        viewBox="0 0 24 24" class="text-blue-500 w-[22px] h-[22px]">
-                                                        <path fill-rule="evenodd"
-                                                            d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
+                                        <td class="px-4 py-4 text-sm text-gray-500">
+                                            <button @click="toggleInterest(site.id)">
+                                                <svg v-if="interests.includes(site.id)" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="currentColor" viewBox="0 0 24 24"
+                                                    class="text-blue-500 w-[22px] h-[22px]">
+                                                    <path fill-rule="evenodd"
+                                                        d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
 
-                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="w-[22px] h-[22px]">
-                                                        <path fill-rule="evenodd"
-                                                            d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                                <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-[22px] h-[22px]">
+                                                    <path fill-rule="evenodd"
+                                                        d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </td>
+
+                                        <td class="px-4 py-4 text-sm text-gray-500">
+
+                                            <!-- <Menu as="div" class="h-full relative flex-shrink-0">
+                                                <MenuButton
+                                                    class="inline-flex h-full w-8 items-center justify-center rounded-full bg-white bg-transparent focus:outline-none text-gray-700 transition-transform hover:scale-110">
+                                                    <span class="sr-only">Open projects</span>
+                                                    <PlusCircleIcon class="h-6 w-6" />
+                                                </MenuButton>
+
+                                                <transition enter-active-class="transition ease-out duration-100"
+                                                    enter-from-class="transform opacity-0 scale-95"
+                                                    enter-to-class="transform opacity-100 scale-100"
+                                                    leave-active-class="transition ease-in duration-75"
+                                                    leave-from-class="transform opacity-100 scale-100"
+                                                    leave-to-class="transform opacity-0 scale-95">
+                                                    <MenuItems
+                                                        class="absolute right-0 z-10 mt-0 origin-top-right rounded-md overflow-hidden bg-white border border-gray-300 border-opacity-50 shadow-sm focus:outline-none">
+                                                        <MenuItem v-for="(project, index) in projects" v-slot="{ active }">
+                                                            <button :class="[active ? 'bg-gray-100' : '', 'w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500']">
+                                                                <span :style="{ 'background-color': project.color }" class="h-2 w-2 rounded-full"></span>
+                                                                <span>{{ project.name }}</span>
+                                                            </button>
+                                                        </MenuItem>
+                                                    </MenuItems>
+                                                </transition>
+                                            </Menu> -->
                                         </td>
                                     </tr>
                                 </tbody>

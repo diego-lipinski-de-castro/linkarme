@@ -33,11 +33,18 @@ class SiteController extends Controller
         $favorites = auth()->user()->favorites_ids;
         $interests = auth()->user()->interests_ids;
 
-        $countries = Country::query()
+        $projects = Project::query()
+            ->ofClient(auth()->id())
             ->orderBy('name')
             ->get();
 
         $languages = Language::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
+
+        $countries = Country::query()
+            ->whereHas('sites')
             ->orderBy('name')
             ->get();
 
@@ -74,6 +81,7 @@ class SiteController extends Controller
                 'new' => filter_var(Arr::get($query, 'filter.new', false), FILTER_VALIDATE_BOOL),
 
                 'language_id' => Arr::get($query, 'filter.language_id', []),
+                'country_id' => Arr::get($query, 'filter.country_id', []),
             ],
         ];
 
@@ -104,6 +112,7 @@ class SiteController extends Controller
                 AllowedFilter::scope('recommended', 'auth_recommended'),
                 AllowedFilter::scope('new', 'auth_new'),
                 AllowedFilter::exact('language_id'),
+                AllowedFilter::exact('country_id'),
             ])
             ->paginate(50)
             ->appends(request()->query());
@@ -117,6 +126,7 @@ class SiteController extends Controller
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,
+            'projects' => $projects,
         ]);
     }
 
@@ -231,6 +241,13 @@ class SiteController extends Controller
     public function interest(Site $site)
     {
         auth()->user()->interests()->toggle([$site->id]);
+
+        return back();
+    }
+
+    public function project(Site $site, Project $project)
+    {
+        $project->sites()->toggle([$site->id]);
 
         return back();
     }

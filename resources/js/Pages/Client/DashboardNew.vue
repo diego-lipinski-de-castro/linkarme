@@ -154,7 +154,7 @@ const toggleFavorite = async (site) => {
                         </div>
 
                         <div>
-                            <span class="block font-bold">{{ $t('Brand new opportunities') }}</span>
+                            <span class="block font-bold text-teal-500">{{ $t('Brand new opportunities') }}</span>
                             <span class="block text-xs text-gray-400">{{ $t('Latest additions onto our catalog') }}</span>
                         </div>
                     </div>
@@ -205,7 +205,7 @@ const toggleFavorite = async (site) => {
                         </div>
 
                         <div>
-                            <span class="block font-bold">{{ $t('Our team recommendations') }}</span>
+                            <span class="block font-bold text-purple-600">{{ $t('Our team recommendations') }}</span>
                             <span class="block text-xs text-gray-400">{{ $t('Websites that deserve your attention') }}</span>
                         </div>
                     </div>
@@ -286,8 +286,9 @@ const toggleFavorite = async (site) => {
 
                                 <tr v-else v-for="(project, index) in projects" :key="index">
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                        <Link :href="route('client.sites.list', { _query: { 'filter[project]': project.id  } })" class="text-gray-500 hover:text-gray-900">
-                                            {{ project.name }}
+                                        <Link :href="route('client.sites.list', { _query: { 'filter[project]': project.id  } })" class="flex items-center space-x-4 text-gray-500 hover:text-gray-900">
+                                            <span :style="{ 'background-color': project.color }" class="block h-2 w-2 rounded-full"></span>
+                                            <span>{{ project.name }}</span>
                                         </Link>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">

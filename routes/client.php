@@ -57,6 +57,10 @@ Route::group([
         ->name('sites.interest')
         ->middleware(['auth:client']);
 
+    Route::post('sites/{site}/project/{project}', [SiteController::class, 'project'])
+        ->name('sites.project')
+        ->middleware(['auth:client']);
+
     Route::get('sites/{site}', [SiteController::class, 'show'])
         ->name('sites.show')
         ->middleware(['auth:client']);
