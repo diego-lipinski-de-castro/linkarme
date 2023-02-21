@@ -72,7 +72,7 @@ class SiteController extends Controller
                     'to' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->max('dr')),
                 ],
 
-                'gambling' => filter_var(Arr::get($query, 'filter.gambling', false), FILTER_VALIDATE_BOOL),
+                'gambling' => filter_var(Arr::get($query, 'filter.gambling', true), FILTER_VALIDATE_BOOL),
                 'sponsor' => filter_var(Arr::get($query, 'filter.sponsor', false), FILTER_VALIDATE_BOOL),
 
                 'favorites' => filter_var(Arr::get($query, 'filter.favorites', false), FILTER_VALIDATE_BOOL),
@@ -87,7 +87,7 @@ class SiteController extends Controller
 
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('APPROVED')
-            // ->withCount('orders')
+            ->withCount('orders')
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([
@@ -164,7 +164,7 @@ class SiteController extends Controller
 
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('APPROVED')
-            ->withCount('orders')
+            // ->withCount('orders')
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([

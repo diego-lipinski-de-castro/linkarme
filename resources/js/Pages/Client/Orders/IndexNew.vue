@@ -273,13 +273,13 @@ onMounted(() => {
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th v-show="true"
+                                        <th v-show="columns[0].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t('Url') }}
                                         </th>
 
-                                        <th v-show="true"
+                                        <th v-show="columns[1].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Date') }}
                                         </th>
@@ -287,12 +287,12 @@ onMounted(() => {
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
-                                        <td v-show="true"
+                                        <td v-show="columns[0].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ order.url }}
                                         </td>
                                     
-                                        <td v-show="true"
+                                        <td v-show="columns[1].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ new Date(order.created_at).toLocaleString() }}
                                         </td>

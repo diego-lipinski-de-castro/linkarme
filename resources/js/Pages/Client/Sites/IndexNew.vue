@@ -337,9 +337,9 @@ onMounted(() => {
                                     </SwitchLabel>
 
                                 <Switch v-model="filters.favorites"
-                                    :class="[filters.favorites ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                    :class="[filters.favorites ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
                                     <span aria-hidden="true"
-                                        :class="[filters.favorites ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                                        :class="[filters.favorites ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                     </Switch>
                                 </SwitchGroup>
 
@@ -349,9 +349,9 @@ onMounted(() => {
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.interests"
-                                        :class="[filters.interests ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        :class="[filters.interests ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
                                         <span aria-hidden="true"
-                                            :class="[filters.interests ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                                            :class="[filters.interests ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                     </Switch>
                                 </SwitchGroup>
 
@@ -361,9 +361,9 @@ onMounted(() => {
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.recommended"
-                                        :class="[filters.recommended ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        :class="[filters.recommended ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
                                         <span aria-hidden="true"
-                                            :class="[filters.recommended ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                                            :class="[filters.recommended ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                     </Switch>
                                 </SwitchGroup>
 
@@ -373,9 +373,9 @@ onMounted(() => {
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.gambling"
-                                        :class="[filters.gambling ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        :class="[filters.gambling ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
                                         <span aria-hidden="true"
-                                            :class="[filters.gambling ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                                            :class="[filters.gambling ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                     </Switch>
                                 </SwitchGroup>
 
@@ -385,9 +385,9 @@ onMounted(() => {
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.sponsor"
-                                        :class="[filters.sponsor ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        :class="[filters.sponsor ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
                                         <span aria-hidden="true"
-                                            :class="[filters.sponsor ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                                            :class="[filters.sponsor ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                     </Switch>
                                 </SwitchGroup>
 
@@ -397,9 +397,9 @@ onMounted(() => {
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.new"
-                                        :class="[filters.new ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        :class="[filters.new ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
                                         <span aria-hidden="true"
-                                            :class="[filters.new ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                                            :class="[filters.new ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                     </Switch>
                                 </SwitchGroup>
                             </div>
@@ -549,15 +549,12 @@ onMounted(() => {
                                         <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                             <span class="relative flex space-x-2 items-center">
                                                 <span>
-                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
                                                     {{
                                                         $filters.currency((Math.round((site.sale /
                                                             coinStore.ratios[site.sale_coin]) / 5) * 5) / 100,
                                                             coins[coinStore.coin])
                                                     }}
                                                 </span>
-
-                                                <!-- <span class="text-red-500">{{ $filters.currency(site.sale / 100, coins[site.sale_coin]) }} - {{ site.sale }} - {{ site.sale_coin }}</span> -->
                                             </span>
                                         </td>
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">

@@ -302,7 +302,7 @@ await i18nextPromise
                                                 </MenuItem>
 
                                                 <MenuItem v-slot="{ active }">
-                                                <Link :href="route('client.profile.show')"
+                                                <Link :href="`${route('client.profile.show')}/#bug`"
                                                     :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 mb-2 py-2 px-4 text-sm text-gray-700']">
                                                 <div class="w-5">
                                                     <BugAntIcon class="h-5 w-5" />

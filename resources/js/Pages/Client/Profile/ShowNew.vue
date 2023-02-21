@@ -12,6 +12,7 @@ import UpdateContactForm from '@/Pages/Client/Profile/PartialsNew/UpdateContactF
 import UpdateInvoiceForm from '@/Pages/Client/Profile/PartialsNew/UpdateInvoiceForm.vue';
 import BugForm from '@/Pages/Client/Profile/PartialsNew/BugForm.vue';
 import { Link } from '@inertiajs/inertia-vue3';
+import { onMounted } from 'vue'
 import {
     UserCircleIcon,
     KeyIcon,
@@ -25,6 +26,25 @@ defineProps({
     unusedCount: Number,
     sessions: Array,
 });
+
+onMounted(() => {
+
+    const hash = window.location.hash.split('#')[1]
+
+    if(hash) {
+        setTimeout(() => {
+            const el = document.getElementById(hash)
+
+            console.log('el', el)
+
+            if(el) {
+                el.scrollIntoView({
+                    behavior: "smooth"
+                })
+            }
+        }, 250)
+    }
+})
 
 </script>
 
@@ -158,7 +178,7 @@ defineProps({
                     </div>
                 </div>
 
-                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow pt-5">
+                <div id="bug" class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow pt-5">
                     <div class="flex items-center space-x-2 px-5">
                         <div class="w-10">
                             <ChatBubbleBottomCenterTextIcon class="h-8 w-8"/>
