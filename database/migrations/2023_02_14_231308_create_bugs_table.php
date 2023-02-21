@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('bugs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->string('description');
             $table->string('photo_path', 2048)->nullable();
             $table->boolean('urgent')->default(false);

@@ -14,6 +14,7 @@ class Bug extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'client_id',
         'description',
         'photo_path',
         'urgent',

@@ -10,11 +10,13 @@ import UpdateCompanyForm from '@/Pages/Client/Profile/PartialsNew/UpdateCompanyF
 import UpdateEmailForm from '@/Pages/Client/Profile/PartialsNew/UpdateEmailForm.vue';
 import UpdateContactForm from '@/Pages/Client/Profile/PartialsNew/UpdateContactForm.vue';
 import UpdateInvoiceForm from '@/Pages/Client/Profile/PartialsNew/UpdateInvoiceForm.vue';
+import BugForm from '@/Pages/Client/Profile/PartialsNew/BugForm.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import {
     UserCircleIcon,
     KeyIcon,
     CurrencyDollarIcon,
+    ChatBubbleBottomCenterTextIcon,
 } from '@heroicons/vue/24/outline'
 
 defineProps({
@@ -153,6 +155,25 @@ defineProps({
 
                     <div class="px-5 py-5">
                         <UpdatePasswordForm class="ml-12 mr-16"/>
+                    </div>
+                </div>
+
+                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow pt-5">
+                    <div class="flex items-center space-x-2 px-5">
+                        <div class="w-10">
+                            <ChatBubbleBottomCenterTextIcon class="h-8 w-8"/>
+                        </div>
+
+                        <div>
+                            <span class="block font-bold">{{ $t('Bug report / Suggestions box') }}</span>
+                            <span class="block text-xs text-gray-400">{{ $t('Help us improve your experience') }}</span>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-5">
+
+                    <div class="px-5 py-5">
+                        <BugForm class="ml-12 mr-16"/>
                     </div>
                 </div>
             </div>

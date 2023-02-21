@@ -294,15 +294,15 @@ await i18nextPromise
                                                 </MenuItem>
 
                                                 <MenuItem v-slot="{ active }">
-                                                <Link href="#"
+                                                <Link :href="route('client.orders.index')"
                                                     :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
-                                                <CurrencyDollarIcon class="h-5 w-5" />
-                                                <span>{{ $t('Orders') }}</span>
+                                                    <CurrencyDollarIcon class="h-5 w-5" />
+                                                    <span>{{ $t('Orders') }}</span>
                                                 </Link>
                                                 </MenuItem>
 
                                                 <MenuItem v-slot="{ active }">
-                                                <Link href="#"
+                                                <Link :href="route('client.profile.show')"
                                                     :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 mb-2 py-2 px-4 text-sm text-gray-700']">
                                                 <div class="w-5">
                                                     <BugAntIcon class="h-5 w-5" />

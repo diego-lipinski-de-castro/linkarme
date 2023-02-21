@@ -24,7 +24,8 @@ import {
 
 import {
     GlobeAltIcon,
-    PlusCircleIcon
+    PlusCircleIcon,
+    PlusIcon,
 } from '@heroicons/vue/24/outline'
 
 import { debounce } from 'debounce';
@@ -664,12 +665,18 @@ onMounted(() => {
                                                     leave-from-class="transform opacity-100 scale-100"
                                                     leave-to-class="transform opacity-0 scale-95">
                                                     <MenuItems
-                                                        class="absolute right-0 z-10 mt-0 origin-top-right rounded-md overflow-hidden bg-white border border-gray-300 border-opacity-50 shadow-sm focus:outline-none">
-                                                        <MenuItem v-for="(project, index) in projects" v-slot="{ active }">
-                                                            <button @click="toggleProject(site.id, project.id)" :class="[active ? 'bg-gray-100' : '', 'w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500']">
+                                                        class="absolute right-0 z-10 mt-0 overflow-y-scroll origin-top-right rounded-md bg-white border border-gray-300 border-opacity-50 shadow-sm focus:outline-none">
+                                                        <MenuItem v-for="(project, index) in projects" v-slot="{ active }" :key="index">
+                                                            <button @click="toggleProject(site.id, project.id)" class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
                                                                 <span :style="{ 'background-color': project.color }" class="h-2 w-2 rounded-full"></span>
                                                                 <span>{{ project.name }}</span>
                                                             </button>
+                                                        </MenuItem>
+
+                                                        <MenuItem v-slot="{ active }">
+                                                            <Link :href="route('client.projects.index')" class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
+                                                                <span>{{ $t('Add project') }}</span>
+                                                            </Link>
                                                         </MenuItem>
                                                     </MenuItems>
                                                 </transition>

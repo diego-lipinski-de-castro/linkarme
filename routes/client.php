@@ -22,6 +22,7 @@ use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\ProjectController;
 use App\Http\Controllers\Client\SiteController;
+use App\Http\Controllers\Client\BugController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -39,6 +40,10 @@ Route::group([
 
     Route::get('notifications', [NotificationController::class, 'index'])
         ->name('notifications')
+        ->middleware(['auth:client']);
+
+    Route::post('bugs', [BugController::class, 'store'])
+        ->name('bugs.store')
         ->middleware(['auth:client']);
 
     Route::get('sites', [SiteController::class, 'index'])
