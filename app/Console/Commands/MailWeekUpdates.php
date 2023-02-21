@@ -45,7 +45,7 @@ class MailWeekUpdates extends Command
                 now()->subWeek()->format('Y-m-d'),
                 now()->addDay()->format('Y-m-d'),
             ])
-            ->whereHas('auditable')
+            // ->whereHas('auditable')
             ->get()
             ->filter(function ($item) {
 

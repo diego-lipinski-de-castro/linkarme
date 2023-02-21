@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\Language;
 use App\Models\Order;
 use App\Models\Site;
@@ -26,43 +27,67 @@ class OrderController extends Controller
         $interests = auth()->user()->interests_ids;
 
         $languages = Language::query()
+            ->whereHas('sites', function ($query) {
+                $query->whereHas('orders', function ($query) {
+                    $query->ofClient(auth()->id());
+                });
+            })
             ->orderBy('name')
             ->get();
 
-        $query = request()->query();
+        $countries = Country::query()
+            ->whereHas('sites', function ($query) {
+                $query->whereHas('orders', function ($query) {
+                    $query->ofClient(auth()->id());
+                });
+            })
+            ->orderBy('name')
+            ->get();
 
-        // $filters = [
-        //     'sort' => Arr::get($query, 'sort', 'url'),
-        //     'filter' => [
-        //         'language_id' => Arr::get($query, 'filter.language_id', []),
-        //     ],
-        // ];
-
-        $top = Site::query()
+        $sites = Site::query()
             ->whereHas('orders', function ($query) {
                 $query->ofClient(auth()->id());
             })
-            ->withCount('orders')
+            ->withCount([
+                'orders' => function ($query) {
+                    $query->ofClient(auth()->id());
+                },
+            ])
             ->orderByRaw('orders_count')
             ->take(5)
             ->get();
 
+        $query = request()->query();
+
+        $filters = [
+            'sort' => Arr::get($query, 'sort', 'url'),
+            'filter' => [
+
+            ],
+        ];
+
         $orders = QueryBuilder::for(Order::class)
             ->ofClient(auth()->id())
+            ->with([
+                'site',
+                'site.category',
+            ])
             ->defaultSort('-created_at')
             ->allowedSorts([])
             ->allowedFilters([
 
             ])
-            ->paginate(15)
+            ->paginate(30)
             ->appends(request()->query());
 
         return Inertia::render('Client/Orders/IndexNew', [
-            'top' => $top,
             'coins' => $coins,
+            'filters' => $filters,
             'favorites' => $favorites,
             'interests' => $interests,
             'languages' => $languages,
+            'countries' => $countries,
+            'sites' => $sites,
             'orders' => $orders,
         ]);
     }

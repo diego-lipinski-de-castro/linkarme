@@ -24,8 +24,8 @@ import {
     BellAlertIcon,
     CloudArrowUpIcon,
     HandThumbUpIcon,
-FlagIcon,
-Cog6ToothIcon,
+    FlagIcon,
+    Cog6ToothIcon,
 } from '@heroicons/vue/24/outline'
 import {
     BanknotesIcon,

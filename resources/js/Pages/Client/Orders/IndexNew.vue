@@ -23,7 +23,8 @@ import {
 } from '@heroicons/vue/20/solid'
 
 import {
-    GlobeAltIcon
+    FireIcon,
+    GlobeAltIcon,
 } from '@heroicons/vue/24/outline'
 
 import { debounce } from 'debounce';
@@ -37,11 +38,14 @@ const { t } = useTranslation();
 
 const props = defineProps({
     title: String,
-    orders: Object,
     coins: Object,
+    filters: Object,
     favorites: Array,
     interests: Array,
     languages: Array,
+    countries: Array,
+    sites: Array,
+    orders: Object,
 });
 
 const links = computed(() => {
@@ -52,29 +56,19 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'sale', label: t('Price'), visible: true },
-    { key: 'url', label: t('Domain'), visible: true },
-    { key: 'da', label: t('DA'), visible: true },
-    { key: 'dr', label: t('DR'), visible: true },
-    { key: 'gambling', label: t('Gambling'), visible: true },
-    { key: 'sponsor', label: t('Sponsor'), visible: true },
-    { key: 'cripto', label: t('Cripto'), visible: false },
-    { key: 'ssl', label: t('SSL'), visible: false },
-    { key: 'category', label: t('Category'), visible: false },
-    { key: 'obs', label: t('Obs'), visible: true },
-    { key: 'example', label: t('Example'), visible: false },
-    { key: 'inserted_at', label: t('Upload date'), visible: false },
+    { key: 'url', label: t('Url'), visible: true },
+    { key: 'created_at', label: t('Date'), visible: false },
 ];
 
 const _columns =
-    localStorage.getItem('client.sites.index.columns') ?
-        unionBy(JSON.parse(localStorage.getItem('client.sites.index.columns')), _defaultColumns, 'key')
+    localStorage.getItem('client.orders.index.columns') ?
+        unionBy(JSON.parse(localStorage.getItem('client.orders.index.columns')), _defaultColumns, 'key')
         : _defaultColumns
 
 const columns = ref(_columns)
 
 watch(columns, (n, o) => {
-    localStorage.setItem('client.sites.index.columns', JSON.stringify(columns.value))
+    localStorage.setItem('client.orders.index.columns', JSON.stringify(columns.value))
 }, {
     deep: true,
 })
@@ -82,9 +76,7 @@ watch(columns, (n, o) => {
 const sort = ref(props.filters.sort)
 
 const filters = reactive({
-    favorites: props.filters.filter.favorites,
-    interests: props.filters.filter.interests,
-    language_id: props.filters.filter.language_id,
+
 })
 
 watch(sort, (n, o) => get());
@@ -96,31 +88,13 @@ watch(() => ({ ...filters }), debounce((n, o) => {
 })
 
 const get = async () => {
-    Inertia.get(route('client.sites.index'), {
+    Inertia.get(route('client.orders.index'), {
         sort: sort.value,
         filter: {
-            ...(filters.favorites && {
-                favorites: filters.favorites,
-            }),
-            ...(filters.interests && {
-                interests: filters.interests,
-            }),
-            language_id: filters.language_id,
+
         },
     }, {
         preserveState: true,
-    })
-}
-
-const toggleFavorite = async (site) => {
-    Inertia.post(route('client.sites.favorite', site), null, {
-        preserveScroll: true,
-    })
-}
-
-const toggleInterest = async (site) => {
-    Inertia.post(route('client.sites.interest', site), null, {
-        preserveScroll: true,
     })
 }
 
@@ -135,24 +109,75 @@ onMounted(() => {
 
 <template>
     <AppSuspense>
-        <ClientLayoutNew title="Sites">
+        <ClientLayoutNew :title="$t('Orders')">
             <div>
-                <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
-                    <div class="flex flex-col min-h-48">
+                <div class="grid grid-cols-1 md:grid-cols-3 space-x-6 min-h-48">
 
+                    <div class="col-span-1 rounded-md bg-white py-6 shadow">
+
+                        <div>
+                            <div class="flex items-center space-x-2 px-5">
+                                <div class="w-10">
+                                    <FireIcon class="h-8 w-8"/>
+                                </div>
+
+                                <div>
+                                    <span class="block font-bold">{{ $t('Your top 5 requests') }}</span>
+                                    <span class="block text-xs text-gray-400">{{ $t('These are our sites that you used the most') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-gray-300 border-opacity-50">
+                                <table class="w-full">
+                                    <thead v-if="sites.length > 0">
+                                        <tr>
+                                            <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                scope="col">{{ $t('Domain') }}
+                                            </th>
+                                            <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                scope="col">{{ $t('Requests') }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-300 divide-opacity-50">
+                                        <tr v-if="sites.length == 0">
+                                            <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic text-center">
+                                                {{ $t('You have not ordered anything yet') }}
+                                            </td>
+                                        </tr>
+
+                                        <tr v-else v-for="(site, index) in sites" :key="index">
+                                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                                <Link :href="route('client.sites.show', site.id)" class="flex items-center space-x-4 text-gray-500 hover:text-gray-900">
+                                                    <span>{{ site.url }}</span>
+                                                </Link>
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                                {{ site.orders_count ?? '-' }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-span-1 md:col-span-2 flex flex-col rounded-md bg-white px-5 py-6 shadow sm:px-6">
                         <div class="flex items-center space-x-2">
                             <div class="w-10">
                                 <MagnifyingGlassIcon class="h-8 w-8"/>
                             </div>
 
                             <div>
-                                <h2 class="text-xl font-bold leading-tight">{{ $t('Search websites') }}</h2>
+                                <h2 class="text-xl font-bold leading-tight">{{ $t('Search orders') }}</h2>
                                 <span class="block text-xs text-gray-400">{{ $t('Choose filters to start') }}</span>
                             </div>
                         </div>
 
-                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-x-6">
-                            <div class="col-span-2 flex flex-col">
+                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                            
+                            <div class="col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <span class="block h-2 w-2 bg-green-500 rounded-full"></span>
                                     <span>{{ $t('Price range') }}</span>
@@ -161,13 +186,13 @@ onMounted(() => {
                                 <div class="mt-4 flex space-x-4">
                                     <div class="flex items-center">
                                         <label for="from_sale" class="text-xs text-gray-500 self-start text-right">{{ $t('From') }}</label>
-                                        <input v-model="filters.sale.from" v-money3="coinFormat" id="from_sale" name="from_sale" type="text"
+                                        <input v-money3="coinFormat" id="from_sale" name="from_sale" type="text"
                                             class="ml-2 w-[7rem] bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0" />
                                     </div>
 
                                     <div class="flex items-center">
                                         <label for="to_sale" class="text-xs text-gray-500 self-start text-right">{{ $t('To') }}</label>
-                                        <input v-model="filters.sale.to" v-money3="coinFormat" id="to_sale" name="to_sale" type="text"
+                                        <input v-money3="coinFormat" id="to_sale" name="to_sale" type="text"
                                             class="ml-2 w-[7rem] bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0" />
                                     </div>
                                 </div>
@@ -184,7 +209,7 @@ onMounted(() => {
                                     <div class="flex flex-col space-y-2">
                                         <div v-for="(language, index) in languages" :key="index" class="relative flex items-start">
                                             <div class="flex h-5 items-center">
-                                                <input :value="language.id" v-model="filters.language_id" :id="`language-${language.id}`" :name="`language-${language.id}`" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                                <input :value="language.id" :id="`language-${language.id}`" :name="`language-${language.id}`" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                                             </div>
                                             <div class="ml-3 text-sm">
                                                 <label :for="`language-${language.id}`" class="font-medium text-gray-700">{{ language.name }}</label>
@@ -199,47 +224,20 @@ onMounted(() => {
                         <hr class="my-5">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-24">
-
-                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                                <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
-                                    <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('Favorites') }}</span>
-                                    </SwitchLabel>
-
-                                    <Switch v-model="filters.favorites"
-                                        :class="[filters.favorites ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
-                                        <span aria-hidden="true"
-                                            :class="[filters.favorites ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
-                                    </Switch>
-                                </SwitchGroup>
-
-                                <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
-                                    <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('Interests') }}</span>
-                                    </SwitchLabel>
-
-                                    <Switch v-model="filters.interests"
-                                        :class="[filters.interests ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
-                                        <span aria-hidden="true"
-                                            :class="[filters.interests ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
-                                    </Switch>
-                                </SwitchGroup>
-                            </div>
-
                             <div class="w-full">
-                                <label for="search" class="text-sm font-medium">{{ $t('...or just find by name:') }}</label>
+                                <label for="search" class="text-sm font-medium">{{ $t('By name:') }}</label>
                                 <div class="mt-1 relative  text-gray-400 focus-within:text-gray-600">
                                     <div class="pointer-events-none absolute inset-y-0 left-2 flex items-center" aria-hidden="true">
                                         <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
                                     </div>
-                                    <input v-model="filters.url" id="search" name="search"
+                                    <input  id="search" name="search"
                                         class="block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
                                         :placeholder="$t('Search')" type="search" />
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
 
                 <div class="mt-5 hidden sm:block">
@@ -275,189 +273,28 @@ onMounted(() => {
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th v-show="columns[0].visible"
+                                        <th v-show="true"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Price') }}</span>
-                                                <TableSortButton column='sale' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
+                                            {{ $t('Url') }}
                                         </th>
 
-                                        <th v-show="columns[1].visible"
+                                        <th v-show="true"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Domain') }}</span>
-                                                <TableSortButton column='url' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
+                                            scope="col">{{ $t('Date') }}
                                         </th>
-                                        <th v-show="columns[2].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('DA') }}</span>
-                                                <TableSortButton column='da' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-
-                                        <th v-show="columns[3].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('DR') }}</span>
-                                                <TableSortButton column='dr' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-                                        <th v-show="columns[4].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Gambling') }}</th>
-                                        <th v-show="columns[5].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Sponsor') }}</th>
-                                        <th v-show="columns[6].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Cripto') }}</th>
-                                        <th v-show="columns[7].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('SSL') }}</th>
-                                        <th v-show="columns[8].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Category') }}</th>
-                                        <!-- <th v-show="columns[9].visible"
-                                    class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                    scope="col">{{$t('Banners')}}</th>
-                                <th v-show="columns[10].visible"
-                                    class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                    scope="col">Links {{$t('menu')}}</th> -->
-                                        <th v-show="columns[9].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Obs') }}</th>
-                                        <th v-show="columns[10].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Example') }}</span>
-                                                <TableSortButton column='example' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-                                        <th v-show="columns[11].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Upload date') }}</span>
-                                                <TableSortButton column='inserted_at' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-                                        <th class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
-                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <span class="relative flex space-x-2 items-center">
-                                                <span>
-                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
-                                                    {{
-                                                        $filters.currency((Math.round((site.sale /
-                                                            coinStore.ratios[site.sale_coin]) / 5) * 5) / 100,
-                                                            coins[coinStore.coin])
-                                                    }}
-                                                </span>
-
-                                                <!-- <span class="text-red-500">{{ $filters.currency(site.sale / 100, coins[site.sale_coin]) }} - {{ site.sale }} - {{ site.sale_coin }}</span> -->
-                                            </span>
-                                        </td>
-                                        <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <Link :href="route('client.sites.show', site.id)"
-                                                class="text-gray-500 hover:text-gray-900">
-                                            {{ site.url }}
-                                            </Link>
-                                        </td>
-                                        <td v-show="columns[2].visible"
+                                    <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
+                                        <td v-show="true"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.da ?? '-' }}
+                                            {{ order.url }}
                                         </td>
-                                        <td v-show="columns[3].visible"
+                                    
+                                        <td v-show="true"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.dr ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[4].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.gambling ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[5].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.sponsor ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[6].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.cripto ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[7].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.ssl ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[8].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
-                                        </td>
-                                        <!-- <td v-show="columns[9].visible"
-                                    class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                    {{ site.banner ? 'Sim' : 'Não' }}
-                                </td>
-                                <td v-show="columns[10].visible"
-                                    class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                    {{ site.menu ? 'Sim' : 'Não' }}
-                                </td> -->
-                                        <td v-show="columns[9].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.obs ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[10].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            -
-                                        </td>
-                                        <td v-show="columns[11].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.formatted_inserted_at }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <div class="flex space-x-4">
-                                                <button @click="toggleFavorite(site.id)">
-                                                    <svg v-if="favorites.includes(site.id)"
-                                                        xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-6 w-6"
-                                                        viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-
-                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                        stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                    </svg>
-                                                </button>
-
-                                                <button @click="toggleInterest(site.id)">
-                                                    <svg v-if="interests.includes(site.id)" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="text-blue-500 w-[22px] h-[22px]">
-                                                        <path fill-rule="evenodd" d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z" clip-rule="evenodd" />
-                                                    </svg>
-
-                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[22px] h-[22px]">
-                                                        <path fill-rule="evenodd" d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                            {{ new Date(order.created_at).toLocaleString() }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -466,7 +303,7 @@ onMounted(() => {
 
                         <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
                             <div class="-mt-px flex w-0 flex-1">
-                                <Link :href="sites.prev_page_url"
+                                <Link :href="orders.prev_page_url"
                                     class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                 <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 {{ $t('Previous') }}
@@ -479,7 +316,7 @@ onMounted(() => {
                                 </Link>
                             </div>
                             <div class="-mt-px flex w-0 flex-1 justify-end">
-                                <Link :href="sites.next_page_url"
+                                <Link :href="orders.next_page_url"
                                     class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                 {{ $t('Next') }}
                                 <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />

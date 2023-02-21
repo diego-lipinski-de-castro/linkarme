@@ -87,7 +87,7 @@ class SiteController extends Controller
 
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('APPROVED')
-            ->withCount('orders')
+            // ->withCount('orders')
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([

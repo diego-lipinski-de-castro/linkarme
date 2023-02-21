@@ -43,7 +43,7 @@ class MailDailyUpdates extends Command
             ->where('auditable_type', 'App\\Models\\Site')
             ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereDate('created_at', now()->subDay()->format('Y-m-d'))
-            ->whereHas('auditable')
+            // ->whereHas('auditable')
             ->get()
             ->filter(function ($item) {
 
