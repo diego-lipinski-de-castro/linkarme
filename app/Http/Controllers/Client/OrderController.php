@@ -53,7 +53,7 @@ class OrderController extends Controller
                     $query->ofClient(auth()->id());
                 },
             ])
-            ->orderByRaw('orders_count', 'DESC')
+            ->orderBy('orders_count', 'DESC')
             ->take(5)
             ->get();
 

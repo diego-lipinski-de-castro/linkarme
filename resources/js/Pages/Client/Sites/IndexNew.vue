@@ -333,7 +333,7 @@ onMounted(() => {
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('Favorites') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Favorites') }}</span>
                                     </SwitchLabel>
 
                                 <Switch v-model="filters.favorites"
@@ -345,7 +345,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('Interests') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Interests') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.interests"
@@ -357,7 +357,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('Recommended') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Recommended') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.recommended"
@@ -369,7 +369,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('Accepts gambling') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Accepts gambling') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.gambling"
@@ -381,7 +381,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('Marked as sponsored') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Marked as sponsored') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.sponsor"
@@ -393,7 +393,7 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center">{{ $t('New') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('New') }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.new"

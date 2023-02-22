@@ -265,7 +265,7 @@ const toggleFavorite = async (site) => {
                         </div>
                     </div>
 
-                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-gray-300 border-opacity-50">
+                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle">
                         <table class="w-full">
                             <thead v-if="projects.length > 0">
                                 <tr>
@@ -279,8 +279,11 @@ const toggleFavorite = async (site) => {
                             </thead>
                             <tbody class="divide-y divide-gray-300 divide-opacity-50">
                                 <tr v-if="projects.length == 0">
-                                    <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic text-center">
-                                        {{ $t('Create new projects and they will show here') }}
+                                    <td colspan="3" class=" px-6 py-4 text-sm text-gray-500 italic">
+                                        <div class="flex flex-col items-center space-y-3">
+                                            <span>{{ $t('Create new projects and they will show here') }}</span>
+                                            <Link :href="route('client.projects.index')" class="w-fit px-3 py-1.5 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">{{ $t('Create project') }}</Link>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -317,7 +320,7 @@ const toggleFavorite = async (site) => {
                         </div>
                     </div>
 
-                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-gray-300 border-opacity-50">
+                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle">
                         <table class="w-full">
                             <thead v-if="interests.length > 0">
                                 <tr>
@@ -373,7 +376,7 @@ const toggleFavorite = async (site) => {
                         </div>
                     </div>
 
-                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-b border-gray-300 border-opacity-50">
+                    <div class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle">
                         <table class="w-full">
                             <thead v-if="favorites.length > 0">
                                 <tr>
