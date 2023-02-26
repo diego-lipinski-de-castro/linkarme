@@ -40,7 +40,7 @@ watch(twoFactorEnabled, () => {
 const enableTwoFactorAuthentication = () => {
     enabling.value = true;
 
-    Inertia.post('/user/two-factor-authentication', {}, {
+    Inertia.post('/clientes/two-factor-authentication', {}, {
         preserveScroll: true,
         onSuccess: () => Promise.all([
             showQrCode(),
@@ -55,25 +55,25 @@ const enableTwoFactorAuthentication = () => {
 };
 
 const showQrCode = () => {
-    return axios.get('/user/two-factor-qr-code').then(response => {
+    return axios.get('/clientes/two-factor-qr-code').then(response => {
         qrCode.value = response.data.svg;
     });
 };
 
 const showSetupKey = () => {
-    return axios.get('/user/two-factor-secret-key').then(response => {
+    return axios.get('/clientes/two-factor-secret-key').then(response => {
         setupKey.value = response.data.secretKey;
     });
 }
 
 const showRecoveryCodes = () => {
-    return axios.get('/user/two-factor-recovery-codes').then(response => {
+    return axios.get('/clientes/two-factor-recovery-codes').then(response => {
         recoveryCodes.value = response.data;
     });
 };
 
 const confirmTwoFactorAuthentication = () => {
-    confirmationForm.post('/user/confirmed-two-factor-authentication', {
+    confirmationForm.post('/clientes/confirmed-two-factor-authentication', {
         errorBag: "confirmTwoFactorAuthentication",
         preserveScroll: true,
         preserveState: true,
@@ -87,14 +87,14 @@ const confirmTwoFactorAuthentication = () => {
 
 const regenerateRecoveryCodes = () => {
     axios
-        .post('/user/two-factor-recovery-codes')
+        .post('/clientes/two-factor-recovery-codes')
         .then(() => showRecoveryCodes());
 };
 
 const disableTwoFactorAuthentication = () => {
     disabling.value = true;
 
-    Inertia.delete('/user/two-factor-authentication', {
+    Inertia.delete('/clientes/two-factor-authentication', {
         preserveScroll: true,
         onSuccess: () => {
             disabling.value = false;
@@ -189,7 +189,7 @@ const disableTwoFactorAuthentication = () => {
 
             <div class="mt-5">
                 <div v-if="! twoFactorEnabled">
-                    <ConfirmsPassword :getRoute="route('password.confirmation')" :postRoute="route('password.confirm')" @confirmed="enableTwoFactorAuthentication">
+                    <ConfirmsPassword :getRoute="route('client.password.confirmation')" :postRoute="route('client.password.confirm')" @confirmed="enableTwoFactorAuthentication">
                         <PrimaryButton type="button" :class="{ 'opacity-25': enabling }" :disabled="enabling">
                             Enable
                         </PrimaryButton>
@@ -197,7 +197,7 @@ const disableTwoFactorAuthentication = () => {
                 </div>
 
                 <div v-else>
-                    <ConfirmsPassword :getRoute="route('password.confirmation')" :postRoute="route('password.confirm')" @confirmed="confirmTwoFactorAuthentication">
+                    <ConfirmsPassword :getRoute="route('client.password.confirmation')" :postRoute="route('client.password.confirm')" @confirmed="confirmTwoFactorAuthentication">
                         <PrimaryButton
                             v-if="confirming"
                             type="button"
@@ -209,7 +209,7 @@ const disableTwoFactorAuthentication = () => {
                         </PrimaryButton>
                     </ConfirmsPassword>
 
-                    <ConfirmsPassword :getRoute="route('password.confirmation')" :postRoute="route('password.confirm')" @confirmed="regenerateRecoveryCodes">
+                    <ConfirmsPassword :getRoute="route('client.password.confirmation')" :postRoute="route('client.password.confirm')" @confirmed="regenerateRecoveryCodes">
                         <SecondaryButton
                             v-if="recoveryCodes.length > 0 && ! confirming"
                             class="mr-3"
@@ -218,7 +218,7 @@ const disableTwoFactorAuthentication = () => {
                         </SecondaryButton>
                     </ConfirmsPassword>
 
-                    <ConfirmsPassword :getRoute="route('password.confirmation')" :postRoute="route('password.confirm')" @confirmed="showRecoveryCodes">
+                    <ConfirmsPassword :getRoute="route('client.password.confirmation')" :postRoute="route('client.password.confirm')" @confirmed="showRecoveryCodes">
                         <SecondaryButton
                             v-if="recoveryCodes.length === 0 && ! confirming"
                             class="mr-3"
@@ -227,7 +227,7 @@ const disableTwoFactorAuthentication = () => {
                         </SecondaryButton>
                     </ConfirmsPassword>
 
-                    <ConfirmsPassword :getRoute="route('password.confirmation')" :postRoute="route('password.confirm')" @confirmed="disableTwoFactorAuthentication">
+                    <ConfirmsPassword :getRoute="route('client.password.confirmation')" :postRoute="route('client.password.confirm')" @confirmed="disableTwoFactorAuthentication">
                         <SecondaryButton
                             v-if="confirming"
                             :class="{ 'opacity-25': disabling }"
@@ -237,7 +237,7 @@ const disableTwoFactorAuthentication = () => {
                         </SecondaryButton>
                     </ConfirmsPassword>
 
-                    <ConfirmsPassword :getRoute="route('password.confirmation')" :postRoute="route('password.confirm')" @confirmed="disableTwoFactorAuthentication">
+                    <ConfirmsPassword :getRoute="route('client.password.confirmation')" :postRoute="route('client.password.confirm')" @confirmed="disableTwoFactorAuthentication">
                         <DangerButton
                             v-if="! confirming"
                             :class="{ 'opacity-25': disabling }"

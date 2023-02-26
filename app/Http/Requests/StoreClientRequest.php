@@ -25,14 +25,17 @@ class StoreClientRequest extends FormRequest
     public function rules()
     {
         return [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
+            'birthday' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'password' => ['required'],
-            'full' => ['required', 'boolean'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'password' => ['required'], 
+            
             'locale' => ['nullable', 'in:en,es,pt'],
             'coin' => ['nullable', 'in:BRL,EUR,USD'],
-            'notify_updates_via_email' => ['nullable', 'in:DAILY,WEEKLY,MONTHLY'],
+            'full' => ['required', 'boolean'],
         ];
     }
 

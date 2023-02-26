@@ -332,20 +332,22 @@ onMounted(() => {
 
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
-                                    <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Favorites') }}</span>
-                                    </SwitchLabel>
+                                <SwitchLabel as="span" class="flex h-full">
+                                    <span class="text-sm font-medium self-center text-right">{{ $t('Favorites')
+                                    }}</span>
+                                </SwitchLabel>
 
-                                <Switch v-model="filters.favorites"
-                                    :class="[filters.favorites ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
-                                    <span aria-hidden="true"
-                                        :class="[filters.favorites ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
+                                    <Switch v-model="filters.favorites"
+                                        :class="[filters.favorites ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        <span aria-hidden="true"
+                                            :class="[filters.favorites ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                     </Switch>
                                 </SwitchGroup>
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Interests') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Interests')
+                                        }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.interests"
@@ -357,7 +359,8 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Recommended') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Recommended')
+                                        }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.recommended"
@@ -369,7 +372,8 @@ onMounted(() => {
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Accepts gambling') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Accepts gambling')
+                                        }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.gambling"
@@ -410,24 +414,24 @@ onMounted(() => {
                                     <div class="pointer-events-none absolute inset-y-0 left-2 flex items-center"
                                         aria-hidden="true">
                                         <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
-                                    </div>
-                                    <input v-model="filters.url" id="search" name="search"
-                                        class="block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
-                                        :placeholder="$t('Search')" type="search" />
                                 </div>
+                                <input v-model="filters.url" id="search" name="search"
+                                    class="block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
+                                    :placeholder="$t('Search')" type="search" />
                             </div>
                         </div>
+                    </div>
 
                     </div>
                 </div>
 
-            <div class="mt-5 hidden sm:block">
-                <div class="flex flex-col">
+                <div class="mt-5 hidden sm:block">
+                    <div class="flex flex-col">
 
-                    <div>
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{
-                            $t('Showing results:')
-                        }}&nbsp;{{ sites.total }}&nbsp;{{ $t('sites found') }}</h2>
+                        <div>
+                            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{
+                                $t('Showing results:')
+                            }}&nbsp;{{ sites.total }}&nbsp;{{ $t('sites found') }}</h2>
                         </div>
 
                         <hr class="my-5">
@@ -510,11 +514,11 @@ onMounted(() => {
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Category') }}</th>
                                         <!-- <th v-show="columns[9].visible"
-                                        class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">{{$t('Banners')}}</th>
-                                    <th v-show="columns[10].visible"
-                                        class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                        scope="col">Links {{$t('menu')}}</th> -->
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{$t('Banners')}}</th>
+                                        <th v-show="columns[10].visible"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">Links {{$t('menu')}}</th> -->
                                         <th v-show="columns[9].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Obs') }}</th>
@@ -593,13 +597,13 @@ onMounted(() => {
                                                 '-' }}</span>
                                         </td>
                                         <!-- <td v-show="columns[9].visible"
-                                        class="px-4 py-4 text-sm text-gray-500">
-                                        {{ site.banner ? 'Sim' : 'Não' }}
-                                    </td>
-                                    <td v-show="columns[10].visible"
-                                        class="px-4 py-4 text-sm text-gray-500">
-                                        {{ site.menu ? 'Sim' : 'Não' }}
-                                    </td> -->
+                                            class="px-4 py-4 text-sm text-gray-500">
+                                            {{ site.banner ? 'Sim' : 'Não' }}
+                                        </td>
+                                        <td v-show="columns[10].visible"
+                                            class="px-4 py-4 text-sm text-gray-500">
+                                            {{ site.menu ? 'Sim' : 'Não' }}
+                                        </td> -->
                                         <td v-show="columns[9].visible" class="px-4 py-4 text-sm text-gray-500">
                                             {{ site.obs ?? '-' }}
                                         </td>
@@ -663,17 +667,21 @@ onMounted(() => {
                                                     leave-to-class="transform opacity-0 scale-95">
                                                     <MenuItems
                                                         class="absolute right-0 z-10 mt-0 overflow-y-scroll origin-top-right rounded-md bg-white border border-gray-300 border-opacity-50 shadow-sm focus:outline-none">
-                                                        <MenuItem v-for="(project, index) in projects" v-slot="{ active }" :key="index">
-                                                            <button @click="toggleProject(site.id, project.id)" class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
-                                                                <span :style="{ 'background-color': project.color }" class="h-2 w-2 rounded-full"></span>
-                                                                <span>{{ project.name }}</span>
-                                                            </button>
+                                                        <MenuItem v-for="(project, index) in projects" v-slot="{ active }"
+                                                            :key="index">
+                                                        <button @click="toggleProject(site.id, project.id)"
+                                                            class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
+                                                            <span :style="{ 'background-color': project.color }"
+                                                                class="h-2 w-2 rounded-full"></span>
+                                                            <span>{{ project.name }}</span>
+                                                        </button>
                                                         </MenuItem>
 
                                                         <MenuItem v-slot="{ active }">
-                                                            <Link :href="route('client.projects.index')" class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
-                                                                <span>{{ $t('Add project') }}</span>
-                                                            </Link>
+                                                        <Link :href="route('client.projects.index')"
+                                                            class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
+                                                        <span>{{ $t('Add project') }}</span>
+                                                        </Link>
                                                         </MenuItem>
                                                     </MenuItems>
                                                 </transition>
@@ -685,25 +693,25 @@ onMounted(() => {
                         </div>
 
                         <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
-                        <div class="-mt-px flex w-0 flex-1">
-                            <Link :href="sites.prev_page_url"
-                                class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
-                            <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                            {{ $t('Previous') }}
-                            </Link>
-                        </div>
-                        <div class="hidden md:-mt-px md:flex">
-                            <Link v-for="(link, index) in links" :key="index" :href="link.url"
-                                :class="[link.active ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'inline-flex items-center border-t-2  px-4 pt-4 text-sm font-medium ']">
-                            {{ link.label }}
-                            </Link>
-                        </div>
-                        <div class="-mt-px flex w-0 flex-1 justify-end">
-                            <Link :href="sites.next_page_url"
-                                class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
-                            {{ $t('Next') }}
-                            <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                            </Link>
+                            <div class="-mt-px flex w-0 flex-1">
+                                <Link :href="sites.prev_page_url"
+                                    class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                {{ $t('Previous') }}
+                                </Link>
+                            </div>
+                            <div class="hidden md:-mt-px md:flex">
+                                <Link v-for="(link, index) in links" :key="index" :href="link.url"
+                                    :class="[link.active ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'inline-flex items-center border-t-2  px-4 pt-4 text-sm font-medium ']">
+                                {{ link.label }}
+                                </Link>
+                            </div>
+                            <div class="-mt-px flex w-0 flex-1 justify-end">
+                                <Link :href="sites.next_page_url"
+                                    class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                {{ $t('Next') }}
+                                <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                </Link>
                         </div>
                     </nav>
                 </div>
