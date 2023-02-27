@@ -113,9 +113,9 @@ class ProfileController extends Controller
         $input = $request->validateWithBag('updateProfileInformation', [
             'first_name' => ['nullable'],
             'last_name' => ['nullable'],
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['nullable', 'string', 'max:255'],
             'birthday' => ['nullable'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'email' => ['nullable', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             
             'company_name' => ['nullable'],

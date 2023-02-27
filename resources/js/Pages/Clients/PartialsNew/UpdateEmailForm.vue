@@ -30,6 +30,7 @@ const updateProfileInformation = () => {
     form.post(route('clients.update', props.user.id), {
         errorBag: 'updateProfileInformation',
         preserveScroll: true,
+        onError: (error) => console.log(error),
     });
 };
 </script>

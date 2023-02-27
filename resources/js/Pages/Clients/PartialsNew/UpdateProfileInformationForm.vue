@@ -41,6 +41,7 @@ const updateProfileInformation = () => {
         errorBag: 'updateProfileInformation',
         preserveScroll: true,
         onSuccess: () => clearPhotoFileInput(),
+        onError: (error) => console.log(error),
     });
 };
 

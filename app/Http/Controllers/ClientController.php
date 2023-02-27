@@ -136,16 +136,16 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         $input = $request->validateWithBag('updateProfileInformation', [
-            'first_name' => ['required'],
-            'last_name' => ['required'],
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['nullable'],
+            'last_name' => ['nullable'],
+            'name' => ['nullable', 'string', 'max:255'],
             'birthday' => ['nullable'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('clients')->ignore($client->id)],
+            'email' => ['nullable', 'email', 'max:255', Rule::unique('clients')->ignore($client->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
 
             'locale' => ['nullable', 'in:en,es,pt'],
             'coin' => ['nullable', 'in:BRL,EUR,USD'],
-            'full' => ['required', 'boolean'],
+            'full' => ['nullable', 'boolean'],
             'notify_updates_via_email' => ['nullable', 'in:DAILY,WEEKLY,MONTHLY'],
             
             'company_name' => ['nullable'],
@@ -186,7 +186,7 @@ class ClientController extends Controller
             $client->forceFill(Arr::except($input, ['photo']))->save();
         }
 
-        return redirect()->route('clients.index');
+        return back();
     }
 
     /**
