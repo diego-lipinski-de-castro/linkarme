@@ -153,6 +153,8 @@ class ClientController extends Controller
             'email' => ['nullable', 'email', 'max:255', Rule::unique('clients')->ignore($client->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
 
+            'password' => ['nullable'],
+
             'locale' => ['nullable', 'in:en,es,pt'],
             'coin' => ['nullable', 'in:BRL,EUR,USD'],
             'full' => ['nullable', 'boolean'],
@@ -191,30 +193,15 @@ class ClientController extends Controller
             $client->updateProfilePhoto($input['photo']);
         }
 
+        if (blank($input['password'])) {
+            unset($input['password']);
+        } else {
+            $input['password'] = Hash::make($input['password']);
+        }
+
         $client->forceFill(Arr::except($input, ['photo']))->save();
 
         return back();
-    }
-
-    /**
-     * Update the user's password.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Laravel\Fortify\Contracts\PasswordUpdateResponse
-     */
-    public function updatePassword(Request $request, Client $client)
-    {
-        $input = $request->all();
-
-        Validator::make($input, [
-            'password' => ['required', 'string', new Password],
-        ])->validateWithBag('updatePassword');
-
-        $client->forceFill([
-            'password' => Hash::make($input['password']),
-        ])->save();
-
-        return back()->with('status', 'password-updated');
     }
 
     /**
