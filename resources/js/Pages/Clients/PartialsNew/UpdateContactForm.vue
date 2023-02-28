@@ -107,8 +107,8 @@ const updateProfileInformation = () => {
             </div>
         </div>
 
-        <div class="col-span-3 flex justify-end">
-            <ActionMessage :on="form.recentlySuccessful" class="self-end mr-3">
+        <div class="col-span-3 flex justify-end items-center space-x-2">
+            <ActionMessage :on="form.recentlySuccessful">
                 Saved.
             </ActionMessage>
 

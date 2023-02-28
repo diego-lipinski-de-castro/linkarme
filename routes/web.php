@@ -100,6 +100,7 @@ Route::resource('orders', OrderController::class)->middleware(['auth']);
 
 // clients
 Route::resource('clients', ClientController::class)->middleware(['auth']);
+Route::put('clients/{client}/updatePassword', [ClientController::class, 'updatePassword'])->name('clients.updatePassword')->middleware(['auth']);
 
 // sellers
 Route::resource('sellers', SellerController::class)->middleware(['auth']);

@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
 use App\Models\Client;
+use App\Models\Seller;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Jenssegers\Agent\Agent;
+use Laravel\Fortify\Rules\Password;
 
 class ClientController extends Controller
 {
@@ -23,6 +27,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::query()
+            ->with('consultant')
             ->orderBy('name')
             ->paginate();
 
@@ -75,8 +80,13 @@ class ClientController extends Controller
      */
     public function edit(Client $client, Request $request)
     {
+        $consultants = Seller::query()
+            ->orderBy('name')
+            ->get();
+
         return Inertia::render('Clients/EditNew', [
-            'client' => $client,
+            'client' => $client->load('consultant'),
+            'consultants' => $consultants,
             'sessions' => $this->sessions($request)->all(),
         ]);
     }
@@ -173,20 +183,38 @@ class ClientController extends Controller
             'contact_where' => ['nullable'],
             'contact_id' => ['nullable'],
             'contact_how' => ['nullable'],
+
+            'seller_id' => ['nullable', 'exists:sellers,id'],
         ]);
 
         if (isset($input['photo'])) {
             $client->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $client->email &&
-            $client instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($client, $input);
-        } else {
-            $client->forceFill(Arr::except($input, ['photo']))->save();
-        }
+        $client->forceFill(Arr::except($input, ['photo']))->save();
 
         return back();
+    }
+
+    /**
+     * Update the user's password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Laravel\Fortify\Contracts\PasswordUpdateResponse
+     */
+    public function updatePassword(Request $request, Client $client)
+    {
+        $input = $request->all();
+
+        Validator::make($input, [
+            'password' => ['required', 'string', new Password],
+        ])->validateWithBag('updatePassword');
+
+        $client->forceFill([
+            'password' => Hash::make($input['password']),
+        ])->save();
+
+        return back()->with('status', 'password-updated');
     }
 
     /**

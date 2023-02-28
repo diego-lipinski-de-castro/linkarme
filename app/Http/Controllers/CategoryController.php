@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $categories = Category::orderBy('name')->paginate();
 
-        return Inertia::render('Categories/Index', [
+        return Inertia::render('Categories/IndexNew', [
             'categories' => $categories,
         ]);
     }

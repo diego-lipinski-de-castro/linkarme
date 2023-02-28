@@ -20,7 +20,7 @@ class SellerController extends Controller
             ->orderBy('name')
             ->paginate();
         
-        return Inertia::render('Sellers/Index', [
+        return Inertia::render('Sellers/IndexNew', [
             'sellers' => $sellers,
         ]);
     }
@@ -32,7 +32,7 @@ class SellerController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Sellers/Create');
+        return Inertia::render('Sellers/CreateNew');
     }
 
     /**
@@ -67,7 +67,7 @@ class SellerController extends Controller
      */
     public function edit(Seller $seller)
     {
-        return Inertia::render('Sellers/Edit', [
+        return Inertia::render('Sellers/EditNew', [
             'seller' => $seller,
         ]);
     }

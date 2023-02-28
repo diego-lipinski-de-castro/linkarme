@@ -54,6 +54,7 @@ class Client extends Authenticatable implements HasLocalePreference
         'contact_where',
         'contact_id',
         'contact_how',
+        'seller_id',
     ];
 
     /**
@@ -85,6 +86,10 @@ class Client extends Authenticatable implements HasLocalePreference
         'profile_photo_url',
     ];
 
+    protected $with = [
+        'consultant',
+    ];
+
     /**
      * Get the user's preferred locale.
      *
@@ -104,6 +109,11 @@ class Client extends Authenticatable implements HasLocalePreference
         static::updating(function ($client) {
             $client->name = trim($client->name);
         });
+    }
+
+    public function consultant()
+    {
+        return $this->belongsTo(Seller::class, 'seller_id');
     }
 
     public function notes()

@@ -9,6 +9,10 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/20/solid';
 
+const props = defineProps({
+    user: Object,
+});
+
 const passwordInput = ref(null);
 
 const form = useForm({
@@ -22,7 +26,7 @@ const generatePassword = () => {
 }
 
 const updatePassword = () => {
-    form.put(route('clients.update', props.user.id), {
+    form.put(route('clients.updatePassword', props.user.id), {
         errorBag: 'updatePassword',
         preserveScroll: true,
         onSuccess: () => form.reset(),
@@ -62,7 +66,7 @@ const updatePassword = () => {
             <InputError :message="form.errors.password" class="mt-2" />
         </div>
 
-        <div class="flex">
+        <div class="flex items-center space-x-2">
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Save
             </PrimaryButton>

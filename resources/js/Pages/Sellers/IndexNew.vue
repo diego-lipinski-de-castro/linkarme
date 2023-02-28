@@ -3,6 +3,7 @@ import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
+import { computed, ref, watch } from 'vue'
 import {
     CheckCircleIcon,
     ChevronDownIcon,
@@ -15,22 +16,22 @@ import {
     PencilSquareIcon,
     TrashIcon
 } from '@heroicons/vue/24/outline'
-import { computed } from 'vue';
+import AppSuspense from '../../Layouts/AppSuspense.vue';
 
 const props = defineProps({
     title: String,
-    clients: Object,
+    sellers: Object,
 });
 
 const links = computed(() => {
-    const _links = props.clients.links
+    const _links = props.sellers.links
     _links.shift()
     _links.pop()
     return _links
 })
 
-const destroy = (client) => {
-    Inertia.delete(route('clients.destroy', client), {
+const destroy = (seller) => {
+    Inertia.delete(route('sellers.destroy', seller), {
         preserveScroll: true,
         preserveState: true,
     })
@@ -39,17 +40,17 @@ const destroy = (client) => {
 </script>
         
 <template>
-    <AppSuspense>
-        <AppLayoutNew :title="$t('Clients')"> 
 
+    <AppSuspense>
+        <AppLayoutNew :title="$t('Sellers')">
             <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
                 <div class="flex flex-col min-h-48">
 
                     <div class="flex justify-between items-center space-x-2">
-                        <h2 class="text-xl font-bold leading-tight">{{ $t('Clients') }}</h2>
+                        <h2 class="text-xl font-bold leading-tight">{{ $t('Sellers') }}</h2>
 
-                        <Link :href="route('clients.create')" class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-colors">
-                            <span class="px-1 text-sm font-medium text-white">{{ $t('Add client') }}</span>
+                        <Link :href="route('sellers.create')" class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-colors">
+                            <span class="px-1 text-sm font-medium text-white">{{ $t('Add seller') }}</span>
                         </Link>
                     </div>
                 </div>
@@ -59,17 +60,18 @@ const destroy = (client) => {
                 <div class="sm:hidden border border-gray-200 rounded-lg overflow-hidden">
                     <ul role="list" class="divide-y divide-gray-200">
 
-                        <li v-for="(client, index) in clients.data" :key="index">
-                            <a :href="route('clients.edit', client.id)" class="block bg-white px-4 py-4 hover:bg-gray-50">
+                        <li v-for="(seller, index) in sellers.data" :key="index">
+                            <Link :href="route('sellers.edit', seller.id)"
+                                class="block bg-white px-4 py-4 hover:bg-gray-50">
                                 <span class="flex items-center space-x-4">
                                     <span class="flex flex-1 space-x-2 truncate">
                                         <span class="text-sm text-gray-500">
-                                            {{ client.name }}
+                                            {{ seller.name }}
                                         </span>
                                     </span>
                                     <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </span>
-                            </a>
+                            </Link>
                         </li>
 
                     </ul>
@@ -77,10 +79,10 @@ const destroy = (client) => {
                     <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3"
                         aria-label="Pagination">
                         <div class="flex flex-1 justify-between">
-                            <Link :href="clients.prev_page_url"
+                            <Link :href="sellers.prev_page_url"
                                 class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
                             {{ $t('Previous') }}</Link>
-                            <Link :href="clients.next_page_url"
+                            <Link :href="sellers.next_page_url"
                                 class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
                             {{ $t('Next') }}</Link>
                         </div>
@@ -103,39 +105,34 @@ const destroy = (client) => {
                                             scope="col">
                                             {{ $t('Email') }}
                                         </th>
-                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t('Type') }}
-                                        </th>
 
                                         <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
+
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr v-for="(client, index) in clients.data" :key="index" class="bg-white">
+                                    <tr v-for="(seller, index) in sellers.data" :key="index" class="bg-white">
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="route('clients.edit', client.id)"
+                                            <Link :href="route('sellers.edit', seller.id)"
                                                 class="text-gray-500 hover:text-gray-900">
-                                                {{ client.name }}
-                                            </a>
+                                                {{ seller.name }}
+                                            </Link>
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ client.email ?? '-' }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ client.full ? 'Full' : 'Limitado' }}
+                                            {{ seller.email ?? '-' }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
                                             <div class="flex space-x-2">
-                                                <Link :href="route('clients.edit', client.id)"
+                                                <Link :href="route('sellers.edit', seller.id)"
                                                     class="text-blue-500 hover:text-blue-700">
                                                 <PencilSquareIcon class="h-5 w-5" />
                                                 </Link>
 
-                                                <button @click="destroy(client.id)" class="text-red-500 hover:text-red-700">
+                                                <button @click="destroy(seller.id)"
+                                                    class="text-red-500 hover:text-red-700">
                                                     <TrashIcon class="h-5 w-5" />
                                                 </button>
                                             </div>
@@ -147,7 +144,7 @@ const destroy = (client) => {
 
                         <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
                             <div class="-mt-px flex w-0 flex-1">
-                                <Link :href="clients.prev_page_url"
+                                <Link :href="sellers.prev_page_url"
                                     class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                 <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 {{ $t('Previous') }}
@@ -160,7 +157,7 @@ const destroy = (client) => {
                                 </Link>
                             </div>
                             <div class="-mt-px flex w-0 flex-1 justify-end">
-                                <Link :href="clients.next_page_url"
+                                <Link :href="sellers.next_page_url"
                                     class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                 {{ $t('Next') }}
                                 <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />

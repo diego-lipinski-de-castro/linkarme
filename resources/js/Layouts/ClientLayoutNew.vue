@@ -368,9 +368,9 @@ await i18nextPromise
                 <header class="relative py-10">
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div class="z-10 flex space-x-4">
-                            <a v-for="item in navigation" :key="item.name" :href="item.href"
+                            <Link v-for="item in navigation" :key="item.name" :href="item.href"
                                 :class="[item.current ? 'bg-blue-900 text-white' : 'text-white hover:bg-blue-700 hover:bg-opacity-50', 'transition-colors rounded-md py-2 px-3 text-sm font-medium']"
-                                :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
+                                :aria-current="item.current ? 'page' : undefined">{{ item.name }}</Link>
                         </div>
                     </div>
                 </header>

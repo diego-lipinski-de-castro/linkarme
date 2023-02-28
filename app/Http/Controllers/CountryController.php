@@ -21,7 +21,7 @@ class CountryController extends Controller
             ->orderBy('name')
             ->paginate();
 
-        return Inertia::render('Countries/Index', [
+        return Inertia::render('Countries/IndexNew', [
             'countries' => $countries,
         ]);
     }

@@ -149,12 +149,7 @@ class ProfileController extends Controller
             $user->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $input);
-        } else {
-            $user->forceFill(Arr::except($input, ['photo']))->save();
-        }
+        $user->forceFill(Arr::except($input, ['photo']))->save();
 
         return back()->with('status', 'profile-information-updated');
     }

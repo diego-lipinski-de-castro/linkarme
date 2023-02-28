@@ -140,12 +140,12 @@ const updateProfileInformation = () => {
             <InputError :message="form.errors.address_zipcode" class="mt-2" />
         </div>
 
-        <div class="flex">
+        <div class="flex items-center space-x-2">
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Save
             </PrimaryButton>
 
-            <ActionMessage :on="form.recentlySuccessful" class="self-end ml-3">
+            <ActionMessage :on="form.recentlySuccessful">
                 Saved.
             </ActionMessage>
         </div>
