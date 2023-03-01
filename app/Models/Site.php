@@ -52,6 +52,7 @@ class Site extends Model implements Auditable
         'sale_coin',
         'last_posted',
         'inserted_at',
+        'last_updated_at',
         'seller_id',
         'team',
         'status',
@@ -102,6 +103,7 @@ class Site extends Model implements Auditable
         'formatted_suggested',
         'formatted_diff',
         'formatted_inserted_at',
+        'formatted_last_updated_at',
         'formatted_updated_at',
         'positive',
     ];
@@ -340,7 +342,14 @@ class Site extends Model implements Auditable
     {
         return $this->inserted_at->format('d/m/Y');
     }
-    
+
+    public function getFormattedLastUpdatedAtAttribute()
+    {
+        if(blank($this->last_updated_at)) return null;
+        
+        return $this->last_updated_at->format('d/m/Y');
+    }
+     
     public function getFormattedUpdatedAtAttribute()
     {
         return $this->updated_at->format('d/m/Y H:i');

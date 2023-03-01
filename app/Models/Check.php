@@ -10,7 +10,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Check extends Model implements Auditable
 {
     use HasFactory;
-    use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [

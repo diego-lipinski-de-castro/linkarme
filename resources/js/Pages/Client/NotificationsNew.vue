@@ -22,13 +22,6 @@ const props = defineProps({
     coins: Object,
 });
 
-const links = computed(() => {
-    const _links = props.notifications.links
-    _links.shift()
-    _links.pop()
-    return _links
-})
-
 </script>
     
 <template>

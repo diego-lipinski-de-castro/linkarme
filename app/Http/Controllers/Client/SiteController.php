@@ -96,6 +96,7 @@ class SiteController extends Controller
                 'da',
                 'dr',
                 'inserted_at',
+                'last_updated_at',
                 AllowedSort::custom('recommended', new RecommendedSort()),
                 AllowedSort::custom('new', new NewSort()),
             ])

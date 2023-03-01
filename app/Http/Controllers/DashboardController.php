@@ -29,7 +29,7 @@ class DashboardController extends Controller
 
         $data = json_decode(json_encode($data));
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('DashboardNew', [
             'data' => $data,
         ]);
     }

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Project;
 use App\Models\Site;
 use Inertia\Inertia;
+use OwenIt\Auditing\Models\Audit;
 
 class DashboardController extends Controller
 {
@@ -14,7 +15,31 @@ class DashboardController extends Controller
     {
         $coins = config('coins');
 
-        $notifications = auth()->user()->notifications()->take(5)->get();
+        $notifications = auth()->user()->notifications()->get();
+
+        $notifications->transform(function ($item) {
+            $item->diff = $item->created_at->diffForHumans();
+            
+            if(isset($item->data['audit_id'])) {
+                $audit = Audit::find($item->data['audit_id']);
+
+                // dd($audit->event == 'deleted');
+
+                if(Site::withTrashed()->where('id', $item->data['site_id'])->exists()) {
+                    $item->trashed = is_null(Site::find($item->data['site_id']));
+                } else {
+                    $item->trashed = false;
+                }
+            } else {
+                $item->trashed = false;
+            }
+
+            return $item;
+        });
+
+        $notifications = $notifications->filter(function ($item) {
+            return !$item->trashed;
+        })->values()->all();
 
         $orders = Order::ofClient(auth()->id())->count();
 
@@ -75,7 +100,7 @@ class DashboardController extends Controller
         return Inertia::render('Client/DashboardNew', [
             'coins' => $coins,
 
-            'notifications' => $notifications,
+            'notifications' => collect($notifications)->take(5),
 
             'orders' => $orders,
 

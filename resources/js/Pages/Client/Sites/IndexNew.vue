@@ -70,6 +70,7 @@ const _defaultColumns = [
     { key: 'obs', label: t('Obs'), visible: true },
     { key: 'example', label: t('Example'), visible: false },
     { key: 'inserted_at', label: t('Upload date'), visible: false },
+    { key: 'last_updated_at', label: t('Updated date'), visible: true },
 ];
 
 const _columns =
@@ -540,6 +541,15 @@ onMounted(() => {
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
+                                        <th v-show="columns[12].visible"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">
+                                            <div class="flex group">
+                                                <span class="block">{{ $t('Update date') }}</span>
+                                                <TableSortButton column='last_updated_at' :current="sort"
+                                                    @onClick='(column) => sort = column' />
+                                            </div>
+                                        </th>
                                         <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Add to favorites') }}</th>
                                         <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
@@ -612,6 +622,9 @@ onMounted(() => {
                                         </td>
                                         <td v-show="columns[11].visible" class="px-4 py-4 text-sm text-gray-500">
                                             {{ site.formatted_inserted_at }}
+                                        </td>
+                                        <td v-show="columns[12].visible" class="px-4 py-4 text-sm text-gray-500">
+                                            {{ site.formatted_last_updated_at }}
                                         </td>
                                         <td class="px-4 py-4 text-sm text-gray-500">
                                             <button @click="toggleFavorite(site.id)">
