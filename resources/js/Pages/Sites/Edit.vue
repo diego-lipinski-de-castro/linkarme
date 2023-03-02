@@ -83,6 +83,14 @@ const submit = (confirm = false) => {
     });
 }
 
+const approve = () => {
+    form.put(route('sites.approve', site.id));
+}
+
+const reject = () => {
+    form.put(route('sites.reject', site.id));
+}
+
 const toggle = () => {
     form.post(route('sites.toggle', site.id));
 }
@@ -486,11 +494,11 @@ const submitNote = () => {
 
                         <div class="col-span-6 flex justify-end">
 
-                            <a v-if="site.status == 'PENDING'" :href="route('sites.reject', site.id)"
-                                class="bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Rejeitar</a>
+                            <button v-if="site.status == 'PENDING'" @click="reject" type="button"
+                                class="bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Rejeitar</button>
 
-                            <a v-if="site.status == 'PENDING'" :href="route('sites.approve', site.id)"
-                                class="ml-2  bg-green-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Aprovar</a>
+                            <button v-if="site.status == 'PENDING'" @click="approve" type="button"
+                                class="ml-2  bg-green-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Aprovar</button>
 
                             <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit"
                                 class="ml-2 flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{

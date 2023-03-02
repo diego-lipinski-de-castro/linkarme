@@ -275,30 +275,30 @@ class SiteController extends Controller
         return back();
     }
 
-    public function approve($id)
+    public function approve(UpdateSiteRequest $request, $id)
     {
         $site = Site::withTrashed()->findOrFail($id);
 
-        DB::transaction(function () use($site) {
-            $site->update([
+        DB::transaction(function () use($site, $request) {
+            $site->update(array_merge($request->validated(), [
                 'status' => 'APPROVED',
-            ]);
-    
+            ]));
+
             Notification::send(Client::all(), new SiteAdded($site));
         });
 
         return back();
     }
 
-    public function reject($id)
+    public function reject(UpdateSiteRequest $request, $id)
     {
         $site = Site::withTrashed()->findOrFail($id);
 
-        $site->update([
-            'status' => 'REJECTED',
-        ]);
-
-        // notify?
+        DB::transaction(function () use($site, $request) {
+            $site->update(array_merge($request->validated(), [
+                'status' => 'REJECTED',
+            ]));
+        });
 
         return back();
     }
