@@ -168,7 +168,7 @@ await i18nextPromise
                     <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                         <div
                             class="relative flex h-16 items-center justify-between lg:border-b lg:border-blue-400 lg:border-opacity-25">
-                            <Link :href="route('client.dashboard')" class="flex items-center px-2 lg:px-0">
+                            <Link :href="route('dashboard')" class="flex items-center px-2 lg:px-0">
                             <div class="flex space-x-2 flex-shrink-0">
                                 <img class="block h-8" src="@/assets/images/header-logo.png" alt="Linkarme" />
 
@@ -334,7 +334,7 @@ await i18nextPromise
                                                 <hr>
 
                                                 <MenuItem v-slot="{ active }">
-                                                <Link :href="route('client.profile.show')"
+                                                <Link :href="route('profile.show')"
                                                     :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 mt-2 py-2 px-4 text-sm text-gray-700']">
                                                 <IdentificationIcon class="h-5 w-5" />
                                                 <span>{{ $t('Account settings') }}</span>
@@ -382,7 +382,7 @@ await i18nextPromise
                                 </button>
                             </div>
                             <div class="mt-3 space-y-1 px-2">
-                                <DisclosureButton as="a" :href="route('client.profile.show')"
+                                <DisclosureButton as="a" :href="route('profile.show')"
                                     class="block rounded-md py-2 px-3 text-base font-medium text-white hover:bg-blue-500 hover:bg-opacity-75">
                                     {{ $t('Profile') }}
                                 </DisclosureButton>
