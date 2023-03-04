@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
-        // $schedule->job(new ClearChecks)->monthly();
+        $schedule->job(new ClearChecks)->monthly();
 
         $schedule->job(new CheckOrdersUrl)->twiceDaily(1, 13);
         $schedule->job(new CheckSites)->twiceDaily(1, 13);
