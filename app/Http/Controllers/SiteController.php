@@ -97,6 +97,8 @@ class SiteController extends Controller
 
                 'language_id' => Arr::get($query, 'filter.language_id', []),
                 'country_id' => Arr::get($query, 'filter.country_id', []),
+                'category_id' => Arr::get($query, 'filter.category_id', null),
+                'seller_id' => Arr::get($query, 'filter.seller_id', null),
             ],
         ];
 
@@ -134,8 +136,8 @@ class SiteController extends Controller
                 AllowedFilter::custom('new', new NewFilter),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::exact('country_id'),
-                // AllowedFilter::exact('category_id'),
-                // AllowedFilter::exact('seller_id'),
+                AllowedFilter::exact('category_id'),
+                AllowedFilter::exact('seller_id'),
                 AllowedFilter::scope('of_status'),
             ])
             ->paginate(50)

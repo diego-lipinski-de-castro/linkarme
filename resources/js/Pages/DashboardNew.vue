@@ -75,11 +75,11 @@ console.log(props.list)
                             </table>
                         </div>
 
-                        <div class="text-right px-5 mt-5">
+                        <!-- <div class="text-right px-5 mt-5">
                             <Link href="#" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">
                                 {{ $t('View all') }}
                             </Link>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
