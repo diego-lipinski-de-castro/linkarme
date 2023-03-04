@@ -30,7 +30,7 @@ class LanguageController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Languages/Create');
+        return Inertia::render('Languages/CreateNew');
     }
 
     /**
@@ -65,7 +65,7 @@ class LanguageController extends Controller
      */
     public function edit(Language $language)
     {
-        return Inertia::render('Languages/Edit', [
+        return Inertia::render('Languages/EditNew', [
             'language' => $language,
         ]);
     }

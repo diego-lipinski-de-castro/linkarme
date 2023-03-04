@@ -30,7 +30,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Categories/Create');
+        return Inertia::render('Categories/CreateNew');
     }
 
     /**
@@ -65,7 +65,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return Inertia::render('Categories/Edit', [
+        return Inertia::render('Categories/EditNew', [
             'category' => $category,
         ]);
     }

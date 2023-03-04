@@ -21,7 +21,7 @@ class OfferController extends Controller
             ])
             ->get();
 
-        return Inertia::render('Sites/Offers', [
+        return Inertia::render('Sites/OffersNew', [
             'offers' => $offers,
             'coins' => $coins,
         ]);

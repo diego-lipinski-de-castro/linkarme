@@ -38,12 +38,12 @@ class SiteController extends Controller
             ->orderBy('name')
             ->get();
 
-        $languages = Language::query()
+        $countries = Country::query()
             ->whereHas('sites')
             ->orderBy('name')
             ->get();
 
-        $countries = Country::query()
+        $languages = Language::query()
             ->whereHas('sites')
             ->orderBy('name')
             ->get();

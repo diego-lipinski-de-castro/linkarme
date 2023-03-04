@@ -67,6 +67,11 @@ class Seller extends Authenticatable
         });
     }
 
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
+    }
+
     public function notes()
     {
         return $this->morphMany(Note::class, 'owner');

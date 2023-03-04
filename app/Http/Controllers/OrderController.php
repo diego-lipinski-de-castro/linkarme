@@ -55,7 +55,7 @@ class OrderController extends Controller
             ->paginate(15)
             ->appends(request()->query());
 
-        return Inertia::render('Orders/Index', [
+        return Inertia::render('Orders/IndexNew', [
             'orders' => $orders,
             'statuses' => $statuses,
             'sites' => $sites,

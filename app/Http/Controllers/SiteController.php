@@ -19,12 +19,16 @@ use App\Notifications\SiteAdded;
 use App\Notifications\SiteDeleted;
 use App\Notifications\SiteRestored;
 use App\Notifications\SiteUpdated;
+use App\Sorts\NewSort;
+use App\Sorts\RecommendedSort;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class SiteController extends Controller
@@ -64,60 +68,80 @@ class SiteController extends Controller
             ->orderBy('name')
             ->get();
 
-        $filters = [
-            'da' => [
-                'from' => Site::min('da'),
-                'to' => Site::max('da'),
-            ],
+        $query = request()->query();
 
-            'dr' => [
-                'from' => Site::min('dr'),
-                'to' => Site::max('dr'),
+        $filters = [
+            'sort' => Arr::get($query, 'sort', 'url'),
+            'filter' => [
+                'url' => Arr::get($query, 'filter.url', ''),
+
+                'sale' => [
+                    'from' => Arr::get($query, 'filter.sale.from', Site::ofStatus('APPROVED')->min('sale')),
+                    'to' => Arr::get($query, 'filter.sale.to', Site::ofStatus('APPROVED')->max('sale')),
+                ],
+
+                'da' => [
+                    'from' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->min('da')),
+                    'to' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->max('da')),
+                ],
+
+                'dr' => [
+                    'from' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->min('dr')),
+                    'to' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->max('dr')),
+                ],
+
+                'gambling' => filter_var(Arr::get($query, 'filter.gambling', true), FILTER_VALIDATE_BOOL),
+                'sponsor' => filter_var(Arr::get($query, 'filter.sponsor', false), FILTER_VALIDATE_BOOL),
+
+                'new' => filter_var(Arr::get($query, 'filter.new', false), FILTER_VALIDATE_BOOL),
+
+                'language_id' => Arr::get($query, 'filter.language_id', []),
+                'country_id' => Arr::get($query, 'filter.country_id', []),
             ],
         ];
 
-        $filter = request()->query('filter');
-
         $sites = QueryBuilder::for(Site::class)
             ->withTrashed()
-            ->when(! isset($filter['of_status']), function ($query) {
+            ->when(! isset($query['filter']['of_status']), function ($query) {
                 $query->ofStatus('APPROVED');
             })
+            ->withCount('orders')
             ->with('category')
             ->defaultSort('url')
             ->allowedSorts([
-                'sale',
                 'url',
+                'sale',
                 'da',
                 'dr',
-                'traffic',
                 'inserted_at',
+                'last_updated_at',
+                // AllowedSort::custom('recommended', new RecommendedSort()),
+                // AllowedSort::custom('new', new NewSort()),
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                AllowedFilter::exact('seller_id'),
-                AllowedFilter::exact('country_id'),
-                AllowedFilter::exact('language_id'),
+                AllowedFilter::custom('sale', new FilterLimiter, null, ''),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
                 // AllowedFilter::custom('traffic', new FilterLimiter),
                 // AllowedFilter::custom('tf', new FilterLimiter),
-                // AllowedFilter::exact('category_id'),
-                // AllowedFilter::exact('seller_id'),
-                'ssl',
                 'gambling',
                 'sponsor',
-                'cripto',
-                'banner',
-                'menu',
+                // 'ssl',
+                // 'cripto',
+                // 'banner',
+                // 'menu',
                 AllowedFilter::custom('new', new NewFilter),
-                // AllowedFilter::custom('suggestion', new SuggestionFilter),
+                AllowedFilter::exact('language_id'),
+                AllowedFilter::exact('country_id'),
+                // AllowedFilter::exact('category_id'),
+                // AllowedFilter::exact('seller_id'),
                 AllowedFilter::scope('of_status'),
             ])
             ->paginate(50)
             ->appends(request()->query());
 
-        return Inertia::render('Sites/Index', [
+        return Inertia::render('Sites/IndexNew', [
             'sites' => $sites,
             'coins' => $coins,
             'filters' => $filters,

@@ -6,18 +6,21 @@ import { Link } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
     data: Array,
+    list: Array,
 })
+
+console.log(props.list)
 
 </script>
 
 <template>
     <AppSuspense>
-        <AppLayoutNew title="Dashboard">
+        <AppLayoutNew :title="$t('Dashboard')">
             <template #header>
                 <div
                     class="w-full flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        Dashboard
+                        {{ $t('Dashboard') }}
                     </h2>
                 </div>
             </template>
@@ -29,7 +32,7 @@ const props = defineProps({
                     <span class="text-2xl">{{ item.value }} {{ item.label }}</span>
 
                     <div class="mt-2 flex items-center text-sm font-semibold text-blue-500">
-                        <span>Visualizar</span>
+                        <span>{{ $t('Visualizar') }}</span>
 
                         <span class="ml-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -40,6 +43,47 @@ const props = defineProps({
                     </div>
                     </Link>
                 </div>
+
+                <!--  -->
+                <div v-for="(i, ii) in list" :key="ii" class="mt-10 grid grid-cols-3 gap-6">
+                    <div v-for="(j, jj) in i" :key="jj" class=" overflow-hidden rounded-md bg-white shadow h-fit py-5">
+
+                        <div class="px-5">
+                            <span class="block font-bold text-gray-900">{{ j.label }}</span>
+                        </div>
+
+                        <div
+                            class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border-b border-gray-300 border-opacity-50">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            v-for="(column, c) in j.columns" :key="c"
+                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ column }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-300 divide-opacity-50">
+                                    <tr v-for="(k, kkk) in j.value" :key="kkk">
+                                        <td v-for="(attribute, a) in j.attributes" :key="a"
+                                            :class="['whitespace-nowrap px-6 py-4 text-sm', a != 0 ? 'text-gray-500' : '']">
+                                            {{ k[attribute] }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-right px-5 mt-5">
+                            <Link href="#" class="px-4 py-2 rounded-md bg-blue-900 hover:bg-opacity-75 transition-colors text-white text-sm font-medium">
+                                {{ $t('View all') }}
+                            </Link>
+                        </div>
+                    </div>
+
+                </div>
+                <!--  -->
             </div>
         </AppLayoutNew>
     </AppSuspense>

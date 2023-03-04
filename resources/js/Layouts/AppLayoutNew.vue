@@ -341,50 +341,6 @@ await i18nextPromise
                                                 </Link>
                                                 </MenuItem>
 
-                                                <MenuItem v-slot="{ active }">
-                                                <Link
-                                                    :href="route('client.sites.list', { _query: { 'filter[favorites]': 'true' } })"
-                                                    :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
-                                                <HeartIcon class="h-5 w-5" />
-                                                <span>{{ $t('Favorites') }}</span>
-                                                </Link>
-                                                </MenuItem>
-
-                                                <MenuItem v-slot="{ active }">
-                                                <Link
-                                                    :href="route('client.sites.list', { _query: { 'filter[interests]': 'true' } })"
-                                                    :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
-                                                <FlagIcon class="h-5 w-5" />
-                                                <span>{{ $t('Interest list') }}</span>
-                                                </Link>
-                                                </MenuItem>
-
-                                                <MenuItem v-slot="{ active }">
-                                                <Link :href="route('client.projects.index')"
-                                                    :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
-                                                <Cog6ToothIcon class="h-5 w-5" />
-                                                <span>{{ $t('Your projects') }}</span>
-                                                </Link>
-                                                </MenuItem>
-
-                                                <MenuItem v-slot="{ active }">
-                                                <Link :href="route('client.orders.index')"
-                                                    :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 py-2 px-4 text-sm text-gray-700']">
-                                                <CurrencyDollarIcon class="h-5 w-5" />
-                                                <span>{{ $t('Orders') }}</span>
-                                                </Link>
-                                                </MenuItem>
-
-                                                <MenuItem v-slot="{ active }">
-                                                <Link :href="`${route('client.profile.show')}/#bug`"
-                                                    :class="[active ? 'bg-gray-100' : '', 'flex space-x-2 mb-2 py-2 px-4 text-sm text-gray-700']">
-                                                <div class="w-5">
-                                                    <BugAntIcon class="h-5 w-5" />
-                                                </div>
-                                                <span>{{ $t('Bug report and suggestions') }}</span>
-                                                </Link>
-                                                </MenuItem>
-
                                                 <hr>
 
                                                 <MenuItem>

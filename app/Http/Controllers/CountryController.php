@@ -33,7 +33,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Countries/Create');
+        return Inertia::render('Countries/CreateNew');
     }
 
     /**
@@ -68,7 +68,7 @@ class CountryController extends Controller
      */
     public function edit(Country $country)
     {
-        return Inertia::render('Countries/Edit', [
+        return Inertia::render('Countries/EditNew', [
             'country' => $country,
         ]);
     }
