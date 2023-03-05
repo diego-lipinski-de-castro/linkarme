@@ -172,7 +172,7 @@ class SiteController extends Controller
 
         $coins = config('coins');
 
-        return Inertia::render('Sites/Create', [
+        return Inertia::render('Sites/CreateNew', [
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
@@ -238,7 +238,7 @@ class SiteController extends Controller
 
         $coins = config('coins');
 
-        return Inertia::render('Sites/Edit', [
+        return Inertia::render('Sites/EditNew', [
             'site' => $site,
             'categories' => $categories,
             'languages' => $languages,

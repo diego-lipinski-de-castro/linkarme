@@ -89,7 +89,7 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
-        return Inertia::render('Orders/Create', [
+        return Inertia::render('Orders/CreateNew', [
             'coins' => $coins,
             'statuses' => $statuses,
             'sites' => $sites,
@@ -152,7 +152,7 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
-        return Inertia::render('Orders/Edit', [
+        return Inertia::render('Orders/EditNew', [
             'order' => $order,
             'coins' => $coins,
             'statuses' => $statuses,
