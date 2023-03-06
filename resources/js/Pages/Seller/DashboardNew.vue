@@ -1,0 +1,176 @@
+<script setup>
+import SellerLayoutNew from '@/Layouts/SellerLayoutNew.vue';
+import { computed } from 'vue';
+import { Link } from '@inertiajs/inertia-vue3';
+import { Inertia } from "@inertiajs/inertia";
+import {
+    ScaleIcon,
+} from '@heroicons/vue/24/outline'
+import {
+    BuildingOfficeIcon,
+    CheckCircleIcon,
+    ChevronRightIcon,
+} from '@heroicons/vue/20/solid'
+import { useTranslation } from "i18next-vue";
+import AppSuspense from '../../Layouts/AppSuspense.vue';
+
+const { t } = useTranslation();
+
+const props = defineProps({
+    title: String,
+    orders: Number,
+    usedCount: Number,
+    favs: Array,
+    unusedCount: Number,
+    new: Array,
+    recommended: Array,
+    favorites: Array,
+});
+
+const cards = [
+    { name: t('Orders'), href: route('seller.orders.index'), icon: ScaleIcon, amount: props.orders },
+    { name: t('Sites used'), href: route('seller.sites.index'), icon: ScaleIcon, amount: props.usedCount },
+    { name: t('Sites never used'), href: route('seller.sites.index'), icon: ScaleIcon, amount: props.unusedCount },
+]
+
+const list = [
+    { label: t('Favorites'), sites: props.favs, href: route('seller.sites.index') },
+    { label: t('New sites'), sites: props.new, href: route('seller.sites.index') },
+    { label: t('Recommended'), sites: props.recommended, href: route('seller.sites.index') },
+];
+
+const greeting = computed(() => {
+    const hour = new Date().getHours();
+    const welcomeTypes = ['Good morning', 'Good afternoon', 'Good evening'];
+    let welcomeText = '';
+
+    if (hour < 12) welcomeText = welcomeTypes[0];
+    else if (hour < 18) welcomeText = welcomeTypes[1];
+    else welcomeText = welcomeTypes[2];
+
+    return t(welcomeText)
+})
+
+const toggleFavorite = async (site) => {
+    Inertia.post(route('seller.sites.favorite', site), null, {
+        preserveScroll: true,
+    })
+}
+
+</script>
+        
+<template>
+    <AppSuspense>
+        <SellerLayoutNew :title="$t('Dashboard')">
+            <div>
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    <!-- Card -->
+                    <div v-for="card in cards" :key="card.name" class="overflow-hidden rounded-lg bg-white shadow">
+                        <div class="p-5">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <component :is="card.icon" class="h-6 w-6 text-gray-400" aria-hidden="true" />
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="truncate text-sm font-medium text-gray-500">{{ card.name }}</dt>
+                                        <dd>
+                                            <div class="text-lg font-medium text-gray-900">{{ card.amount }}</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-5 py-3">
+                            <Link :href="card.href" class="text-sm font-medium text-cyan-700 hover:text-cyan-900">
+                            See all</Link>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6">
+                    <div v-for="(item, index) in list" :key="index">
+                        <h2 class="mt-8 text-lg font-medium leading-6 text-gray-900">{{ item.label }}</h2>
+
+                        <div class="sm:hidden">
+                            <ul role="list" class="mt-2 divide-y divide-gray-200 border rounded-md overflow-hidden">
+                                <li v-if="item.sites.length == 0">
+                                    <span class="block bg-white px-4 py-4 text-center text-gray-500 italic">{{
+                                        $t('Soon') }}</span>
+                                </li>
+                                <li v-else v-for="(site, index) in item.sites" :key="index">
+                                    <Link :href="route('seller.sites.edit', site.id)"
+                                        class="block bg-white px-4 py-4 hover:bg-gray-50">
+                                    <span class="flex items-center space-x-4">
+                                        <span class="flex flex-1 space-x-2 truncate">
+                                            <span class="text-sm text-gray-500">
+                                                {{ site.url }}
+                                            </span>
+                                        </span>
+                                        <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                    </span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Activity table (small breakpoint and up) -->
+                        <div class="hidden sm:block">
+                            <div class="mt-2 flex flex-col">
+                                <div class="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                    scope="col">{{ $t('Domain') }}
+                                                </th>
+                                                <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                    scope="col">{{ $t('DA') }}
+                                                </th>
+                                                <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                    scope="col">{{ $t('DR') }}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-200 bg-white">
+                                            <tr v-if="item.sites.length == 0">
+                                                <td colspan="3" class="text-center text-gray-500 italic py-2">
+                                                    {{ $t('Soon...') }}
+                                                </td>
+                                            </tr>
+                                            <tr v-else v-for="(site, index) in item.sites" :key="index" class="bg-white">
+                                                <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                                    <Link :href="route('seller.sites.edit', site.id)"
+                                                        class="text-gray-500 hover:text-gray-900">
+                                                    {{ site.url }}
+                                                    </Link>
+                                                </td>
+                                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                                    {{ site.da ?? '-' }}
+                                                </td>
+                                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                                    {{ site.dr ?? '-' }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="3" class="bg-gray-50 px-5 py-3">
+                                                    <Link :href="item.href"
+                                                        class="text-sm font-medium text-cyan-700 hover:text-cyan-900">{{
+                                                            $t('See all') }}</Link>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </SellerLayoutNew>
+    </AppSuspense>
+</template>
+        

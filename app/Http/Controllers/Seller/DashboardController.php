@@ -52,7 +52,7 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        return Inertia::render('Seller/Dashboard', [
+        return Inertia::render('Seller/DashboardNew', [
             'orders' => $orders,
             'usedCount' => $usedCount,
             'favs' => $favs,

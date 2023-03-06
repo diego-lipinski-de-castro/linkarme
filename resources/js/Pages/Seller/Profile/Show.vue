@@ -14,7 +14,8 @@ defineProps({
 </script>
 
 <template>
-    <SellerLayout title="Profile">
+    <AppSuspense>
+    <SellerLayout :title="$t('Profile')">
         <!-- <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Profile
@@ -52,4 +53,5 @@ defineProps({
             </div>
         </div>
     </SellerLayout>
+</AppSuspense>
 </template>
