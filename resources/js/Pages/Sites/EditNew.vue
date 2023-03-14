@@ -21,6 +21,7 @@ const { site, coins, categories, languages, countries, sellers, note } = defineP
     languages: Array,
     countries: Array,
     sellers: Array,
+    teams: Array,
     note: Object,
 });
 
@@ -51,7 +52,7 @@ const form = useForm({
 
     last_posted: site.last_posted,
     seller_id: site.seller_id,
-    team: site.team,
+    team_id: site.team_id,
 
     obs: site.obs,
 
@@ -428,9 +429,16 @@ const submitNote = () => {
                             </div>
 
                             <div class="col-span-6">
-                                <InputLabel for="team" :value="$t('Atendimento')"/>
-                                <TextInput id="team" v-model="form.team" type="text" class="mt-1 block w-full" />
-                                <InputError class="mt-2" :message="form.errors.team"/>
+                                <InputLabel for="team_id" :value="$t('Atendimento')"/>
+                                
+                                <div class="mt-1">
+                                    <select v-model="form.team_id" id="team_id" name="team_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                        <option :value="null">Selecione</option>
+                                        <option v-for="(team, index) in teams" :key="index" :value="team.id">{{ team.name }}</option>
+                                    </select>
+                                </div>
+
+                                <InputError class="mt-2" :message="form.errors.team_id"/>
                             </div>
 
                             <div class="col-span-6">

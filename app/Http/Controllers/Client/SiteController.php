@@ -64,12 +64,12 @@ class SiteController extends Controller
 
                 'da' => [
                     'from' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->min('da')),
-                    'to' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->max('da')),
+                    'to' => Arr::get($query, 'filter.da.to', Site::ofStatus('APPROVED')->max('da')),
                 ],
 
                 'dr' => [
                     'from' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->min('dr')),
-                    'to' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->max('dr')),
+                    'to' => Arr::get($query, 'filter.dr.to', Site::ofStatus('APPROVED')->max('dr')),
                 ],
 
                 'gambling' => filter_var(Arr::get($query, 'filter.gambling', true), FILTER_VALIDATE_BOOL),

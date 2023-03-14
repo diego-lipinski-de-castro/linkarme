@@ -64,6 +64,7 @@ const navigation = [
     { name: t('Categories'), href: route('categories.index'), icon: ClockIcon, current: route().current('categories.*') },
     { name: t('Languages'), href: route('languages.index'), icon: ClockIcon, current: route().current('languages.*') },
     { name: t('Countries'), href: route('countries.index'), icon: ClockIcon, current: route().current('countries.*') },
+    { name: t('Teams'), href: route('teams.index'), icon: ClockIcon, current: route().current('teams.*') },
 ]
 
 const sidebarOpen = ref(false)

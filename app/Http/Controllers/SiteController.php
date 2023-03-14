@@ -15,6 +15,7 @@ use App\Models\Language;
 use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
+use App\Models\Team;
 use App\Notifications\SiteAdded;
 use App\Notifications\SiteDeleted;
 use App\Notifications\SiteRestored;
@@ -82,15 +83,15 @@ class SiteController extends Controller
 
                 'da' => [
                     'from' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->min('da')),
-                    'to' => Arr::get($query, 'filter.da.from', Site::ofStatus('APPROVED')->max('da')),
+                    'to' => Arr::get($query, 'filter.da.to', Site::ofStatus('APPROVED')->max('da')),
                 ],
 
                 'dr' => [
                     'from' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->min('dr')),
-                    'to' => Arr::get($query, 'filter.dr.from', Site::ofStatus('APPROVED')->max('dr')),
+                    'to' => Arr::get($query, 'filter.dr.to', Site::ofStatus('APPROVED')->max('dr')),
                 ],
 
-                'gambling' => filter_var(Arr::get($query, 'filter.gambling', true), FILTER_VALIDATE_BOOL),
+                'gambling' => filter_var(Arr::get($query, 'filter.gambling', false), FILTER_VALIDATE_BOOL),
                 'sponsor' => filter_var(Arr::get($query, 'filter.sponsor', false), FILTER_VALIDATE_BOOL),
 
                 'new' => filter_var(Arr::get($query, 'filter.new', false), FILTER_VALIDATE_BOOL),
@@ -169,6 +170,7 @@ class SiteController extends Controller
         $languages = Language::orderBy('name')->get();
         $countries = Country::orderBy('name')->get();
         $sellers = Seller::orderBy('name')->get();
+        $teams = Team::orderBy('name')->get();
 
         $coins = config('coins');
 
@@ -177,6 +179,7 @@ class SiteController extends Controller
             'languages' => $languages,
             'countries' => $countries,
             'sellers' => $sellers,
+            'teams' => $teams,
             'coins' => $coins,
         ]);
     }
@@ -233,6 +236,7 @@ class SiteController extends Controller
         $languages = Language::orderBy('name')->get();
         $countries = Country::orderBy('name')->get();
         $sellers = Seller::orderBy('name')->get();
+        $teams = Team::orderBy('name')->get();
 
         $note = auth()->user()->notes()->where('site_id', $site->id)->first();
 
@@ -244,6 +248,7 @@ class SiteController extends Controller
             'languages' => $languages,
             'countries' => $countries,
             'sellers' => $sellers,
+            'teams' => $teams,
             'coins' => $coins,
             'note' => $note,
         ]);

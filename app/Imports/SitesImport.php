@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\Language;
 use App\Models\Seller;
 use App\Models\Site;
+use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -104,6 +105,16 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             }
         }
 
+        if (! blank($row['responsavel'])) {
+            $team = Team::where('name', 'LIKE', '%'.$row['responsavel'].'%')->first();
+
+            if (blank($team)) {
+                $team = Team::create([
+                    'name' => $row['responsavel'],
+                ]);
+            }
+        }
+
         return new Site([
             'url' => $url,
             'name' => null,
@@ -132,7 +143,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
             'seller_id' => optional($seller)->id,
-            'team' => $row['responsavel'],
+            'team_id' => optional($team)->id,
 
             'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
             'banner' => strtolower($row['banners']) == 'sim' ? true : false,

@@ -54,7 +54,7 @@ class Site extends Model implements Auditable
         'inserted_at',
         'last_updated_at',
         'seller_id',
-        'team',
+        'team_id',
         'status',
         'deleted_why',
         'suggested',
@@ -208,6 +208,11 @@ class Site extends Model implements Auditable
     public function seller()
     {
         return $this->belongsTo(Seller::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 
     public function category()

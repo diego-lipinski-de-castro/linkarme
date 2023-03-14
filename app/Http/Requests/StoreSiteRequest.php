@@ -59,7 +59,7 @@ class StoreSiteRequest extends FormRequest
 
             'seller_id' => 'nullable|integer|exists:sellers,id',
 
-            'team' => 'nullable',
+            'team_id' => 'nullable|integer|exists:teams,id',
 
             'owner_name' => 'nullable',
             'owner_email' => 'nullable',
