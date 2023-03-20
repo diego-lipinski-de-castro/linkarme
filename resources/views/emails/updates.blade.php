@@ -29,9 +29,10 @@
 
                                 @endphp
 
-                                @if($attribute == 'sale')
+                                <!-- @if($attribute == 'status' && $value['new'] == 'APPROVED') -->
+
+                                @if($attribute == 'sale' && isset($value['new']) && isset($value['old']) && $value['old'] != 0)
                                     <p class="text-sm text-gray-500">
-                                        @if(isset($value['old']) && isset($value['new']))
                                         <span class="break-words">
                                             {{
                                                 __('email.attributes.updated', [
@@ -41,29 +42,6 @@
                                                 ])
                                             }}
                                         </span>
-                                        @endif
-
-                                        @if(isset($value['old']) && !isset($value['new']))
-                                        <span class="break-words">
-                                                {{
-                                                    __('email.attributes.new', [
-                                                        'attribute' => $attribute,
-                                                        'new' => $value['new'],
-                                                    ])
-                                                }}
-                                            </span>
-                                        @endif
-
-                                        @if(!isset($value['old']) && isset($value['new']))
-                                        <span class="break-words">
-                                            {{
-                                                __('email.attributes.to_blank', [
-                                                    'attribute' => $attribute,
-                                                    'old' => $value['old'],
-                                                ])
-                                            }}
-                                        </span>
-                                        @endif
                                     </p>
                                 @endif
 

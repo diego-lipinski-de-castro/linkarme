@@ -697,9 +697,7 @@ onMounted(() => {
                                                 <span>
                                                     {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
 
-                                                    {{ $filters.currency((Math.round((site.sale /
-                                                        coinStore.ratios[site.sale_coin]) / 5) * 5) / 100,
-                                                        coins[coinStore.coin]) }}
+                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
                                                 </span>
                                             </span>
                                         </td>

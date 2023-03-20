@@ -562,11 +562,7 @@ onMounted(() => {
                                         <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                             <span class="relative flex space-x-2 items-center">
                                                 <span>
-                                                    {{
-                                                        $filters.currency((Math.round((site.sale /
-                                                            coinStore.ratios[site.sale_coin]) / 5) * 5) / 100,
-                                                            coins[coinStore.coin])
-                                                    }}
+                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
                                                 </span>
                                             </span>
                                         </td>
