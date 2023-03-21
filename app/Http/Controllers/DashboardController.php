@@ -7,7 +7,7 @@ use App\Models\Client;
 use App\Models\Country;
 use App\Models\Language;
 use App\Models\Order;
-use App\Models\Seller;
+use App\Models\Team;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -59,21 +59,21 @@ class DashboardController extends Controller
             [
                 [
                     'label' => 'Vendedores com mais sites',
-                    'value' => Seller::withCount('sites')->orderByRaw('sites_count DESC')->take(5)->get(),
+                    'value' => Team::withCount('sites')->orderByRaw('sites_count DESC')->take(5)->get(),
                     'link' => route('sites.index'),
                     'columns' => ['Name', 'Sites',],
                     'attributes' => ['name', 'sites_count'],
                 ],
                 [
                     'label' => 'Vendedores com mais sites (mês)',
-                    'value' => Seller::withCount('sites')->where('created_at', '>=', today()->subMonths(1))->orderByRaw('sites_count DESC')->take(5)->get(),
+                    'value' => Team::withCount('sites')->where('created_at', '>=', today()->subMonths(1))->orderByRaw('sites_count DESC')->take(5)->get(),
                     'link' => route('sites.index'),
                     'columns' => ['Name', 'Sites',],
                     'attributes' => ['name', 'sites_count'],
                 ],
                 [
                     'label' => 'Vendedores com mais sites (trimestre)',
-                    'value' => Seller::withCount('sites')->where('created_at', '>=', today()->subMonths(3))->orderByRaw('sites_count DESC')->take(5)->get(),
+                    'value' => Team::withCount('sites')->where('created_at', '>=', today()->subMonths(3))->orderByRaw('sites_count DESC')->take(5)->get(),
                     'link' => route('sites.index'),
                     'columns' => ['Name', 'Sites',],
                     'attributes' => ['name', 'sites_count'],
@@ -96,6 +96,28 @@ class DashboardController extends Controller
         return Inertia::render('DashboardNew', [
             'data' => $data,
             'list' => $list,
+        ]);
+    }
+
+    public function analytics()
+    {
+        $sitesByCountry = Country::query()
+            ->withCount('sites')
+            ->get()
+            ->transform(function ($country) {
+                return [
+                    $country->name,
+                    $country->sites_count,
+                ];
+            })
+            ->toArray();
+
+        array_unshift($sitesByCountry, [
+            'Country', 'Sites',
+        ]);
+
+        return Inertia::render('Analytics', [
+            'sitesByCountry' => $sitesByCountry,
         ]);
     }
 }

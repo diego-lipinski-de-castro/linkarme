@@ -74,6 +74,7 @@ Route::get('audits-filter', [AuditController::class, 'filter'])->name('audits.fi
 Route::get('audits/{audit}', [AuditController::class, 'show'])->name('audits.show')->middleware(['auth']);
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
+Route::get('analytics', [DashboardController::class, 'analytics'])->name('analytics')->middleware(['auth']);
 
 // site
 Route::post('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']); // ok
