@@ -357,6 +357,6 @@ class Site extends Model implements Auditable
      
     public function getFormattedUpdatedAtAttribute()
     {
-        return $this->updated_at->format('d/m/Y H:i');
+        return $this->updated_at->format('d/m/Y');
     }
 }
