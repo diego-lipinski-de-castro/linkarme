@@ -29,8 +29,6 @@
 
                                 @endphp
 
-                                <!-- @if($attribute == 'status' && $value['new'] == 'APPROVED') -->
-
                                 @if($attribute == 'sale' && isset($value['new']) && isset($value['old']) && $value['old'] != 0)
                                     <p class="text-sm text-gray-500">
                                         <span class="break-words">

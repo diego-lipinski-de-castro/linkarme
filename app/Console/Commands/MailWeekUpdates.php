@@ -38,7 +38,11 @@ class MailWeekUpdates extends Command
         $locale = $this->option('locale');
 
         $updates = Audit::query()
-            ->with('auditable')
+            ->with([
+                'auditable' => function ($query) {
+                    $query->withTrashed();
+                },
+            ])
             ->where('auditable_type', 'App\\Models\\Site')
             ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereBetween('created_at', [
