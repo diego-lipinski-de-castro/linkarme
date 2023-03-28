@@ -65,7 +65,7 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'sale', label: t('Price'), visible: true },
+    { key: 'cost', label: t('Cost'), visible: true },
     { key: 'url', label: t('Domain'), visible: true },
     { key: 'da', label: t('DA'), visible: true },
     { key: 'dr', label: t('DR'), visible: true },
@@ -98,7 +98,7 @@ const sort = ref(props.filters.sort)
 const filters = reactive({
     // sellers filter
     url: props.filters.filter.url,
-    sale: { from: props.filters.filter.sale.from, to: props.filters.filter.sale.to },
+    cost: { from: props.filters.filter.cost.from, to: props.filters.filter.cost.to },
     da: { from: props.filters.filter.da.from, to: props.filters.filter.da.to },
     dr: { from: props.filters.filter.dr.from, to: props.filters.filter.dr.to },
     gambling: props.filters.filter.gambling,
@@ -136,7 +136,7 @@ const get = async () => {
         sort: sort.value,
         filter: {
             url: filters.url,
-            sale: filters.sale,
+            cost: filters.cost,
             da: filters.da,
             dr: filters.dr,
             gambling: filters.gambling,
@@ -188,22 +188,22 @@ onMounted(() => {
                             <div class="col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <span class="block h-2 w-2 bg-green-500 rounded-full"></span>
-                                    <span>{{ $t('Price range') }}</span>
+                                    <span>{{ $t('Cost range') }}</span>
                                 </span>
 
                                 <div class="mt-4 flex space-x-4">
                                     <div class="flex items-center">
-                                        <label for="from_sale" class="text-xs text-gray-500 self-start text-right">{{
+                                        <label for="from_cost" class="text-xs text-gray-500 self-start text-right">{{
                                             $t('From') }}</label>
-                                        <input v-model="filters.sale.from" v-money3="coinFormat" id="from_sale"
-                                            name="from_sale" type="text"
+                                        <input v-model="filters.cost.from" v-money3="coinFormat" id="from_cost"
+                                            name="from_cost" type="text"
                                             class="ml-2 w-[7rem] bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0" />
                                     </div>
 
                                     <div class="flex items-center">
-                                        <label for="to_sale" class="text-xs text-gray-500 self-start text-right">{{ $t('To')
+                                        <label for="to_cost" class="text-xs text-gray-500 self-start text-right">{{ $t('To')
                                         }}</label>
-                                        <input v-model="filters.sale.to" v-money3="coinFormat" id="to_sale" name="to_sale"
+                                        <input v-model="filters.cost.to" v-money3="coinFormat" id="to_cost" name="to_cost"
                                             type="text"
                                             class="ml-2 w-[7rem] bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0" />
                                     </div>
@@ -431,8 +431,8 @@ onMounted(() => {
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
-                                                <span class="block">{{ $t('Price') }}</span>
-                                                <TableSortButton column='sale' :current="sort"
+                                                <span class="block">{{ $t('Cost') }}</span>
+                                                <TableSortButton column='cost' :current="sort"
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
@@ -527,14 +527,14 @@ onMounted(() => {
                                     <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
                                         <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                             <span
-                                                :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
+                                                :data-tippy-content="site.cost_coin != coinStore.coin ? `${$filters.currency(site.cost / 100, coins[site.cost_coin])}` : null"
                                                 class="relative flex space-x-2 items-center">
-                                                <span v-if="site.sale_coin != coinStore.coin"
+                                                <span v-if="site.cost_coin != coinStore.coin"
                                                     class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                                 <span>
-                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                    {{ site.cost_coin != coinStore.coin ? '~ ' : null }}
 
-                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                    {{ $filters.currency(Math.ceil((site.cost / coinStore.ratios[site.cost_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
                                                 </span>
                                             </span>
                                         </td>

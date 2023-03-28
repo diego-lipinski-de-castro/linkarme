@@ -54,9 +54,9 @@ class SiteController extends Controller
             'filter' => [
                 'url' => Arr::get($query, 'filter.url', ''),
 
-                'sale' => [
-                    'from' => Arr::get($query, 'filter.sale.from', Site::ofSeller(auth()->id())->min('sale')),
-                    'to' => Arr::get($query, 'filter.sale.to', Site::ofSeller(auth()->id())->max('sale')),
+                'cost' => [
+                    'from' => Arr::get($query, 'filter.cost.from', Site::ofSeller(auth()->id())->min('cost')),
+                    'to' => Arr::get($query, 'filter.cost.to', Site::ofSeller(auth()->id())->max('cost')),
                 ],
 
                 'da' => [
@@ -86,7 +86,7 @@ class SiteController extends Controller
             ->defaultSort('url')
             ->allowedSorts([
                 'url',
-                'sale',
+                'cost',
                 'da',
                 'dr',
                 'inserted_at',
@@ -96,7 +96,7 @@ class SiteController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                AllowedFilter::custom('sale', new FilterLimiter, null, ''),
+                AllowedFilter::custom('cost', new FilterLimiter, null, ''),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
                 // AllowedFilter::custom('traffic', new FilterLimiter),
