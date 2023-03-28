@@ -46,14 +46,22 @@ class MailWeekUpdates extends Command
             ->where('auditable_type', 'App\\Models\\Site')
             ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereBetween('created_at', [
-                now()->subWeek()->format('Y-m-d'),
+                now()->subYear()->format('Y-m-d'),
                 now()->addDay()->format('Y-m-d'),
             ])
-            // ->whereHas('auditable')
             ->get()
             ->filter(function ($item) {
 
                 if($item->event == 'updated') {
+
+                    if(
+                        isset($item->getModified()['status']) &&
+                        isset($item->getModified()['status']['new']) &&
+                        $item->getModified()['status']['new'] == 'REJECTED'
+                    ) {
+                        return false;
+                    }
+
                     return Arr::hasAny(
                         $item->getModified(), 
                         ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']

@@ -39,7 +39,11 @@ class MailDailyUpdates extends Command
 
         // maybe use notifications table?
         $updates = Audit::query()
-            ->with('auditable')
+            ->with([
+                'auditable' => function ($query) {
+                    $query->withTrashed();
+                },
+            ])
             ->where('auditable_type', 'App\\Models\\Site')
             ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereDate('created_at', now()->subDay()->format('Y-m-d'))
@@ -48,6 +52,15 @@ class MailDailyUpdates extends Command
             ->filter(function ($item) {
 
                 if($item->event == 'updated') {
+
+                    if(
+                        isset($item->getModified()['status']) &&
+                        isset($item->getModified()['status']['new']) &&
+                        $item->getModified()['status']['new'] == 'REJECTED'
+                    ) {
+                        return false;
+                    }
+
                     return Arr::hasAny(
                         $item->getModified(), 
                         ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']

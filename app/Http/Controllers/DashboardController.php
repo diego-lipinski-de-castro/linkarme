@@ -112,12 +112,25 @@ class DashboardController extends Controller
             })
             ->toArray();
 
+        $sitesByCountrySvg = Country::query()
+            ->whereNotNull('code')
+            ->withCount('sites')
+            ->get()
+            ->transform(function ($country) {
+                return [
+                    $country->code,
+                    $country->sites_count,
+                ];
+            })
+            ->toArray();
+
         array_unshift($sitesByCountry, [
             'Country', 'Sites',
         ]);
 
         return Inertia::render('Analytics', [
             'sitesByCountry' => $sitesByCountry,
+            'sitesByCountrySvg' => $sitesByCountrySvg,
         ]);
     }
 }

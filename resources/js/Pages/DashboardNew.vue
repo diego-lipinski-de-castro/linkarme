@@ -16,15 +16,6 @@ console.log(props.list)
 <template>
     <AppSuspense>
         <AppLayoutNew :title="$t('Dashboard')">
-            <template #header>
-                <div
-                    class="w-full flex justify-between items-center px-4 sm:px-6 lg:mx-auto lg:px-8 pt-6 lg:border-t lg:border-gray-200">
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        {{ $t('Dashboard') }}
-                    </h2>
-                </div>
-            </template>
-
             <div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 sm:gap-y-6">
                     <Link v-for="(item, index) in data" :key="index" :href="item.link"

@@ -15,6 +15,7 @@ use App\Models\Language;
 use App\Models\Offer;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -31,9 +32,53 @@ class SiteController extends Controller
     {
         $coins = config('coins');
 
-        $countries = Country::orderBy('name')->get();
-        $languages = Language::orderBy('name')->get();
-        $categories = Category::orderBy('name')->get();
+        $countries = Country::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
+
+        $languages = Language::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
+
+        $categories = Category::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
+
+        $query = request()->query();
+
+        $filters = [
+            'sort' => Arr::get($query, 'sort', 'url'),
+            'filter' => [
+                'url' => Arr::get($query, 'filter.url', ''),
+
+                'sale' => [
+                    'from' => Arr::get($query, 'filter.sale.from', Site::ofSeller(auth()->id())->min('sale')),
+                    'to' => Arr::get($query, 'filter.sale.to', Site::ofSeller(auth()->id())->max('sale')),
+                ],
+
+                'da' => [
+                    'from' => Arr::get($query, 'filter.da.from', Site::ofSeller(auth()->id())->min('da')),
+                    'to' => Arr::get($query, 'filter.da.to', Site::ofSeller(auth()->id())->max('da')),
+                ],
+
+                'dr' => [
+                    'from' => Arr::get($query, 'filter.dr.from', Site::ofSeller(auth()->id())->min('dr')),
+                    'to' => Arr::get($query, 'filter.dr.to', Site::ofSeller(auth()->id())->max('dr')),
+                ],
+
+                'gambling' => filter_var(Arr::get($query, 'filter.gambling', false), FILTER_VALIDATE_BOOL),
+                'sponsor' => filter_var(Arr::get($query, 'filter.sponsor', false), FILTER_VALIDATE_BOOL),
+
+                'new' => filter_var(Arr::get($query, 'filter.new', false), FILTER_VALIDATE_BOOL),
+
+                'language_id' => Arr::get($query, 'filter.language_id', []),
+                'country_id' => Arr::get($query, 'filter.country_id', []),
+                'category_id' => Arr::get($query, 'filter.category_id', null),
+            ],
+        ];
 
         $sites = QueryBuilder::for(Site::class)
             ->ofSeller(auth()->id())
@@ -41,32 +86,39 @@ class SiteController extends Controller
             ->defaultSort('url')
             ->allowedSorts([
                 'url',
+                'sale',
                 'da',
                 'dr',
-                'tf',
+                'inserted_at',
+                'last_updated_at',
+                // AllowedSort::custom('recommended', new RecommendedSort()),
+                // AllowedSort::custom('new', new NewSort()),
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                AllowedFilter::exact('country_id'),
-                AllowedFilter::exact('language_id'),
+                AllowedFilter::custom('sale', new FilterLimiter, null, ''),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
-                AllowedFilter::custom('traffic', new FilterLimiter, null, ''),
-                AllowedFilter::custom('tf', new FilterLimiter, null, ''),
-                AllowedFilter::exact('category_id'),
-                'ssl',
+                // AllowedFilter::custom('traffic', new FilterLimiter),
+                // AllowedFilter::custom('tf', new FilterLimiter),
                 'gambling',
                 'sponsor',
-                'cripto',
-                'menu',
+                // 'ssl',
+                // 'cripto',
+                // 'banner',
+                // 'menu',
                 AllowedFilter::custom('new', new NewFilter),
+                AllowedFilter::exact('language_id'),
+                AllowedFilter::exact('country_id'),
+                AllowedFilter::exact('category_id'),
             ])
             ->paginate(50)
             ->appends(request()->query());
 
-        return Inertia::render('Seller/Sites/Index', [
+        return Inertia::render('Seller/Sites/IndexNew', [
             'sites' => $sites,
             'coins' => $coins,
+            'filters' => $filters,
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,

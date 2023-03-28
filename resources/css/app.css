@@ -42,3 +42,7 @@
 .sidebar::-webkit-scrollbar-corner {
     background: transparent;
 }
+
+.svgMap-map-wrapper {
+    background: red;
+}
