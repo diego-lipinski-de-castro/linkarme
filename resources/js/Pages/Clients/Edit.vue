@@ -58,13 +58,13 @@ const generatePassword = () => {
                 
                 <div>
                     <InputLabel for="name" :value="$t('Name')" />
-                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" />
+                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus/>
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
 
                 <div>
                     <InputLabel for="email" :value="$t('Email')" />
-                    <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required autofocus autocomplete="email" />
+                    <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required/>
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
 
@@ -72,7 +72,7 @@ const generatePassword = () => {
                     <InputLabel for="password" :value="$t('Password')" />
                     <div class="mt-1 flex rounded-md shadow-sm">
                         <div class="w-full relative flex items-stretch flex-grow focus-within:z-10">
-                            <TextInput id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" class="block w-full rounded-none rounded-l-md" autocomplete="current-password" />
+                            <TextInput id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" class="block w-full rounded-none rounded-l-md"/>
                         </div>
 
                         <button @click="showPassword = !showPassword" type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">

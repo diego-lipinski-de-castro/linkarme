@@ -189,7 +189,7 @@ const generatePassword = () => {
                                 <div>
                                     <InputLabel for="first_name" :value="$t('First name')" />
                                     <TextInput id="first_name" v-model="form.first_name" type="text"
-                                        class="mt-1 block w-full" autocomplete="first_name" />
+                                        class="mt-1 block w-full" />
                                     <InputError :message="form.errors.first_name" class="mt-2" />
                                 </div>
 
@@ -197,7 +197,7 @@ const generatePassword = () => {
                                 <div>
                                     <InputLabel for="last_name" :value="$t('Last name')" />
                                     <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-full"
-                                        autocomplete="last_name" />
+                                     />
                                     <InputError :message="form.errors.last_name" class="mt-2" />
                                 </div>
 
@@ -206,7 +206,7 @@ const generatePassword = () => {
                                 <div>
                                     <InputLabel for="name" :value="$t('Username (optional)')" />
                                     <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
-                                        autocomplete="name" />
+                                     />
                                     <InputError :message="form.errors.name" class="mt-2" />
                                 </div>
 
@@ -250,7 +250,7 @@ const generatePassword = () => {
                                 <div class="col-span-2">
                                     <InputLabel for="birthday" :value="$t('Birthday')" />
                                     <TextInput id="birthday" v-model="form.birthday" type="text" class="mt-1 block w-full"
-                                        autocomplete="birthday" />
+                                     />
                                     <InputError :message="form.errors.birthday" class="mt-2" />
                                 </div>
 
@@ -317,7 +317,7 @@ const generatePassword = () => {
                                         v-model="form.company_name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="company_name"
+                                    
                                     />
                                     <InputError :message="form.errors.company_name" class="mt-2" />
                                 </div>
@@ -329,7 +329,7 @@ const generatePassword = () => {
                                         v-model="form.website_url"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="website_url"
+                                    
                                     />
                                     <InputError :message="form.errors.website_url" class="mt-2" />
                                 </div>
@@ -341,7 +341,7 @@ const generatePassword = () => {
                                         v-model="form.address_country"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="address_country"
+                                    
                                     />
                                     <InputError :message="form.errors.address_country" class="mt-2" />
                                 </div>
@@ -353,7 +353,7 @@ const generatePassword = () => {
                                         v-model="form.address_state"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="address_state"
+                                    
                                     />
                                     <InputError :message="form.errors.address_state" class="mt-2" />
                                 </div>
@@ -365,7 +365,7 @@ const generatePassword = () => {
                                         v-model="form.address_street_name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="address_street_name"
+                                    
                                     />
                                     <InputError :message="form.errors.address_street_name" class="mt-2" />
                                 </div>
@@ -377,7 +377,7 @@ const generatePassword = () => {
                                         v-model="form.address_street_number"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="address_street_number"
+                                    
                                     />
                                     <InputError :message="form.errors.address_street_number" class="mt-2" />
                                 </div>
@@ -389,7 +389,7 @@ const generatePassword = () => {
                                         v-model="form.address_number"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="address_number"
+                                    
                                     />
                                     <InputError :message="form.errors.address_number" class="mt-2" />
                                 </div>
@@ -401,7 +401,7 @@ const generatePassword = () => {
                                         v-model="form.address_zipcode"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="address_zipcode"
+                                    
                                     />
                                     <InputError :message="form.errors.address_zipcode" class="mt-2" />
                                 </div>
@@ -602,7 +602,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_company_name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_company_name"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_company_name" class="mt-2" />
                                 </div>
@@ -614,7 +614,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_vat_number"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_vat_number"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_vat_number" class="mt-2" />
                                 </div>
@@ -626,7 +626,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_paypal"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_paypal"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_paypal" class="mt-2" />
                                 </div>
@@ -638,7 +638,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_address_country"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_address_country"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_address_country" class="mt-2" />
                                 </div>
@@ -650,7 +650,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_address_state"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_address_state"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_address_state" class="mt-2" />
                                 </div>
@@ -662,7 +662,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_address_street_name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_address_street_name"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_address_street_name" class="mt-2" />
                                 </div>
@@ -674,7 +674,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_address_street_number"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_address_street_number"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_address_street_number" class="mt-2" />
                                 </div>
@@ -686,7 +686,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_address_number"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_address_number"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_address_number" class="mt-2" />
                                 </div>
@@ -698,7 +698,7 @@ const generatePassword = () => {
                                         v-model="form.invoice_address_zipcode"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        autocomplete="invoice_address_zipcode"
+                                    
                                     />
                                     <InputError :message="form.errors.invoice_address_zipcode" class="mt-2" />
                                 </div>
@@ -744,7 +744,7 @@ const generatePassword = () => {
                                             v-model="form.password"
                                             :type="showPassword ? 'text' : 'password'"
                                             class="block w-full rounded-none rounded-l-md"
-                                            autocomplete="password"
+                                        
                                         />
 
                                         <button @click="showPassword = !showPassword" type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
