@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
 use App\Models\Seller;
+use App\Models\Site;
 use Inertia\Inertia;
 
 class SellerController extends Controller
@@ -17,6 +18,7 @@ class SellerController extends Controller
     public function index()
     {
         $sellers = Seller::query()
+            ->withCount('sites')
             ->orderBy('name')
             ->paginate();
         
@@ -56,7 +58,17 @@ class SellerController extends Controller
      */
     public function show(Seller $seller)
     {
-        //
+        $coins = config('coins');
+
+        $sites = Site::query()
+            ->ofSeller($seller->id)
+            ->paginate();
+
+        return Inertia::render('Sellers/Show', [
+            'seller' => $seller,
+            'sites' => $sites,
+            'coins' => $coins,
+        ]);
     }
 
     /**

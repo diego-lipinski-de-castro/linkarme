@@ -14,7 +14,8 @@ import {
 
 import {
     PencilSquareIcon,
-    TrashIcon
+    TrashIcon,
+    EyeIcon,
 } from '@heroicons/vue/24/outline'
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 
@@ -108,6 +109,11 @@ const destroy = (seller) => {
 
                                         <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
+                                            {{ $t('Sites') }}
+                                        </th>
+
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">
 
                                         </th>
                                     </tr>
@@ -123,12 +129,19 @@ const destroy = (seller) => {
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ seller.email ?? '-' }}
                                         </td>
-
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                            {{ seller.sites_count }}
+                                        </td>
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <div class="flex space-x-2">
+                                            <div class="flex space-x-3">
+                                                <Link :href="route('sellers.show', seller.id)"
+                                                    class="text-blue-500 hover:text-blue-700">
+                                                    <EyeIcon class="h-5 w-5" />
+                                                </Link>
+
                                                 <Link :href="route('sellers.edit', seller.id)"
                                                     class="text-blue-500 hover:text-blue-700">
-                                                <PencilSquareIcon class="h-5 w-5" />
+                                                    <PencilSquareIcon class="h-5 w-5" />
                                                 </Link>
 
                                                 <button @click="destroy(seller.id)"

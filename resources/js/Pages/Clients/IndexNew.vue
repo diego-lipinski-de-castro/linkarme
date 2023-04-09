@@ -103,9 +103,15 @@ const destroy = (client) => {
                                             scope="col">
                                             {{ $t('Email') }}
                                         </th>
+
                                         <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t('Type') }}
+                                        </th>
+
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">
+                                            {{ $t('Orders') }}
                                         </th>
 
                                         <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
@@ -127,7 +133,9 @@ const destroy = (client) => {
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ client.full ? 'Full' : 'Limitado' }}
                                         </td>
-
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                            {{ client.orders_count }}
+                                        </td>
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
                                             <div class="flex space-x-2">
                                                 <Link :href="route('clients.edit', client.id)"

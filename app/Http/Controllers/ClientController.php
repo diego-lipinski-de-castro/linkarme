@@ -28,6 +28,7 @@ class ClientController extends Controller
     {
         $clients = Client::query()
             ->with('consultant')
+            ->withCount('orders')
             ->orderBy('name')
             ->paginate();
 

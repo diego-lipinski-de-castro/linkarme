@@ -16,7 +16,10 @@ class LanguageController extends Controller
      */
     public function index()
     {
-        $languages = Language::orderBy('name')->paginate();
+        $languages = Language::query()
+            ->withCount('sites')
+            ->orderBy('name')
+            ->paginate();
 
         return Inertia::render('Languages/IndexNew', [
             'languages' => $languages,

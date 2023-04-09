@@ -102,6 +102,11 @@ const destroy = (category) => {
 
                                         <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
+                                            {{ $t('Sites') }}
+                                        </th>
+
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">
 
                                         </th>
                                     </tr>
@@ -114,6 +119,11 @@ const destroy = (category) => {
                                             {{ category.name }}
                                             </Link>
                                         </td>
+
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                            {{ category.sites_count }}
+                                        </td>
+
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
                                             <div class="flex space-x-2">
                                                 <Link :href="route('categories.edit', category.id)"

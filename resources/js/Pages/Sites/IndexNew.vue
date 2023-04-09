@@ -140,8 +140,6 @@ watch(() => ({ ...filters }), debounce((n, o) => {
 })
 
 const get = async () => {
-    console.log('get');
-
     Inertia.get(route('sites.index'), {
         sort: sort.value,
         filter: {

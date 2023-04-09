@@ -100,6 +100,11 @@ const destroy = (country) => {
 
                                     <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                         scope="col">
+                                        {{ $t('Sites') }}   
+                                    </th>
+
+                                    <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        scope="col">
                                         
                                     </th>
                                 </tr>
@@ -112,6 +117,11 @@ const destroy = (country) => {
                                             {{ country.name }}
                                         </a>
                                     </td>
+
+                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        {{ country.sites_count }}
+                                    </td>
+
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <div class="flex space-x-2">
                                             <Link :href="route('countries.edit', country.id)" class="text-blue-500 hover:text-blue-700">
