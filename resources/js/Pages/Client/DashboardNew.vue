@@ -110,7 +110,7 @@ const toggleFavorite = async (site) => {
                 </div>
 
                 <div class="col-span-3 overflow-hidden rounded-md bg-white shadow h-fit py-5">
-                    <div v-if="notifications.length > 0">
+                    <div>
                         <div class="flex items-center space-x-2 px-5">
                             <div class="w-10">
                                 <BellAlertIcon class="h-8 w-8"/>
@@ -122,7 +122,13 @@ const toggleFavorite = async (site) => {
                             </div>
                         </div>
 
-                        <ul role="list" class="mt-5 divide-y divide-gray-300 divide-opacity-50 border-t border-b border-gray-300 border-opacity-50">
+                        <div v-if="notifications.length == 0" class="mt-5 border-t border-b border-gray-300 border-opacity-50">
+                            <span class="block p-5 text-gray-500 text-sm italic">
+                                {{ $t("You don't have notifications yet.") }}
+                            </span>
+                        </div>
+
+                        <ul v-else role="list" class="mt-5 divide-y divide-gray-300 divide-opacity-50 border-t border-b border-gray-300 border-opacity-50">
                             <li v-for="(notification, index) in notifications" :key="index" class="odd:bg-gray-100">
                                 <SiteAdded v-if="notification.type == 'App\\Notifications\\SiteAdded'" :notification="notification"/>
                                 <SiteDeleted v-if="notification.type == 'App\\Notifications\\SiteDeleted'" :notification="notification"/>
