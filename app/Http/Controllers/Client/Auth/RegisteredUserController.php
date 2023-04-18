@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Client\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 
@@ -21,7 +23,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Client/Auth/Register');
+        return Inertia::render('Client/Auth/RegisterNew');
     }
 
     /**
@@ -34,21 +36,29 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $input = $request->validate([
+            'first_name' => ['nullable'],
+            'last_name' => ['nullable'],
             'name' => ['required', 'string', 'max:255'],
+            'birthday' => ['nullable'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+
+            'locale' => ['nullable', 'in:en,es,pt'],
+            'coin' => ['nullable', 'in:BRL,EUR,USD'],
+
+            'notify_updates_via_email' => ['nullable', 'in:DAILY,WEEKLY,MONTHLY'],
+
+            'phone' => ['nullable'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $input['password'] = Hash::make($input['password']);
 
-        event(new Registered($user));
+        $client = Client::create($input);
 
-        Auth::guard('client')->login($user);
+        event(new Registered($client));
+
+        Auth::guard('client')->login($client);
 
         return redirect(RouteServiceProvider::CLIENT_HOME);
     }

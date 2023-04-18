@@ -10,6 +10,7 @@ use App\Http\Controllers\Client\Auth\NewPasswordController;
 use App\Http\Controllers\Client\Auth\OtherBrowserSessionsController;
 use App\Http\Controllers\Client\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Client\Auth\RecoveryCodeController;
+use App\Http\Controllers\Client\Auth\RegisteredUserController;
 use App\Http\Controllers\Client\Auth\TwoFactorAuthenticatedSessionController;
 use App\Http\Controllers\Client\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Client\Auth\TwoFactorQrCodeController;
@@ -94,6 +95,13 @@ Route::group([
         ->middleware(['auth:client']);
 
     // guest
+    Route::get('/register', [RegisteredUserController::class, 'create'])
+        ->middleware('guest:client')
+        ->name('register');
+
+    Route::post('/register', [RegisteredUserController::class, 'store'])
+        ->middleware('guest:client');
+
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])
         ->middleware('guest:client')
         ->name('login');

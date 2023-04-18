@@ -2,18 +2,11 @@
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 import ApplicationLogoNew from '@/Components/ApplicationLogoNew.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
 import {
-    Dialog,
-    DialogPanel,
     Menu,
     MenuButton,
     MenuItem,
     MenuItems,
-    TransitionChild,
-    TransitionRoot,
-    Disclosure, DisclosureButton, DisclosurePanel,
 } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 

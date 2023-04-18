@@ -56,7 +56,7 @@ defineProps({
 const navigation = [
     { name: t('Dashboard'), href: route('seller.dashboard'), icon: ComputerDesktopIcon, current: route().current('seller.dashboard') },
     { name: t('Sites'), href: route('seller.sites.index'), icon: ClockIcon, current: route().current('seller.sites.*') },
-    { name: t('Orders'), href: route('seller.orders.index'), icon: ScaleIcon, current: route().current('seller.orders.*') },
+    // { name: t('Orders'), href: route('seller.orders.index'), icon: ScaleIcon, current: route().current('seller.orders.*') },
 ]
 
 const sidebarOpen = ref(false)

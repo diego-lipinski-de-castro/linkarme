@@ -7,6 +7,7 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,6 +19,7 @@ class Client extends Authenticatable implements HasLocalePreference
     use Notifiable;
     use HasProfilePhoto;
     use TwoFactorAuthenticatable;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -84,6 +86,7 @@ class Client extends Authenticatable implements HasLocalePreference
      */
     protected $appends = [
         'profile_photo_url',
+        'is_impersonated',
     ];
 
     protected $with = [
@@ -149,5 +152,10 @@ class Client extends Authenticatable implements HasLocalePreference
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function getIsImpersonatedAttribute()
+    {
+        return $this->isImpersonated();
     }
 }

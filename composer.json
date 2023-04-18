@@ -9,6 +9,7 @@
         "fedeisas/laravel-mail-css-inliner": "^5.0",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.3",
+        "lab404/laravel-impersonate": "^1.7",
         "laravel/framework": "^9.2",
         "laravel/horizon": "^5.9",
         "laravel/jetstream": "^2.12",

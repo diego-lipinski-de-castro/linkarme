@@ -69,6 +69,8 @@ Route::middleware('auth')->group(function () {
                 ->name('logout');
 });
 
+Route::impersonate();
+
 Route::get('audits', [AuditController::class, 'index'])->name('audits.index')->middleware(['auth']);
 Route::get('audits-filter', [AuditController::class, 'filter'])->name('audits.filter')->middleware(['auth']);
 Route::get('audits/{audit}', [AuditController::class, 'show'])->name('audits.show')->middleware(['auth']);
