@@ -43,7 +43,39 @@
                                     </p>
                                 @endif
 
-                                @if(in_array($attribute, ['gambling', 'cdb', 'cripto', 'sponsor']))
+                                @if(in_array($attribute, ['sponsor']))
+                                <p class="text-sm text-gray-500">
+                                    @if(isset($value['old']) && isset($value['new']))
+                                        
+                                        @if($value['new'] == true)
+                                        <span class="break-words">
+                                            {{
+                                                __('email.sponsor.bool_true', [
+                                                    'attribute' => $attribute,
+                                                    'old' => $value['old'],
+                                                    'new' => $value['new'],
+                                                ])
+                                            }}
+                                        </span>
+                                        @endif
+
+                                        @if($value['new'] == false)
+                                        <span class="break-words">
+                                            {{
+                                                __('email.sponsor.bool_false', [
+                                                    'attribute' => $attribute,
+                                                    'old' => $value['old'],
+                                                    'new' => $value['new'],
+                                                ])
+                                            }}
+                                        </span>
+                                        @endif
+
+                                    @endif
+                                </p>
+                                @endif
+
+                                @if(in_array($attribute, ['gambling', 'cdb', 'cripto']))
                                 <p class="text-sm text-gray-500">
                                     @if(isset($value['old']) && isset($value['new']))
                                         

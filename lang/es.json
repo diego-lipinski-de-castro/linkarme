@@ -952,6 +952,10 @@
         "bool_true": "Agora aceita mais artigos relacionados a {{attribute}}.",
         "bool_false": "Não aceita mais artigos relacionados a {{attribute}}."
     },
+    "sponsor": {
+        "bool_true": "Tags links as sponsor",
+        "bool_false": "Does not tags links as sponsor"
+    },
     "Recently added": "Recently added",
     "Was removed": "Foi removido",
     "Was deleted": "Foi desativado",

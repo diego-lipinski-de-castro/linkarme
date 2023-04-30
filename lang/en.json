@@ -951,6 +951,10 @@
         "bool_true": "Now accepts links related to {{attribute}}.",
         "bool_false": "Does not accepts links related to {{attribute}}."
     },
+    "sponsor": {
+        "bool_true": "Tags links as sponsor",
+        "bool_false": "Does not tags links as sponsor"
+    },
     "Recently added": "Recently added",
     "Was removed": "Was removed",
     "Was deleted": "Was deleted",
