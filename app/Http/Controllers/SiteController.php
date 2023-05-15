@@ -361,11 +361,11 @@ class SiteController extends Controller
 
         $import = new SitesImport();
 
-        Site::disableAuditing();
+        // Site::disableAuditing();
 
         $import->import(request()->file('file'));
 
-        Site::enableAuditing();
+        // Site::enableAuditing();
 
         $importFailures = collect();
 

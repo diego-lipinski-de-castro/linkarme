@@ -48,7 +48,10 @@ class SiteController extends Controller
             ->orderBy('name')
             ->get();
 
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::query()
+            ->whereHas('sites')
+            ->orderBy('name')
+            ->get();
 
         $query = request()->query();
 
@@ -82,6 +85,7 @@ class SiteController extends Controller
 
                 'language_id' => Arr::get($query, 'filter.language_id', []),
                 'country_id' => Arr::get($query, 'filter.country_id', []),
+                'category_id' => Arr::get($query, 'filter.category_id', null),
             ],
         ];
 
@@ -115,6 +119,7 @@ class SiteController extends Controller
                 AllowedFilter::scope('new', 'auth_new'),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::exact('country_id'),
+                AllowedFilter::exact('category_id'),
             ])
             ->paginate(50)
             ->appends(request()->query());

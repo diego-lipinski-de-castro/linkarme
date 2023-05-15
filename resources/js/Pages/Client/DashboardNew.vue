@@ -185,7 +185,7 @@ const toggleFavorite = async (site) => {
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
-                                        {{ site.url }}
+                                        {{ site.real_url }}
                                         </Link>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
@@ -236,7 +236,7 @@ const toggleFavorite = async (site) => {
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
-                                        {{ site.url }}
+                                        {{ site.real_url }}
                                         </Link>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
@@ -351,7 +351,7 @@ const toggleFavorite = async (site) => {
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
-                                        {{ site.url }}
+                                        {{ site.real_url }}
                                         </Link>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
@@ -407,7 +407,7 @@ const toggleFavorite = async (site) => {
                                     <td class="whitespace-nowrap px-6 py-4 text-sm">
                                         <Link :href="route('client.sites.show', site.id)"
                                             class="text-gray-500 hover:text-gray-900">
-                                        {{ site.url }}
+                                        {{ site.real_url }}
                                         </Link>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">

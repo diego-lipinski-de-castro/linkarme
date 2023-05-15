@@ -106,6 +106,7 @@ class Site extends Model implements Auditable
         'formatted_last_updated_at',
         'formatted_updated_at',
         'positive',
+        'real_url',
     ];
 
     protected static function booted()
@@ -319,6 +320,15 @@ class Site extends Model implements Auditable
         }
 
         return self::STATUSES[$this->status];
+    }
+
+    public function getRealUrlAttribute()
+    {
+        if(auth()->user() instanceof Client && !auth()->user()->full) {
+            return str_repeat('*', strlen($this->url));
+        }
+
+        return $this->url;
     }
 
     public function getFormattedSuggestedAttribute()

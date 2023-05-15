@@ -100,7 +100,7 @@ class DashboardController extends Controller
         return Inertia::render('Client/DashboardNew', [
             'coins' => $coins,
 
-            'notifications' => collect($notifications)->take(5),
+            'notifications' => auth()->user()->full ? collect($notifications)->take(5) : [],
 
             'orders' => $orders,
 

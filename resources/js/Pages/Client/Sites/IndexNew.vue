@@ -102,6 +102,7 @@ const filters = reactive({
     new: props.filters.filter.new,
     language_id: props.filters.filter.language_id,
     country_id: props.filters.filter.country_id,
+    category_id: props.filters.filter.category_id,
 })
 
 watch(sort, (n, o) => get());
@@ -147,6 +148,7 @@ const get = async () => {
             }),
             language_id: filters.language_id,
             country_id: filters.country_id,
+            category_id: filters.category_id,
         },
     }, {
         preserveState: true,
@@ -199,7 +201,7 @@ onMounted(() => {
                             </div>
                         </div>
 
-                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-0">
                             <div class="col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <span class="block h-2 w-2 bg-green-500 rounded-full"></span>
@@ -271,6 +273,8 @@ onMounted(() => {
                                 </div>
                             </div>
 
+                            <div class="col-span-3"><hr class="my-5"></div>
+
                             <div class="col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <GlobeAltIcon class="h-5 w-5" />
@@ -323,6 +327,18 @@ onMounted(() => {
                                     </div>
 
                                 </div>
+                            </div>
+
+                            <div class="col-span-3"><hr class="my-5"></div>
+
+                            <div class="col-span-1">
+                                <span class="text-sm font-medium">{{ $t('Category') }}</span>
+
+                                <select v-model="filters.category_id" id="category_id" name="category_id"
+                                    class="mt-4 ml-2 w-full bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0">
+                                    <option :value="null">{{ $t('All') }}</option>
+                                    <option v-for="(category, index) in categories" :key="index" :value="category.id">{{ category.title }}</option>
+                                </select>
                             </div>
                         </div>
 
@@ -569,7 +585,7 @@ onMounted(() => {
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                             <Link :href="route('client.sites.show', site.id)"
                                                 class="text-gray-500 hover:text-gray-900">
-                                            {{ site.url }}
+                                            {{ site.real_url }}
                                             </Link>
                                         </td>
                                         <td v-show="columns[2].visible"

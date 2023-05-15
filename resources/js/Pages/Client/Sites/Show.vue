@@ -70,7 +70,7 @@ const submit = () => {
 
                         <div class="col-span-6">
                             <InputLabel for="url" :value="$t('Url')" />
-                            <TextInput disabled id="url" :value="site.url" type="text"
+                            <TextInput disabled id="url" :value="site.real_url" type="text"
                                 class="disabled:opacity-50 mt-1 block w-full" required autofocus autocomplete="url" />
                         </div>
 

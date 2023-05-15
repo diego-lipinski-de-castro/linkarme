@@ -341,7 +341,7 @@ const content = computed(() => {
                                         <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                             <Link :href="route('client.sites.show', site.id)"
                                                 class="text-gray-500 hover:text-gray-900">
-                                            {{ site.url }}
+                                            {{ site.real_url }}
                                             </Link>
                                         </td>
                                         <td v-show="columns[2].visible"

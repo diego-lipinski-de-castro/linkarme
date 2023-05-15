@@ -69,8 +69,8 @@ class NotificationController extends Controller
         auth()->user()->unreadNotifications()->update(['read_at' => now()]);
 
         return Inertia::render('Client/NotificationsNew', [
-            'notifications' => $notifications,
-            'unreadNotifications' => $unreadNotifications,
+            'notifications' => auth()->user()->full ? $notifications : [],
+            'unreadNotifications' => auth()->user()->full ? $unreadNotifications : [],
             'coins' => $coins,
         ]);
     }
