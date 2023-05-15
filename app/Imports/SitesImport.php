@@ -43,13 +43,13 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
         $costCoin = 'BRL';
         $saleCoin = 'BRL';
 
-        if (! blank($row['custo']) && Str::contains($row['custo'], ['USD', 'usd', 'dolar', 'Dolares'])) {
+        if (! blank($row['custo']) && Str::contains($row['custo'], ['USD', 'usd', 'dolar', 'Dolares', '$'])) {
             $costCoin = 'USD';
         } elseif (! blank($row['custo']) && Str::contains($row['custo'], ['EUR', 'eur', 'euros', '€'])) {
             $costCoin = 'EUR';
         }
 
-        if (! blank($row['venda']) && Str::contains($row['venda'], ['USD', 'usd', 'dolar', 'Dolares'])) {
+        if (! blank($row['venda']) && Str::contains($row['venda'], ['USD', 'usd', 'dolar', 'Dolares', '$'])) {
             $saleCoin = 'USD';
         } elseif (! blank($row['venda']) && Str::contains($row['venda'], ['EUR', 'eur', 'euros', '€'])) {
             $saleCoin = 'EUR';
