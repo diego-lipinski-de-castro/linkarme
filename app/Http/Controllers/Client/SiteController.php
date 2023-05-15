@@ -217,7 +217,7 @@ class SiteController extends Controller
 
         $note = auth()->user()->notes()->where('site_id', $site->id)->first();
 
-        return Inertia::render('Client/Sites/Show', [
+        return Inertia::render('Client/Sites/ShowNew', [
             'site' => $site,
             'coins' => $coins,
             'note' => $note,
