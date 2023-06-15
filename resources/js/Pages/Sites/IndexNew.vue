@@ -31,6 +31,7 @@ import {
     GlobeAltIcon,
     PlusCircleIcon,
     PlusIcon,
+    InformationCircleIcon
 } from '@heroicons/vue/24/outline'
 
 import { debounce } from 'debounce';
@@ -213,6 +214,10 @@ onMounted(() => {
         tippy('[data-tippy-content]');
     }, 500)
 })
+
+
+const expanded = ref([])
+
 </script>
         
 <template>
@@ -684,91 +689,139 @@ onMounted(() => {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
-                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <span
-                                                :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
-                                                class="relative flex space-x-2 items-center">
-                                                <span v-if="site.sale_coin != coinStore.coin"
-                                                    class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                                <span>
-                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                <tbody class="bg-white">
 
-                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                    <template v-for="(site, index) in sites.data" :key="index">
+                                        <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1) }]">
+                                            <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
+                                                <span
+                                                    :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
+                                                    class="relative flex space-x-2 items-center">
+                                                    <span v-if="site.sale_coin != coinStore.coin"
+                                                        class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                    <span>
+                                                        {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+
+                                                        {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        </td>
-                                        <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <Link :href="route('sites.edit', site.id)" :class="[{
-                                                'text-gray-500 hover:text-gray-900': site.deleted_at === null,
-                                                'text-red-500 hover:text-red-700': site.deleted_at !== null,
-                                            }]">
-                                            {{ site.url }}
-                                            </Link>
-                                        </td>
-                                        <td v-show="columns[2].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.da ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[3].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.dr ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[4].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.gambling ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[5].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.sponsor ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[6].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.cripto ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[7].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.ssl ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[8].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
-                                        </td>
-                                        <!-- <td v-show="columns[9].visible"
+                                            </td>
+                                            <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
+                                                <Link :href="route('sites.edit', site.id)" :class="[{
+                                                    'text-gray-500 hover:text-gray-900': site.deleted_at === null,
+                                                    'text-red-500 hover:text-red-700': site.deleted_at !== null,
+                                                }]">
+                                                {{ site.url }}
+                                                </Link>
+                                            </td>
+                                            <td v-show="columns[2].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.banner ? 'Sim' : 'Não' }}
+                                                {{ site.da ?? '-' }}
+                                            </td>
+                                            <td v-show="columns[3].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ site.dr ?? '-' }}
+                                            </td>
+                                            <td v-show="columns[4].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.gambling ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[5].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.sponsor ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[6].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.cripto ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[7].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.ssl ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[8].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
+                                            </td>
+                                            <!-- <td v-show="columns[9].visible"
+                                                    class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                    {{ site.banner ? 'Sim' : 'Não' }}
+                                                </td>
+                                                <td v-show="columns[10].visible"
+                                                    class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                    {{ site.menu ? 'Sim' : 'Não' }}
+                                                </td> -->
+                                            <td v-show="columns[9].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ site.obs ?? '-' }}
                                             </td>
                                             <td v-show="columns[10].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.menu ? 'Sim' : 'Não' }}
-                                            </td> -->
-                                        <td v-show="columns[9].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.obs ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[10].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            -
-                                        </td>
-                                        <td v-show="columns[11].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.formatted_inserted_at }}
-                                        </td>
-                                        <td v-show="columns[12].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.formatted_updated_at }}
-                                        </td>
+                                                -
+                                            </td>
+                                            <td v-show="columns[11].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ site.formatted_inserted_at }}
+                                            </td>
+                                            <td v-show="columns[12].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ site.formatted_updated_at }}
+                                            </td>
 
-                                        <td class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <div class="flex justify-end space-x-2">
-                                                <Link :href="route('sites.edit', site.id)"
-                                                    class="text-blue-500 hover:text-blue-700">
-                                                <PencilSquareIcon class="h-5 w-5" />
-                                                </Link>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            <td class="whitespace-nowrap px-4 py-4 text-sm">
+                                                <div class="flex justify-end space-x-3">
+                                                    <button v-if="site.types.length > 0" type="button" @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) :  expanded.push(index)"
+                                                        class="text-gray-500 hover:text-gray-700">
+                                                        <InformationCircleIcon class="h-5 w-5" />
+                                                    </button>
+
+                                                    <Link :href="route('sites.edit', site.id)"
+                                                        class="text-blue-500 hover:text-blue-700">
+                                                        <PencilSquareIcon class="h-5 w-5" />
+                                                    </Link>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr v-show="site.types.length > 0 && expanded.includes(index)">
+                                            <td :colspan="columns.filter(c => c.visible).length + 1" class="px-4 py-4 text-sm">
+
+                                                <ul class="space-y-2">
+
+                                                    <li v-for="(type, j) in site.types" :key="j">
+                                                        <!-- <span
+                                                            :data-tippy-content="type.pivot.cost_coin != coinStore.coin ? `${$filters.currency(type.pivot.cost / 100, coins[type.pivot.cost_coin])}` : null"
+                                                            class="relative flex space-x-2 items-center">
+                                                            <span v-if="type.pivot.cost_coin != coinStore.coin"
+                                                                class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                            <span>
+                                                                {{ type.pivot.cost_coin != coinStore.coin ? '~ ' : null }}
+
+                                                                {{ $filters.currency(Math.ceil((type.pivot.cost / coinStore.ratios[type.pivot.cost_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                            </span>
+                                                        </span> -->
+                                                        
+                                                        <div class="flex space-x-2">
+                                                            <span
+                                                                :data-tippy-content="type.pivot.sale_coin != coinStore.coin ? `${$filters.currency(type.pivot.sale / 100, coins[type.pivot.sale_coin])}` : null"
+                                                                class="relative flex space-x-2 items-center">
+                                                                <span v-if="type.pivot.sale_coin != coinStore.coin"
+                                                                    class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <span>
+                                                                    {{ type.pivot.sale_coin != coinStore.coin ? '~ ' : null }}
+
+                                                                    {{ $filters.currency(Math.ceil((type.pivot.sale / coinStore.ratios[type.pivot.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                </span>
+                                                            </span>
+
+                                                            <span>for {{ type.name }} links</span>
+                                                        </div>
+                                                    </li>
+
+                                                </ul>
+
+                                            </td>
+                                        </tr>
+                                    </template>
                                 </tbody>
                             </table>
                         </div>

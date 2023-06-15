@@ -42,12 +42,12 @@ const submit = () => {
 <template>
     <Head :title="$t('Login')" />
 
-    <div class="min-h-full relative">
-        <div class="z-0 absolute inset-0">
+    <div class="min-h-full relative flex justify-center">
+        <div class="z-0 fixed inset-0">
             <img class="h-full w-full object-cover" src="@/assets/images/login-bg.jpg" alt="Background" />
         </div>
 
-        <div class="z-10 absolute inset-0 flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div class="z-10 absolute flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div class="mx-5 sm:mx-auto sm:w-full sm:max-w-md">
                 <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
                     

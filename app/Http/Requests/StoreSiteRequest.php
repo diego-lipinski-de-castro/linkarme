@@ -72,6 +72,8 @@ class StoreSiteRequest extends FormRequest
             'paypal' => 'nullable',
             'instagram' => 'nullable',
             'facebook' => 'nullable',
+
+            'types' => 'required|array|min:0',
         ];
     }
 

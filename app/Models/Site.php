@@ -256,6 +256,18 @@ class Site extends Model implements Auditable
         return $this->belongsToMany(Project::class, 'project_site')->withTimestamps();
     }
 
+    public function types()
+    {
+        return $this->belongsToMany(Type::class)
+            ->withTimestamps()
+            ->withPivot([
+                'cost',
+                'sale',
+                'cost_coin',
+                'sale_coin',
+            ]);
+    }
+
     public function scopeOfStatus($query, $status)
     {
         return $query->where('status', $status);

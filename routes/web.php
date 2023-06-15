@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TypeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -113,6 +114,7 @@ Route::resource('categories', CategoryController::class)->middleware(['auth']);
 Route::resource('languages', LanguageController::class)->middleware(['auth']);
 Route::resource('countries', CountryController::class)->middleware(['auth']);
 Route::resource('teams', TeamController::class)->middleware(['auth']);
+Route::resource('types', TypeController::class)->middleware(['auth']);
 
 require __DIR__.'/client.php';
 require __DIR__.'/seller.php';

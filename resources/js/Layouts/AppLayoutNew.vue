@@ -27,7 +27,8 @@ import {
     ComputerDesktopIcon,
     Bars3Icon,
     XMarkIcon,
-    MagnifyingGlassIcon
+    MagnifyingGlassIcon,
+    LinkIcon
 } from '@heroicons/vue/24/outline'
 import {
     ChevronDownIcon,
@@ -62,6 +63,7 @@ const navigation = [
     { name: t('Clients'), href: route('clients.index'), icon: ClockIcon, current: route().current('clients.*') },
     { name: t('Sellers'), href: route('sellers.index'), icon: ClockIcon, current: route().current('sellers.*') },
     { name: t('Categories'), href: route('categories.index'), icon: ClockIcon, current: route().current('categories.*') },
+    { name: t('Types'), href: route('types.index'), icon: LinkIcon, current: route().current('types.*') },
     { name: t('Languages'), href: route('languages.index'), icon: ClockIcon, current: route().current('languages.*') },
     { name: t('Countries'), href: route('countries.index'), icon: ClockIcon, current: route().current('countries.*') },
     { name: t('Teams'), href: route('teams.index'), icon: ClockIcon, current: route().current('teams.*') },

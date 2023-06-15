@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\FilterLimiter;
 use App\Filters\NewFilter;
 use App\Filters\UrlFilter;
+use App\Helper;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Imports\SitesImport;
@@ -16,6 +17,7 @@ use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
 use App\Models\Team;
+use App\Models\Type;
 use App\Notifications\SiteAdded;
 use App\Notifications\SiteDeleted;
 use App\Notifications\SiteRestored;
@@ -109,7 +111,10 @@ class SiteController extends Controller
                 $query->ofStatus('APPROVED');
             })
             ->withCount('orders')
-            ->with('category')
+            ->with([
+                'category',
+                'types',
+            ])
             ->defaultSort('url')
             ->allowedSorts([
                 'url',
@@ -171,6 +176,7 @@ class SiteController extends Controller
         $countries = Country::orderBy('name')->get();
         $sellers = Seller::orderBy('name')->get();
         $teams = Team::orderBy('name')->get();
+        $types = Type::orderBy('name')->get();
 
         $coins = config('coins');
 
@@ -180,6 +186,7 @@ class SiteController extends Controller
             'countries' => $countries,
             'sellers' => $sellers,
             'teams' => $teams,
+            'types' => $types,
             'coins' => $coins,
         ]);
     }
@@ -194,9 +201,25 @@ class SiteController extends Controller
     {
         DB::transaction(function () use($request) {
             
-            $site = Site::create(array_merge($request->validated(), [
+            $site = Site::create(array_merge(
+                Arr::except($request->validated(), 'types'), [
                 'status' => 'APPROVED',
             ]));
+
+            $types = collect($request->validated()['types']);
+
+            $types = $types->where('available', true);
+
+            $types = $types->mapWithKeys(function ($type) {
+                return [$type['id'] => [
+                    'cost' => Helper::extractNumbersFromString($type['cost']),
+                    'sale' => Helper::extractNumbersFromString($type['sale']),
+                    'cost_coin' => $type['cost_coin'],
+                    'sale_coin' => $type['sale_coin'],
+                ]];
+            });
+
+            $site->types()->sync($types);
 
             Notification::send(Client::all(), new SiteAdded($site));
         });
@@ -230,6 +253,7 @@ class SiteController extends Controller
             'language',
             'country',
             'seller',
+            'types',
         ]);
 
         $categories = Category::orderBy('name')->get();
@@ -237,6 +261,7 @@ class SiteController extends Controller
         $countries = Country::orderBy('name')->get();
         $sellers = Seller::orderBy('name')->get();
         $teams = Team::orderBy('name')->get();
+        $types = Type::orderBy('name')->get();
 
         $note = auth()->user()->notes()->where('site_id', $site->id)->first();
 
@@ -249,6 +274,7 @@ class SiteController extends Controller
             'countries' => $countries,
             'sellers' => $sellers,
             'teams' => $teams,
+            'types' => $types,
             'coins' => $coins,
             'note' => $note,
         ]);
@@ -266,7 +292,24 @@ class SiteController extends Controller
         $site = Site::withTrashed()->findOrFail($id);
 
         DB::transaction(function () use($site, $request) {
-            $site->update($request->validated());
+            $site->update(
+                Arr::except($request->validated(), 'types')
+            );
+
+            $types = collect($request->validated()['types']);
+
+            $types = $types->where('available', true);
+
+            $types = $types->mapWithKeys(function ($type) {
+                return [$type['id'] => [
+                    'cost' => Helper::extractNumbersFromString($type['cost']),
+                    'sale' => Helper::extractNumbersFromString($type['sale']),
+                    'cost_coin' => $type['cost_coin'],
+                    'sale_coin' => $type['sale_coin'],
+                ]];
+            });
+
+            $site->types()->sync($types);
 
             $last = $site->audits()->latest()->first();
 
