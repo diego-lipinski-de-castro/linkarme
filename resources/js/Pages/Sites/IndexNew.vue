@@ -31,7 +31,9 @@ import {
     GlobeAltIcon,
     PlusCircleIcon,
     PlusIcon,
-    InformationCircleIcon
+    InformationCircleIcon,
+    TrashIcon,
+    ArrowPathIcon,
 } from '@heroicons/vue/24/outline'
 
 import { debounce } from 'debounce';
@@ -164,6 +166,13 @@ const get = async () => {
     }, {
         preserveState: true,
         preserveScroll: true,
+    })
+}
+
+const toggle = async (id) => {
+    Inertia.post(route('sites.toggle', id), null, {
+        preserveScroll: true,
+        preserveState: true,
     })
 }
 
@@ -692,7 +701,7 @@ const expanded = ref([])
                                 <tbody class="bg-white">
 
                                     <template v-for="(site, index) in sites.data" :key="index">
-                                        <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1) }]">
+                                        <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1), 'bg-red-50': site.deleted_at !== null, }]">
                                             <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                                 <span
                                                     :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
@@ -778,6 +787,12 @@ const expanded = ref([])
                                                         class="text-blue-500 hover:text-blue-700">
                                                         <PencilSquareIcon class="h-5 w-5" />
                                                     </Link>
+
+                                                    <button @click="toggle(site.id)"
+                                                        :class="[site.deleted_at === null ? 'text-red-500 hover:text-red-700' : 'text-green-500 hover:text-green-700']">
+                                                        <TrashIcon v-if="site.deleted_at === null" class="h-5 w-5" />
+                                                        <ArrowPathIcon v-else class="h-5 w-5" />
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
