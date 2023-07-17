@@ -26,13 +26,14 @@ use App\Http\Controllers\Client\SiteController;
 use App\Http\Controllers\Client\BugController;
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/clientes/login', '/login');
+
 Route::group([
-    'prefix' => 'clientes',
     'namespace' => 'Client',
     'as' => 'client.',
 ], function () {
 
-    Route::redirect('/', '/clientes/login');
+    Route::redirect('/', '/login');
 
     // 
     Route::get('dashboard', [DashboardController::class, 'index'])
