@@ -1,21 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuditController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\CountryController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\NoteController;
-use App\Http\Controllers\OfferController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\SellerController;
-use App\Http\Controllers\SiteController;
-use App\Http\Controllers\TeamController;
-use App\Http\Controllers\TypeController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------

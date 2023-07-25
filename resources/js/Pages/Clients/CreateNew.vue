@@ -72,7 +72,7 @@ const submit = () => {
                             <div>
                                 <InputLabel for="first_name" :value="$t('First name')" />
                                 <TextInput id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-full"
-                                    autocomplete="first_name" />
+                                    autocomplete="off" />
                                 <InputError :message="form.errors.first_name" class="mt-2" />
                             </div>
 
@@ -80,7 +80,7 @@ const submit = () => {
                             <div>
                                 <InputLabel for="last_name" :value="$t('Last name')" />
                                 <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-full"
-                                    autocomplete="last_name" />
+                                    autocomplete="off" />
                                 <InputError :message="form.errors.last_name" class="mt-2" />
                             </div>
 
@@ -89,7 +89,7 @@ const submit = () => {
                             <div>
                                 <InputLabel for="name" :value="$t('Username (optional)')" />
                                 <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
-                                    autocomplete="name" />
+                                    autocomplete="off" />
                                 <InputError :message="form.errors.name" class="mt-2" />
                             </div>
 
@@ -97,19 +97,19 @@ const submit = () => {
                             <div>
                                 <InputLabel for="birthday" :value="$t('Birthday')" />
                                 <TextInput id="birthday" v-model="form.birthday" type="text" class="mt-1 block w-full"
-                                    autocomplete="birthday" />
+                                    autocomplete="off" />
                                 <InputError :message="form.errors.birthday" class="mt-2" />
                             </div>
 
                             <div>
                                 <InputLabel for="email" :value="$t('Email')" />
-                                <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" />
+                                <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" autocomplete="off" />
                                 <InputError :message="form.errors.email" class="mt-2" />
                             </div>
 
                             <div>
                                 <InputLabel for="phone" :value="$t('Phone')" />
-                                <TextInput id="phone" v-model="form.phone" type="phone" class="mt-1 block w-full" />
+                                <TextInput id="phone" v-model="form.phone" type="phone" class="mt-1 block w-full" autocomplete="off"/>
                                 <InputError :message="form.errors.phone" class="mt-2" />
                             </div>
 
@@ -119,7 +119,7 @@ const submit = () => {
                                 <div class="mt-1 flex rounded-md shadow-sm">
                                     <TextInput id="password" ref="passwordInput" v-model="form.password"
                                         :type="showPassword ? 'text' : 'password'"
-                                        class="block w-full rounded-none rounded-l-md" autocomplete="password" />
+                                        class="block w-full rounded-none rounded-l-md" autocomplete="off" />
 
                                     <button @click="showPassword = !showPassword" type="button"
                                         class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">

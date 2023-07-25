@@ -189,7 +189,7 @@ const generatePassword = () => {
                                 <div>
                                     <InputLabel for="first_name" :value="$t('First name')" />
                                     <TextInput id="first_name" v-model="form.first_name" type="text"
-                                        class="mt-1 block w-full" />
+                                        class="mt-1 block w-full" autocomplete="off"/>
                                     <InputError :message="form.errors.first_name" class="mt-2" />
                                 </div>
 
@@ -197,7 +197,7 @@ const generatePassword = () => {
                                 <div>
                                     <InputLabel for="last_name" :value="$t('Last name')" />
                                     <TextInput id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-full"
-                                     />
+                                    autocomplete="off"/>
                                     <InputError :message="form.errors.last_name" class="mt-2" />
                                 </div>
 
@@ -206,7 +206,7 @@ const generatePassword = () => {
                                 <div>
                                     <InputLabel for="name" :value="$t('Username (optional)')" />
                                     <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
-                                     />
+                                    autocomplete="off"/>
                                     <InputError :message="form.errors.name" class="mt-2" />
                                 </div>
 
@@ -249,7 +249,7 @@ const generatePassword = () => {
                                 <!-- Birthday -->
                                 <div class="col-span-2">
                                     <InputLabel for="birthday" :value="$t('Birthday')" />
-                                    <TextInput id="birthday" v-model="form.birthday" type="text" class="mt-1 block w-full"
+                                    <TextInput id="birthday" v-model="form.birthday" type="text" class="mt-1 block w-full" autocomplete="off"
                                      />
                                     <InputError :message="form.errors.birthday" class="mt-2" />
                                 </div>
@@ -429,7 +429,7 @@ const generatePassword = () => {
                                     <InputLabel for="email" :value="$t('Email')" />
                                     <TextInput
                                         id="email"
-                                        v-model="form.email"
+                                        v-model="form.email" autocomplete="off"
                                         type="email"
                                         class="mt-1 block w-full"
                                     />
@@ -460,7 +460,7 @@ const generatePassword = () => {
                                     <InputLabel for="phone" :value="$t('Phone')" />
                                     <TextInput
                                         id="phone"
-                                        v-model="form.phone"
+                                        v-model="form.phone" autocomplete="off"
                                         type="phone"
                                         class="mt-1 block w-full"
                                     />
