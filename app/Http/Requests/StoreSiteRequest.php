@@ -73,7 +73,7 @@ class StoreSiteRequest extends FormRequest
             'instagram' => 'nullable',
             'facebook' => 'nullable',
 
-            'types' => 'required|array|min:0',
+            'types' => 'present|array|min:0',
         ];
     }
 
