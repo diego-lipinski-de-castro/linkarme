@@ -14,8 +14,11 @@ use App\Models\Country;
 use App\Models\Language;
 use App\Models\Offer;
 use App\Models\Site;
+use App\Models\Team;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -135,13 +138,17 @@ class SiteController extends Controller
         $categories = Category::orderBy('name')->get();
         $languages = Language::orderBy('name')->get();
         $countries = Country::orderBy('name')->get();
+        $teams = Team::orderBy('name')->get();
+        $types = Type::orderBy('name')->get();
 
         $coins = config('coins');
 
-        return Inertia::render('Seller/Sites/Create', [
+        return Inertia::render('Seller/Sites/CreateNew', [
             'categories' => $categories,
             'languages' => $languages,
             'countries' => $countries,
+            'teams' => $teams,
+            'types' => $types,
             'coins' => $coins,
         ]);
     }
@@ -154,10 +161,28 @@ class SiteController extends Controller
      */
     public function store(StoreSiteRequest $request)
     {
-        Site::create(array_merge($request->validated(), [
-            'seller_id' => auth()->id(),
-            'status' => 'PENDING',
-        ]));
+        DB::transaction(function () use($request) {
+
+            $site = Site::create(array_merge($request->validated(), [
+                'seller_id' => auth()->id(),
+                'status' => 'PENDING',
+            ]));
+
+            $types = collect($request->validated()['types']);
+
+            $types = $types->where('available', true);
+
+            $types = $types->mapWithKeys(function ($type) {
+                return [$type['id'] => [
+                    'cost' => Helper::extractNumbersFromString($type['cost']),
+                    'sale' => Helper::extractNumbersFromString($type['sale']),
+                    'cost_coin' => $type['cost_coin'],
+                    'sale_coin' => $type['sale_coin'],
+                ]];
+            });
+
+            $site->types()->sync($types);
+        });
 
         return redirect()->route('seller.sites.index');
     }
@@ -170,21 +195,26 @@ class SiteController extends Controller
             'category',
             'language',
             'country',
+            'types',
         ]);
 
         $countries = Country::orderBy('name')->get();
         $languages = Language::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
+        $teams = Team::orderBy('name')->get();
+        $types = Type::orderBy('name')->get();
 
         $note = auth()->user()->notes()->where('site_id', $site->id)->first();
 
         $coins = config('coins');
 
-        return Inertia::render('Seller/Sites/Edit', [
+        return Inertia::render('Seller/Sites/EditNew', [
             'site' => $site,
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,
+            'teams' => $teams,
+            'types' => $types,
             'coins' => $coins,
             'note' => $note,
         ]);
@@ -197,7 +227,27 @@ class SiteController extends Controller
     {
         $site = Site::withTrashed()->findOrFail($id);
 
-        $site->update($request->validated());
+        DB::transaction(function () use($site, $request) {
+            
+            $site->update(
+                Arr::except($request->validated(), 'types')
+            );
+
+            $types = collect($request->validated()['types']);
+
+            $types = $types->where('available', true);
+
+            $types = $types->mapWithKeys(function ($type) {
+                return [$type['id'] => [
+                    'cost' => Helper::extractNumbersFromString($type['cost']),
+                    'sale' => Helper::extractNumbersFromString($type['sale']),
+                    'cost_coin' => $type['cost_coin'],
+                    'sale_coin' => $type['sale_coin'],
+                ]];
+            });
+
+            $site->types()->sync($types);
+        });
 
         return redirect()->route('seller.sites.index');
     }

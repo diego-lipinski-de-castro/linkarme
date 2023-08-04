@@ -51,7 +51,9 @@ class UpdateSiteRequest extends FormRequest
             'banner' => 'required|boolean',
 
             'cost' => 'nullable|integer',
+            'sale' => 'nullable|integer',
             'cost_coin' => 'nullable|in:BRL,EUR,USD',
+            'sale_coin' => 'nullable|in:BRL,EUR,USD',
 
             'last_posted' => 'nullable|date',
 
@@ -68,6 +70,8 @@ class UpdateSiteRequest extends FormRequest
             'paypal' => 'nullable',
             'instagram' => 'nullable',
             'facebook' => 'nullable',
+
+            'types' => 'present|array|min:0',
         ];
     }
 

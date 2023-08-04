@@ -59,7 +59,6 @@ class UpdateSiteRequest extends FormRequest
             'last_posted' => 'nullable|date',
 
             'seller_id' => 'nullable|integer|exists:sellers,id',
-
             'team_id' => 'nullable|integer|exists:teams,id',
 
             'owner_name' => 'nullable',

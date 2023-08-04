@@ -51,7 +51,9 @@ class StoreSiteRequest extends FormRequest
             'banner' => 'nullable|boolean',
 
             'cost' => 'nullable|integer',
+            'sale' => 'nullable|integer',
             'cost_coin' => 'nullable|in:BRL,EUR,USD',
+            'sale_coin' => 'nullable|in:BRL,EUR,USD',
 
             'last_posted' => 'nullable|date',
 
@@ -68,6 +70,8 @@ class StoreSiteRequest extends FormRequest
             'paypal' => 'nullable',
             'instagram' => 'nullable',
             'facebook' => 'nullable',
+
+            'types' => 'present|array|min:0',
         ];
     }
 
@@ -83,6 +87,7 @@ class StoreSiteRequest extends FormRequest
                 str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
                 str_replace('www.', '', parse_url($this->url, PHP_URL_PATH))),
             'cost' => Helper::extractNumbersFromString($this->cost),
+            'sale' => Helper::extractNumbersFromString($this->sale),
         ]);
     }
 }
