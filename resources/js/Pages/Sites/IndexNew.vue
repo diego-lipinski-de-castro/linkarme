@@ -779,19 +779,20 @@ const expanded = ref([])
                                                     class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                     {{ site.menu ? 'Sim' : 'Não' }}
                                                 </td> -->
-                                            <td v-show="columns[8].visible"
+                                            <td v-show="columns[7].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.obs ?? '-' }}
                                             </td>
-                                            <td v-show="columns[9].visible"
+                                            <td v-show="columns[8].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 -
                                             </td>
-                                            <td v-show="columns[10].visible"
+                                            <td v-show="columns[9].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_inserted_at }}
                                             </td>
-                                            <td v-show="columns[11].visible"
+
+                                            <td v-show="columns[10].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_updated_at }}
                                             </td>
