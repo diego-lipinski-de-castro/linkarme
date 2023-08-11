@@ -325,6 +325,19 @@ class Site extends Model implements Auditable
         });
     }
 
+    public function scopeOfTypes($query, $types)
+    {
+        $types = explode(',', $types);
+
+        foreach($types as $type) {
+            $query->whereHas('types', function ($query) use ($type) {
+                $query->where('types.id', $type);
+            });
+        }
+
+        return $query;
+    }
+
     public function getFormattedStatusAttribute()
     {
         if (blank($this->status)) {

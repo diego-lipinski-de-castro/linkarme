@@ -44,6 +44,7 @@
         "v-money3": "^3.22.1",
         "vue-accessible-color-picker": "^4.1.2",
         "vue-filepond": "^7.0.3",
+        "vue-multiselect": "^3.0.0-beta.2",
         "vue3-particles": "^2.9.3"
     }
 }

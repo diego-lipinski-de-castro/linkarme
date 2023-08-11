@@ -71,6 +71,10 @@ class SiteController extends Controller
             ->orderBy('name')
             ->get();
 
+        $types = Type::query()
+            ->orderBy('name')
+            ->get();
+
         $query = request()->query();
 
         $filters = [
@@ -102,6 +106,8 @@ class SiteController extends Controller
                 'country_id' => Arr::get($query, 'filter.country_id', []),
                 'category_id' => Arr::get($query, 'filter.category_id', null),
                 'seller_id' => Arr::get($query, 'filter.seller_id', null),
+
+                'types' => Arr::get($query, 'filter.types', null),
             ],
         ];
 
@@ -145,6 +151,8 @@ class SiteController extends Controller
                 AllowedFilter::exact('category_id'),
                 AllowedFilter::exact('seller_id'),
                 AllowedFilter::scope('of_status'),
+
+                AllowedFilter::scope('types', 'of_types'),
             ])
             ->paginate(50)
             ->appends(request()->query());
@@ -159,6 +167,7 @@ class SiteController extends Controller
             'languages' => $languages,
             'categories' => $categories,
             'sellers' => $sellers,
+            'types' => $types,
             'importFailures' => session('importFailures'),
             'importDiff' => session('importDiff'),
         ]);
@@ -313,7 +322,9 @@ class SiteController extends Controller
 
             $last = $site->audits()->latest()->first();
 
-            Notification::send(Client::all(), new SiteUpdated($site, $last));
+            if(!blank($last)) {
+                Notification::send(Client::all(), new SiteUpdated($site, $last));
+            }
         });
 
         return redirect()->route('sites.index');

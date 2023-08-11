@@ -1,3 +1,5 @@
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
@@ -44,6 +46,7 @@ import vueFilePond from 'vue-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import AppSuspense from '../../Layouts/AppSuspense.vue';
+import VueMultiselect from 'vue-multiselect'
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -59,6 +62,7 @@ const props = defineProps({
     languages: Array,
     categories: Array,
     sellers: Array,
+    types: Array,
 
     importFailures: Object,
     importDiff: Number,
@@ -81,15 +85,18 @@ const _defaultColumns = [
     { key: 'url', label: t('Domain'), visible: true },
     { key: 'da', label: t('DA'), visible: true },
     { key: 'dr', label: t('DR'), visible: true },
-    { key: 'gambling', label: t('Accepts gambling'), visible: true },
+    // { key: 'gambling', label: t('Accepts gambling'), visible: true },
     { key: 'sponsor', label: t('Marked as sponsored'), visible: true },
-    { key: 'cripto', label: t('Cripto'), visible: false },
+    // { key: 'cripto', label: t('Cripto'), visible: false },
     { key: 'ssl', label: t('SSL'), visible: false },
     { key: 'category', label: t('Category'), visible: false },
     { key: 'obs', label: t('Obs'), visible: true },
     { key: 'example', label: t('Example'), visible: false },
     { key: 'inserted_at', label: t('Upload date'), visible: false },
     { key: 'last_updated_at', label: t('Updated date'), visible: true },
+    ...props.types.map(type => ({
+        key: `type-${type.id}`, label: type.name, visible: true
+    }))
 ];
 
 const _columns =
@@ -121,6 +128,7 @@ const filters = reactive({
     country_id: props.filters.filter.country_id,
     category_id: props.filters.filter.category_id,
     seller_id: props.filters.filter.seller_id,
+    types: props.filters.filter.types,
 })
 
 watch(sort, (n, o) => get());
@@ -162,6 +170,7 @@ const get = async () => {
             country_id: filters.country_id,
             category_id: filters.category_id,
             seller_id: filters.seller_id,
+            types: filters.types.map(t => t.id).join(','),
         },
     }, {
         preserveState: true,
@@ -478,22 +487,9 @@ const expanded = ref([])
 
                         <hr class="my-5">
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-24">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6">
 
-                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                                <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
-                                    <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Accepts gambling')
-                                        }}</span>
-                                    </SwitchLabel>
-
-                                    <Switch v-model="filters.gambling"
-                                        :class="[filters.gambling ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
-                                        <span aria-hidden="true"
-                                            :class="[filters.gambling ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
-                                    </Switch>
-                                </SwitchGroup>
-
+                            <div class="col-span-1 flex">
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
                                         <span class="text-sm font-medium self-center text-right">{{ $t('Marked as sponsored') }}</span>
@@ -504,7 +500,7 @@ const expanded = ref([])
                                     <span aria-hidden="true"
                                         :class="[filters.sponsor ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
                                 </Switch>
-                            </SwitchGroup>
+                                </SwitchGroup>
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
@@ -519,18 +515,43 @@ const expanded = ref([])
                                 </SwitchGroup>
                             </div>
 
-                            <div class="w-full">
+                            <div class="col-span-1">
+                                <label class="text-sm font-medium">{{ $t('Filter by types') }}</label>
+
+                                <VueMultiselect
+                                    class="mt-1 ml-2"
+                                    v-model="filters.types"
+                                    track-by="id"
+                                    label="name"
+                                    placeholder="Select..."
+                                    :options="types"
+                                    :multiple="true"
+                                    :searchable="false"
+                                    :close-on-select="false"
+                                    selectLabel=""
+                                    deselectLabel=""
+                                    :showLabels="false">
+
+                                    <template #placeholder>
+                                        <span class="text-gray-500">Select...</span>
+                                    </template>
+
+                                </VueMultiselect>
+                            </div>
+
+                            <div class="col-span-1">
                                 <label for="search" class="text-sm font-medium">{{ $t('...or just find by name:') }}</label>
-                                <div class="mt-1 relative  text-gray-400 focus-within:text-gray-600">
+                                <div class="mt-1 relative text-gray-400 focus-within:text-gray-600">
                                     <div class="pointer-events-none absolute inset-y-0 left-2 flex items-center"
                                         aria-hidden="true">
-                                        <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+                                        <MagnifyingGlassIcon class="ml-2 h-5 w-5" aria-hidden="true" />
                                     </div>
                                     <input v-model="filters.url" id="search" name="search"
-                                        class="block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
+                                        class="ml-2 block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
                                         :placeholder="$t('Search')" type="search" />
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -640,19 +661,19 @@ const expanded = ref([])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
+                                        
                                         <th v-show="columns[4].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Accepts gambling') }}</th>
+                                            scope="col">{{ $t('Marked as sponsored') }}</th>
+
+                                        <th v-for="(type, index) in types" v-show="columns[columns.length - types.length + index].visible"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ type.name }}</th>
+
                                         <th v-show="columns[5].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Marked as sponsored') }}</th>
-                                        <th v-show="columns[6].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Cripto') }}</th>
-                                        <th v-show="columns[7].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('SSL') }}</th>
-                                        <th v-show="columns[8].visible"
+                                        <th v-show="columns[6].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Category') }}</th>
                                         <!-- <th v-show="columns[9].visible"
@@ -661,10 +682,10 @@ const expanded = ref([])
                                             <th v-show="columns[10].visible"
                                                 class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                                 scope="col">{{ $t('Links') }} menu</th> -->
-                                        <th v-show="columns[9].visible"
+                                        <th v-show="columns[7].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Obs') }}</th>
-                                        <th v-show="columns[10].visible"
+                                        <th v-show="columns[8].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -673,7 +694,7 @@ const expanded = ref([])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[11].visible"
+                                        <th v-show="columns[9].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -682,7 +703,7 @@ const expanded = ref([])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[12].visible"
+                                        <th v-show="columns[10].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -731,23 +752,22 @@ const expanded = ref([])
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.dr ?? '-' }}
                                             </td>
+                                          
                                             <td v-show="columns[4].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ $t(site.gambling ? 'Yes' : 'No') }}
-                                            </td>
-                                            <td v-show="columns[5].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ $t(site.sponsor ? 'Yes' : 'No') }}
                                             </td>
-                                            <td v-show="columns[6].visible"
+                                            
+                                            <td v-for="(type, index) in types" v-show="columns[columns.length - types.length + index].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ $t(site.cripto ? 'Yes' : 'No') }}
+                                                {{ site.types.find(t => t.id == type.id) ? 'Yes' : 'No' }}
                                             </td>
-                                            <td v-show="columns[7].visible"
+
+                                            <td v-show="columns[5].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ $t(site.ssl ? 'Yes' : 'No') }}
                                             </td>
-                                            <td v-show="columns[8].visible"
+                                            <td v-show="columns[6].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
                                             </td>
@@ -759,19 +779,19 @@ const expanded = ref([])
                                                     class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                     {{ site.menu ? 'Sim' : 'Não' }}
                                                 </td> -->
-                                            <td v-show="columns[9].visible"
+                                            <td v-show="columns[8].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.obs ?? '-' }}
                                             </td>
-                                            <td v-show="columns[10].visible"
+                                            <td v-show="columns[9].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 -
                                             </td>
-                                            <td v-show="columns[11].visible"
+                                            <td v-show="columns[10].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_inserted_at }}
                                             </td>
-                                            <td v-show="columns[12].visible"
+                                            <td v-show="columns[11].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_updated_at }}
                                             </td>

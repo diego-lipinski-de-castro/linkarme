@@ -46,3 +46,14 @@
 .svgMap-map-wrapper {
     background: red;
 }
+
+.multiselect__tags {
+    @apply border border-gray-300 rounded-md py-2 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+}
+
+.multiselect__placeholder {
+    padding: 0 0 0 0.25rem !important;
+    margin: 0 !important;
+}
