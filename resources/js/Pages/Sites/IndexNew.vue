@@ -170,7 +170,7 @@ const get = async () => {
             country_id: filters.country_id,
             category_id: filters.category_id,
             seller_id: filters.seller_id,
-            types: filters.types.map(t => t.id).join(','),
+            types: filters.types?.map(t => t.id).join(','),
         },
     }, {
         preserveState: true,
@@ -724,17 +724,24 @@ const expanded = ref([])
                                     <template v-for="(site, index) in sites.data" :key="index">
                                         <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1), 'bg-red-50': site.deleted_at !== null, }]">
                                             <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                                <span
-                                                    :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
-                                                    class="relative flex space-x-2 items-center">
-                                                    <span v-if="site.sale_coin != coinStore.coin"
-                                                        class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                                    <span>
-                                                        {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                <div class="flex space-x-2">
+                                                    <span
+                                                        :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
+                                                        class="relative flex space-x-2 items-center">
+                                                        <span v-if="site.sale_coin != coinStore.coin"
+                                                            class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                        <span>
+                                                            {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
 
-                                                        {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                            {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                        </span>
                                                     </span>
-                                                </span>
+
+                                                    <button v-if="site.types.length > 0" type="button" @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) :  expanded.push(index)"
+                                                        class="text-gray-500 hover:text-gray-700">
+                                                        <InformationCircleIcon class="h-5 w-5" />
+                                                    </button>
+                                                </div>
                                             </td>
                                             <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                                 <Link :href="route('sites.edit', site.id)" :class="[{
@@ -799,11 +806,6 @@ const expanded = ref([])
 
                                             <td class="whitespace-nowrap px-4 py-4 text-sm">
                                                 <div class="flex justify-end space-x-3">
-                                                    <button v-if="site.types.length > 0" type="button" @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) :  expanded.push(index)"
-                                                        class="text-gray-500 hover:text-gray-700">
-                                                        <InformationCircleIcon class="h-5 w-5" />
-                                                    </button>
-
                                                     <Link :href="route('sites.edit', site.id)"
                                                         class="text-blue-500 hover:text-blue-700">
                                                         <PencilSquareIcon class="h-5 w-5" />
