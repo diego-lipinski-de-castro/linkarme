@@ -67,7 +67,7 @@ const submit = () => {
 
                 <div class="px-5 py-5">
                     <div class="ml-12 mr-16">
-                        <form @submit.prevent="submit" class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+                        <form @submit.prevent="submit" autocomplete="off" class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
                             <!-- First Name -->
                             <div>
                                 <InputLabel for="first_name" :value="$t('First name')" />

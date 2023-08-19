@@ -6,6 +6,7 @@ use App\Notifications\Seller\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -15,6 +16,7 @@ class Seller extends Authenticatable
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -54,6 +56,7 @@ class Seller extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'is_impersonated',
     ];
 
     protected static function booted()
@@ -80,5 +83,10 @@ class Seller extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function getIsImpersonatedAttribute()
+    {
+        return $this->isImpersonated();
     }
 }

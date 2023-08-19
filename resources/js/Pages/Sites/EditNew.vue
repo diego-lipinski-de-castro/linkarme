@@ -7,12 +7,16 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
-import { unformat } from 'v-money3';
+import { unformat, format } from 'v-money3';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import { PencilIcon } from '@heroicons/vue/24/outline';
+import { useCoinStore } from '@/stores/coin'
+import { watch } from 'vue';
+
+const coinStore = useCoinStore()
 
 const { site, coins, categories, languages, countries, sellers, note, types: typesProp } = defineProps({
     site: Object,
@@ -85,8 +89,24 @@ const form = useForm({
     }),
 });
 
-console.log(site.types)
-console.log(typesProp)
+watch(() => form.cost, () => computeSuggested())
+watch(() => form.cost_coin, () => computeSuggested())
+watch(() => form.sale_coin, () => computeSuggested())
+
+const costInput = ref(null)
+const suggested = ref(0)
+
+const computeSuggested = () => {
+    
+    console.log(form.cost)
+    console.log(coins[form.cost_coin])
+
+    let cost = parseInt(unformat(form.cost, coins[form.cost_coin]))
+
+    cost = cost + (cost * 0.30) + (675 * 100);
+
+    suggested.value = format(cost / 100, coins[form.sale_coin]);
+}
 
 const open = ref(false)
 
@@ -296,8 +316,7 @@ const submitNote = () => {
                                     <select v-model="form.category_id" id="category_id" name="category_id"
                                         class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
                                         <option :value="null">Selecione</option>
-                                        <option v-for="(category, index) in categories" :key="index" :value="category.id">{{
-                                            category.name }}</option>
+                                        <option v-for="(category, index) in categories" :key="index" :value="category.id">{{ category.name }}</option>
                                     </select>
 
                                 </div>
@@ -443,7 +462,7 @@ const submitNote = () => {
                                                 <td class="px-3 py-3.5 text-sm text-gray-500 align-top">
                                                     
                                                     <div class="relative rounded-md shadow-sm">
-                                                        <input v-model.lazy="form.cost" v-money3="coins[form.cost_coin]" type="text" name="cost" id="cost"
+                                                        <input ref="costInput" v-model.lazy="form.cost" v-money3="coins[form.cost_coin]" type="text" name="cost" id="cost"
                                                             class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
@@ -476,8 +495,9 @@ const submitNote = () => {
                                                         </div>
                                                     </div>
 
-                                                    <p :class="['mt-1 ml-1 text-xs font-medium', site.positive ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ site.formatted_suggested }}</p>
-                                                    
+                                                    <!-- {{ $filters.currency((site.suggested / 100) / coinStore.ratios['BRL'], coins[form.sale_coin]) }} -->
+
+                                                    <p :class="['mt-1 ml-1 text-xs font-medium', site.positive ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ suggested }}</p>
                                                 </td>
                                             </tr>
 

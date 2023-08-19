@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\OfferController;
@@ -40,7 +41,13 @@ Route::prefix('admin')->group(function () {
         ->middleware(['auth'])
         ->name('logout');
     
-    Route::impersonate();
+    // Impersonation
+    Route::get('/impersonate/take/{id}/{guardName?}/{redirectTo?}', [ImpersonateController::class, 'take'])
+        ->middleware(['auth', 'verified'])
+        ->name('impersonate');
+
+    Route::get('/impersonate/leave/{redirectTo?}', [ImpersonateController::class, 'leave'])
+        ->name('impersonate.leave');
     
     Route::get('audits', [AuditController::class, 'index'])->name('audits.index')->middleware(['auth']);
     Route::get('audits-filter', [AuditController::class, 'filter'])->name('audits.filter')->middleware(['auth']);

@@ -2,7 +2,7 @@
 import SellerLayoutNew from '@/Layouts/SellerLayoutNew.vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -10,6 +10,8 @@ import Checkbox from '@/Components/Checkbox.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import { PlusIcon } from '@heroicons/vue/24/outline';
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 const { coins, categories, languages, countries, types: typesProp } = defineProps({
     coins: Object,
@@ -66,10 +68,106 @@ const submit = () => {
     form.post(route('seller.sites.store'));
 }
 
+const offerForm = useForm({
+    cost: '',
+    cost_coin: 'BRL',
+})
+
+const showModal = ref(false)
+const exists = ref(null)
+
+const check = async () => {
+    try {
+        const res = await fetch(route('seller.sites.check', { url: form.url }))
+        const data = await res.json()
+        exists.value = data.exists
+    } catch (error) {
+        console.log(error)
+        exists.value = null
+    }
+}
+
+const submitOffer = () => {
+    offerForm
+        .transform((data) => ({
+            ...data,
+            url: form.url,
+        }))
+        .post(route('seller.sites.offer'), {
+            preserveState: true,
+            onSuccess(res) {
+                showModal.value = false
+            }
+        })
+}
+
 </script>
         
 <template>
     <AppSuspense>
+        <TransitionRoot as="template" :show="showModal">
+            <Dialog as="div" class="relative z-10" @close="showModal = false">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
+                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </TransitionChild>
+
+                <div class="fixed inset-0 z-10 overflow-y-auto">
+                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <TransitionChild as="template" enter="ease-out duration-300"
+                            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
+                            leave-from="opacity-100 translate-y-0 sm:scale-100"
+                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                            <DialogPanel
+                                class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md sm:p-6">
+                                <div class="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
+                                    <button type="button"
+                                        class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        @click="showModal = false">
+                                        <span class="sr-only">Close</span>
+                                        <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                                    </button>
+                                </div>
+                                <div>
+                                    <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">{{ $t('Submit offer') }}</DialogTitle>
+                                    <div class="mt-2">
+                                        <InputLabel for="cost" :value="$t('Cost')" />
+
+                                        <div class="mt-1 relative rounded-md shadow-sm">
+                                            <input v-model.lazy="offerForm.cost" v-money3="coins[offerForm.cost_coin]" type="text"
+                                                name="cost" id="cost"
+                                                class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+
+                                            <div class="absolute inset-y-0 right-0 flex items-center">
+                                                <label for="cost_coin" class="sr-only">Moeda</label>
+                                                <select v-model="offerForm.cost_coin" id="cost_coin" name="cost_coin"
+                                                    class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                    <option value="BRL">BRL</option>
+                                                    <option value="EUR">EUR</option>
+                                                    <option value="USD">USD</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <InputError class="mt-2" :message="offerForm.errors.cost" />
+                                    </div>
+                                </div>
+                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                    <button type="button"
+                                        class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                                        @click="submitOffer">{{ $t('Submit') }}</button>
+                                    <button type="button"
+                                        class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                                        @click="showModal = false">{{ $t('Back') }}</button>
+                                </div>
+                            </DialogPanel>
+                        </TransitionChild>
+                    </div>
+                </div>
+            </Dialog>
+        </TransitionRoot>
+
         <SellerLayoutNew :title="$t('Add site')">
             <div class="max-w-7xl mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
                 <div class="flex items-center space-x-2 px-5">
@@ -90,8 +188,13 @@ const submit = () => {
 
                             <div class="col-span-6">
                                 <InputLabel for="url" :value="$t('URL')" />
-                                <TextInput id="url" v-model="form.url" type="text" class="mt-1 block w-full" required
-                                    autofocus autocomplete="url" />
+                                <TextInput @blur="check" id="url" v-model="form.url" type="text" class="mt-1 block w-full" required autofocus autocomplete="url" />
+                                <p v-if="exists" class="mt-2 text-sm text-red-500">
+                                    Verificamos que já existe um site com essa url.
+                                    <button type="button" @click="showModal = true" class="text-blue-500">
+                                        Clique aqui para fazer uma proposta de valor
+                                    </button>
+                                </p>
                                 <InputError class="mt-2" :message="form.errors.url" />
                             </div>
 

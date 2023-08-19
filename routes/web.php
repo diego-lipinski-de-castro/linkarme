@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SubmitSiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/enviar-site', [SubmitSiteController::class, 'create'])->name('submitSite.create');
+Route::post('/enviar-site', [SubmitSiteController::class, 'store']);
+Route::get('/enviar-site-sucesso', [SubmitSiteController::class, 'index'])->name('submitSite.success');
 
 Route::redirect('/clientes/sites', '/sites');
 Route::redirect('/clientes/login', '/login');

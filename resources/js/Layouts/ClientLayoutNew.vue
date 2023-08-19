@@ -314,7 +314,8 @@ await i18nextPromise
                                                 <hr>
 
                                                 <MenuItem>
-                                                    <a v-if="user.is_impersonated" :href="route('impersonate.leave')"
+                                                    <a v-if="user.is_impersonated" 
+                                                        :href="route('impersonate.leave', 'clients.index')"
                                                         class="bg-gray-100 flex px-4 py-4 text-sm text-gray-700 w-full space-x-2">
                                                         <XCircleIcon class="h-5 w-5" />
                                                         <span>{{ $t('Sign out') }}</span>

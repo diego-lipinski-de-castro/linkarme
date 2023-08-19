@@ -148,7 +148,7 @@ const destroy = (client) => {
                                                     <TrashIcon class="h-5 w-5" />
                                                 </button>
 
-                                                <a :href="route('impersonate', [client.id, 'client'])" class="text-purple-500 hover:text-purple-700">
+                                                <a :href="route('impersonate', [client.id, 'client', 'client.dashboard'])" class="text-purple-500 hover:text-purple-700">
                                                     <ArrowRightOnRectangleIcon class="h-5 w-5" />
                                                 </a>
                                             </div>
