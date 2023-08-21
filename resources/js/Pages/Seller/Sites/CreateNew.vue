@@ -61,29 +61,61 @@ const form = useForm({
     instagram: '',
     facebook: '',
 
-    types: typesProp,
+    types: [...typesProp],
 });
 
 const submit = () => {
     form.post(route('seller.sites.store'));
 }
 
+const showModal = ref(false)
+const site = ref(undefined)
+
 const offerForm = useForm({
     cost: '',
     cost_coin: 'BRL',
-})
 
-const showModal = ref(false)
-const exists = ref(null)
+    sale: '',
+    sale_coin: 'BRL',
+
+    types: [...typesProp],
+})
 
 const check = async () => {
     try {
         const res = await fetch(route('seller.sites.check', { url: form.url }))
         const data = await res.json()
-        exists.value = data.exists
+        
+        site.value = data.site
+
+        offerForm.cost = site.value.cost;
+        offerForm.cost_coin = site.value.cost_coin;
+
+        offerForm.sale = site.value.sale;
+        offerForm.sale_coin = site.value.sale_coin;
+        
+        offerForm.types = [...typesProp].map(type => {
+
+            const t = site.value.types.find(t => t.id == type.id)
+
+            if(null == t) return type
+
+            type.available = true
+
+            type.cost = t.pivot.cost
+            type.cost_coin = t.pivot.cost_coin
+
+            type.sale = t.pivot.sale
+            type.sale_coin = t.pivot.sale_coin
+
+            return type
+        });
+        
     } catch (error) {
         console.log(error)
-        exists.value = null
+        site.value = undefined
+
+        offerForm.types = [...typesProp];
     }
 }
 
@@ -107,8 +139,8 @@ const submitOffer = () => {
     <AppSuspense>
         <TransitionRoot as="template" :show="showModal">
             <Dialog as="div" class="relative z-10" @close="showModal = false">
-                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
-                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100"
+                    leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                 </TransitionChild>
 
@@ -120,10 +152,10 @@ const submitOffer = () => {
                             leave-from="opacity-100 translate-y-0 sm:scale-100"
                             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                             <DialogPanel
-                                class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md sm:p-6">
+                                class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl sm:p-6">
                                 <div class="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
                                     <button type="button"
-                                        class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        class="rounded-md bg-white text-gray-400 hover:text-gray-500"
                                         @click="showModal = false">
                                         <span class="sr-only">Close</span>
                                         <XMarkIcon class="h-6 w-6" aria-hidden="true" />
@@ -131,29 +163,152 @@ const submitOffer = () => {
                                 </div>
                                 <div>
                                     <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">{{ $t('Submit offer') }}</DialogTitle>
-                                    <div class="mt-2">
-                                        <InputLabel for="cost" :value="$t('Cost')" />
 
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                            <input v-model.lazy="offerForm.cost" v-money3="coins[offerForm.cost_coin]" type="text"
-                                                name="cost" id="cost"
-                                                class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                                    <div class="mt-5">
+                                        <div class="ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+                                            <table class="min-w-full divide-y divide-gray-300">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col"
+                                                            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                            Type
+                                                        </th>
 
-                                            <div class="absolute inset-y-0 right-0 flex items-center">
-                                                <label for="cost_coin" class="sr-only">Moeda</label>
-                                                <select v-model="offerForm.cost_coin" id="cost_coin" name="cost_coin"
-                                                    class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                                    <option value="BRL">BRL</option>
-                                                    <option value="EUR">EUR</option>
-                                                    <option value="USD">USD</option>
-                                                </select>
-                                            </div>
+                                                        <th scope="col"
+                                                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                                            Cost
+                                                        </th>
+
+                                                        <th scope="col"
+                                                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                                            Sale
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <!-- Default -->
+                                                    <tr>
+                                                        <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6 align-top">
+                                                            <div class="font-medium text-gray-900">
+                                                                {{ $t('Default') }}
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="px-3 py-3.5 text-sm text-gray-500 align-top">
+
+                                                            <div class="relative rounded-md shadow-sm">
+                                                                <input v-model.lazy="offerForm.cost"
+                                                                    v-money3="coins[offerForm.cost_coin]" type="text" name="cost"
+                                                                    id="cost"
+                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+
+                                                                <div class="absolute inset-y-0 right-0 flex items-center">
+                                                                    <label for="cost_coin" class="sr-only">Moeda</label>
+                                                                    <select v-model="offerForm.cost_coin" id="cost_coin"
+                                                                        name="cost_coin"
+                                                                        class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                                        <option value="BRL">BRL</option>
+                                                                        <option value="EUR">EUR</option>
+                                                                        <option value="USD">USD</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td class="px-3 py-3.5 text-sm text-gray-500">
+
+                                                            <div class="relative rounded-md shadow-sm">
+                                                                <input v-model.lazy="offerForm.sale"
+                                                                    v-money3="coins[offerForm.sale_coin]" type="text" name="sale"
+                                                                    id="sale"
+                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+
+                                                                <div class="absolute inset-y-0 right-0 flex items-center">
+                                                                    <label for="sale_coin" class="sr-only">Moeda</label>
+                                                                    <select v-model="offerForm.sale_coin" id="sale_coin"
+                                                                        name="sale_coin"
+                                                                        class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                                        <option value="BRL">BRL</option>
+                                                                        <option value="EUR">EUR</option>
+                                                                        <option value="USD">USD</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+
+                                                    <!--  -->
+                                                    <tr v-for="(type, index) in offerForm.types" :key="`offer-${index}`">
+                                                        <td
+                                                            :class="'border-t border-transparent relative py-4 pl-4 pr-3 text-sm sm:pl-6'">
+                                                            <div class="font-medium text-gray-900">
+                                                                {{ type.name }}
+                                                            </div>
+
+                                                            <div class="absolute -top-px left-6 right-0 h-px bg-gray-200" />
+                                                        </td>
+
+                                                        <td
+                                                            :class="['border-t border-gray-200 relative px-3 py-3.5 text-sm text-gray-500']">
+
+                                                            <div
+                                                                :class="['relative rounded-md shadow-sm', { 'opacity-50': !type.available }]">
+                                                                <input :disabled="!type.available" v-model.lazy="offerForm.types[index].cost"
+                                                                    v-money3="coins[type.cost_coin]" type="text" name="cost"
+                                                                    id="cost"
+                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+
+                                                                <div class="absolute inset-y-0 right-0 flex items-center">
+                                                                    <label for="cost_coin" class="sr-only">Moeda</label>
+                                                                    <select :disabled="!type.available" v-model="offerForm.types[index].cost_coin" id="cost_coin"
+                                                                        name="cost_coin"
+                                                                        class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                                        <option value="BRL">BRL</option>
+                                                                        <option value="EUR">EUR</option>
+                                                                        <option value="USD">USD</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td
+                                                            :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
+
+                                                            <div
+                                                                :class="['relative rounded-md shadow-sm', { 'opacity-50': !type.available }]">
+                                                                <input :disabled="!type.available" v-model.lazy="offerForm.types[index].sale"
+                                                                    v-money3="coins[type.sale_coin]" type="text" name="sale"
+                                                                    id="sale"
+                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+
+                                                                <div class="absolute inset-y-0 right-0 flex items-center">
+                                                                    <label for="sale_coin" class="sr-only">Moeda</label>
+                                                                    <select :disabled="!type.available" v-model="offerForm.types[index].sale_coin" id="sale_coin"
+                                                                        name="sale_coin"
+                                                                        class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                                        <option value="BRL">BRL</option>
+                                                                        <option value="EUR">EUR</option>
+                                                                        <option value="USD">USD</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
+                                                        </td>
+                                                    </tr>
+                                                    <!--  -->
+
+                                                </tbody>
+                                            </table>
                                         </div>
-
-                                        <InputError class="mt-2" :message="offerForm.errors.cost" />
                                     </div>
+
                                 </div>
-                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                <div class="mt-5 sm:flex sm:flex-row-reverse">
                                     <button type="button"
                                         class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                                         @click="submitOffer">{{ $t('Submit') }}</button>
@@ -188,8 +343,9 @@ const submitOffer = () => {
 
                             <div class="col-span-6">
                                 <InputLabel for="url" :value="$t('URL')" />
-                                <TextInput @blur="check" id="url" v-model="form.url" type="text" class="mt-1 block w-full" required autofocus autocomplete="url" />
-                                <p v-if="exists" class="mt-2 text-sm text-red-500">
+                                <TextInput @blur="check" id="url" v-model="form.url" type="text" class="mt-1 block w-full"
+                                    required autofocus autocomplete="url" />
+                                <p v-if="site !== undefined && site !== null" class="mt-2 text-sm text-red-500">
                                     Verificamos que já existe um site com essa url.
                                     <button type="button" @click="showModal = true" class="text-blue-500">
                                         Clique aqui para fazer uma proposta de valor
@@ -386,7 +542,7 @@ const submitOffer = () => {
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </td>
                                             </tr>
 
@@ -411,14 +567,14 @@ const submitOffer = () => {
 
                                                     <div
                                                         :class="['relative rounded-md shadow-sm', { 'opacity-50': !type.available }]">
-                                                        <input :disabled="!type.available" v-model.lazy="type.cost"
+                                                        <input :disabled="!type.available" v-model.lazy="form.types[index].cost"
                                                             v-money3="coins[type.cost_coin]" type="text" name="cost"
                                                             id="cost"
                                                             class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="cost_coin" class="sr-only">Moeda</label>
-                                                            <select :disabled="!type.available" v-model="type.cost_coin"
+                                                            <select :disabled="!type.available" v-model="form.types[index].cost_coin"
                                                                 id="cost_coin" name="cost_coin"
                                                                 class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
@@ -435,14 +591,14 @@ const submitOffer = () => {
 
                                                     <div
                                                         :class="['relative rounded-md shadow-sm', { 'opacity-50': !type.available }]">
-                                                        <input :disabled="!type.available" v-model.lazy="type.sale"
+                                                        <input :disabled="!type.available" v-model.lazy="form.types[index].sale"
                                                             v-money3="coins[type.sale_coin]" type="text" name="sale"
                                                             id="sale"
                                                             class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="sale_coin" class="sr-only">Moeda</label>
-                                                            <select :disabled="!type.available" v-model="type.sale_coin"
+                                                            <select :disabled="!type.available" v-model="form.types[index].sale_coin"
                                                                 id="sale_coin" name="sale_coin"
                                                                 class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
@@ -529,32 +685,32 @@ const submitOffer = () => {
                                 <InputLabel for="paypal" :value="$t('Site paypal')" />
                                 <TextInput id="paypal" v-model="form.paypal" type="text" class="mt-1 block w-full" />
                                 <InputError class="mt-2" :message="form.errors.paypal" />
-                        </div>
+                            </div>
 
-                        <div class="col-span-2">
-                            <InputLabel for="phone" :value="$t('Site phone')" />
-                            <TextInput id="phone" v-model="form.phone" type="text" class="mt-1 block w-full" />
-                            <InputError class="mt-2" :message="form.errors.phone" />
-                        </div>
+                            <div class="col-span-2">
+                                <InputLabel for="phone" :value="$t('Site phone')" />
+                                <TextInput id="phone" v-model="form.phone" type="text" class="mt-1 block w-full" />
+                                <InputError class="mt-2" :message="form.errors.phone" />
+                            </div>
 
-                        <div class="col-span-2">
-                            <InputLabel for="instagram" :value="$t('Site instagram')" />
-                            <TextInput id="instagram" v-model="form.instagram" type="text" class="mt-1 block w-full" />
-                            <InputError class="mt-2" :message="form.errors.instagram" />
-                        </div>
+                            <div class="col-span-2">
+                                <InputLabel for="instagram" :value="$t('Site instagram')" />
+                                <TextInput id="instagram" v-model="form.instagram" type="text" class="mt-1 block w-full" />
+                                <InputError class="mt-2" :message="form.errors.instagram" />
+                            </div>
 
-                        <div class="col-span-2">
-                            <InputLabel for="facebook" :value="$t('Site facebook')" />
-                            <TextInput id="facebook" v-model="form.facebook" type="text" class="mt-1 block w-full" />
-                            <InputError class="mt-2" :message="form.errors.facebook" />
-                        </div>
+                            <div class="col-span-2">
+                                <InputLabel for="facebook" :value="$t('Site facebook')" />
+                                <TextInput id="facebook" v-model="form.facebook" type="text" class="mt-1 block w-full" />
+                                <InputError class="mt-2" :message="form.errors.facebook" />
+                            </div>
 
-                        <div class="col-span-6 self-end mb-1 flex">
-                            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                                Save
-                            </PrimaryButton>
+                            <div class="col-span-6 self-end mb-1 flex">
+                                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                    Save
+                                </PrimaryButton>
 
-                            <ActionMessage :on="form.recentlySuccessful" class="self-end ml-3">
+                                <ActionMessage :on="form.recentlySuccessful" class="self-end ml-3">
                                 Saved.
                             </ActionMessage>
                         </div>

@@ -17,10 +17,13 @@ class SiteController extends Controller
             str_replace('www.', '', parse_url($url, PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($url, PHP_URL_PATH));
 
-        $exists = Site::where('url', $url)->exists();
+        $site = Site::query()
+            ->with(['types'])
+            ->where('url', $url)
+            ->first();
 
         return response()->json([
-            'exists' => $exists,
+            'site' => $site,
         ]);
     }
 }
