@@ -152,7 +152,7 @@ const generatePassword = () => {
     <AppSuspense>
         <AppLayoutNew :title="$t('Edit client')">
 
-            <form @submit.prevent="update" autocomplete="off">
+            <form @submit.prevent="update">
                 <div class="max-w-7xl mx-auto rounded-md bg-white shadow">
                     <div class="px-5 py-6 sm:px-6">
                         <span class="text-sm text-gray-900">{{ $t('Current Linking consultant') }}</span>
@@ -429,7 +429,7 @@ const generatePassword = () => {
                                     <InputLabel for="email" :value="$t('Email')" />
                                     <TextInput
                                         id="email"
-                                        v-model="form.email" autocomplete="off"
+                                        v-model="form.email" autocomplete="nope-1"
                                         type="email"
                                         class="mt-1 block w-full"
                                     />
@@ -460,7 +460,7 @@ const generatePassword = () => {
                                     <InputLabel for="phone" :value="$t('Phone')" />
                                     <TextInput
                                         id="phone"
-                                        v-model="form.phone" autocomplete="off"
+                                        v-model="form.phone" autocomplete="nope-2"
                                         type="phone"
                                         class="mt-1 block w-full"
                                     />
@@ -744,7 +744,7 @@ const generatePassword = () => {
                                             v-model="form.password"
                                             :type="showPassword ? 'text' : 'password'"
                                             class="block w-full rounded-none rounded-l-md"
-                                            autocomplete="off"
+                                            autocomplete="nope-3"
                                         />
 
                                         <button @click="showPassword = !showPassword" type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">

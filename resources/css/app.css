@@ -57,3 +57,7 @@
     padding: 0 0 0 0.25rem !important;
     margin: 0 !important;
 }
+
+select.bg-invisible {
+    background-image: inherit;
+}

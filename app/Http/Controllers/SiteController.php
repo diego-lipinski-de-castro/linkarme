@@ -212,8 +212,12 @@ class SiteController extends Controller
             
             $site = Site::create(array_merge(
                 Arr::except($request->validated(), 'types'), [
-                'status' => 'APPROVED',
+                'status' => 'PENDING',
             ]));
+
+            $site->update([
+                'status' => 'APPROVED',
+            ]);
 
             $types = collect($request->validated()['types']);
 

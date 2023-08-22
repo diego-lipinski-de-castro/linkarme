@@ -296,6 +296,9 @@ class SiteController extends Controller
             'url' => 'required',
             'cost' => 'required',
             'cost_coin' => 'required|in:BRL,EUR,USD',
+            'sale' => 'required',
+            'sale_coin' => 'required|in:BRL,EUR,USD',
+            'types' => 'present|array|min:0',
         ]);
 
         $url = Str::contains($validated['url'], '://') ?
@@ -308,12 +311,31 @@ class SiteController extends Controller
             return back();
         }
 
-        Offer::create([
+        $offer = Offer::create([
             'seller_id' => auth()->id(),
             'site_id' => $site->id,
+            
             'cost' => Helper::extractNumbersFromString($validated['cost']),
             'cost_coin' => $validated['cost_coin'],
+
+            'sale' => Helper::extractNumbersFromString($validated['sale']),
+            'sale_coin' => $validated['sale_coin'],
         ]);
+
+        $types = collect($validated['types']);
+
+        $types = $types->where('available', true);
+
+        $types = $types->mapWithKeys(function ($type) {
+            return [$type['id'] => [
+                'cost' => Helper::extractNumbersFromString($type['cost']),
+                'sale' => Helper::extractNumbersFromString($type['sale']),
+                'cost_coin' => $type['cost_coin'],
+                'sale_coin' => $type['sale_coin'],
+            ]];
+        });
+
+        $offer->types()->sync($types);
 
         return redirect()->route('seller.sites.index');
     }

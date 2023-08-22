@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helper;
 use App\Models\Offer;
+use App\Models\Site;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class OfferController extends Controller
@@ -16,8 +18,9 @@ class OfferController extends Controller
             ->with([
                 'seller',
                 'site' => function ($q) {
-                    $q->with('seller');
+                  $q->with(['seller', 'types']);
                 },
+                'types',
             ])
             ->get();
 
@@ -29,10 +32,32 @@ class OfferController extends Controller
 
     public function accept(Offer $offer)
     {
-        $offer->site()->update([
+        $site = Site::findOrFail($offer->site_id);
+
+        $site->update([
             'seller_id' => $offer->seller_id,
+
             'cost' => Helper::extractNumbersFromString($offer->cost),
+            'cost_coin' => $offer->cost_coin,
+
+            'sale' => Helper::extractNumbersFromString($offer->sale),
+            'sale_coin' => $offer->sale_coin,
         ]);
+
+        $types = $offer->types->mapWithKeys(function ($type) {
+            return [$type->id => [
+                'cost' => Helper::extractNumbersFromString($type->pivot->cost),
+                'sale' => Helper::extractNumbersFromString($type->pivot->sale),
+                'cost_coin' => $type->pivot->cost_coin,
+                'sale_coin' => $type->pivot->sale_coin,
+            ]];
+        });
+
+        $site->types()->sync($types);
+
+        DB::table('offer_type')
+            ->where('offer_id', $offer->id)
+            ->delete();
 
         $offer->delete();
 
