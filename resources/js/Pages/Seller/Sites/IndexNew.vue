@@ -39,6 +39,8 @@ import { useCoinStore } from '@/stores/coin'
 
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
 
+import { usePage } from '@inertiajs/inertia-vue3';
+
 const coinStore = useCoinStore()
 const { t } = useTranslation();
 
@@ -164,6 +166,20 @@ onMounted(() => {
         tippy('[data-tippy-content]');
     }, 500)
 })
+
+const copy = () => {
+    const url = route('submitSite.create', {
+        _query: {
+            ref: usePage().props.value.user.email,
+        },
+    });
+
+    navigator.clipboard.writeText(url).then(function () {
+        alert('Link successfully copied to clipboard!')
+    }, function (err) {
+        alert('Failed to copy link :(')
+    });
+}
 </script>
         
 <template>
@@ -394,9 +410,11 @@ onMounted(() => {
                             </div>
 
                             <div class="flex space-x-3">
+                                <button @click="copy" class="rounded-md bg-pink-500 hover:bg-pink-300 text-white text-sm font-medium px-4 py-2">{{ $t('Copy my link') }}</button>
+
                                 <Link :href="route('seller.sites.create')"
                                     class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700">
-                                <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
+                                    <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
                                 </Link>
                             </div>
                         </div>

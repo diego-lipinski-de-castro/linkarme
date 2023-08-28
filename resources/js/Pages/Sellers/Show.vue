@@ -109,9 +109,7 @@ const copy = () => {
                     <div class="w-full flex justify-between items-center">
                         <span class="block font-bold">{{ $t('Sites') }}</span>
 
-                        <button @click="copy"
-                            class="rounded-md bg-blue-500 hover:bg-blue-300 text-white text-sm font-medium px-4 py-2">Copy
-                            seller link</button>
+                        <button @click="copy" class="rounded-md bg-blue-500 hover:bg-blue-300 text-white text-sm font-medium px-4 py-2">{{ $t('Copy seller link') }}</button>
                     </div>
                 </div>
 
