@@ -40,7 +40,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head :title="$t('Login')" />
+    <Head :title="$t('Register')" />
 
     <div class="min-h-full relative flex justify-center">
         <div class="z-0 fixed inset-0">

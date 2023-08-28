@@ -90,36 +90,40 @@ const form = useForm({
 });
 
 watch(() => form.cost, () => computeSuggested())
-watch(() => form.cost_coin, () => computeSuggested())
+watch(() => form.cost_coin, () => form.sale_coin = form.cost_coin)
 watch(() => form.sale_coin, () => computeSuggested())
 
 const costInput = ref(null)
 const suggested = ref(0)
 
 const computeSuggested = () => {
-    
-    console.log(form.cost)
-    console.log(coins[form.cost_coin])
 
-    let cost = parseInt(unformat(form.cost, coins[form.cost_coin]))
+    let cost = parseInt(unformat(form.cost, coins[form.cost_coin]));
 
-    cost = cost + (cost * 0.30) + (675 * 100);
+    if(['BRL'].includes(form.cost_coin)) {
+        
+        cost = (cost) + (cost * 0.30) + 675;
 
-    suggested.value = format(cost / 100, coins[form.sale_coin]);
+    } else if(['EUR', 'USD'].includes(form.cost_coin)) {
+
+        cost = ((cost + 135) * 0.15) + (cost + 135)
+    }
+
+    suggested.value = format(cost, coins[form.cost_coin]);
 }
 
 const open = ref(false)
 
 const submit = (confirm = false) => {
 
-    if ((unformat(form.sale, coins[form.sale_coin].value) * 100) < site.suggested) {
-        if (!confirm) {
-            open.value = true;
-            return;
-        }
+    // if ((unformat(form.sale, coins[form.sale_coin].value) * 100) < site.suggested) {
+    //     if (!confirm) {
+    //         open.value = true;
+    //         return;
+    //     }
 
-        open.value = false;
-    }
+    //     open.value = false;
+    // }
 
     form.put(route('sites.update', site.id), {
         onError(error) {
@@ -486,8 +490,8 @@ const submitNote = () => {
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="sale_coin" class="sr-only">Moeda</label>
-                                                            <select v-model="form.sale_coin" id="sale_coin" name="sale_coin"
-                                                                class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                            <select disabled v-model="form.sale_coin" id="sale_coin" name="sale_coin"
+                                                                class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
                                                                 <option value="EUR">EUR</option>
                                                                 <option value="USD">USD</option>
@@ -495,9 +499,7 @@ const submitNote = () => {
                                                         </div>
                                                     </div>
 
-                                                    <!-- {{ $filters.currency((site.suggested / 100) / coinStore.ratios['BRL'], coins[form.sale_coin]) }} -->
-
-                                                    <p :class="['mt-1 ml-1 text-xs font-medium', site.positive ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ suggested }}</p>
+                                                    <p :class="['mt-1 ml-1 text-xs font-medium', true ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ suggested }}</p>
                                                 </td>
                                             </tr>
 

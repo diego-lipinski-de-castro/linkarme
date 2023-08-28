@@ -432,7 +432,7 @@ const submitNote = () => {
                                                         </div>
                                                     </div>
 
-                                                    <p :class="['mt-1 ml-1 text-xs font-medium', site.positive ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ site.formatted_suggested }}</p>
+                                                    <!-- <p :class="['mt-1 ml-1 text-xs font-medium', site.positive ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ site.formatted_suggested }}</p> -->
                                                     
                                                 </td>
                                             </tr>

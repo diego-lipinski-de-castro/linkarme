@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/enviar-site', [SubmitSiteController::class, 'create'])->name('submitSite.create');
-Route::post('/enviar-site', [SubmitSiteController::class, 'store']);
-Route::get('/enviar-site-sucesso', [SubmitSiteController::class, 'index'])->name('submitSite.success');
+Route::get('/submit-site', [SubmitSiteController::class, 'create'])->name('submitSite.create');
+Route::post('/submit-site', [SubmitSiteController::class, 'store']);
+Route::get('/submit-site-success', [SubmitSiteController::class, 'index'])->name('submitSite.success');
 
 Route::redirect('/clientes/sites', '/sites');
 Route::redirect('/clientes/login', '/login');

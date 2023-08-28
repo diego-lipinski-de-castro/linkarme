@@ -9,6 +9,10 @@ return [
         'bool_true' => 'Agora aceita mais artigos relacionados a :attribute.',
         'bool_false' => 'Não aceita mais artigos relacionados a :attribute.'
     ],
+    'sponsor' => [
+        'bool_true' => 'Now accepts links related to :attribute.',
+        'bool_false' => 'Does not accepts links related to :attribute.'
+    ],
     'Recently added' => 'Adicionado recentemente',
     'Was removed' => 'Foi removido',
     'Was deleted' => 'Foi desativado',

@@ -57,7 +57,6 @@ class Site extends Model implements Auditable
         'team_id',
         'status',
         'deleted_why',
-        'suggested',
         'owner_name',
         'owner_email',
         'owner_phone',
@@ -89,8 +88,6 @@ class Site extends Model implements Auditable
 
         // 'last_posted' => 'date',
 
-        'suggested' => 'integer',
-
         'menu' => 'boolean',
         'banner' => 'boolean',
 
@@ -100,12 +97,9 @@ class Site extends Model implements Auditable
 
     protected $appends = [
         'formatted_status',
-        'formatted_suggested',
-        'formatted_diff',
         'formatted_inserted_at',
         'formatted_last_updated_at',
         'formatted_updated_at',
-        'positive',
         'real_url',
     ];
 
@@ -117,14 +111,10 @@ class Site extends Model implements Auditable
             if (blank($site->inserted_at)) {
                 $site->inserted_at = now();
             }
-
-            $site->suggested = ($site->cost) + ($site->cost * 0.30) + (675 * 100);
         });
 
         static::updating(function ($site) {
             $site->url = trim($site->url);
-
-            $site->suggested = ($site->cost) + ($site->cost * 0.30) + (675 * 100);
 
             if ($site->isDirty('sale')) {
                 $site->sale_updated_at = now();
@@ -354,23 +344,6 @@ class Site extends Model implements Auditable
         }
 
         return $this->url;
-    }
-
-    public function getFormattedSuggestedAttribute()
-    {
-        return 'R$ '.number_format($this->suggested / 100, 2, ',', '.');
-    }
-
-    public function getPositiveAttribute()
-    {
-        return $this->suggested < $this->sale;
-    }
-
-    public function getFormattedDiffAttribute()
-    {
-        $diff = $this->suggested - $this->sale;
-
-        return 'R$ '.number_format($diff / 100, 2, ',', '.');
     }
 
     public function getPopularAttribute()

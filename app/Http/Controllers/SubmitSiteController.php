@@ -2,7 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper;
+use App\Http\Requests\SubmitSiteRequest;
+use App\Models\Category;
+use App\Models\Country;
+use App\Models\Language;
+use App\Models\Seller;
+use App\Models\Site;
+use App\Models\Team;
+use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -31,6 +41,11 @@ class SubmitSiteController extends Controller
 
         $coins = config('coins');
 
+        $seller = Seller::query()
+            ->whereNotNull('email')
+            ->where('email', request()->query('ref'))
+            ->first();
+
         return Inertia::render('SubmitSite', [
             'categories' => $categories,
             'languages' => $languages,
@@ -39,22 +54,25 @@ class SubmitSiteController extends Controller
             'teams' => $teams,
             'types' => $types,
             'coins' => $coins,
+            'seller' => $seller,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSiteRequest  $request
+     * @param  \App\Http\Requests\SubmitSiteRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSiteRequest $request)
+    public function store(SubmitSiteRequest $request)
     {
+        dd($request->all());
+
         DB::transaction(function () use($request) {
             
             $site = Site::create(array_merge(
                 Arr::except($request->validated(), 'types'), [
-                'status' => 'APPROVED',
+                'status' => 'PENDING',
             ]));
 
             $types = collect($request->validated()['types']);

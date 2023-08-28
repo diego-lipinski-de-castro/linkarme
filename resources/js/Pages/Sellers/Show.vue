@@ -44,6 +44,20 @@ onMounted(() => {
         tippy('[data-tippy-content]');
     }, 500)
 })
+
+const copy = () => {
+    const url = route('submitSite.create', {
+        _query: {
+            ref: props.seller.email,
+        },
+    });
+
+    navigator.clipboard.writeText(url).then(function () {
+        alert('Link successfully copied to clipboard!')
+    }, function (err) {
+        alert('Failed to copy link :(')
+    });
+}
 </script>
         
 <template>
@@ -70,17 +84,20 @@ onMounted(() => {
 
                             <div>
                                 <InputLabel for="name" :value="$t('Username')" />
-                                <TextInput readonly id="name" :value="seller.name ?? '-'" type="text" class="border-none shadow-none mt-1 block w-full text-gray-500"/>
+                                <TextInput readonly id="name" :value="seller.name ?? '-'" type="text"
+                                    class="border-none shadow-none mt-1 block w-full text-gray-500" />
                             </div>
 
                             <div>
                                 <InputLabel for="email" :value="$t('Email')" />
-                                <TextInput readonly id="email" :value="seller.email ?? '-'" type="email" class="border-none shadow-none mt-1 block w-full text-gray-500" />
+                                <TextInput readonly id="email" :value="seller.email ?? '-'" type="email"
+                                    class="border-none shadow-none mt-1 block w-full text-gray-500" />
                             </div>
 
                             <div>
                                 <InputLabel for="phone" :value="$t('Phone')" />
-                                <TextInput readonly id="phone" :value="seller.phone ?? '-'" type="phone" class="border-none shadow-none mt-1 block w-full text-gray-500" />
+                                <TextInput readonly id="phone" :value="seller.phone ?? '-'" type="phone"
+                                    class="border-none shadow-none mt-1 block w-full text-gray-500" />
                             </div>
                         </form>
                     </div>
@@ -89,19 +106,19 @@ onMounted(() => {
 
             <div class="mt-6 max-w-7xl mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
                 <div class="flex items-center space-x-2 px-5">
-                    <!-- <div class="w-10">
-                            <UserCircleIcon class="h-8 w-8" />
-                        </div> -->
-
-                    <div>
+                    <div class="w-full flex justify-between items-center">
                         <span class="block font-bold">{{ $t('Sites') }}</span>
+
+                        <button @click="copy"
+                            class="rounded-md bg-blue-500 hover:bg-blue-300 text-white text-sm font-medium px-4 py-2">Copy
+                            seller link</button>
                     </div>
                 </div>
 
                 <hr class="my-5">
 
-                <div class="px-5 py-5">
-                    <div class="ml-12 mr-16">
+                <div class="px-5 pt-2 pb-5">
+                    <div>
                         <div
                             class="min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200">
@@ -175,7 +192,7 @@ onMounted(() => {
 
                                                     {{ $filters.currency(Math.ceil((site.sale /
                                                         coinStore.ratios[site.sale_coin]) / 100), {
-                                                            ...coins[coinStore.coin],
+                                                        ...coins[coinStore.coin],
                                                         precision: 0,
                                                     }) }}
                                                 </span>
@@ -188,11 +205,11 @@ onMounted(() => {
                                             }]">
                                             {{ site.url }}
                                             </Link>
-                                    </td>
-                                    <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                        {{ site.da ?? '-' }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            {{ site.da ?? '-' }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ site.dr ?? '-' }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
@@ -256,7 +273,6 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-        </AppLayoutNew>
-    </AppSuspense>
-</template>
+    </AppLayoutNew>
+</AppSuspense></template>
         
