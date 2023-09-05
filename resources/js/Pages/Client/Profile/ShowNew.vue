@@ -35,8 +35,6 @@ onMounted(() => {
         setTimeout(() => {
             const el = document.getElementById(hash)
 
-            console.log('el', el)
-
             if(el) {
                 el.scrollIntoView({
                     behavior: "smooth"

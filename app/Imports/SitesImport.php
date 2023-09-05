@@ -13,65 +13,55 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Row;
 
-class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, WithBatchInserts, SkipsOnError, SkipsOnFailure
+class SitesImport implements OnEachRow, WithHeadingRow, WithUpserts, SkipsOnError, SkipsOnFailure, WithValidation
 {
     use Importable;
     use SkipsFailures;
     use SkipsErrors;
 
-    public function batchSize(): int
-    {
-        return 100;
+    protected function getCoin($value) {
+        if(blank($value)) return null;
+
+        $coin = 'BRL';
+
+        if (! blank($value) && Str::contains($value, ['USD', 'usd', 'dolar', 'Dolares', '$'])) {
+            $coin = 'USD';
+        } elseif (! blank($value) && Str::contains($value, ['EUR', 'eur', 'euros', '€'])) {
+            $coin = 'EUR';
+        }
+
+        return $coin;
     }
 
-    /**
-     * @param  array  $row
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    protected function getValue($value) {
+        if(blank($value)) return null;
+
+        if (! Str::contains($value, ',')) {
+            $value .= '00';
+        }
+
+        $value = Helper::extractNumbersFromString($value);
+
+        return $value;
+    }
+
+    public function onRow(Row $row)
     {
-        $costCoin = 'BRL';
-        $saleCoin = 'BRL';
+        $row = $row->toArray();
 
-        if (! blank($row['custo']) && Str::contains($row['custo'], ['USD', 'usd', 'dolar', 'Dolares', '$'])) {
-            $costCoin = 'USD';
-        } elseif (! blank($row['custo']) && Str::contains($row['custo'], ['EUR', 'eur', 'euros', '€'])) {
-            $costCoin = 'EUR';
-        }
-
-        if (! blank($row['venda']) && Str::contains($row['venda'], ['USD', 'usd', 'dolar', 'Dolares', '$'])) {
-            $saleCoin = 'USD';
-        } elseif (! blank($row['venda']) && Str::contains($row['venda'], ['EUR', 'eur', 'euros', '€'])) {
-            $saleCoin = 'EUR';
-        }
-
-        $custo = $row['custo'];
-        $venda = $row['venda'];
-
-        if (! Str::contains($custo, ',')) {
-            $custo .= '00';
-        }
-
-        if (! Str::contains($venda, ',')) {
-            $venda .= '00';
-        }
-
-        $custo = Helper::extractNumbersFromString($custo);
-        $venda = Helper::extractNumbersFromString($venda);
-
-        $url = Str::contains($row['dominio'], '://') ?
-            str_replace('www.', '', parse_url($row['dominio'], PHP_URL_HOST)) :
-            str_replace('www.', '', parse_url($row['dominio'], PHP_URL_PATH));
+        $url = Str::contains($row['url'], '://') ?
+            str_replace('www.', '', parse_url($row['url'], PHP_URL_HOST)) :
+            str_replace('www.', '', parse_url($row['url'], PHP_URL_PATH));
 
         $country = null;
         $language = null;
@@ -95,15 +85,15 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             ]);
         }
 
-        if (! blank($row['atendimento'])) {
-            $seller = Seller::where('name', 'LIKE', '%'.$row['atendimento'].'%')->first();
+        // if (! blank($row['atendimento'])) {
+        //     $seller = Seller::where('name', 'LIKE', '%'.$row['atendimento'].'%')->first();
 
-            if (blank($seller)) {
-                $seller = Seller::create([
-                    'name' => $row['atendimento'],
-                ]);
-            }
-        }
+        //     if (blank($seller)) {
+        //         $seller = Seller::create([
+        //             'name' => $row['atendimento'],
+        //         ]);
+        //     }
+        // }
 
         if (! blank($row['responsavel'])) {
             $team = Team::where('name', 'LIKE', '%'.$row['responsavel'].'%')->first();
@@ -115,7 +105,7 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             }
         }
 
-        return new Site([
+        $site = Site::create([
             'url' => $url,
             'name' => null,
             'description' => null,
@@ -123,30 +113,30 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             // 'admin_obs' => $row['notas'],
             'da' => $row['da'],
             'dr' => $row['dr'],
-            'traffic' => null,
+            'traffic' => $row['trafego'],
             'tf' => null,
             'language_id' => optional($language)->id,
             'country_id' => optional($country)->id,
             'category_id' => optional($category)->id,
             'link_type' => 'DOFOLLOW',
-            'gambling' => strtolower($row['cassinos']) == 'sim' ? true : false,
-            'cdb' => false,
-            'cripto' => strtolower($row['cripto']) == 'sim' ? true : false,
+            // 'gambling' => strtolower($row['cassinos']) == 'sim' ? true : false,
+            // 'cdb' => false,
+            // 'cripto' => strtolower($row['cripto']) == 'sim' ? true : false,
             'sponsor' => strtolower($row['publi']) == 'sim' ? true : false,
             'ssl' => false,
             'broken' => false,
-            'cost' => $custo,
-            'sale' => $venda,
-            'cost_coin' => $costCoin,
-            'sale_coin' => $saleCoin,
+            'cost' => $this->getValue($row['c_geral']),
+            'sale' => $this->getValue($row['v_geral']),
+            'cost_coin' => $this->getCoin($row['c_geral']),
+            'sale_coin' => $this->getCoin($row['v_geral']),
             // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
-            'inserted_at' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+            'inserted_at' => blank($row['inclusao']) ? null : Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
             'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
-            'seller_id' => optional($seller)->id,
+            // 'seller_id' => optional($seller)->id,
             'team_id' => optional($team)->id,
 
-            'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
-            'banner' => strtolower($row['banners']) == 'sim' ? true : false,
+            // 'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
+            // 'banner' => strtolower($row['banners']) == 'sim' ? true : false,
 
             'owner_name' => optional($row)['dono_do_site'],
             'owner_email' => optional($row)['email'],
@@ -164,31 +154,88 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
 
             'status' => 'APPROVED',
         ]);
+
+        /**
+         * IDS:
+         * 1 - cassinos
+         * 2 - cbd
+         * 3 - crypto
+         * 4 - dating
+         * 5 - erotic
+         */
+
+        $types = [];
+
+        $types[1] = [
+            'cost' => $this->getValue($row['c_bets']),
+            'sale' => $this->getValue($row['v_bets']),
+            'cost_coin' => $this->getCoin($row['c_bets']),
+            'sale_coin' => $this->getCoin($row['v_bets']),
+        ];
+
+        $types[2] = [
+            'cost' => $this->getValue($row['c_cbd']),
+            'sale' => $this->getValue($row['v_cbd']),
+            'cost_coin' => $this->getCoin($row['c_cbd']),
+            'sale_coin' => $this->getCoin($row['v_cbd']),
+        ];
+
+        $types[3] = [
+            'cost' => $this->getValue($row['c_crip']),
+            'sale' => $this->getValue($row['v_crip']),
+            'cost_coin' => $this->getCoin($row['c_crip']),
+            'sale_coin' => $this->getCoin($row['v_crip']),
+        ];
+
+        $types[4] = [
+            'cost' => $this->getValue($row['c_dating']),
+            'sale' => $this->getValue($row['v_dating']),
+            'cost_coin' => $this->getCoin($row['c_dating']),
+            'sale_coin' => $this->getCoin($row['v_dating']),
+        ];
+
+        $types[4] = [
+            'cost' => $this->getValue($row['c_erotic']),
+            'sale' => $this->getValue($row['v_erotic']),
+            'cost_coin' => $this->getCoin($row['c_erotic']),
+            'sale_coin' => $this->getCoin($row['v_erotic']),
+        ];
+
+        $types = array_filter($types, function ($type) {
+            return
+                !is_null($type['cost']) && 
+                !is_null($type['sale']) && 
+                !is_null($type['cost_coin']) && 
+                !is_null($type['sale_coin']);
+        });
+
+        $site->types()->sync($types);
     }
 
     public function rules(): array
     {
         return [
-            'inclusao' => ['required', 'date_format:d/m/Y'],
+            'inclusao' => ['nullable', 'date_format:d/m/Y'],
             'atualizacao' => ['nullable', 'date_format:d/m/Y'],
-            'dominio' => ['required'],
+            'url' => ['required'],
             'da' => ['nullable', 'integer'],
             'dr' => ['nullable', 'integer'],
-            'atendimento' => [],
+            'trafego' => ['nullable', 'integer'],
+            // 'atendimento' => [],
             'responsavel' => [],
             'custo' => [],
             'venda' => [],
             'categorias' => [],
             'pais' => [],
             'linguagem' => [],
-            'cassinos' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
-            'cripto' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
+            // 'cassinos' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
+            // 'cripto' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
             'publi' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
             'notas' => [],
             'observacoes' => [],
 
-            'link_menu' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
-            'banners' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
+            // 'link_menu' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
+            // 'banners' => ['nullable', Rule::in(['sim', 'Sim', 'Não', 'não'])],
 
             'dono_do_site' => [],
             'email' => [],
@@ -202,7 +249,25 @@ class SitesImport implements ToModel, WithHeadingRow, WithUpserts, WithValidatio
             'instagram' => [],
             'facebook' => [],
 
-            'ativo' => ['nullable', Rule::in(['sim', 'Sim', 'Não'])],
+            'ativo' => ['nullable', Rule::in(['sim', 'Sim', 'SIM', 'Não'])],
+
+            'c_geral' => [],
+            'v_geral' => [],
+
+            'c_bets' => [],
+            'v_bets' => [],
+
+            'c_cbd' => [],
+            'v_cbd' => [],
+
+            'c_crip' => [],
+            'v_crip' => [],
+
+            'c_dating' => [],
+            'v_dating' => [],
+
+            'c_erotic' => [],
+            'v_erotic' => [],
         ];
     }
 

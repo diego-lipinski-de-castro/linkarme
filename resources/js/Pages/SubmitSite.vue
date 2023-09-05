@@ -27,17 +27,6 @@ const props = defineProps({
 
 const form = useForm({
     seller: props.seller?.id,
-    first_name: '',
-    last_name: '',
-    name: '',
-    birthday: '',
-    phone: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    locale: 'en',
-    coin: 'USD',
-    notify_updates_via_email: null,
 });
 
 const submit = () => {
@@ -271,6 +260,15 @@ const submit = () => {
                                 <InputLabel for="obs" :value="$t('Observações')" />
                                 <textarea id="obs" v-model="form.obs" type="obs" class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring-indigo-200 sm:text-sm"></textarea>
                                 <InputError class="mt-2" :message="form.errors.obs" />
+                            </div>
+
+                            <div class="col-span-2">
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox id="google_news" v-model:checked="form.google_news"
+                                        name="google_news" />
+                                    <InputLabel for="google_news"
+                                        :value="$t('Google News?')" />
+                                </div>
                             </div>
 
                             <div class="col-span-2">
