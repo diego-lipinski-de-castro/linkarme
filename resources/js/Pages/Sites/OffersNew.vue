@@ -1,20 +1,13 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed, onMounted, ref, watch } from 'vue'
-import { useTranslation } from "i18next-vue";
-import { useCoinStore } from '@/stores/coin'
+import { onMounted, ref } from 'vue'
 import {
     ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-
-const coinStore = useCoinStore()
-const { t } = useTranslation()
 
 const props = defineProps({
     title: String,

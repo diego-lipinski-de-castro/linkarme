@@ -19,11 +19,10 @@ use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 
-class SitesImport implements OnEachRow, WithHeadingRow, WithUpserts, SkipsOnError, SkipsOnFailure, WithValidation
+class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFailure, WithValidation
 {
     use Importable;
     use SkipsFailures;
@@ -105,55 +104,59 @@ class SitesImport implements OnEachRow, WithHeadingRow, WithUpserts, SkipsOnErro
             }
         }
 
-        $site = Site::create([
-            'url' => $url,
-            'name' => null,
-            'description' => null,
-            'obs' => $row['observacoes'],
-            // 'admin_obs' => $row['notas'],
-            'da' => $row['da'],
-            'dr' => $row['dr'],
-            'traffic' => $row['trafego'],
-            'tf' => null,
-            'language_id' => optional($language)->id,
-            'country_id' => optional($country)->id,
-            'category_id' => optional($category)->id,
-            'link_type' => 'DOFOLLOW',
-            // 'gambling' => strtolower($row['cassinos']) == 'sim' ? true : false,
-            // 'cdb' => false,
-            // 'cripto' => strtolower($row['cripto']) == 'sim' ? true : false,
-            'sponsor' => strtolower($row['publi']) == 'sim' ? true : false,
-            'ssl' => false,
-            'broken' => false,
-            'cost' => $this->getValue($row['c_geral']),
-            'sale' => $this->getValue($row['v_geral']),
-            'cost_coin' => $this->getCoin($row['c_geral']),
-            'sale_coin' => $this->getCoin($row['v_geral']),
-            // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
-            'inserted_at' => blank($row['inclusao']) ? null : Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
-            'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
-            // 'seller_id' => optional($seller)->id,
-            'team_id' => optional($team)->id,
+        $site = Site::updateOrCreate(
+            [
+                'url' => $url,
+            ],
+            [
+                'name' => null,
+                'description' => null,
+                'obs' => $row['observacoes'],
+                // 'admin_obs' => $row['notas'],
+                'da' => $row['da'],
+                'dr' => $row['dr'],
+                'traffic' => $row['trafego'],
+                'tf' => null,
+                'language_id' => optional($language)->id,
+                'country_id' => optional($country)->id,
+                'category_id' => optional($category)->id,
+                'link_type' => 'DOFOLLOW',
+                // 'gambling' => strtolower($row['cassinos']) == 'sim' ? true : false,
+                // 'cdb' => false,
+                // 'cripto' => strtolower($row['cripto']) == 'sim' ? true : false,
+                'sponsor' => strtolower($row['publi']) == 'sim' ? true : false,
+                'ssl' => false,
+                'broken' => false,
+                'cost' => $this->getValue($row['c_geral']),
+                'sale' => $this->getValue($row['v_geral']),
+                'cost_coin' => $this->getCoin($row['c_geral']),
+                'sale_coin' => $this->getCoin($row['v_geral']),
+                // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+                'inserted_at' => blank($row['inclusao']) ? now() : Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+                'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
+                // 'seller_id' => optional($seller)->id,
+                'team_id' => optional($team)->id,
 
-            // 'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
-            // 'banner' => strtolower($row['banners']) == 'sim' ? true : false,
+                // 'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
+                // 'banner' => strtolower($row['banners']) == 'sim' ? true : false,
 
-            'owner_name' => optional($row)['dono_do_site'],
-            'owner_email' => optional($row)['email'],
-            'owner_phone' => optional($row)['whats'],
+                'owner_name' => optional($row)['dono_do_site'],
+                'owner_email' => optional($row)['email'],
+                'owner_phone' => optional($row)['whats'],
 
-            'bank' => optional($row)['dados_bancarios'],
-            'pix' => optional($row)['pix'],
+                'bank' => optional($row)['dados_bancarios'],
+                'pix' => optional($row)['pix'],
 
-            'phone' => optional($row)['telefone'],
-            'paypal' => optional($row)['paypal'],
-            'instagram' => optional($row)['instagram'],
-            'facebook' => optional($row)['facebook'],
+                'phone' => optional($row)['telefone'],
+                'paypal' => optional($row)['paypal'],
+                'instagram' => optional($row)['instagram'],
+                'facebook' => optional($row)['facebook'],
 
-            'deleted_at' => strtolower($row['ativo']) == 'sim' ? null : now(),
+                'deleted_at' => strtolower($row['ativo']) == 'sim' ? null : now(),
 
-            'status' => 'APPROVED',
-        ]);
+                'status' => 'APPROVED',
+            ]
+        );
 
         /**
          * IDS:
@@ -162,6 +165,7 @@ class SitesImport implements OnEachRow, WithHeadingRow, WithUpserts, SkipsOnErro
          * 3 - crypto
          * 4 - dating
          * 5 - erotic
+         * 6 - bets
          */
 
         $types = [];
@@ -194,12 +198,19 @@ class SitesImport implements OnEachRow, WithHeadingRow, WithUpserts, SkipsOnErro
             'sale_coin' => $this->getCoin($row['v_dating']),
         ];
 
-        $types[4] = [
+        $types[5] = [
             'cost' => $this->getValue($row['c_erotic']),
             'sale' => $this->getValue($row['v_erotic']),
             'cost_coin' => $this->getCoin($row['c_erotic']),
             'sale_coin' => $this->getCoin($row['v_erotic']),
         ];
+
+        // $types[6] = [
+        //     'cost' => $this->getValue($row['c_erotic']),
+        //     'sale' => $this->getValue($row['v_erotic']),
+        //     'cost_coin' => $this->getCoin($row['c_erotic']),
+        //     'sale_coin' => $this->getCoin($row['v_erotic']),
+        // ];
 
         $types = array_filter($types, function ($type) {
             return
@@ -268,14 +279,9 @@ class SitesImport implements OnEachRow, WithHeadingRow, WithUpserts, SkipsOnErro
 
             'c_erotic' => [],
             'v_erotic' => [],
-        ];
-    }
 
-    /**
-     * @return string|array
-     */
-    public function uniqueBy()
-    {
-        return 'url';
+            // 'c_erotic' => [],
+            // 'v_erotic' => [],
+        ];
     }
 }

@@ -189,9 +189,12 @@ const importFilepond = ref(null)
 const openImportDialog = ref(false)
 const importFinished = ref(false)
 
+const importNotify = ref(false)
+
 const uploadSites = (fieldName, file, metadata, load, error, progress, abort) => {
     Inertia.post(route('sites.import'), {
         file: file,
+        notify: importNotify.value,
     }, {
         forceFormData: true,
         preserveScroll: true,
@@ -260,9 +263,20 @@ const expanded = ref([])
                                 <h3 class="text-center font-medium text-gray-900">Importar sites</h3>
 
                                 <div class="mt-4 mx-auto w-96">
-                                    <file-pond ref="importFilepond" :server="{ process: uploadSites }" :instantUpload="true"
+                                    <file-pond ref="importFilepond" :server="{ process: uploadSites }" :instantUpload="false"
                                         :allowRevert="false" accepted-file-types="text/csv" :dropOnPage="true"
-                                        :dropOnElement="false" :dropValidation="true" />
+                                        :dropOnElement="false" :dropValidation="true" credits="false"/>
+                                </div>
+
+                                <div class="mt-4 mx-auto w-96">
+                                    <div class="relative flex items-start">
+                                        <div class="flex h-5 items-center">
+                                            <input v-model="importNotify" id="import-notify" name="import-notify" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                        </div>
+                                        <div class="ml-2 text-sm">
+                                            <label for="import-notify" class="font-medium text-gray-700 whitespace-nowrap">Notificar sites adicionados</label>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div v-if="importFinished" class="mt-8">
@@ -415,7 +429,7 @@ const expanded = ref([])
                                 </span>
 
                             <div class="mt-4 flex">
-                                <div class="grid grid-rows-3 grid-flow-col gap-x-4 gap-y-2">
+                                <div class="grid grid-rows-4 grid-flow-col gap-x-4 gap-y-2">
                                     <div v-for="(language, index) in languages" :key="index"
                                         class="relative flex items-start">
                                             <div class="flex h-5 items-center">
@@ -442,7 +456,7 @@ const expanded = ref([])
                                 </span>
 
                                 <div class="mt-4 flex">
-                                    <div class="grid grid-rows-3 grid-flow-col gap-x-4 gap-y-2">
+                                    <div class="grid grid-rows-4 grid-flow-col gap-x-4 gap-y-2">
                                         <div v-for="(country, index) in countries" :key="index"
                                             class="relative flex items-start">
                                             <div class="flex h-5 items-center">
@@ -577,9 +591,16 @@ const expanded = ref([])
                                     <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </button>
 
-                                <a :href="route('sites.export')"
+                                <a :href="route('sites.exportUrls')"
                                     class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export') }}</span>
+                                    <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export urls') }}</span>
+                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
+                                        aria-hidden="true" />
+                                </a>
+
+                                <a :href="route('sites.exportPending')"
+                                    class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export pending') }}</span>
                                     <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
                                         aria-hidden="true" />
                                 </a>

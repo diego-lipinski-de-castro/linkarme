@@ -90,10 +90,7 @@ const form = useForm({
 });
 
 watch(() => form.cost, () => computeSuggested())
-watch(() => form.cost_coin, () => form.sale_coin = form.cost_coin)
-watch(() => form.sale_coin, () => computeSuggested())
 
-const costInput = ref(null)
 const suggested = ref(0)
 
 const computeSuggested = () => {
@@ -111,6 +108,28 @@ const computeSuggested = () => {
 
     suggested.value = format(cost, coins[form.cost_coin]);
 }
+
+const computeSuggestedForType = (type) => {
+
+    let cost = parseInt(unformat(type.cost, coins[type.cost_coin]));
+
+    if(['BRL'].includes(type.cost_coin)) {
+        
+        cost = (cost) + (cost * 0.30) + 675;
+
+    } else if(['EUR', 'USD'].includes(type.cost_coin)) {
+
+        cost = ((cost + 135) * 0.15) + (cost + 135)
+    }
+
+    type.suggested = format(cost, coins[type.cost_coin]);
+}
+
+watch(() => form.cost_coin, () => form.sale_coin = form.cost_coin)
+
+const updateCoinForType = (type) => {
+    type.sale_coin = type.cost_coin
+} 
 
 const open = ref(false)
 
@@ -466,7 +485,7 @@ const submitNote = () => {
                                                 <td class="px-3 py-3.5 text-sm text-gray-500 align-top">
                                                     
                                                     <div class="relative rounded-md shadow-sm">
-                                                        <input ref="costInput" v-model.lazy="form.cost" v-money3="coins[form.cost_coin]" type="text" name="cost" id="cost"
+                                                        <input v-model.lazy="form.cost" v-money3="coins[form.cost_coin]" type="text" name="cost" id="cost"
                                                             class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
@@ -499,7 +518,7 @@ const submitNote = () => {
                                                         </div>
                                                     </div>
 
-                                                    <p :class="['mt-1 ml-1 text-xs font-medium', true ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ suggested }}</p>
+                                                    <p :class="['mt-1 ml-1 text-xs font-medium text-blue-500']">{{ $t('Suggested') }}: {{ suggested }}</p>
                                                 </td>
                                             </tr>
 
@@ -520,12 +539,12 @@ const submitNote = () => {
                                                 <td :class="['border-t border-gray-200 relative px-3 py-3.5 text-sm text-gray-500']">
                                                     
                                                     <div :class="['relative rounded-md shadow-sm', {'opacity-50': !type.available}]">
-                                                        <input :disabled="!type.available" v-model.lazy="type.cost" v-money3="coins[type.cost_coin]" type="text" name="cost" id="cost"
+                                                        <input @change="computeSuggestedForType(type)" :disabled="!type.available" v-model.lazy="type.cost" v-money3="coins[type.cost_coin]" type="text" name="cost" id="cost"
                                                             class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="cost_coin" class="sr-only">Moeda</label>
-                                                            <select :disabled="!type.available" v-model="type.cost_coin" id="cost_coin" name="cost_coin"
+                                                            <select @change="updateCoinForType(type)" :disabled="!type.available" v-model="type.cost_coin" id="cost_coin" name="cost_coin"
                                                                 class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
                                                                 <option value="EUR">EUR</option>
@@ -544,14 +563,16 @@ const submitNote = () => {
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="sale_coin" class="sr-only">Moeda</label>
-                                                            <select :disabled="!type.available" v-model="type.sale_coin" id="sale_coin" name="sale_coin"
-                                                                class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                            <select disabled v-model="type.sale_coin" id="sale_coin" name="sale_coin"
+                                                                class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
                                                                 <option value="EUR">EUR</option>
                                                                 <option value="USD">USD</option>
                                                             </select>
                                                         </div>
                                                     </div>
+
+                                                    <p v-show="type.available" :class="['mt-1 ml-1 text-xs font-medium text-blue-500']">{{ $t('Suggested') }}: {{ type.suggested ?? '' }}</p>
 
                                                     <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
                                                 </td>

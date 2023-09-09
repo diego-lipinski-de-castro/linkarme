@@ -119,7 +119,7 @@ const submit = () => {
                                 <div class="mt-1 flex rounded-md shadow-sm">
                                     <TextInput id="password" ref="passwordInput" v-model="form.password"
                                         :type="showPassword ? 'text' : 'password'"
-                                        class="block w-full rounded-none rounded-l-md" autocomplete="nope-3" />
+                                        class="block w-full rounded-none rounded-l-md" autocomplete="new-password" />
 
                                     <button @click="showPassword = !showPassword" type="button"
                                         class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">

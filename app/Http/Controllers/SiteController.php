@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SitesExport;
 use App\Filters\FilterLimiter;
 use App\Filters\NewFilter;
 use App\Filters\UrlFilter;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -392,7 +394,7 @@ class SiteController extends Controller
         return back();
     }
 
-    public function export()
+    public function exportUrls()
     {
         $urls = Site::select('url')->get();
 
@@ -409,10 +411,16 @@ class SiteController extends Controller
         return Storage::download('urls.txt');
     }
 
+    public function exportPending()
+    {
+        return Excel::download(new SitesExport, 'sites.xlxs');
+    }
+
     public function import(Request $request)
     {
         $request->validate([
             'file' => 'required|file|mimes:csv',
+            'notify' => 'required|boolean',
         ]);
 
         $before = Site::count();
@@ -443,6 +451,10 @@ class SiteController extends Controller
         $after = Site::count();
 
         $diff = $after - $before;
+
+        $addedSites = Site::latest()->take($diff)->get();
+
+        dd($addedSites);
 
         // notify sites diff added
 
