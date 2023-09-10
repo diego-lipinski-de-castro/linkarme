@@ -413,7 +413,7 @@ class SiteController extends Controller
 
     public function exportPending()
     {
-        return Excel::download(new SitesExport, 'sites.xlxs');
+        return Excel::download(new SitesExport, 'sites.xlsx');
     }
 
     public function import(Request $request)
