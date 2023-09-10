@@ -13,9 +13,10 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class SitesExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths
+class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, WithColumnWidths
 {
     public function styles(Worksheet $sheet)
     {
@@ -160,11 +161,10 @@ class SitesExport implements FromCollection, WithHeadings, WithMapping, WithStyl
         ];
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    public function query()
     {
-        return Site::all();
+        return Site::query()
+            ->withTrashed()
+            ->ofStatus('PENDING');
     }
 }
