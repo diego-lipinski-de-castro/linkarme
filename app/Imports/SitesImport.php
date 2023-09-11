@@ -28,6 +28,15 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
     use SkipsFailures;
     use SkipsErrors;
 
+    protected $notifyAdded;
+    protected $notifyUpdated;
+
+    public function __construct(bool $notifyAdded = false, bool $notifyUpdated = false)
+    {
+        $this->notifyAdded = $notifyAdded;
+        $this->notifyUpdated = $notifyUpdated;
+    }
+
     protected function getCoin($value) {
         if(blank($value)) return null;
 
@@ -104,11 +113,15 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
             }
         }
 
-        $site = Site::updateOrCreate(
-            [
-                'url' => $url,
-            ],
-            [
+        $site = Site::where('url', $url)->first();
+
+        if(!blank($site)) {
+
+            if(!$this->notifyUpdated) {
+                Site::disableAuditing();
+            }
+
+            $site->update([
                 'name' => null,
                 'description' => null,
                 'obs' => $row['observacoes'],
@@ -155,8 +168,76 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
                 'deleted_at' => strtolower($row['ativo']) == 'sim' ? null : now(),
 
                 'status' => 'APPROVED',
-            ]
-        );
+            ]);
+
+            if(!$this->notifyUpdated) {
+                Site::enableAuditing();
+            }
+
+        } else {
+
+            $site = Site::create([
+                'url' => $url,
+                'name' => null,
+                'description' => null,
+                'obs' => $row['observacoes'],
+                // 'admin_obs' => $row['notas'],
+                'da' => $row['da'],
+                'dr' => $row['dr'],
+                'traffic' => $row['trafego'],
+                'tf' => null,
+                'language_id' => optional($language)->id,
+                'country_id' => optional($country)->id,
+                'category_id' => optional($category)->id,
+                'link_type' => 'DOFOLLOW',
+                // 'gambling' => strtolower($row['cassinos']) == 'sim' ? true : false,
+                // 'cdb' => false,
+                // 'cripto' => strtolower($row['cripto']) == 'sim' ? true : false,
+                'sponsor' => strtolower($row['publi']) == 'sim' ? true : false,
+                'ssl' => false,
+                'broken' => false,
+                'cost' => $this->getValue($row['c_geral']),
+                'sale' => $this->getValue($row['v_geral']),
+                'cost_coin' => $this->getCoin($row['c_geral']),
+                'sale_coin' => $this->getCoin($row['v_geral']),
+                // 'last_posted' => Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+                'inserted_at' => blank($row['inclusao']) ? now() : Carbon::createFromFormat('d/m/Y', $row['inclusao'])->format('Y-m-d'),
+                'last_updated_at' => blank($row['atualizacao']) ? null : Carbon::createFromFormat('d/m/Y', $row['atualizacao'])->format('Y-m-d'),
+                // 'seller_id' => optional($seller)->id,
+                'team_id' => optional($team)->id,
+
+                // 'menu' => strtolower($row['link_menu']) == 'sim' ? true : false,
+                // 'banner' => strtolower($row['banners']) == 'sim' ? true : false,
+
+                'owner_name' => optional($row)['dono_do_site'],
+                'owner_email' => optional($row)['email'],
+                'owner_phone' => optional($row)['whats'],
+
+                'bank' => optional($row)['dados_bancarios'],
+                'pix' => optional($row)['pix'],
+
+                'phone' => optional($row)['telefone'],
+                'paypal' => optional($row)['paypal'],
+                'instagram' => optional($row)['instagram'],
+                'facebook' => optional($row)['facebook'],
+
+                'deleted_at' => strtolower($row['ativo']) == 'sim' ? null : now(),
+
+                'status' => 'PENDING',
+            ]);
+
+            if(!$this->notifyAdded) {
+                Site::disableAuditing();
+            }
+
+            $site->update([
+                'status' => 'APPROVED',
+            ]);
+
+            if(!$this->notifyAdded) {
+                Site::enableAuditing();
+            }
+        }
 
         /**
          * IDS:
@@ -206,10 +287,10 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
         ];
 
         // $types[6] = [
-        //     'cost' => $this->getValue($row['c_erotic']),
-        //     'sale' => $this->getValue($row['v_erotic']),
-        //     'cost_coin' => $this->getCoin($row['c_erotic']),
-        //     'sale_coin' => $this->getCoin($row['v_erotic']),
+        //     'cost' => $this->getValue($row['c_bets']),
+        //     'sale' => $this->getValue($row['v_bets']),
+        //     'cost_coin' => $this->getCoin($row['c_bets']),
+        //     'sale_coin' => $this->getCoin($row['v_bets']),
         // ];
 
         $types = array_filter($types, function ($type) {

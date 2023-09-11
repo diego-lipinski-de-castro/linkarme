@@ -189,12 +189,14 @@ const importFilepond = ref(null)
 const openImportDialog = ref(false)
 const importFinished = ref(false)
 
-const importNotify = ref(false)
+const notifyAdded = ref(false)
+const notifyUpdated = ref(false)
 
 const uploadSites = (fieldName, file, metadata, load, error, progress, abort) => {
     Inertia.post(route('sites.import'), {
         file: file,
-        notify: importNotify.value,
+        notify_added: notifyAdded.value,
+        notify_updated: notifyUpdated.value,
     }, {
         forceFormData: true,
         preserveScroll: true,
@@ -271,10 +273,19 @@ const expanded = ref([])
                                 <div class="mt-4 mx-auto w-96">
                                     <div class="relative flex items-start">
                                         <div class="flex h-5 items-center">
-                                            <input v-model="importNotify" id="import-notify" name="import-notify" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                            <input v-model="notifyAdded" id="notify-added" name="notify-added" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                                         </div>
                                         <div class="ml-2 text-sm">
-                                            <label for="import-notify" class="font-medium text-gray-700 whitespace-nowrap">Notificar sites adicionados</label>
+                                            <label for="notify-added" class="font-medium text-gray-700 whitespace-nowrap">Notificar sites adicionados</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-2 relative flex items-start">
+                                        <div class="flex h-5 items-center">
+                                            <input v-model="notifyUpdated" id="notify-updated" name="notify-updated" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                        </div>
+                                        <div class="ml-2 text-sm">
+                                            <label for="notify-updated" class="font-medium text-gray-700 whitespace-nowrap">Notificar sites atualizados</label>
                                         </div>
                                     </div>
                                 </div>

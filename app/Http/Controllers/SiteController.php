@@ -413,25 +413,25 @@ class SiteController extends Controller
 
     public function exportPending()
     {
-        return Excel::download(new SitesExport, 'sites.xlsx');
+        return Excel::download(new SitesExport, 'sites.csv');
     }
 
     public function import(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'file' => 'required|file|mimes:csv',
-            'notify' => 'required|boolean',
+            'notify_added' => 'required|boolean',
+            'notify_updated' => 'required|boolean',
         ]);
 
         $before = Site::count();
 
-        $import = new SitesImport();
-
-        // Site::disableAuditing();
+        $import = new SitesImport(
+            $validated['notify_added'],
+            $validated['notify_updated'],
+        );
 
         $import->import(request()->file('file'));
-
-        // Site::enableAuditing();
 
         $importFailures = collect();
 
@@ -452,9 +452,10 @@ class SiteController extends Controller
 
         $diff = $after - $before;
 
-        $addedSites = Site::latest()->take($diff)->get();
+        // $addedSites = Site::latest()->take($diff)->get();
 
-        dd($addedSites);
+        // dump($diff);
+        // dd($addedSites);
 
         // notify sites diff added
 

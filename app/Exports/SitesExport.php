@@ -12,15 +12,72 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithDefaultStyles;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, WithColumnWidths
+class SitesExport implements FromQuery, WithHeadings, WithMapping, WithDefaultStyles, WithStyles, WithColumnWidths, ShouldAutoSize
 {
+    public function defaultStyles(Style $defaultStyle)
+    {
+        return [
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+        ];
+    }
+
     public function styles(Worksheet $sheet)
     {
         return [
+            'E:G' => [
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER,
+                ],
+            ],
+            'K' => [
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FFB7E1CD',
+                    ],
+                ],
+            ],
+            'M:N' => [
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FFC0C0C0',
+                    ],
+                ],
+            ],
+            'Q:R' => [
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FFC0C0C0',
+                    ],
+                ],
+            ],
+            'U:V' => [
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FFC0C0C0',
+                    ],
+                ],
+            ],
+            'Y:Z' => [
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FFC0C0C0',
+                    ],
+                ],
+            ],
             1 => [
                 'font' => [
                     'bold' => true,
@@ -32,18 +89,22 @@ class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, W
                 'fill' => [
                     'fillType' => Fill::FILL_SOLID,
                     'startColor' => [
-                        'argb' => Color::COLOR_BLUE,
+                        'argb' => Color::COLOR_BLACK,
                     ],
                 ],
             ],
-
-            // Styling a specific cell by coordinate.
-            'B1' => [
-                'fill' => [
-                    'fillType' => Fill::FILL_SOLID,
-                    'startColor' => [
-                        'argb' => Color::COLOR_BLACK,
+            'A1:AE10' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => [
+                        'argb' => Color::COLOR_BLACK
                     ],
+                ],
+            ],
+            'allBorders' => [
+                'borderStyle' => Border::BORDER_THIN,
+                'color' => [
+                    'argb' => Color::COLOR_BLACK
                 ],
             ],
         ];
@@ -55,7 +116,10 @@ class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, W
             'INCLUSÃO',
             'ATUALIZAÇÃO',
             'Ativo',
+            'PUBLI',
             'URL',
+            'OBSERVAÇÕES',
+            'Notas',
             'DA',
             'DR',
             'TRÁFEGO',
@@ -73,9 +137,6 @@ class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, W
             'C EROTIC',
             'V EROTIC',
             'Sug Valor',
-            'Notas',
-            'PUBLI',
-            'OBSERVAÇÃO',
             'País',
             'Linguagem',
             'CATEGORIAS',
@@ -88,38 +149,9 @@ class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, W
 
     public function columnWidths(): array
     {
-        return [
-            'A' => 100,
-            'B' => 100,
-            'C' => 100,
-            'D' => 100,
-            'E' => 100,
-            'F' => 100,
-            'G' => 100,      
-            'H' => 100,
-            'I' => 100,
-            'J' => 100,
-            'K' => 100,
-            'L' => 100,
-            'M' => 100,
-            'N' => 100,
-            'O' => 100,
-            'P' => 100,
-            'Q' => 100,
-            'R' => 100,
-            'S' => 100,
-            'T' => 100,
-            'U' => 100,
-            'V' => 100,
-            'W' => 100,
-            'X' => 100,
-            'Y' => 100,
-            'Z' => 100,
-            'AA' => 100,
-            'AB' => 100,
-            'AC' => 100,
-            'AD' => 100,
-            'AE' => 100,
+        return [      
+            'H' => 8,
+            'I' => 8,
         ];
     }
 
@@ -127,10 +159,13 @@ class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, W
     {
 
         return [
-            'INCLUSÃO',
-            'ATUALIZAÇÃO',
+            blank($row->inserted_at) ? $row->created_at->format('d/m/Y') : $row->inserted_at->format('d/m/Y'),
+            $row->updated_at->format('d/m/Y'),
             'Ativo',
-            Str::of($row->url)->trim(),
+            'PUBLI',
+            $row->url,
+            'OBSERVAÇÕES',
+            'Notas',
             $row->da ?? '-',
             $row->dr ?? '-',
             'TRÁFEGO',
@@ -148,16 +183,13 @@ class SitesExport implements FromQuery, WithHeadings, WithMapping, WithStyles, W
             'C EROTIC',
             'V EROTIC',
             'Sug Valor',
-            'Notas',
-            'PUBLI',
-            'OBSERVAÇÃO',
-            Str::of($row->country?->name ?? '-')->trim(),
-            Str::of($row->language?->name ?? '-')->trim(),
-            Str::of($row->category?->name ?? '-')->trim(),
-            Str::of($row->owner_name ?? '-')->trim(),
-            Str::of($row->owner_email ?? '-')->trim(),
-            Str::of($row->owner_phone ?? '-')->trim(),
-            Str::of($row->owner_phone ?? '-')->trim(),
+            $row->country?->name ?? '-',
+            $row->language?->name ?? '-',
+            $row->category?->name ?? '-',
+            $row->owner_name ?? '-',
+            $row->owner_email ?? '-',
+            $row->owner_phone ?? '-',
+            $row->owner_phone ?? '-',
         ];
     }
 
