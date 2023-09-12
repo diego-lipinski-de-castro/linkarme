@@ -1,35 +1,35 @@
 {
-  "resources/js/assets/images/login-bg.jpg": {
-    "file": "assets/login-bg.c7ae1e15.jpg",
-    "src": "resources/js/assets/images/login-bg.jpg"
-  },
   "resources/js/assets/images/linking-pet.png": {
     "file": "assets/linking-pet.2ec4e0d6.png",
     "src": "resources/js/assets/images/linking-pet.png"
+  },
+  "resources/js/assets/images/login-bg.jpg": {
+    "file": "assets/login-bg.c7ae1e15.jpg",
+    "src": "resources/js/assets/images/login-bg.jpg"
   },
   "resources/js/assets/images/header-logo.png": {
     "file": "assets/header-logo.b6608f0d.png",
     "src": "resources/js/assets/images/header-logo.png"
   },
-  "resources/js/assets/images/footer-logo.png": {
-    "file": "assets/footer-logo.a34a5bc9.png",
-    "src": "resources/js/assets/images/footer-logo.png"
-  },
   "resources/js/assets/images/linking-slogan.png": {
     "file": "assets/linking-slogan.fba8a623.png",
     "src": "resources/js/assets/images/linking-slogan.png"
+  },
+  "resources/js/assets/images/footer-logo.png": {
+    "file": "assets/footer-logo.a34a5bc9.png",
+    "src": "resources/js/assets/images/footer-logo.png"
   },
   "resources/js/assets/logo.svg": {
     "file": "assets/logo.23db0f22.svg",
     "src": "resources/js/assets/logo.svg"
   },
-  "resources/js/assets/images/login-logo.png": {
-    "file": "assets/login-logo.6311d394.png",
-    "src": "resources/js/assets/images/login-logo.png"
-  },
   "resources/js/assets/logo-linking.svg": {
     "file": "assets/logo-linking.7019b5af.svg",
     "src": "resources/js/assets/logo-linking.svg"
+  },
+  "resources/js/assets/images/login-logo.png": {
+    "file": "assets/login-logo.6311d394.png",
+    "src": "resources/js/assets/images/login-logo.png"
   },
   "resources/js/app.js": {
     "file": "assets/app.a3d2bd01.js",
@@ -3409,20 +3409,20 @@
       "resources/js/app.js"
     ]
   },
-  "resources/js/Pages/Analytics.css": {
-    "file": "assets/Analytics.23bbc02e.css",
-    "src": "resources/js/Pages/Analytics.css"
+  "resources/js/Pages/Sites/IndexNew.css": {
+    "file": "assets/IndexNew.f7c76f9a.css",
+    "src": "resources/js/Pages/Sites/IndexNew.css"
   },
   "filepond-plugin-file-validate-type.css": {
     "file": "assets/filepond-plugin-file-validate-type.df027427.css",
     "src": "filepond-plugin-file-validate-type.css"
   },
-  "resources/js/Pages/Sites/IndexNew.css": {
-    "file": "assets/IndexNew.f7c76f9a.css",
-    "src": "resources/js/Pages/Sites/IndexNew.css"
-  },
   "resources/js/app.css": {
     "file": "assets/app.0a90991f.css",
     "src": "resources/js/app.css"
+  },
+  "resources/js/Pages/Analytics.css": {
+    "file": "assets/Analytics.23bbc02e.css",
+    "src": "resources/js/Pages/Analytics.css"
   }
 }

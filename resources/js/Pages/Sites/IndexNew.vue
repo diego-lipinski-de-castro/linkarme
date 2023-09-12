@@ -270,7 +270,7 @@ const expanded = ref([])
                                         :dropOnElement="false" :dropValidation="true" credits="false"/>
                                 </div>
 
-                                <div class="mt-4 mx-auto w-96">
+                                <div v-if="!importFinished" class="mt-4 mx-auto w-96">
                                     <div class="relative flex items-start">
                                         <div class="flex h-5 items-center">
                                             <input v-model="notifyAdded" id="notify-added" name="notify-added" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
