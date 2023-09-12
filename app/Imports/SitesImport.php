@@ -67,8 +67,6 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
     {
         $row = $row->toArray();
 
-        dd($row);
-
         $url = Str::contains($row['url'], '://') ?
             str_replace('www.', '', parse_url($row['url'], PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($row['url'], PHP_URL_PATH));
