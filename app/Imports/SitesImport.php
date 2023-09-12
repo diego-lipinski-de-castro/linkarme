@@ -67,6 +67,8 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
     {
         $row = $row->toArray();
 
+        dd($row);
+
         $url = Str::contains($row['url'], '://') ?
             str_replace('www.', '', parse_url($row['url'], PHP_URL_HOST)) :
             str_replace('www.', '', parse_url($row['url'], PHP_URL_PATH));
@@ -252,10 +254,10 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
         $types = [];
 
         $types[1] = [
-            'cost' => $this->getValue($row['c_bets']),
-            'sale' => $this->getValue($row['v_bets']),
-            'cost_coin' => $this->getCoin($row['c_bets']),
-            'sale_coin' => $this->getCoin($row['v_bets']),
+            'cost' => $this->getValue($row['c_cassino']),
+            'sale' => $this->getValue($row['v_cassino']),
+            'cost_coin' => $this->getCoin($row['c_cassino']),
+            'sale_coin' => $this->getCoin($row['v_cassino']),
         ];
 
         $types[2] = [
@@ -286,12 +288,12 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
             'sale_coin' => $this->getCoin($row['v_erotic']),
         ];
 
-        // $types[6] = [
-        //     'cost' => $this->getValue($row['c_bets']),
-        //     'sale' => $this->getValue($row['v_bets']),
-        //     'cost_coin' => $this->getCoin($row['c_bets']),
-        //     'sale_coin' => $this->getCoin($row['v_bets']),
-        // ];
+        $types[6] = [
+            'cost' => $this->getValue($row['c_bets']),
+            'sale' => $this->getValue($row['v_bets']),
+            'cost_coin' => $this->getCoin($row['c_bets']),
+            'sale_coin' => $this->getCoin($row['v_bets']),
+        ];
 
         $types = array_filter($types, function ($type) {
             return
