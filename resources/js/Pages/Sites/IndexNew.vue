@@ -779,8 +779,9 @@ const expanded = ref([])
                                                 <Link :href="route('sites.edit', site.id)" :class="[{
                                                     'text-gray-500 hover:text-gray-900': site.deleted_at === null,
                                                     'text-red-500 hover:text-red-700': site.deleted_at !== null,
-                                                }]">
-                                                {{ site.url }}
+                                                }, 'flex items-center space-x-2']">
+                                                    <img :src="`https://www.google.com/s2/favicons?domain=${site.url}`"/>
+                                                    <span>{{ site.url }}</span>
                                                 </Link>
                                             </td>
                                             <td v-show="columns[2].visible"

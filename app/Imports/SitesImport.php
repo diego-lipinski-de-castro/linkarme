@@ -113,7 +113,7 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
             }
         }
 
-        $site = Site::where('url', $url)->first();
+        $site = Site::withTrashed()->where('url', $url)->first();
 
         if(!blank($site)) {
 
