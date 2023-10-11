@@ -81,6 +81,13 @@ const offerForm = useForm({
     types: JSON.parse(JSON.stringify(typesProp)),
 })
 
+watch(() => form.cost_coin, () => form.sale_coin = form.cost_coin)
+watch(() => offerForm.cost_coin, () => offerForm.sale_coin = offerForm.cost_coin)
+
+const updateCoinForType = (type) => {
+    type.sale_coin = type.cost_coin
+} 
+
 const check = async () => {
     try {
         const res = await fetch(route('seller.sites.check', { url: form.url }));
@@ -235,9 +242,9 @@ const submitOffer = () => {
 
                                                                 <div class="absolute inset-y-0 right-0 flex items-center">
                                                                     <label for="offer-sale_coin" class="sr-only">Moeda</label>
-                                                                    <select v-model="offerForm.sale_coin" id="offer-sale_coin"
+                                                                    <select disabled v-model="offerForm.sale_coin" id="offer-sale_coin"
                                                                         name="offer-sale_coin"
-                                                                        class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                                        class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
                                                                         <option value="USD">USD</option>
@@ -271,7 +278,7 @@ const submitOffer = () => {
 
                                                                 <div class="absolute inset-y-0 right-0 flex items-center">
                                                                     <label :for="`offer-cost_coin-${index}`" class="sr-only">Moeda</label>
-                                                                    <select :disabled="!type.available" v-model="offerForm.types[index].cost_coin" :id="`offer-cost_coin-${index}`"
+                                                                    <select @change="updateCoinForType(type)" :disabled="!type.available" v-model="offerForm.types[index].cost_coin" :id="`offer-cost_coin-${index}`"
                                                                         :name="`offer-cost_coin-${index}`"
                                                                         class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                         <option value="BRL">BRL</option>
@@ -294,9 +301,9 @@ const submitOffer = () => {
 
                                                                 <div class="absolute inset-y-0 right-0 flex items-center">
                                                                     <label :for="`offer-sale_coin-${index}`" class="sr-only">Moeda</label>
-                                                                    <select :disabled="!type.available" v-model="offerForm.types[index].sale_coin" :id="`offer-sale_coin-${index}`"
+                                                                    <select disabled v-model="offerForm.types[index].sale_coin" :id="`offer-sale_coin-${index}`"
                                                                         :name="`offer-sale_coin-${index}`"
-                                                                        class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                                        class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
                                                                         <option value="USD">USD</option>
@@ -541,8 +548,8 @@ const submitOffer = () => {
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="sale_coin" class="sr-only">Moeda</label>
-                                                            <select v-model="form.sale_coin" id="sale_coin" name="sale_coin"
-                                                                class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                            <select disabled v-model="form.sale_coin" id="sale_coin" name="sale_coin"
+                                                                class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
                                                                 <option value="EUR">EUR</option>
                                                                 <option value="USD">USD</option>
@@ -581,7 +588,7 @@ const submitOffer = () => {
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="cost_coin" class="sr-only">Moeda</label>
-                                                            <select :disabled="!type.available" v-model="form.types[index].cost_coin"
+                                                            <select @change="updateCoinForType(type)" :disabled="!type.available" v-model="form.types[index].cost_coin"
                                                                 id="cost_coin" name="cost_coin"
                                                                 class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
@@ -605,9 +612,9 @@ const submitOffer = () => {
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="sale_coin" class="sr-only">Moeda</label>
-                                                            <select :disabled="!type.available" v-model="form.types[index].sale_coin"
+                                                            <select disabled v-model="form.types[index].sale_coin"
                                                                 id="sale_coin" name="sale_coin"
-                                                                class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                                                class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
                                                                 <option value="EUR">EUR</option>
                                                                 <option value="USD">USD</option>
