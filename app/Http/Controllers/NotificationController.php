@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Custom;
 use App\Mail\WeekUpdates;
 use App\Models\Client;
 use Illuminate\Http\Request;
@@ -15,6 +14,8 @@ class NotificationController extends Controller
 {
     public function index()
     {
+        return back();
+
         $updates = Audit::query()
             ->with([
                 'auditable' => function ($query) {
@@ -63,14 +64,13 @@ class NotificationController extends Controller
 
     public function store(Request $request)
     {
+        return back();
+
         $validated = $request->validate([
 
         ]);
 
         // dd($validated);
-
-        // return (new Custom())->render();
-        return new Custom();
 
         $clients = Client::query()
             ->get();
