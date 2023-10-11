@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SellerController;
@@ -30,6 +31,8 @@ use Inertia\Inertia;
 */
 
 Route::prefix('admin')->group(function () {
+    Route::redirect('/', '/admin/sites');
+
     Route::get('login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
         ->middleware(['guest'])
         ->name('login');
@@ -55,6 +58,9 @@ Route::prefix('admin')->group(function () {
     
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
     Route::get('analytics', [DashboardController::class, 'analytics'])->name('analytics')->middleware(['auth']);
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index')->middleware(['auth']);
+    Route::post('notifications', [NotificationController::class, 'store'])->middleware(['auth']);
     
     // site
     Route::post('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']); // ok

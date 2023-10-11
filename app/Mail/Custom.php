@@ -9,20 +9,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class WeekUpdates extends Mailable
+class Custom extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $updates;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($updates)
+    public function __construct()
     {
-        $this->updates = $updates;
+        //
     }
 
     /**
@@ -33,7 +31,7 @@ class WeekUpdates extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'WeekUpdates',
+            subject: 'Linkarme',
         );
     }
 
@@ -45,11 +43,7 @@ class WeekUpdates extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.updates',
-            with: [
-                'updates' => $this->updates,
-                'coins' => config('coins'),
-            ],
+            view: 'emails.custom',
         );
     }
 

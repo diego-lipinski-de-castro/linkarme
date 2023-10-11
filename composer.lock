@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f29df3c8a317baf906d04171b74283c9",
+    "content-hash": "67554f86bb3819e478bffc9edb8e0c65",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -680,16 +680,16 @@
         },
         {
             "name": "fedeisas/laravel-mail-css-inliner",
-            "version": "5.2.0",
+            "version": "5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fedeisas/laravel-mail-css-inliner.git",
-                "reference": "90eb78757492d53460409e00ad41861b59fccccc"
+                "reference": "47c41eddc9000f8e1579659e4953a3f36fe5c579"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fedeisas/laravel-mail-css-inliner/zipball/90eb78757492d53460409e00ad41861b59fccccc",
-                "reference": "90eb78757492d53460409e00ad41861b59fccccc",
+                "url": "https://api.github.com/repos/fedeisas/laravel-mail-css-inliner/zipball/47c41eddc9000f8e1579659e4953a3f36fe5c579",
+                "reference": "47c41eddc9000f8e1579659e4953a3f36fe5c579",
                 "shasum": ""
             },
             "require": {
@@ -703,6 +703,7 @@
             "require-dev": {
                 "enlightn/security-checker": "^1.10",
                 "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5",
+                "guzzlehttp/psr7": "^1.9.1 || ^2.4.5",
                 "phpunit/phpunit": "^9.0",
                 "symfony/mailer": "^6.0"
             },
@@ -737,9 +738,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fedeisas/laravel-mail-css-inliner/issues",
-                "source": "https://github.com/fedeisas/laravel-mail-css-inliner/tree/5.2.0"
+                "source": "https://github.com/fedeisas/laravel-mail-css-inliner/tree/5.2.1"
             },
-            "time": "2023-02-23T18:08:55+00:00"
+            "time": "2023-09-18T11:18:03+00:00"
         },
         {
             "name": "fruitcake/php-cors",
