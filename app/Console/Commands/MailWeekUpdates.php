@@ -46,7 +46,7 @@ class MailWeekUpdates extends Command
             ->where('auditable_type', 'App\\Models\\Site')
             ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereBetween('created_at', [
-                now()->subYear()->format('Y-m-d'),
+                now()->subWeek()->format('Y-m-d'),
                 now()->addDay()->format('Y-m-d'),
             ])
             ->get()
