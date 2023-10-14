@@ -84,6 +84,12 @@ const submit = () => {
                         </div>
                     </form>
 
+                    <div class="mt-3">
+                        <Link :href="route('client.register')" class="inline-flex w-full justify-center items-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                            {{ $t('Register') }}
+                        </Link>
+                    </div>
+
                     <div class="mt-6">
                         <div class="relative">
                             <div class="absolute inset-0 flex items-center">

@@ -23,6 +23,7 @@ import {
     GlobeAltIcon,
     PlusCircleIcon,
     PlusIcon,
+    InformationCircleIcon,
 } from '@heroicons/vue/24/outline'
 
 import { debounce } from 'debounce';
@@ -181,6 +182,9 @@ onMounted(() => {
         tippy('[data-tippy-content]');
     }, 500)
 })
+
+const expanded = ref([])
+
 </script>
 
 <template>
@@ -574,144 +578,191 @@ onMounted(() => {
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr v-for="(site, index) in sites.data" :key="index" class="bg-white">
-                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <span class="relative flex space-x-2 items-center">
-                                                <span>
-                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
-                                                </span>
-                                            </span>
-                                        </td>
-                                        <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                            <Link :href="route('client.sites.show', site.id)"
-                                                class="text-gray-500 hover:text-gray-900">
-                                            {{ site.real_url }}
-                                            </Link>
-                                        </td>
-                                        <td v-show="columns[2].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.da ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[3].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ site.dr ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[4].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.gambling ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[5].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.sponsor ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[6].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.cripto ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[7].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.ssl ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[8].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ??
-                                                '-' }}</span>
-                                        </td>
-                                        <!-- <td v-show="columns[9].visible"
-                                            class="px-4 py-4 text-sm text-gray-500">
-                                            {{ site.banner ? 'Sim' : 'Não' }}
-                                        </td>
-                                        <td v-show="columns[10].visible"
-                                            class="px-4 py-4 text-sm text-gray-500">
-                                            {{ site.menu ? 'Sim' : 'Não' }}
-                                        </td> -->
-                                        <td v-show="columns[9].visible" class="px-4 py-4 text-sm text-gray-500">
-                                            {{ site.obs ?? '-' }}
-                                        </td>
-                                        <td v-show="columns[10].visible" class="px-4 py-4 text-sm text-gray-500">
-                                            -
-                                        </td>
-                                        <td v-show="columns[11].visible" class="px-4 py-4 text-sm text-gray-500">
-                                            {{ site.formatted_inserted_at }}
-                                        </td>
-                                        <td v-show="columns[12].visible" class="px-4 py-4 text-sm text-gray-500">
-                                            {{ site.formatted_last_updated_at }}
-                                        </td>
-                                        <td class="px-4 py-4 text-sm text-gray-500">
-                                            <button @click="toggleFavorite(site.id)">
-                                                <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg"
-                                                    class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd"
-                                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
 
-                                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                </svg>
-                                            </button>
-                                        </td>
+                                    <template v-for="(site, index) in sites.data" :key="index">
 
-                                        <td class="px-4 py-4 text-sm text-gray-500">
-                                            <button @click="toggleInterest(site.id)">
-                                                <svg v-if="interests.includes(site.id)" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="currentColor" viewBox="0 0 24 24"
-                                                    class="text-blue-500 w-[22px] h-[22px]">
-                                                    <path fill-rule="evenodd"
-                                                        d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
+                                        <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1), 'bg-red-50': site.deleted_at !== null, }]">
+                                            <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
+                                                <div class="flex space-x-2">
+                                                    <span class="relative flex space-x-2 items-center">
+                                                        <span>
+                                                            {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                        </span>
+                                                    </span>
 
-                                                <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="w-[22px] h-[22px]">
-                                                    <path fill-rule="evenodd"
-                                                        d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </td>
+                                                    <button v-if="site.types.length > 0" type="button" @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) :  expanded.push(index)"
+                                                        class="text-gray-500 hover:text-gray-700">
+                                                        <InformationCircleIcon class="h-5 w-5" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
+                                                <Link :href="route('client.sites.show', site.id)"
+                                                    class="text-gray-500 hover:text-gray-900">
+                                                {{ site.real_url }}
+                                                </Link>
+                                            </td>
+                                            <td v-show="columns[2].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ site.da ?? '-' }}
+                                            </td>
+                                            <td v-show="columns[3].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ site.dr ?? '-' }}
+                                            </td>
+                                            <td v-show="columns[4].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.gambling ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[5].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.sponsor ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[6].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.cripto ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[7].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ $t(site.ssl ? 'Yes' : 'No') }}
+                                            </td>
+                                            <td v-show="columns[8].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ??
+                                                    '-' }}</span>
+                                            </td>
+                                            <!-- <td v-show="columns[9].visible"
+                                                class="px-4 py-4 text-sm text-gray-500">
+                                                {{ site.banner ? 'Sim' : 'Não' }}
+                                            </td>
+                                            <td v-show="columns[10].visible"
+                                                class="px-4 py-4 text-sm text-gray-500">
+                                                {{ site.menu ? 'Sim' : 'Não' }}
+                                            </td> -->
+                                            <td v-show="columns[9].visible" class="px-4 py-4 text-sm text-gray-500">
+                                                {{ site.obs ?? '-' }}
+                                            </td>
+                                            <td v-show="columns[10].visible" class="px-4 py-4 text-sm text-gray-500">
+                                                -
+                                            </td>
+                                            <td v-show="columns[11].visible" class="px-4 py-4 text-sm text-gray-500">
+                                                {{ site.formatted_inserted_at }}
+                                            </td>
+                                            <td v-show="columns[12].visible" class="px-4 py-4 text-sm text-gray-500">
+                                                {{ site.formatted_last_updated_at }}
+                                            </td>
+                                            <td class="px-4 py-4 text-sm text-gray-500">
+                                                <button @click="toggleFavorite(site.id)">
+                                                    <svg v-if="favorites.includes(site.id)" xmlns="http://www.w3.org/2000/svg"
+                                                        class="text-red-500 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd"
+                                                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
 
-                                        <td class="px-4 py-4 text-sm text-gray-500">
+                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                    </svg>
+                                                </button>
+                                            </td>
 
-                                            <Menu as="div" class="h-full relative flex-shrink-0">
-                                                <MenuButton
-                                                    class="inline-flex h-full w-8 items-center justify-center rounded-full bg-white bg-transparent focus:outline-none text-gray-700 transition-transform hover:scale-110">
-                                                    <span class="sr-only">Open projects</span>
-                                                    <PlusCircleIcon class="h-6 w-6" />
-                                                </MenuButton>
+                                            <td class="px-4 py-4 text-sm text-gray-500">
+                                                <button @click="toggleInterest(site.id)">
+                                                    <svg v-if="interests.includes(site.id)" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="currentColor" viewBox="0 0 24 24"
+                                                        class="text-blue-500 w-[22px] h-[22px]">
+                                                        <path fill-rule="evenodd"
+                                                            d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
 
-                                                <transition enter-active-class="transition ease-out duration-100"
-                                                    enter-from-class="transform opacity-0 scale-95"
-                                                    enter-to-class="transform opacity-100 scale-100"
-                                                    leave-active-class="transition ease-in duration-75"
-                                                    leave-from-class="transform opacity-100 scale-100"
-                                                    leave-to-class="transform opacity-0 scale-95">
-                                                    <MenuItems
-                                                        class="absolute right-0 z-10 mt-0 overflow-y-scroll origin-top-right rounded-md bg-white border border-gray-300 border-opacity-50 shadow-sm focus:outline-none">
-                                                        <MenuItem v-for="(project, index) in projects"
-                                                            :key="index">
-                                                        <button @click="toggleProject(site.id, project.id)"
-                                                            class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
-                                                            <span :style="{ 'background-color': project.color }"
-                                                                class="h-2 w-2 rounded-full"></span>
-                                                            <span>{{ project.name }}</span>
-                                                        </button>
-                                                        </MenuItem>
+                                                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-[22px] h-[22px]">
+                                                        <path fill-rule="evenodd"
+                                                            d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </td>
 
-                                                        <MenuItem>
-                                                        <Link :href="route('client.projects.index')"
-                                                            class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
-                                                        <span>{{ $t('Add project') }}</span>
-                                                        </Link>
-                                                        </MenuItem>
-                                                    </MenuItems>
-                                                </transition>
-                                            </Menu>
-                                        </td>
-                                    </tr>
+                                            <td class="px-4 py-4 text-sm text-gray-500">
+
+                                                <Menu as="div" class="h-full relative flex-shrink-0">
+                                                    <MenuButton
+                                                        class="inline-flex h-full w-8 items-center justify-center rounded-full bg-white bg-transparent focus:outline-none text-gray-700 transition-transform hover:scale-110">
+                                                        <span class="sr-only">Open projects</span>
+                                                        <PlusCircleIcon class="h-6 w-6" />
+                                                    </MenuButton>
+
+                                                    <transition enter-active-class="transition ease-out duration-100"
+                                                        enter-from-class="transform opacity-0 scale-95"
+                                                        enter-to-class="transform opacity-100 scale-100"
+                                                        leave-active-class="transition ease-in duration-75"
+                                                        leave-from-class="transform opacity-100 scale-100"
+                                                        leave-to-class="transform opacity-0 scale-95">
+                                                        <MenuItems
+                                                            class="absolute right-0 z-10 mt-0 overflow-y-scroll origin-top-right rounded-md bg-white border border-gray-300 border-opacity-50 shadow-sm focus:outline-none">
+                                                            <MenuItem v-for="(project, index) in projects"
+                                                                :key="index">
+                                                            <button @click="toggleProject(site.id, project.id)"
+                                                                class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
+                                                                <span :style="{ 'background-color': project.color }"
+                                                                    class="h-2 w-2 rounded-full"></span>
+                                                                <span>{{ project.name }}</span>
+                                                            </button>
+                                                            </MenuItem>
+
+                                                            <MenuItem>
+                                                            <Link :href="route('client.projects.index')"
+                                                                class="w-full flex items-center whitespace-nowrap space-x-4 py-2 px-4 text-sm text-gray-500">
+                                                            <span>{{ $t('Add project') }}</span>
+                                                            </Link>
+                                                            </MenuItem>
+                                                        </MenuItems>
+                                                    </transition>
+                                                </Menu>
+                                            </td>
+                                        </tr>
+
+                                        <tr v-show="site.types.length > 0 && expanded.includes(index)">
+                                            <td :colspan="columns.filter(c => c.visible).length + 3" class="px-4 py-4 text-sm">
+
+                                                <ul class="space-y-2">
+
+                                                    <li v-for="(type, j) in site.types" :key="j">
+                                                        <!-- <span
+                                                            :data-tippy-content="type.pivot.cost_coin != coinStore.coin ? `${$filters.currency(type.pivot.cost / 100, coins[type.pivot.cost_coin])}` : null"
+                                                            class="relative flex space-x-2 items-center">
+                                                            <span v-if="type.pivot.cost_coin != coinStore.coin"
+                                                                class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                            <span>
+                                                                {{ type.pivot.cost_coin != coinStore.coin ? '~ ' : null }}
+
+                                                                {{ $filters.currency(Math.ceil((type.pivot.cost / coinStore.ratios[type.pivot.cost_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                            </span>
+                                                        </span> -->
+                                                        
+                                                        <div class="flex space-x-2">
+                                                            <span class="relative flex space-x-2 items-center">
+                                                                <span>
+                                                                    {{ $filters.currency(Math.ceil((type.pivot.sale / coinStore.ratios[type.pivot.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                </span>
+                                                            </span>
+
+                                                            <span>for {{ type.name }} links</span>
+                                                        </div>
+                                                    </li>
+
+                                                </ul>
+
+                                            </td>
+                                        </tr>
+
+                                    </template>
+
                                 </tbody>
                             </table>
                         </div>

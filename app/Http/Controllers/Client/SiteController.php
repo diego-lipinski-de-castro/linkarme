@@ -92,7 +92,10 @@ class SiteController extends Controller
         $sites = QueryBuilder::for(Site::class)
             ->ofStatus('APPROVED')
             ->withCount('orders')
-            ->with('category')
+            ->with([
+                'category',
+                'types',
+            ])
             ->defaultSort('url')
             ->allowedSorts([
                 'url',

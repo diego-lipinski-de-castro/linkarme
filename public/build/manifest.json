@@ -23,13 +23,13 @@
     "file": "assets/logo.23db0f22.svg",
     "src": "resources/js/assets/logo.svg"
   },
-  "resources/js/assets/images/login-logo.png": {
-    "file": "assets/login-logo.6311d394.png",
-    "src": "resources/js/assets/images/login-logo.png"
-  },
   "resources/js/assets/logo-linking.svg": {
     "file": "assets/logo-linking.7019b5af.svg",
     "src": "resources/js/assets/logo-linking.svg"
+  },
+  "resources/js/assets/images/login-logo.png": {
+    "file": "assets/login-logo.6311d394.png",
+    "src": "resources/js/assets/images/login-logo.png"
   },
   "resources/js/app.js": {
     "file": "assets/app.6537a9dd.js",
