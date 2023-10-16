@@ -32,10 +32,7 @@ class ClearChecks implements ShouldQueue
     public function handle()
     {
         Check::query()
-            ->whereBetween('created_at', [
-                '1970-01-01',
-                now()->subMonths(1)->format('Y-m-d'),
-            ])
+            ->where('created_at', '<', now()->subWeek()->format('Y-m-d'))
             ->delete();
     }
 }
