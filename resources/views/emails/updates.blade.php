@@ -4,7 +4,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Linkarme</title>
-        <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}"> -->
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
 

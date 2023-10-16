@@ -4,8 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    <!-- The CSS stylesheet which will be inlined. -->
-    <!-- <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
     @if($subject = $attributes->get('subject'))
     <title>{{ $subject }}</title>
