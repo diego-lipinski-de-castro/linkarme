@@ -37,7 +37,7 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
         $this->notifyUpdated = $notifyUpdated;
     }
 
-    protected function getCoin($value) {
+    protected function  getCoin($value) {
         if(blank($value)) return null;
 
         $coin = 'BRL';

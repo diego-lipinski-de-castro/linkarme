@@ -2,7 +2,7 @@
 import SellerLayoutNew from '@/Layouts/SellerLayoutNew.vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';

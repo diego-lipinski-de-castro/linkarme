@@ -14,7 +14,7 @@ return [
     */
 
     'css-files' => [
-        // public_path('css/app.css'),
+        public_path('build/assets/app.css'),
     ],
 
 ];
