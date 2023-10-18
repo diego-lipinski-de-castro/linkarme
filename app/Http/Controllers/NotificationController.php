@@ -14,7 +14,7 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        // return back();
+        return back();
 
         $updates = Audit::query()
             ->with([
