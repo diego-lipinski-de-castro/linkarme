@@ -19,13 +19,13 @@
     "file": "assets/footer-logo.png",
     "src": "resources/js/assets/images/footer-logo.png"
   },
-  "resources/js/assets/logo-linking.svg": {
-    "file": "assets/logo-linking.svg",
-    "src": "resources/js/assets/logo-linking.svg"
-  },
   "resources/js/assets/logo.svg": {
     "file": "assets/logo.svg",
     "src": "resources/js/assets/logo.svg"
+  },
+  "resources/js/assets/logo-linking.svg": {
+    "file": "assets/logo-linking.svg",
+    "src": "resources/js/assets/logo-linking.svg"
   },
   "resources/js/assets/images/login-logo.png": {
     "file": "assets/login-logo.png",
@@ -3442,13 +3442,13 @@
     "file": "assets/IndexNew.css",
     "src": "resources/js/Pages/Sites/IndexNew.css"
   },
-  "resources/js/Pages/Analytics.css": {
-    "file": "assets/Analytics.css",
-    "src": "resources/js/Pages/Analytics.css"
-  },
   "filepond-plugin-file-validate-type.css": {
     "file": "assets/filepond-plugin-file-validate-type.css",
     "src": "filepond-plugin-file-validate-type.css"
+  },
+  "resources/js/Pages/Analytics.css": {
+    "file": "assets/Analytics.css",
+    "src": "resources/js/Pages/Analytics.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.css",

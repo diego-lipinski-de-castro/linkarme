@@ -343,8 +343,8 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
 
             'ativo' => ['nullable', Rule::in(['sim', 'Sim', 'SIM', 'Não'])],
 
-            'c_geral' => [],
-            'v_geral' => [],
+            'c_geral' => ['required'],
+            'v_geral' => ['required'],
 
             'c_bets' => [],
             'v_bets' => [],
