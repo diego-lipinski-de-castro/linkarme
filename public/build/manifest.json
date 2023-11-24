@@ -23,13 +23,13 @@
     "file": "assets/logo.svg",
     "src": "resources/js/assets/logo.svg"
   },
-  "resources/js/assets/logo-linking.svg": {
-    "file": "assets/logo-linking.svg",
-    "src": "resources/js/assets/logo-linking.svg"
-  },
   "resources/js/assets/images/login-logo.png": {
     "file": "assets/login-logo.png",
     "src": "resources/js/assets/images/login-logo.png"
+  },
+  "resources/js/assets/logo-linking.svg": {
+    "file": "assets/logo-linking.svg",
+    "src": "resources/js/assets/logo-linking.svg"
   },
   "resources/js/app.js": {
     "file": "assets/app.js",

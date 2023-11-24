@@ -7,7 +7,7 @@ use App\Models\Type;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UpdateSiteTypes extends Seeder
+class UpdateSiteTypesSeeder extends Seeder
 {
     /**
      * Run the database seeds.

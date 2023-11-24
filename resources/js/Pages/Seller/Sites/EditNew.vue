@@ -47,8 +47,8 @@ const form = useForm({
     cost: site.cost,
     cost_coin: site.cost_coin,
 
-    sale: site.sale,
-    sale_coin: site.sale_coin,
+    // sale: site.sale,
+    // sale_coin: site.sale_coin,
 
     last_posted: site.last_posted,
     team_id: site.team_id,
@@ -76,8 +76,8 @@ const form = useForm({
         type.cost = t.pivot.cost
         type.cost_coin = t.pivot.cost_coin
 
-        type.sale = t.pivot.sale
-        type.sale_coin = t.pivot.sale_coin
+        // type.sale = t.pivot.sale
+        // type.sale_coin = t.pivot.sale_coin
 
         return type
     }),
@@ -87,14 +87,14 @@ const open = ref(false)
 
 const submit = (confirm = false) => {
 
-    if ((unformat(form.sale, coins[form.sale_coin].value) * 100) < site.suggested) {
-        if (!confirm) {
-            open.value = true;
-            return;
-        }
+    // if ((unformat(form.sale, coins[form.sale_coin].value) * 100) < site.suggested) {
+    //     if (!confirm) {
+    //         open.value = true;
+    //         return;
+    //     }
 
-        open.value = false;
-    }
+    //     open.value = false;
+    // }
 
     form.put(route('seller.sites.update', site.id), {
         onError(error) {
@@ -376,10 +376,10 @@ const submitNote = () => {
                                                     Cost
                                                 </th>
 
-                                                <th scope="col"
+                                                <!-- <th scope="col"
                                                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                     Sale
-                                                </th>
+                                                </th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -415,7 +415,7 @@ const submitNote = () => {
                                                     
                                                 </td>
 
-                                                <td class="px-3 py-3.5 text-sm text-gray-500">
+                                                <!-- <td class="px-3 py-3.5 text-sm text-gray-500">
                                                     
                                                     <div class="relative rounded-md shadow-sm">
                                                         <input v-model.lazy="form.sale" v-money3="coins[form.sale_coin]" type="text" name="sale" id="sale"
@@ -431,10 +431,8 @@ const submitNote = () => {
                                                             </select>
                                                         </div>
                                                     </div>
-
-                                                    <!-- <p :class="['mt-1 ml-1 text-xs font-medium', site.positive ? 'text-green-500' : 'text-red-500']">{{ $t('Suggested') }}: {{ site.formatted_suggested }}</p> -->
                                                     
-                                                </td>
+                                                </td> -->
                                             </tr>
 
                                             <!--  -->
@@ -470,7 +468,7 @@ const submitNote = () => {
                                                     
                                                 </td>
 
-                                                <td :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
+                                                <!-- <td :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
                                                     
                                                     <div :class="['relative rounded-md shadow-sm', {'opacity-50': !type.available}]">
                                                         <input :disabled="!type.available" v-model.lazy="type.sale" v-money3="coins[type.sale_coin]" type="text" name="sale" id="sale"
@@ -488,7 +486,7 @@ const submitNote = () => {
                                                     </div>
 
                                                     <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
-                                                </td>
+                                                </td> -->
                                             </tr>
                                             <!--  -->
 

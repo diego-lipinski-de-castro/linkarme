@@ -27,6 +27,39 @@ const props = defineProps({
 
 const form = useForm({
     seller: props.seller?.id,
+
+    url: '',
+
+    owner_name: '',
+    owner_role: '',
+    owner_email: '',
+    owner_phone: '',
+
+    promo: false,
+
+    restrict: false,
+    restrict_detail: '',
+
+    archive_article: false,
+    archive_due: '',
+
+    links: null,
+    embed: false,
+    images: null,
+    sponsor: false,
+
+    example: '',
+
+    rules: '',
+    obs: '',
+
+    google_news: false,
+
+    price: '',
+
+    pix: '',
+    paypal: '',
+    global_account: '',
 });
 
 const submit = () => {
@@ -329,7 +362,7 @@ const submit = () => {
                                     leave-from-class="transform opacity-100 scale-100"
                                     leave-to-class="transform opacity-0 scale-95">
                                     <MenuItems
-                                        class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md overflow-hidden bg-white border border-gray-300 shadow-sm focus:outline-none">
+                                        class="absolute right-0 z-10 mt-2 w-48 origin-x-right rounded-md overflow-hidden bg-white border border-gray-300 shadow-sm focus:outline-none">
 
                                         <MenuItem v-slot="{ active }">
                                         <a target="_blank"

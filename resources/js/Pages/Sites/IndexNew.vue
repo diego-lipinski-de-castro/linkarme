@@ -88,6 +88,7 @@ const _defaultColumns = [
     // { key: 'gambling', label: t('Accepts gambling'), visible: true },
     { key: 'sponsor', label: t('Marked as sponsored'), visible: true },
     // { key: 'cripto', label: t('Cripto'), visible: false },
+    { key: 'link_type', label: t('Link'), visible: true },
     { key: 'ssl', label: t('SSL'), visible: false },
     { key: 'category', label: t('Category'), visible: false },
     { key: 'obs', label: t('Obs'), visible: true },
@@ -704,8 +705,12 @@ const expanded = ref([])
 
                                         <th v-show="columns[5].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('SSL') }}</th>
+                                            scope="col">{{ $t('Link') }}</th>
+
                                         <th v-show="columns[6].visible"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('SSL') }}</th>
+                                        <th v-show="columns[7].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Category') }}</th>
                                         <!-- <th v-show="columns[9].visible"
@@ -714,10 +719,10 @@ const expanded = ref([])
                                             <th v-show="columns[10].visible"
                                                 class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                                 scope="col">{{ $t('Links') }} menu</th> -->
-                                        <th v-show="columns[7].visible"
+                                        <th v-show="columns[8].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Obs') }}</th>
-                                        <th v-show="columns[8].visible"
+                                        <th v-show="columns[9].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -726,7 +731,7 @@ const expanded = ref([])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[9].visible"
+                                        <th v-show="columns[10].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -735,7 +740,7 @@ const expanded = ref([])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[10].visible"
+                                        <th v-show="columns[11].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -805,9 +810,15 @@ const expanded = ref([])
 
                                             <td v-show="columns[5].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                {{ site.link_type }}
+                                            </td>
+
+                                            <td v-show="columns[6].visible"
+                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ $t(site.ssl ? 'Yes' : 'No') }}
                                             </td>
-                                            <td v-show="columns[6].visible"
+
+                                            <td v-show="columns[7].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
                                             </td>
@@ -819,20 +830,20 @@ const expanded = ref([])
                                                     class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                     {{ site.menu ? 'Sim' : 'Não' }}
                                                 </td> -->
-                                            <td v-show="columns[7].visible"
+                                            <td v-show="columns[8].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.obs ?? '-' }}
                                             </td>
-                                            <td v-show="columns[8].visible"
+                                            <td v-show="columns[9].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 -
                                             </td>
-                                            <td v-show="columns[9].visible"
+                                            <td v-show="columns[10].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_inserted_at }}
                                             </td>
 
-                                            <td v-show="columns[10].visible"
+                                            <td v-show="columns[11].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_updated_at }}
                                             </td>

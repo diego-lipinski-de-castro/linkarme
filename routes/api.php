@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('.vendedores/sites/verificar', [SiteController::class, 'check'])->name('seller.sites.check');
+Route::get('/vendedores/sites/verificar', [SiteController::class, 'check'])->name('seller.sites.check');

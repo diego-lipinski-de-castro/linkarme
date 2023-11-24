@@ -43,8 +43,8 @@ const form = useForm({
     cost: '',
     cost_coin: 'BRL',
 
-    sale: '',
-    sale_coin: 'BRL',
+    // sale: '',
+    // sale_coin: 'BRL',
 
     last_posted: '',
     team_id: null,
@@ -75,18 +75,14 @@ const offerForm = useForm({
     cost: '',
     cost_coin: 'BRL',
 
-    sale: '',
-    sale_coin: 'BRL',
+    // sale: '',
+    // sale_coin: 'BRL',
 
     types: JSON.parse(JSON.stringify(typesProp)),
 })
 
 watch(() => form.cost_coin, () => form.sale_coin = form.cost_coin)
 watch(() => offerForm.cost_coin, () => offerForm.sale_coin = offerForm.cost_coin)
-
-const updateCoinForType = (type) => {
-    type.sale_coin = type.cost_coin
-} 
 
 const check = async () => {
     try {
@@ -100,8 +96,8 @@ const check = async () => {
         offerForm.cost = site.value.cost;
         offerForm.cost_coin = site.value.cost_coin;
 
-        offerForm.sale = site.value.sale;
-        offerForm.sale_coin = site.value.sale_coin;
+        // offerForm.sale = site.value.sale;
+        // offerForm.sale_coin = site.value.sale_coin;
 
         offerForm.types = JSON.parse(JSON.stringify(site.value.types)).map(type => {
 
@@ -114,8 +110,8 @@ const check = async () => {
             type.cost = t.pivot.cost
             type.cost_coin = t.pivot.cost_coin
 
-            type.sale = t.pivot.sale
-            type.sale_coin = t.pivot.sale_coin
+            // type.sale = t.pivot.sale
+            // type.sale_coin = t.pivot.sale_coin
 
             return type
         });
@@ -127,8 +123,8 @@ const check = async () => {
         offerForm.cost = '';
         offerForm.cost_coin = 'BRL';
 
-        offerForm.sale = '';
-        offerForm.sale_coin = 'BRL';
+        // offerForm.sale = '';
+        // offerForm.sale_coin = 'BRL';
 
         offerForm.types = JSON.parse(JSON.stringify(typesProp));
     }
@@ -194,10 +190,10 @@ const submitOffer = () => {
                                                             Cost
                                                         </th>
 
-                                                        <th scope="col"
+                                                        <!-- <th scope="col"
                                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                             Sale
-                                                        </th>
+                                                        </th> -->
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -232,7 +228,7 @@ const submitOffer = () => {
 
                                                         </td>
 
-                                                        <td class="px-3 py-3.5 text-sm text-gray-500">
+                                                        <!-- <td class="px-3 py-3.5 text-sm text-gray-500">
 
                                                             <div class="relative rounded-md shadow-sm">
                                                                 <input v-model.lazy="offerForm.sale"
@@ -252,7 +248,7 @@ const submitOffer = () => {
                                                                 </div>
                                                             </div>
 
-                                                        </td>
+                                                        </td> -->
                                                     </tr>
 
                                                     <!--  -->
@@ -278,7 +274,7 @@ const submitOffer = () => {
 
                                                                 <div class="absolute inset-y-0 right-0 flex items-center">
                                                                     <label :for="`offer-cost_coin-${index}`" class="sr-only">Moeda</label>
-                                                                    <select @change="updateCoinForType(type)" :disabled="!type.available" v-model="offerForm.types[index].cost_coin" :id="`offer-cost_coin-${index}`"
+                                                                    <select :disabled="!type.available" v-model="offerForm.types[index].cost_coin" :id="`offer-cost_coin-${index}`"
                                                                         :name="`offer-cost_coin-${index}`"
                                                                         class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                         <option value="BRL">BRL</option>
@@ -290,7 +286,7 @@ const submitOffer = () => {
 
                                                         </td>
 
-                                                        <td :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
+                                                        <!-- <td :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
                                                             <div
                                                                 :class="['relative rounded-md shadow-sm', { 'opacity-50': !type.available }]">
                                                                 <input :disabled="!type.available" v-model.lazy="offerForm.types[index].sale"
@@ -312,7 +308,7 @@ const submitOffer = () => {
                                                             </div>
 
                                                             <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
-                                                        </td>
+                                                        </td> -->
                                                     </tr>
                                                     <!--  -->
 
@@ -499,10 +495,10 @@ const submitOffer = () => {
                                                     Cost
                                                 </th>
 
-                                                <th scope="col"
+                                                <!-- <th scope="col"
                                                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                     Sale
-                                                </th>
+                                                </th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -539,7 +535,7 @@ const submitOffer = () => {
 
                                                 </td>
 
-                                                <td class="px-3 py-3.5 text-sm text-gray-500">
+                                                <!-- <td class="px-3 py-3.5 text-sm text-gray-500">
 
                                                     <div class="relative rounded-md shadow-sm">
                                                         <input v-model.lazy="form.sale" v-money3="coins[form.sale_coin]"
@@ -557,7 +553,7 @@ const submitOffer = () => {
                                                         </div>
                                                     </div>
 
-                                                </td>
+                                                </td> -->
                                             </tr>
 
                                             <!--  -->
@@ -588,7 +584,7 @@ const submitOffer = () => {
 
                                                         <div class="absolute inset-y-0 right-0 flex items-center">
                                                             <label for="cost_coin" class="sr-only">Moeda</label>
-                                                            <select @change="updateCoinForType(type)" :disabled="!type.available" v-model="form.types[index].cost_coin"
+                                                            <select :disabled="!type.available" v-model="form.types[index].cost_coin"
                                                                 id="cost_coin" name="cost_coin"
                                                                 class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                 <option value="BRL">BRL</option>
@@ -600,7 +596,7 @@ const submitOffer = () => {
 
                                                 </td>
 
-                                                <td
+                                                <!-- <td
                                                     :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
 
                                                     <div
@@ -623,7 +619,7 @@ const submitOffer = () => {
                                                     </div>
 
                                                     <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
-                                                </td>
+                                                </td> -->
                                             </tr>
                                             <!--  -->
 

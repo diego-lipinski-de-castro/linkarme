@@ -51,9 +51,9 @@ class UpdateSiteRequest extends FormRequest
             'banner' => 'required|boolean',
 
             'cost' => 'nullable|integer',
-            'sale' => 'nullable|integer',
+            // 'sale' => 'nullable|integer',
             'cost_coin' => 'nullable|in:BRL,EUR,USD',
-            'sale_coin' => 'nullable|in:BRL,EUR,USD',
+            // 'sale_coin' => 'nullable|in:BRL,EUR,USD',
 
             'last_posted' => 'nullable|date',
 
@@ -87,7 +87,7 @@ class UpdateSiteRequest extends FormRequest
                 str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
                 str_replace('www.', '', parse_url($this->url, PHP_URL_PATH))),
             'cost' => Helper::extractNumbersFromString($this->cost),
-            'sale' => Helper::extractNumbersFromString($this->sale),
+            // 'sale' => Helper::extractNumbersFromString($this->sale),
         ]);
     }
 }
