@@ -31,7 +31,7 @@ class SubmitSiteRequest extends FormRequest
             'url' => 'required|string|min:1|max:255|unique:sites,url',
 
             'owner_name' => 'nullable',
-            'owner_owner' => 'nullable',
+            'owner_role' => 'nullable',
             'owner_email' => 'nullable',
             'owner_phone' => 'nullable',
 

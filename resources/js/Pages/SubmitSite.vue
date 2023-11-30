@@ -59,6 +59,7 @@ const form = useForm({
     google_news: false,
 
     cost: '',
+    cost_coin: 'BRL',
 
     pix: '',
     paypal: '',
@@ -213,7 +214,7 @@ const submit = () => {
                                         <TextInput v-if="form.restrict" id="restrict_detail"
                                             v-model="form.restrict_detail" type="text"
                                             class="mt-1 block w-full border-t-0 border-l-0 border-r-0 border-b rounded-none shadow-none focus:ring-0 px-0"
-                                            placeholder="Informe sobre as restrição" />
+                                            :placeholder="$t('Informe sobre as restrição')" />
                                         <InputError v-if="form.restrict" class="mt-2"
                                             :message="form.errors.restrict_detail" />
                                     </div>
@@ -344,8 +345,22 @@ const submit = () => {
 
                             <div class="col-span-2">
                                 <InputLabel for="cost" :value="$t('Negotiated value')" />
-                                <TextInput id="cost" v-money3="coins['BRL']" v-model="form.cost" type="text"
-                                    class="mt-1 block w-full" />
+
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input v-model.lazy="form.cost" v-money3="coins[form.cost_coin]" type="text" name="cost" id="cost"
+                                        class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+
+                                    <div class="absolute inset-y-0 right-0 flex items-center">
+                                        <label for="cost_coin" class="sr-only">Moeda</label>
+                                        <select v-model="form.cost_coin" id="cost_coin" name="cost_coin"
+                                            class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                            <option value="BRL">BRL</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="USD">USD</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <InputError class="mt-2" :message="form.errors.cost" />
                             </div>
 

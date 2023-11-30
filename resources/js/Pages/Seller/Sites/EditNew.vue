@@ -502,7 +502,7 @@ const submitNote = () => {
                                 <InputError class="mt-2" :message="form.errors.last_posted" />
                             </div>
 
-                            <div class="col-span-6">
+                            <!-- <div class="col-span-6">
                                 <InputLabel for="team_id" :value="$t('Atendimento')" />
 
                                 <div class="mt-1">
@@ -515,7 +515,7 @@ const submitNote = () => {
                                 </div>
 
                                 <InputError class="mt-2" :message="form.errors.team_id" />
-                            </div>
+                            </div> -->
 
                             <div class="col-span-6">
                                 <InputLabel for="obs" :value="$t('Obs')" />

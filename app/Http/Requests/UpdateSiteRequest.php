@@ -30,6 +30,7 @@ class UpdateSiteRequest extends FormRequest
             'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
 
+            'rules' => 'nullable',
             'obs' => 'nullable|string|max:600',
             'admin_obs' => 'nullable|string|max:600',
 
@@ -48,8 +49,14 @@ class UpdateSiteRequest extends FormRequest
             'cdb' => 'required|boolean',
             'cripto' => 'required|boolean',
             'sponsor' => 'required|boolean',
+            'promo' => 'required|boolean',
             'menu' => 'required|boolean',
             'banner' => 'required|boolean',
+            'google_news' => 'required|boolean',
+
+            'links' => 'nullable|integer',
+            'embed' => 'required|boolean',
+            'images' => 'nullable|integer',
 
             'cost' => 'nullable|integer',
             'sale' => 'nullable|integer',
@@ -62,16 +69,25 @@ class UpdateSiteRequest extends FormRequest
             'team_id' => 'nullable|integer|exists:teams,id',
 
             'owner_name' => 'nullable',
+            'owner_role' => 'nullable',
             'owner_email' => 'nullable',
             'owner_phone' => 'nullable',
 
             'bank' => 'nullable',
             'pix' => 'nullable',
-
-            'phone' => 'nullable',
+            'global_account' => 'nullable',
             'paypal' => 'nullable',
+            'phone' => 'nullable',
             'instagram' => 'nullable',
             'facebook' => 'nullable',
+
+            'restrict' => 'required|boolean',
+            'restrict_detail' => 'nullable',
+
+            'archive_article' => 'required|boolean',
+            'archive_due' => 'nullable',
+
+            'example_article' => 'nullable',
 
             'types' => 'present|array|min:0',
         ];
