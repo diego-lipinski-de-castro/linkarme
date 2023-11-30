@@ -7,17 +7,21 @@
     "file": "assets/linking-pet.png",
     "src": "resources/js/assets/images/linking-pet.png"
   },
-  "resources/js/assets/images/header-logo.png": {
-    "file": "assets/header-logo.png",
-    "src": "resources/js/assets/images/header-logo.png"
-  },
   "resources/js/assets/images/linking-slogan.png": {
     "file": "assets/linking-slogan.png",
     "src": "resources/js/assets/images/linking-slogan.png"
   },
+  "resources/js/assets/images/header-logo.png": {
+    "file": "assets/header-logo.png",
+    "src": "resources/js/assets/images/header-logo.png"
+  },
   "resources/js/assets/images/footer-logo.png": {
     "file": "assets/footer-logo.png",
     "src": "resources/js/assets/images/footer-logo.png"
+  },
+  "resources/js/assets/logo-linking.svg": {
+    "file": "assets/logo-linking.svg",
+    "src": "resources/js/assets/logo-linking.svg"
   },
   "resources/js/assets/logo.svg": {
     "file": "assets/logo.svg",
@@ -26,10 +30,6 @@
   "resources/js/assets/images/login-logo.png": {
     "file": "assets/login-logo.png",
     "src": "resources/js/assets/images/login-logo.png"
-  },
-  "resources/js/assets/logo-linking.svg": {
-    "file": "assets/logo-linking.svg",
-    "src": "resources/js/assets/logo-linking.svg"
   },
   "resources/js/app.js": {
     "file": "assets/app.js",
@@ -734,10 +734,10 @@
     "imports": [
       "_AppLayout.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
@@ -748,12 +748,6 @@
       "_Bars3CenterLeftIcon.js",
       "_menu.js",
       "_ChevronDownIcon.js"
-    ]
-  },
-  "_ArrowLongRightIcon.js": {
-    "file": "assets/ArrowLongRightIcon.js",
-    "imports": [
-      "resources/js/app.js"
     ]
   },
   "_ChevronRightIcon.js": {
@@ -774,6 +768,12 @@
       "resources/js/app.js"
     ]
   },
+  "_ArrowLongRightIcon.js": {
+    "file": "assets/ArrowLongRightIcon.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/Pages/Categories/IndexNew.vue": {
     "file": "assets/IndexNew.js",
     "src": "resources/js/Pages/Categories/IndexNew.vue",
@@ -781,10 +781,10 @@
     "imports": [
       "_AppLayoutNew.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -1144,8 +1144,8 @@
       "_unionBy.js",
       "_index7.js",
       "_ChevronDownIcon.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
+      "_ArrowLongRightIcon.js",
       "_menu.js",
       "_ApplicationLogo.js",
       "_logo.js",
@@ -1574,8 +1574,8 @@
       "_MagnifyingGlassIcon.js",
       "_ChevronDownIcon.js",
       "_switch.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
+      "_ArrowLongRightIcon.js",
       "_menu.js",
       "_ApplicationLogo.js",
       "_logo.js",
@@ -1615,9 +1615,9 @@
       "_coin.js",
       "_MagnifyingGlassIcon.js",
       "_GlobeAltIcon.js",
-      "_ArrowLongRightIcon.js",
       "_InformationCircleIcon.js",
       "_PlusCircleIcon.js",
+      "_ArrowLongRightIcon.js",
       "_switch.js",
       "_menu.js",
       "_index2.js",
@@ -1817,10 +1817,10 @@
     "imports": [
       "_AppLayout.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
@@ -1840,11 +1840,11 @@
     "imports": [
       "_AppLayoutNew.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
       "_ArrowRightOnRectangleIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -2017,10 +2017,10 @@
     "imports": [
       "_AppLayout.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
@@ -2040,10 +2040,10 @@
     "imports": [
       "_AppLayoutNew.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -2183,10 +2183,10 @@
     "imports": [
       "_AppLayout.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
@@ -2206,10 +2206,10 @@
     "imports": [
       "_AppLayoutNew.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -2338,9 +2338,9 @@
       "_index7.js",
       "_filepond-plugin-file-validate-type.esm.js",
       "_ChevronDownIcon.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
+      "_ArrowLongRightIcon.js",
       "_transition.js",
       "_menu.js",
       "_ApplicationLogo.js",
@@ -2371,9 +2371,9 @@
       "_unionBy.js",
       "_index7.js",
       "_filepond-plugin-file-validate-type.esm.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
+      "_ArrowLongRightIcon.js",
       "_transition.js",
       "_index2.js",
       "_use-outside-click.js",
@@ -2744,9 +2744,9 @@
       "_unionBy.js",
       "_index7.js",
       "_ChevronDownIcon.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
+      "_ArrowLongRightIcon.js",
       "_menu.js",
       "_ApplicationLogo.js",
       "_logo.js",
@@ -2980,9 +2980,9 @@
       "_coin.js",
       "_MagnifyingGlassIcon.js",
       "_ChevronDownIcon.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
+      "_ArrowLongRightIcon.js",
       "_menu.js",
       "_switch.js",
       "_ApplicationLogo.js",
@@ -3007,8 +3007,8 @@
       "_coin.js",
       "_MagnifyingGlassIcon.js",
       "_GlobeAltIcon.js",
-      "_ArrowLongRightIcon.js",
       "_PencilSquareIcon.js",
+      "_ArrowLongRightIcon.js",
       "_switch.js",
       "_index2.js",
       "_use-outside-click.js",
@@ -3117,10 +3117,10 @@
     "imports": [
       "_AppLayout.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
@@ -3140,12 +3140,12 @@
     "imports": [
       "_AppLayoutNew.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_EyeIcon2.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
       "_ArrowRightOnRectangleIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -3166,8 +3166,8 @@
       "_TextInput.js",
       "_coin.js",
       "_UserCircleIcon.js",
-      "_ArrowLongRightIcon.js",
       "_PencilSquareIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -3239,10 +3239,10 @@
       "_filepond-plugin-file-validate-type.esm.js",
       "_MagnifyingGlassIcon.js",
       "_GlobeAltIcon.js",
-      "_ArrowLongRightIcon.js",
       "_InformationCircleIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_transition.js",
       "_switch.js",
       "_index2.js",
@@ -3343,10 +3343,10 @@
     "imports": [
       "_AppLayoutNew.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -3417,10 +3417,10 @@
     "imports": [
       "_AppLayoutNew.js",
       "resources/js/app.js",
-      "_ArrowLongRightIcon.js",
       "_ChevronRightIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
+      "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
@@ -3438,13 +3438,13 @@
       "resources/js/app.js"
     ]
   },
-  "resources/js/Pages/Sites/IndexNew.css": {
-    "file": "assets/IndexNew.css",
-    "src": "resources/js/Pages/Sites/IndexNew.css"
-  },
   "filepond-plugin-file-validate-type.css": {
     "file": "assets/filepond-plugin-file-validate-type.css",
     "src": "filepond-plugin-file-validate-type.css"
+  },
+  "resources/js/Pages/Sites/IndexNew.css": {
+    "file": "assets/IndexNew.css",
+    "src": "resources/js/Pages/Sites/IndexNew.css"
   },
   "resources/js/Pages/Analytics.css": {
     "file": "assets/Analytics.css",

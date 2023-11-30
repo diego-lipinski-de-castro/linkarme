@@ -67,8 +67,22 @@ class Site extends Model implements Auditable
         'paypal',
         'instagram',
         'facebook',
-        
         'deleted_at',
+
+        // 
+        'owner_role',
+        'promo',
+        'restrict',
+        'restrict_detail',
+        'archive_article',
+        'archive_due',
+        'links',
+        'embed',
+        'images',
+        'example_article',
+        'rules',
+        'google_news',
+        'global_account',
     ];
 
     protected $casts = [
@@ -94,6 +108,12 @@ class Site extends Model implements Auditable
 
         'inserted_at' => 'date',
         'last_updated_at' => 'date',
+
+        'promo' => 'boolean',
+        'restrict' => 'boolean',
+        'archive_article' => 'boolean',
+        'embed' => 'boolean',
+        'google_news' => 'boolean',
     ];
 
     protected $appends = [
