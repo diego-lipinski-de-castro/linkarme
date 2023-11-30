@@ -67,10 +67,8 @@ const form = useForm({
     types: props.types
 });
 
-console.log(form.types)
-
 const submit = () => {
-    // form.post(route('submitSite.create'));
+    form.post(route('submitSite.create'));
 };
 </script>
 
@@ -373,8 +371,8 @@ const submit = () => {
                         </div>
 
                         <div>
-                            <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit"
-                                class="flex w-full justify-center rounded-md border border-transparent bg-zinc-900 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 transition-colors">{{
+                            <button :disabled="form.processing" type="submit"
+                                class="flex w-full justify-center rounded-md border border-transparent bg-zinc-900 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 transition-colors disabled:opacity-25">{{
                                     $t('Submit') }}</button>
                         </div>
                     </form>

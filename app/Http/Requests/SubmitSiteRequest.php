@@ -26,51 +26,41 @@ class SubmitSiteRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => 'required|string|min:1|max:255|unique:sites,url',
-            'name' => 'nullable|string|min:2|max:255',
-            'description' => 'nullable|string|max:255',
-
-            'obs' => 'nullable|string|max:600',
-
-            'da' => 'nullable|integer',
-            'dr' => 'nullable|integer',
-            'traffic' => 'nullable|integer',
-            'tf' => 'nullable|integer',
-
-            'category_id' => 'nullable|integer|exists:categories,id',
-            'language_id' => 'nullable|integer|exists:languages,id',
-            'country_id' => 'nullable|integer|exists:countries,id',
-
-            'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
-
-            'gambling' => 'nullable|boolean',
-            'cdb' => 'nullable|boolean',
-            'cripto' => 'nullable|boolean',
-            'sponsor' => 'nullable|boolean',
-            'menu' => 'nullable|boolean',
-            'banner' => 'nullable|boolean',
-
-            'cost' => 'nullable|integer',
-            'sale' => 'nullable|integer',
-            'cost_coin' => 'nullable|in:BRL,EUR,USD',
-            'sale_coin' => 'nullable|in:BRL,EUR,USD',
-
-            'last_posted' => 'nullable|date',
-
             'seller_id' => 'nullable|integer|exists:sellers,id',
-            'team_id' => 'nullable|integer|exists:teams,id',
+
+            'url' => 'required|string|min:1|max:255|unique:sites,url',
 
             'owner_name' => 'nullable',
+            'owner_owner' => 'nullable',
             'owner_email' => 'nullable',
             'owner_phone' => 'nullable',
 
-            'bank' => 'nullable',
-            'pix' => 'nullable',
+            'promo' => 'required|boolean',
 
-            'phone' => 'nullable', 
+            'restrict' => 'required|boolean',
+            'restrict_detail' => 'nullable',
+
+            'archive_article' => 'required|boolean',
+            'archive_due' => 'nullable',
+
+            'links' => 'nullable|integer',
+            'embed' => 'required|boolean',
+            'images' => 'nullable|integer',
+            'sponsor' => 'required|boolean',
+
+            'example_article' => 'nullable',
+
+            'rules' => 'nullable',
+            'obs' => 'nullable',
+
+            'google_news' => 'required|boolean',
+
+            'cost' => 'nullable|integer',
+            'cost_coin' => 'nullable|in:BRL,EUR,USD',
+
             'paypal' => 'nullable',
-            'instagram' => 'nullable',
-            'facebook' => 'nullable',
+            'pix' => 'nullable',
+            'global_account' => 'nullable',
 
             'types' => 'present|array|min:0',
         ];
@@ -88,7 +78,6 @@ class SubmitSiteRequest extends FormRequest
                 str_replace('www.', '', parse_url($this->url, PHP_URL_HOST)) :
                 str_replace('www.', '', parse_url($this->url, PHP_URL_PATH))),
             'cost' => Helper::extractNumbersFromString($this->cost),
-            'sale' => Helper::extractNumbersFromString($this->sale),
         ]);
     }
 }
