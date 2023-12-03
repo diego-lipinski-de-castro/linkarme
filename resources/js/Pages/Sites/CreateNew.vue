@@ -1,8 +1,6 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
-import { computed } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -247,6 +245,56 @@ const submit = () => {
                                         <InputLabel for="archive_article" :value="$t('Archive article')" />
                                     </div>
                                     <TextInput v-if="form.archive_article" id="archive_due" v-model="form.archive_due" type="text" class="mt-1 block w-full border-t-0 border-l-0 border-r-0 border-b rounded-none shadow-none focus:ring-0 px-0" :placeholder="$t('Informe quanto tempo')"/>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6">
+                                <div>
+                                    <InputLabel for="links" :value="$t('Number of links in the article')" />
+
+                                    <div class="mt-2 flex space-x-3">
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.links" :value="3" />
+                                            <span class="ml-2 text-sm text-gray-600">3</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.links" :value="5" />
+                                            <span class="ml-2 text-sm text-gray-600">5</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.links" :value="null" />
+                                            <span class="ml-2 text-sm text-gray-600 whitespace-nowrap">{{ $t('No limit')
+                                            }}</span>
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6">
+                                <div>
+                                    <InputLabel for="images" :value="$t('Maximum number of images in content')"
+                                        class="whitespace-nowrap" />
+
+                                    <div class="mt-2 flex space-x-3">
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.images" :value="1" />
+                                            <span class="ml-2 text-sm text-gray-600">1</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.images" :value="3" />
+                                            <span class="ml-2 text-sm text-gray-600">3</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.images" :value="5" />
+                                            <span class="ml-2 text-sm text-gray-600 whitespace-nowrap">5</span>
+                                        </label>
+
+                                    </div>
                                 </div>
                             </div>
 

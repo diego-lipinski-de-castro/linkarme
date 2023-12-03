@@ -153,7 +153,6 @@ class SiteController extends Controller
                 AllowedFilter::exact('category_id'),
                 AllowedFilter::exact('seller_id'),
                 AllowedFilter::scope('of_status'),
-
                 AllowedFilter::scope('types', 'of_types'),
             ])
             ->paginate(50)

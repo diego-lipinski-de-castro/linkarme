@@ -1,8 +1,7 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
-import { computed, ref } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3';
+import { ref } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -13,10 +12,7 @@ import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import { PencilIcon } from '@heroicons/vue/24/outline';
-import { useCoinStore } from '@/stores/coin'
 import { watch } from 'vue';
-
-const coinStore = useCoinStore()
 
 const { site, coins, categories, languages, countries, sellers, note, types: typesProp } = defineProps({
     site: Object,

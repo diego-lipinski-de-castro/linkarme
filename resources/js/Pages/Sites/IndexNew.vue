@@ -10,16 +10,10 @@ import unionBy from 'lodash/unionBy'
 import {
     Dialog,
     DialogPanel,
-    DialogTitle,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
     TransitionChild,
     TransitionRoot,
     Switch, SwitchGroup, SwitchLabel,
 } from '@headlessui/vue'
-
 import {
     ArrowLongLeftIcon,
     ArrowLongRightIcon,
@@ -27,21 +21,16 @@ import {
     CloudArrowUpIcon,
     MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
-
 import {
     PencilSquareIcon,
     GlobeAltIcon,
-    PlusCircleIcon,
-    PlusIcon,
     InformationCircleIcon,
     TrashIcon,
     ArrowPathIcon,
 } from '@heroicons/vue/24/outline'
-
 import { debounce } from 'debounce';
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
-
 import vueFilePond from 'vue-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
@@ -85,9 +74,7 @@ const _defaultColumns = [
     { key: 'url', label: t('Domain'), visible: true },
     { key: 'da', label: t('DA'), visible: true },
     { key: 'dr', label: t('DR'), visible: true },
-    // { key: 'gambling', label: t('Accepts gambling'), visible: true },
     { key: 'sponsor', label: t('Marked as sponsored'), visible: true },
-    // { key: 'cripto', label: t('Cripto'), visible: false },
     { key: 'link_type', label: t('Link'), visible: true },
     { key: 'ssl', label: t('SSL'), visible: false },
     { key: 'category', label: t('Category'), visible: false },
@@ -710,15 +697,11 @@ const expanded = ref([])
                                         <th v-show="columns[6].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('SSL') }}</th>
+                                            
                                         <th v-show="columns[7].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Category') }}</th>
-                                        <!-- <th v-show="columns[9].visible"
-                                                class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                                scope="col">{{ $t('Banners') }}</th>
-                                            <th v-show="columns[10].visible"
-                                                class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                                scope="col">{{ $t('Links') }} menu</th> -->
+                                        
                                         <th v-show="columns[8].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Obs') }}</th>
@@ -805,7 +788,7 @@ const expanded = ref([])
                                             
                                             <td v-for="(type, index) in types" v-show="columns[columns.length - types.length + index].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.types.find(t => t.id == type.id) ? 'Yes' : 'No' }}
+                                                {{ site.types.find(t => t.id == type.id) ? $t('Yes') : $t('No') }}
                                             </td>
 
                                             <td v-show="columns[5].visible"
@@ -822,21 +805,14 @@ const expanded = ref([])
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
                                             </td>
-                                            <!-- <td v-show="columns[9].visible"
-                                                    class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                    {{ site.banner ? 'Sim' : 'Não' }}
-                                                </td>
-                                                <td v-show="columns[10].visible"
-                                                    class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                    {{ site.menu ? 'Sim' : 'Não' }}
-                                                </td> -->
+                                            
                                             <td v-show="columns[8].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.obs ?? '-' }}
                                             </td>
                                             <td v-show="columns[9].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                -
+                                                {{ site.example_article ?? '-' }}
                                             </td>
                                             <td v-show="columns[10].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">

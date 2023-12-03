@@ -1,13 +1,11 @@
 <script setup>
 import SellerLayoutNew from '@/Layouts/SellerLayoutNew.vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
-import { computed, ref } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3';
+import { ref } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
-import { unformat } from 'v-money3';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -64,6 +62,20 @@ const form = useForm({
     paypal: site.paypal,
     instagram: site.instagram,
     facebook: site.facebook,
+
+    owner_role: site.owner_role,
+    promo: site.promo,
+    restrict: site.restrict,
+    restrict_detail: site.restrict_detail,
+    archive_article: site.archive_article,
+    archive_due: site.archive_due,
+    links: site.links,
+    embed: site.embed,
+    images: site.images,
+    example_article: site.example_article,
+    rules: site.rules,
+    google_news: site.google_news,
+    global_account: site.global_account,
 
     types: typesProp.map(type => {
         
@@ -351,6 +363,87 @@ const submitNote = () => {
                                     <Checkbox id="banner" v-model:checked="form.banner" name="banner" />
                                     <InputLabel for="banner" :value="$t('Banner')" />
                                 </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox id="promo" v-model:checked="form.promo" name="promo" />
+                                    <InputLabel for="promo" :value="$t('Promo')" />
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox id="google_news" v-model:checked="form.google_news" name="google_news" />
+                                    <InputLabel for="google_news" :value="$t('Google News')" />
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox id="embed" v-model:checked="form.embed" name="embed" />
+                                    <InputLabel for="embed" :value="$t('Embed')" />
+                                </div>
+
+                                <div>
+                                    <div class="flex items-center space-x-2">
+                                        <Checkbox id="restrict" v-model:checked="form.restrict" name="restrict" />
+                                        <InputLabel for="restrict" :value="$t('Restriction')" />
+                                    </div>
+                                    <TextInput v-if="form.restrict" id="restrict_detail" v-model="form.restrict_detail" type="text" class="mt-1 block w-full border-t-0 border-l-0 border-r-0 border-b rounded-none shadow-none focus:ring-0 px-0" :placeholder="$t('Informe sobre as restrição')"/>
+                                </div>
+
+                                <div>
+                                    <div class="flex items-center space-x-2">
+                                        <Checkbox id="archive_article" v-model:checked="form.archive_article" name="archive_article" />
+                                        <InputLabel for="archive_article" :value="$t('Archive article')" />
+                                    </div>
+                                    <TextInput v-if="form.archive_article" id="archive_due" v-model="form.archive_due" type="text" class="mt-1 block w-full border-t-0 border-l-0 border-r-0 border-b rounded-none shadow-none focus:ring-0 px-0" :placeholder="$t('Informe quanto tempo')"/>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6">
+                                <div>
+                                    <InputLabel for="links" :value="$t('Number of links in the article')" />
+
+                                    <div class="mt-2 flex space-x-3">
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.links" :value="3" />
+                                            <span class="ml-2 text-sm text-gray-600">3</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.links" :value="5" />
+                                            <span class="ml-2 text-sm text-gray-600">5</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.links" :value="null" />
+                                            <span class="ml-2 text-sm text-gray-600 whitespace-nowrap">{{ $t('No limit')
+                                            }}</span>
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6">
+                                <div>
+                                    <InputLabel for="images" :value="$t('Maximum number of images in content')"
+                                        class="whitespace-nowrap" />
+
+                                    <div class="mt-2 flex space-x-3">
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.images" :value="1" />
+                                            <span class="ml-2 text-sm text-gray-600">1</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.images" :value="3" />
+                                            <span class="ml-2 text-sm text-gray-600">3</span>
+                                        </label>
+
+                                        <label class="flex items-center">
+                                            <input type="radio" v-model="form.images" :value="5" />
+                                            <span class="ml-2 text-sm text-gray-600 whitespace-nowrap">5</span>
+                                        </label>
+
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-span-6">
@@ -524,7 +617,21 @@ const submitNote = () => {
                                 <InputError class="mt-2" :message="form.errors.obs" />
                             </div>
 
-                            <div class="col-span-2">
+                            <div class="col-span-6">
+                                <InputLabel for="rules" :value="$t('Rules for content')" />
+                                <textarea id="rules" v-model="form.rules" type="text" rows="3"
+                                    class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-300 focus:outline-none focus:ring-blue-200 sm:text-sm"></textarea>
+                                <InputError class="mt-2" :message="form.errors.rules" />
+                            </div>
+
+                            <div class="col-span-6">
+                                <InputLabel for="example_article" :value="$t('Example article')" />
+                                <TextInput id="example_article" v-model="form.example_article" type="text"
+                                    class="mt-1 block w-full" />
+                                <InputError class="mt-2" :message="form.errors.example_article" />
+                            </div>
+
+                            <div class="col-span-4">
                                 <InputLabel for="owner_name" :value="$t('Owner name')" />
                                 <TextInput id="owner_name" v-model="form.owner_name" type="text"
                                     class="mt-1 block w-full" />
@@ -532,13 +639,20 @@ const submitNote = () => {
                             </div>
 
                             <div class="col-span-2">
+                                <InputLabel for="owner_role" :value="$t('Owner role')" />
+                                <TextInput id="owner_role" v-model="form.owner_role" type="text"
+                                    class="mt-1 block w-full" />
+                                <InputError class="mt-2" :message="form.errors.owner_role" />
+                            </div>
+
+                            <div class="col-span-3">
                                 <InputLabel for="owner_email" :value="$t('Owner email')" />
                                 <TextInput id="owner_email" v-model="form.owner_email" type="text"
                                     class="mt-1 block w-full" />
                                 <InputError class="mt-2" :message="form.errors.owner_email" />
                             </div>
 
-                            <div class="col-span-2">
+                            <div class="col-span-3">
                                 <InputLabel for="owner_phone" :value="$t('Owner phone')" />
                                 <TextInput id="owner_phone" v-model="form.owner_phone" type="text"
                                     class="mt-1 block w-full" />
@@ -550,6 +664,13 @@ const submitNote = () => {
                                 <textarea id="bank" v-model="form.bank" type="text" rows="3"
                                     class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-300 focus:outline-none focus:ring-blue-200 sm:text-sm"></textarea>
                                 <InputError class="mt-2" :message="form.errors.bank" />
+                            </div>
+
+                            <div class="col-span-6">
+                                <InputLabel for="global_account" :value="$t('Global account')" />
+                                <TextInput id="global_account" v-model="form.global_account" type="text"
+                                    class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-300 focus:outline-none focus:ring-blue-200 sm:text-sm"/>
+                                <InputError class="mt-2" :message="form.errors.global_account" />
                             </div>
 
                             <div class="col-span-3">

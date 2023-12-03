@@ -41,7 +41,6 @@ class StoreSiteRequest extends FormRequest
             'category_id' => 'nullable|integer|exists:categories,id',
             'language_id' => 'nullable|integer|exists:languages,id',
             'country_id' => 'nullable|integer|exists:countries,id',
-
             'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
 
             'gambling' => 'nullable|boolean',
@@ -56,7 +55,6 @@ class StoreSiteRequest extends FormRequest
             'links' => 'nullable|integer',
             'embed' => 'required|boolean',
             'images' => 'nullable|integer',
-
 
             'cost' => 'nullable|integer',
             'sale' => 'nullable|integer',

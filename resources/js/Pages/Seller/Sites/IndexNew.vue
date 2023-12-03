@@ -1,3 +1,5 @@
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
 <script setup>
 import SellerLayoutNew from '@/Layouts/SellerLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
@@ -6,40 +8,23 @@ import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
-    Dialog,
-    DialogPanel,
-    DialogTitle,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    TransitionChild,
-    TransitionRoot,
     Switch, SwitchGroup, SwitchLabel,
 } from '@headlessui/vue'
-
 import {
     ArrowLongLeftIcon,
     ArrowLongRightIcon,
-    CloudArrowDownIcon,
-    CloudArrowUpIcon,
     MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
-
 import {
     PencilSquareIcon,
     GlobeAltIcon,
-    PlusCircleIcon,
-    PlusIcon,
 } from '@heroicons/vue/24/outline'
-
 import { debounce } from 'debounce';
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
-
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
-
 import { usePage } from '@inertiajs/inertia-vue3';
+import VueMultiselect from 'vue-multiselect'
 
 const coinStore = useCoinStore()
 const { t } = useTranslation();
@@ -52,6 +37,7 @@ const props = defineProps({
     countries: Array,
     languages: Array,
     categories: Array,
+    types: Array,
 
     pendingCount: Number,
     offersCount: Number,
@@ -71,26 +57,28 @@ const _defaultColumns = [
     { key: 'url', label: t('Domain'), visible: true },
     { key: 'da', label: t('DA'), visible: true },
     { key: 'dr', label: t('DR'), visible: true },
-    { key: 'gambling', label: t('Accepts gambling'), visible: true },
     { key: 'sponsor', label: t('Marked as sponsored'), visible: true },
-    { key: 'cripto', label: t('Cripto'), visible: false },
+    { key: 'link_type', label: t('Link'), visible: true },
     { key: 'ssl', label: t('SSL'), visible: false },
     { key: 'category', label: t('Category'), visible: false },
     { key: 'obs', label: t('Obs'), visible: true },
     { key: 'example', label: t('Example'), visible: false },
     { key: 'inserted_at', label: t('Upload date'), visible: false },
     { key: 'last_updated_at', label: t('Updated date'), visible: true },
+    ...props.types.map(type => ({
+        key: `type-${type.id}`, label: type.name, visible: true
+    }))
 ];
 
 const _columns =
     localStorage.getItem('sites.index.columns') ?
-        unionBy(JSON.parse(localStorage.getItem('sites.index.columns')), _defaultColumns, 'key')
+        unionBy(JSON.parse(localStorage.getItem('seller.sites.index.columns')), _defaultColumns, 'key')
         : _defaultColumns
 
 const columns = ref(_columns)
 
 watch(columns, (n, o) => {
-    localStorage.setItem('sites.index.columns', JSON.stringify(columns.value))
+    localStorage.setItem('seller.sites.index.columns', JSON.stringify(columns.value))
 }, {
     deep: true,
 })
@@ -98,7 +86,6 @@ watch(columns, (n, o) => {
 const sort = ref(props.filters.sort)
 
 const filters = reactive({
-    // sellers filter
     url: props.filters.filter.url,
     cost: { from: props.filters.filter.cost.from, to: props.filters.filter.cost.to },
     da: { from: props.filters.filter.da.from, to: props.filters.filter.da.to },
@@ -110,6 +97,7 @@ const filters = reactive({
     language_id: props.filters.filter.language_id,
     country_id: props.filters.filter.country_id,
     category_id: props.filters.filter.category_id,
+    types: props.filters.filter.types,
 })
 
 watch(sort, (n, o) => get());
@@ -152,6 +140,7 @@ const get = async () => {
             language_id: filters.language_id,
             country_id: filters.country_id,
             category_id: filters.category_id,
+            types: filters.types?.map(t => t.id).join(','),
         },
     }, {
         preserveState: true,
@@ -339,6 +328,30 @@ const copy = () => {
                                     <option v-for="(category, index) in categories" :key="index" :value="category.id">{{ category.title }}</option>
                                 </select>
                             </div>
+
+                            <div class="col-span-1">
+                                <label class="text-sm font-medium">{{ $t('Filter by types') }}</label>
+
+                                <VueMultiselect
+                                    class="mt-4 ml-2"
+                                    v-model="filters.types"
+                                    track-by="id"
+                                    label="name"
+                                    placeholder="Select..."
+                                    :options="types"
+                                    :multiple="true"
+                                    :searchable="false"
+                                    :close-on-select="false"
+                                    selectLabel=""
+                                    deselectLabel=""
+                                    :showLabels="false">
+
+                                    <template #placeholder>
+                                        <span class="text-gray-500">Select...</span>
+                                    </template>
+
+                                </VueMultiselect>
+                            </div>
                         </div>
 
                         <hr class="my-5">
@@ -483,31 +496,30 @@ const copy = () => {
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
+
                                         <th v-show="columns[4].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Accepts gambling') }}</th>
+                                            scope="col">{{ $t('Marked as sponsored') }}</th>
+
+                                        <th v-for="(type, index) in types" v-show="columns[columns.length - types.length + index].visible"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ type.name }}</th>
+
                                         <th v-show="columns[5].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Marked as sponsored') }}</th>
+                                            scope="col">{{ $t('Link') }}</th>
+                                        
                                         <th v-show="columns[6].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Cripto') }}</th>
+                                            scope="col">{{ $t('SSL') }}</th>
                                         <th v-show="columns[7].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('SSL') }}</th>
+                                            scope="col">{{ $t('Category') }}</th>
+                                        
                                         <th v-show="columns[8].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Category') }}</th>
-                                        <!-- <th v-show="columns[9].visible"
-                                                class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                                scope="col">{{ $t('Banners') }}</th>
-                                            <th v-show="columns[10].visible"
-                                                class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                                scope="col">{{ $t('Links') }} menu</th> -->
-                                        <th v-show="columns[9].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Obs') }}</th>
-                                        <th v-show="columns[10].visible"
+                                        <th v-show="columns[9].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -516,7 +528,7 @@ const copy = () => {
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[11].visible"
+                                        <th v-show="columns[10].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -525,7 +537,7 @@ const copy = () => {
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[12].visible"
+                                        <th v-show="columns[11].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -572,47 +584,44 @@ const copy = () => {
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ site.dr ?? '-' }}
                                         </td>
+
                                         <td v-show="columns[4].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.gambling ? 'Yes' : 'No') }}
-                                        </td>
-                                        <td v-show="columns[5].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ $t(site.sponsor ? 'Yes' : 'No') }}
                                         </td>
-                                        <td v-show="columns[6].visible"
+
+                                        <td v-for="(type, index) in types" v-show="columns[columns.length - types.length + index].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ $t(site.cripto ? 'Yes' : 'No') }}
+                                            {{ site.types.find(t => t.id == type.id) ? $t('Yes') : $t('No') }}
                                         </td>
-                                        <td v-show="columns[7].visible"
+
+                                        <td v-show="columns[5].visible" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            {{ site.link_type }}
+                                        </td>
+
+                                        <td v-show="columns[6].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ $t(site.ssl ? 'Yes' : 'No') }}
                                         </td>
-                                        <td v-show="columns[8].visible"
+
+                                        <td v-show="columns[7].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
                                         </td>
-                                        <!-- <td v-show="columns[9].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.banner ? 'Sim' : 'Não' }}
-                                            </td>
-                                            <td v-show="columns[10].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.menu ? 'Sim' : 'Não' }}
-                                            </td> -->
-                                        <td v-show="columns[9].visible"
+                                        
+                                        <td v-show="columns[8].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ site.obs ?? '-' }}
                                         </td>
-                                        <td v-show="columns[10].visible"
+                                        <td v-show="columns[9].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            -
+                                            {{ site.example_article ?? '-' }}
                                         </td>
-                                        <td v-show="columns[11].visible"
+                                        <td v-show="columns[10].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ site.formatted_inserted_at }}
                                         </td>
-                                        <td v-show="columns[12].visible"
+                                        <td v-show="columns[11].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ site.formatted_updated_at }}
                                         </td>

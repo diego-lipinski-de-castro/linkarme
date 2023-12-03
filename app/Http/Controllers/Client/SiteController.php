@@ -10,6 +10,7 @@ use App\Models\Country;
 use App\Models\Language;
 use App\Models\Project;
 use App\Models\Site;
+use App\Models\Type;
 use App\Sorts\NewSort;
 use App\Sorts\RecommendedSort;
 use Illuminate\Http\Request;
@@ -53,6 +54,10 @@ class SiteController extends Controller
             ->orderBy('name')
             ->get();
 
+        $types = Type::query()
+            ->orderBy('name')
+            ->get();
+
         $query = request()->query();
 
         $filters = [
@@ -86,6 +91,8 @@ class SiteController extends Controller
                 'language_id' => Arr::get($query, 'filter.language_id', []),
                 'country_id' => Arr::get($query, 'filter.country_id', []),
                 'category_id' => Arr::get($query, 'filter.category_id', null),
+
+                'types' => Arr::get($query, 'filter.types', null),
             ],
         ];
 
@@ -123,6 +130,7 @@ class SiteController extends Controller
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::exact('country_id'),
                 AllowedFilter::exact('category_id'),
+                AllowedFilter::scope('types', 'of_types'),
             ])
             ->paginate(50)
             ->appends(request()->query());
@@ -136,6 +144,7 @@ class SiteController extends Controller
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,
+            'types' => $types,
             'projects' => $projects,
         ]);
     }

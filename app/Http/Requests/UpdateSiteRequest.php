@@ -42,7 +42,6 @@ class UpdateSiteRequest extends FormRequest
             'category_id' => 'nullable|integer|exists:categories,id',
             'language_id' => 'nullable|integer|exists:languages,id',
             'country_id' => 'nullable|integer|exists:countries,id',
-
             'link_type' => 'required|string|in:DOFOLLOW,NOFOLLOW',
 
             'gambling' => 'required|boolean',

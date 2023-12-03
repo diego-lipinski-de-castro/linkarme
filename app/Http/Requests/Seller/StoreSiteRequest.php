@@ -30,14 +30,14 @@ class StoreSiteRequest extends FormRequest
             'name' => 'nullable|string|min:2|max:255',
             'description' => 'nullable|string|max:255',
 
+            'rules' => 'nullable',
             'obs' => 'nullable|string|max:600',
 
             'da' => 'nullable|integer',
             'dr' => 'nullable|integer',
             'traffic' => 'nullable|integer',
             'tf' => 'nullable|integer',
-            'country' => 'nullable|string',
-            'language' => 'nullable|string',
+
             'category_id' => 'nullable|integer|exists:categories,id',
             'language_id' => 'nullable|integer|exists:languages,id',
             'country_id' => 'nullable|integer|exists:countries,id',
@@ -47,8 +47,14 @@ class StoreSiteRequest extends FormRequest
             'cdb' => 'nullable|boolean',
             'cripto' => 'nullable|boolean',
             'sponsor' => 'nullable|boolean',
+            'promo' => 'required|boolean',
             'menu' => 'nullable|boolean',
             'banner' => 'nullable|boolean',
+            'google_news' => 'required|boolean',
+
+            'links' => 'nullable|integer',
+            'embed' => 'required|boolean',
+            'images' => 'nullable|integer',
 
             'cost' => 'nullable|integer',
             // 'sale' => 'nullable|integer',
@@ -60,16 +66,25 @@ class StoreSiteRequest extends FormRequest
             'team_id' => 'nullable|integer|exists:teams,id',
 
             'owner_name' => 'nullable',
+            'owner_role' => 'nullable',
             'owner_email' => 'nullable',
             'owner_phone' => 'nullable',
 
             'bank' => 'nullable',
             'pix' => 'nullable',
-
-            'phone' => 'nullable',
+            'global_account' => 'nullable',
             'paypal' => 'nullable',
+            'phone' => 'nullable',
             'instagram' => 'nullable',
             'facebook' => 'nullable',
+
+            'restrict' => 'required|boolean',
+            'restrict_detail' => 'nullable',
+
+            'archive_article' => 'required|boolean',
+            'archive_due' => 'nullable',
+
+            'example_article' => 'nullable',
 
             'types' => 'present|array|min:0',
         ];
