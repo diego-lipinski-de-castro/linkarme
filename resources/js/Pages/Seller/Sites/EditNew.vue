@@ -35,9 +35,6 @@ const form = useForm({
     country_id: site.country_id,
     link_type: site.link_type,
 
-    gambling: site.gambling ?? false,
-    cdb: site.cdb ?? false,
-    cripto: site.cripto ?? false,
     sponsor: site.sponsor ?? false,
     menu: site.menu ?? false,
     banner: site.banner ?? false,

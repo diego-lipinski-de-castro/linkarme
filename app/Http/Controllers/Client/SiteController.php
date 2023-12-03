@@ -223,6 +223,7 @@ class SiteController extends Controller
             'category',
             'language',
             'country',
+            'types',
         ]);
 
         $coins = config('coins');
