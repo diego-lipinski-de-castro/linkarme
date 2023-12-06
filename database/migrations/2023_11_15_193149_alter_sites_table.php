@@ -24,7 +24,7 @@ return new class extends Migration
             $table->boolean('embed')->default(false);
             $table->integer('images')->nullable();
             $table->string('example_article')->nullable();
-            $table->string('rules')->nullable();
+            $table->text('rules')->nullable();
             $table->boolean('google_news')->default(false);
             $table->string('global_account')->nullable();
         });
