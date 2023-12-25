@@ -220,24 +220,16 @@
 
                                         @php
 
-                                            if($attribute == 'cost_coin') {
-                                                $value['old'] = App\Helper::formatCurrency($audit->auditable->cost / 100, $value['old']);
-                                                $value['new'] = App\Helper::formatCurrency($audit->auditable->cost / 100, $value['new']);
+                                            if($attribute == 'sale') {
+                                                $value['old'] = App\Helper::formatCurrency($value['old'] / 100, $audit->auditable->sale_coin);
+                                                $value['new'] = App\Helper::formatCurrency($value['new'] / 100, $audit->auditable->sale_coin);
                                             }
 
                                             if($attribute == 'sale_coin') {
                                                 $value['old'] = App\Helper::formatCurrency($audit->auditable->sale / 100, $value['old']);
                                                 $value['new'] = App\Helper::formatCurrency($audit->auditable->sale / 100, $value['new']);
-                                            }
 
-                                            if($attribute == 'cost') {
-                                                $value['old'] = App\Helper::formatCurrency($value['old'] / 100, $audit->auditable->cost_coin);
-                                                $value['new'] = App\Helper::formatCurrency($value['new'] / 100, $audit->auditable->cost_coin);
-                                            }
-
-                                            if($attribute == 'sale') {
-                                                $value['old'] = App\Helper::formatCurrency($value['old'] / 100, $audit->auditable->sale_coin);
-                                                $value['new'] = App\Helper::formatCurrency($value['new'] / 100, $audit->auditable->sale_coin);
+                                                $attribute = 'sale';
                                             }
 
                                         @endphp
@@ -245,8 +237,9 @@
                                         <p class="text-base text-gray-900">
                                             <span class="break-words">
                                                 {{
-                                                    __('email.attributes.updated', [
+                                                    __('email.attributes.pivot.updated', [
                                                         'attribute' => $attribute,
+                                                        'pivot' => strtolower($audit->auditable->type->name),
                                                         'old' => $value['old'],
                                                         'new' => $value['new'],
                                                     ])

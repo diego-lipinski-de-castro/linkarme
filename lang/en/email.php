@@ -9,7 +9,14 @@ return [
         'to_blank' => ':attribute was updated from :old to blank',
         'updated' => ':attribute was updated from :old to :new',
         'bool_true' => 'Now accepts links related to :attribute.',
-        'bool_false' => 'Does not accepts links related to :attribute.'
+        'bool_false' => 'Does not accepts links related to :attribute.',
+
+        'pivot' => [
+            'new' => ':attribute for :pivot was updated to :new',
+            'blank' => ':attribute for :pivot was updated to blank',
+            'to_blank' => ':attribute for :pivot was updated from :old to blank',
+            'updated' => ':attribute for :pivot was updated from :old to :new',
+        ],
     ],
     'sponsor' => [
         'bool_true' => 'Now accepts links related to :attribute.',

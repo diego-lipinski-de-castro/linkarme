@@ -37,7 +37,6 @@ class MailDailyUpdates extends Command
         $ids = $this->option('id');
         $locale = $this->option('locale');
 
-        // maybe use notifications table?
         $updates = Audit::query()
             ->with([
                 'auditable' => function ($query) {
@@ -50,12 +49,15 @@ class MailDailyUpdates extends Command
             ->whereDate('created_at', '>', now()->subDay()->format('Y-m-d'))
             // ->whereHas('auditable')
             ->get()
-            ->filter(function ($item) {
+            ->filter(function (Audit $item) {
                 
                 if($item->auditable_type == 'App\\Models\\SiteType') {
+
                     $item->auditable->load([
                         'site', 'type',
                     ]);
+
+                    return true;
                 }
 
                 if($item->auditable_type == 'App\\Models\\Site') {
@@ -78,8 +80,18 @@ class MailDailyUpdates extends Command
 
                 return true;
             })
-            ->transform(function ($item) {
-                $item->modified = $item->getModified();
+            ->transform(function (Audit $item) {
+                $modified = $item->getModified();
+                
+                if(isset($modified['cost'])) {
+                    unset($modified['cost']);
+                }
+
+                if(isset($modified['cost_coin'])) {
+                    unset($modified['cost_coin']);
+                }
+
+                $item->modified = $modified;
 
                 return $item;
             });
