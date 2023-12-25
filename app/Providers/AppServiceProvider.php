@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Fedeisas\LaravelMailCssInliner\CssInlinerPlugin;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // 
     }
 }

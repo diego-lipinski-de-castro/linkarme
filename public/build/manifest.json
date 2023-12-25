@@ -1,11 +1,11 @@
 {
-  "resources/js/assets/images/login-bg.jpg": {
-    "file": "assets/login-bg.jpg",
-    "src": "resources/js/assets/images/login-bg.jpg"
-  },
   "resources/js/assets/images/linking-pet.png": {
     "file": "assets/linking-pet.png",
     "src": "resources/js/assets/images/linking-pet.png"
+  },
+  "resources/js/assets/images/login-bg.jpg": {
+    "file": "assets/login-bg.jpg",
+    "src": "resources/js/assets/images/login-bg.jpg"
   },
   "resources/js/assets/images/linking-slogan.png": {
     "file": "assets/linking-slogan.png",
@@ -92,10 +92,8 @@
       "resources/js/Pages/Client/Projects/Create.vue",
       "resources/js/Pages/Client/Projects/Edit.vue",
       "resources/js/Pages/Client/Projects/Index.vue",
-      "resources/js/Pages/Client/Sites/Index.vue",
       "resources/js/Pages/Client/Sites/IndexNew.vue",
       "resources/js/Pages/Client/Sites/List.vue",
-      "resources/js/Pages/Client/Sites/Show.vue",
       "resources/js/Pages/Client/Sites/ShowNew.vue",
       "resources/js/Pages/Clients/Create.vue",
       "resources/js/Pages/Clients/CreateNew.vue",
@@ -154,17 +152,11 @@
       "resources/js/Pages/Seller/Profile/Partials/UpdatePasswordForm.vue",
       "resources/js/Pages/Seller/Profile/Partials/UpdateProfileInformationForm.vue",
       "resources/js/Pages/Seller/Profile/Show.vue",
-      "resources/js/Pages/Seller/Sites/Create.vue",
       "resources/js/Pages/Seller/Sites/CreateNew.vue",
-      "resources/js/Pages/Seller/Sites/Edit.vue",
       "resources/js/Pages/Seller/Sites/EditNew.vue",
-      "resources/js/Pages/Seller/Sites/Index.vue",
       "resources/js/Pages/Seller/Sites/IndexNew.vue",
-      "resources/js/Pages/Sellers/Create.vue",
       "resources/js/Pages/Sellers/CreateNew.vue",
-      "resources/js/Pages/Sellers/Edit.vue",
       "resources/js/Pages/Sellers/EditNew.vue",
-      "resources/js/Pages/Sellers/Index.vue",
       "resources/js/Pages/Sellers/IndexNew.vue",
       "resources/js/Pages/Sellers/Show.vue",
       "resources/js/Pages/Sites/CreateNew.vue",
@@ -172,6 +164,7 @@
       "resources/js/Pages/Sites/IndexNew.vue",
       "resources/js/Pages/Sites/OffersNew.vue",
       "resources/js/Pages/SubmitSite.vue",
+      "resources/js/Pages/SubmitSiteSuccess.vue",
       "resources/js/Pages/Teams/Create.vue",
       "resources/js/Pages/Teams/Edit.vue",
       "resources/js/Pages/Teams/Index.vue",
@@ -209,6 +202,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -245,6 +239,7 @@
       "resources/js/app.js",
       "_ApplicationLogo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_Bars3CenterLeftIcon.js",
@@ -340,6 +335,12 @@
       "resources/js/app.js"
     ]
   },
+  "_language.js": {
+    "file": "assets/language.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "_ScaleIcon.js": {
     "file": "assets/ScaleIcon.js",
     "imports": [
@@ -410,6 +411,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -424,6 +426,7 @@
       "resources/js/app.js",
       "_index2.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js",
@@ -465,6 +468,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -484,6 +488,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -640,6 +645,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -666,6 +672,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -690,6 +697,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -716,6 +724,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -741,6 +750,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -789,6 +799,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -818,6 +829,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_BellIcon.js",
@@ -834,6 +846,7 @@
       "resources/js/app.js",
       "_ApplicationLogo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_BellIcon.js",
@@ -1010,6 +1023,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_Bars3CenterLeftIcon.js",
       "_BellIcon.js",
       "_ChevronDownIcon.js",
@@ -1039,6 +1053,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
@@ -1054,6 +1069,7 @@
       "resources/js/app.js",
       "_index2.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
@@ -1092,6 +1108,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_BellIcon.js",
@@ -1122,6 +1139,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
@@ -1150,6 +1168,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_BellIcon.js",
@@ -1173,11 +1192,11 @@
       "_coin.js",
       "_FireIcon.js",
       "_MagnifyingGlassIcon.js",
-      "_GlobeAltIcon.js",
       "_ArrowLongRightIcon.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
@@ -1186,12 +1205,6 @@
   },
   "_MagnifyingGlassIcon.js": {
     "file": "assets/MagnifyingGlassIcon.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_GlobeAltIcon.js": {
-    "file": "assets/GlobeAltIcon.js",
     "imports": [
       "resources/js/app.js"
     ]
@@ -1434,6 +1447,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_BellIcon.js",
@@ -1472,6 +1486,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
@@ -1545,6 +1560,7 @@
       "_index2.js",
       "_use-outside-click.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
@@ -1560,48 +1576,6 @@
       "resources/js/app.js"
     ]
   },
-  "resources/js/Pages/Client/Sites/Index.vue": {
-    "file": "assets/Index9.js",
-    "src": "resources/js/Pages/Client/Sites/Index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_ClientLayout.js",
-      "_TableSortButton.js",
-      "_unionBy.js",
-      "_index7.js",
-      "_coin.js",
-      "_MagnifyingGlassIcon.js",
-      "_ChevronDownIcon.js",
-      "_switch.js",
-      "_ChevronRightIcon.js",
-      "_ArrowLongRightIcon.js",
-      "_menu.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_ScaleIcon.js",
-      "_Bars3CenterLeftIcon.js",
-      "_BellIcon.js",
-      "_transition.js",
-      "_use-outside-click.js",
-      "_description.js"
-    ]
-  },
-  "_TableSortButton.js": {
-    "file": "assets/TableSortButton.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_switch.js": {
-    "file": "assets/switch.js",
-    "imports": [
-      "_use-outside-click.js",
-      "resources/js/app.js",
-      "_description.js",
-      "_menu.js"
-    ]
-  },
   "resources/js/Pages/Client/Sites/IndexNew.vue": {
     "file": "assets/IndexNew3.js",
     "src": "resources/js/Pages/Client/Sites/IndexNew.vue",
@@ -1613,20 +1587,38 @@
       "_unionBy.js",
       "_index7.js",
       "_coin.js",
+      "_vue-multiselect.css_vue_type_style_index_0_src_true_lang.js",
       "_MagnifyingGlassIcon.js",
-      "_GlobeAltIcon.js",
       "_InformationCircleIcon.js",
       "_PlusCircleIcon.js",
       "_ArrowLongRightIcon.js",
-      "_switch.js",
       "_menu.js",
       "_index2.js",
       "_use-outside-click.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js",
       "_description.js"
+    ]
+  },
+  "_TableSortButton.js": {
+    "file": "assets/TableSortButton.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_vue-multiselect.css_vue_type_style_index_0_src_true_lang.js": {
+    "file": "assets/vue-multiselect.css_vue_type_style_index_0_src_true_lang.js",
+    "imports": [
+      "_use-outside-click.js",
+      "resources/js/app.js",
+      "_description.js",
+      "_menu.js"
+    ],
+    "css": [
+      "assets/vue-multiselect.css"
     ]
   },
   "_InformationCircleIcon.js": {
@@ -1651,33 +1643,11 @@
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
-    ]
-  },
-  "resources/js/Pages/Client/Sites/Show.vue": {
-    "file": "assets/Show3.js",
-    "src": "resources/js/Pages/Client/Sites/Show.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_ClientLayout.js",
-      "_InputLabel.js",
-      "_TextInput.js",
-      "_Checkbox.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_coin.js",
-      "_ScaleIcon.js",
-      "_Bars3CenterLeftIcon.js",
-      "_BellIcon.js",
-      "_ChevronDownIcon.js",
-      "_transition.js",
-      "_use-outside-click.js",
-      "_description.js",
-      "_menu.js"
     ]
   },
   "resources/js/Pages/Client/Sites/ShowNew.vue": {
@@ -1695,6 +1665,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_ChevronDownIcon.js",
       "_XMarkIcon.js",
@@ -1716,6 +1687,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -1750,6 +1722,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -1770,6 +1743,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -1799,6 +1773,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -1811,7 +1786,7 @@
     ]
   },
   "resources/js/Pages/Clients/Index.vue": {
-    "file": "assets/Index10.js",
+    "file": "assets/Index9.js",
     "src": "resources/js/Pages/Clients/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -1824,6 +1799,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -1849,6 +1825,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -1917,6 +1894,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -1935,6 +1913,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -1961,6 +1940,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -1979,6 +1959,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2005,13 +1986,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Countries/Index.vue": {
-    "file": "assets/Index11.js",
+    "file": "assets/Index10.js",
     "src": "resources/js/Pages/Countries/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -2024,6 +2006,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2048,6 +2031,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -2063,6 +2047,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2083,6 +2068,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -2101,6 +2087,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2127,6 +2114,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -2145,6 +2133,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2171,13 +2160,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Languages/Index.vue": {
-    "file": "assets/Index12.js",
+    "file": "assets/Index11.js",
     "src": "resources/js/Pages/Languages/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -2190,6 +2180,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2214,6 +2205,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -2234,6 +2226,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -2252,6 +2245,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2278,6 +2272,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -2296,6 +2291,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2322,13 +2318,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Orders/Index.vue": {
-    "file": "assets/Index13.js",
+    "file": "assets/Index12.js",
     "src": "resources/js/Pages/Orders/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -2346,6 +2343,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_use-outside-click.js",
@@ -2379,6 +2377,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js",
@@ -2473,7 +2472,7 @@
     ]
   },
   "resources/js/Pages/Profile/Show.vue": {
-    "file": "assets/Show4.js",
+    "file": "assets/Show3.js",
     "src": "resources/js/Pages/Profile/Show.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -2487,6 +2486,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_transition.js",
       "_use-outside-click.js",
@@ -2508,7 +2508,7 @@
     ]
   },
   "resources/js/Pages/Seller/API/Index.vue": {
-    "file": "assets/Index14.js",
+    "file": "assets/Index13.js",
     "src": "resources/js/Pages/Seller/API/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -2531,6 +2531,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_ChevronDownIcon.js",
@@ -2546,6 +2547,7 @@
       "resources/js/app.js",
       "_ApplicationLogo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_ChevronDownIcon.js",
@@ -2698,6 +2700,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_Bars3CenterLeftIcon.js",
       "_ChevronDownIcon.js",
       "_transition.js",
@@ -2719,6 +2722,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
@@ -2729,13 +2733,14 @@
       "resources/js/app.js",
       "_index2.js",
       "_coin.js",
+      "_language.js",
       "_XMarkIcon.js",
       "_BellIcon.js",
       "_menu.js"
     ]
   },
   "resources/js/Pages/Seller/Orders/Index.vue": {
-    "file": "assets/Index15.js",
+    "file": "assets/Index14.js",
     "src": "resources/js/Pages/Seller/Orders/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -2751,6 +2756,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_transition.js",
@@ -2836,7 +2842,7 @@
     ]
   },
   "resources/js/Pages/Seller/Profile/Show.vue": {
-    "file": "assets/Show5.js",
+    "file": "assets/Show4.js",
     "src": "resources/js/Pages/Seller/Profile/Show.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -2848,6 +2854,7 @@
       "_ApplicationLogo.js",
       "_logo.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_Bars3CenterLeftIcon.js",
       "_ChevronDownIcon.js",
@@ -2863,30 +2870,6 @@
       "_PrimaryButton.js",
       "_TextInput.js",
       "_SecondaryButton.js"
-    ]
-  },
-  "resources/js/Pages/Seller/Sites/Create.vue": {
-    "file": "assets/Create7.js",
-    "src": "resources/js/Pages/Seller/Sites/Create.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_SellerLayout.js",
-      "_InputError.js",
-      "_InputLabel.js",
-      "_TextInput.js",
-      "_Checkbox.js",
-      "_XMarkIcon.js",
-      "_transition.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_coin.js",
-      "_ScaleIcon.js",
-      "_Bars3CenterLeftIcon.js",
-      "_ChevronDownIcon.js",
-      "_menu.js",
-      "_use-outside-click.js",
-      "_description.js"
     ]
   },
   "resources/js/Pages/Seller/Sites/CreateNew.vue": {
@@ -2909,31 +2892,9 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_BellIcon.js",
       "_description.js"
-    ]
-  },
-  "resources/js/Pages/Seller/Sites/Edit.vue": {
-    "file": "assets/Edit7.js",
-    "src": "resources/js/Pages/Seller/Sites/Edit.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_SellerLayout.js",
-      "_InputError.js",
-      "_InputLabel.js",
-      "_TextInput.js",
-      "_Checkbox.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_coin.js",
-      "_ScaleIcon.js",
-      "_Bars3CenterLeftIcon.js",
-      "_ChevronDownIcon.js",
-      "_transition.js",
-      "_use-outside-click.js",
-      "_description.js",
-      "_menu.js"
     ]
   },
   "resources/js/Pages/Seller/Sites/EditNew.vue": {
@@ -2957,6 +2918,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_BellIcon.js",
       "_description.js"
     ]
@@ -2965,33 +2927,6 @@
     "file": "assets/ExclamationTriangleIcon.js",
     "imports": [
       "resources/js/app.js"
-    ]
-  },
-  "resources/js/Pages/Seller/Sites/Index.vue": {
-    "file": "assets/Index16.js",
-    "src": "resources/js/Pages/Seller/Sites/Index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_SellerLayout.js",
-      "_TableSortButton.js",
-      "_unionBy.js",
-      "_index7.js",
-      "_coin.js",
-      "_MagnifyingGlassIcon.js",
-      "_ChevronDownIcon.js",
-      "_ChevronRightIcon.js",
-      "_PencilSquareIcon.js",
-      "_ArrowLongRightIcon.js",
-      "_menu.js",
-      "_switch.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_ScaleIcon.js",
-      "_Bars3CenterLeftIcon.js",
-      "_transition.js",
-      "_use-outside-click.js",
-      "_description.js"
     ]
   },
   "resources/js/Pages/Seller/Sites/IndexNew.vue": {
@@ -3005,40 +2940,17 @@
       "_unionBy.js",
       "_index7.js",
       "_coin.js",
+      "_vue-multiselect.css_vue_type_style_index_0_src_true_lang.js",
       "_MagnifyingGlassIcon.js",
-      "_GlobeAltIcon.js",
       "_PencilSquareIcon.js",
       "_ArrowLongRightIcon.js",
-      "_switch.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
+      "_language.js",
       "_XMarkIcon.js",
       "_BellIcon.js",
       "_description.js"
-    ]
-  },
-  "resources/js/Pages/Sellers/Create.vue": {
-    "file": "assets/Create8.js",
-    "src": "resources/js/Pages/Sellers/Create.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_AppLayout.js",
-      "_InputError.js",
-      "_InputLabel.js",
-      "_TextInput.js",
-      "_EyeIcon.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_coin.js",
-      "_ScaleIcon.js",
-      "_transition.js",
-      "_use-outside-click.js",
-      "_description.js",
-      "_Bars3CenterLeftIcon.js",
-      "_menu.js",
-      "_ChevronDownIcon.js"
     ]
   },
   "resources/js/Pages/Sellers/CreateNew.vue": {
@@ -3059,32 +2971,10 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
-    ]
-  },
-  "resources/js/Pages/Sellers/Edit.vue": {
-    "file": "assets/Edit8.js",
-    "src": "resources/js/Pages/Sellers/Edit.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_AppLayout.js",
-      "_InputError.js",
-      "_InputLabel.js",
-      "_TextInput.js",
-      "_EyeIcon.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_coin.js",
-      "_ScaleIcon.js",
-      "_transition.js",
-      "_use-outside-click.js",
-      "_description.js",
-      "_Bars3CenterLeftIcon.js",
-      "_menu.js",
-      "_ChevronDownIcon.js"
     ]
   },
   "resources/js/Pages/Sellers/EditNew.vue": {
@@ -3105,32 +2995,10 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
-    ]
-  },
-  "resources/js/Pages/Sellers/Index.vue": {
-    "file": "assets/Index17.js",
-    "src": "resources/js/Pages/Sellers/Index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_AppLayout.js",
-      "resources/js/app.js",
-      "_ChevronRightIcon.js",
-      "_PencilSquareIcon.js",
-      "_TrashIcon.js",
-      "_ArrowLongRightIcon.js",
-      "_ApplicationLogo.js",
-      "_logo.js",
-      "_coin.js",
-      "_ScaleIcon.js",
-      "_transition.js",
-      "_use-outside-click.js",
-      "_description.js",
-      "_Bars3CenterLeftIcon.js",
-      "_menu.js",
-      "_ChevronDownIcon.js"
     ]
   },
   "resources/js/Pages/Sellers/IndexNew.vue": {
@@ -3150,13 +3018,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Sellers/Show.vue": {
-    "file": "assets/Show6.js",
+    "file": "assets/Show5.js",
     "src": "resources/js/Pages/Sellers/Show.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -3171,6 +3040,7 @@
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -3194,6 +3064,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -3212,7 +3083,6 @@
       "_Checkbox.js",
       "_PrimaryButton.js",
       "_ActionMessage.js",
-      "_coin.js",
       "_XMarkIcon.js",
       "_ExclamationTriangleIcon.js",
       "_PencilIcon.js",
@@ -3220,6 +3090,8 @@
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
+      "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_BellIcon.js",
       "_description.js"
@@ -3237,24 +3109,21 @@
       "_index7.js",
       "_coin.js",
       "_filepond-plugin-file-validate-type.esm.js",
+      "_vue-multiselect.css_vue_type_style_index_0_src_true_lang.js",
       "_MagnifyingGlassIcon.js",
-      "_GlobeAltIcon.js",
       "_InformationCircleIcon.js",
       "_PencilSquareIcon.js",
       "_TrashIcon.js",
       "_ArrowLongRightIcon.js",
       "_transition.js",
-      "_switch.js",
       "_index2.js",
       "_use-outside-click.js",
       "_menu.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js",
       "_description.js"
-    ],
-    "css": [
-      "assets/IndexNew.css"
     ]
   },
   "resources/js/Pages/Sites/OffersNew.vue": {
@@ -3271,6 +3140,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_BellIcon.js",
       "_description.js"
@@ -3287,13 +3157,27 @@
       "_InputLabel.js",
       "_TextInput.js",
       "_Checkbox.js",
+      "_language.js",
+      "_ChevronDownIcon2.js",
+      "_menu.js",
+      "_use-outside-click.js"
+    ]
+  },
+  "resources/js/Pages/SubmitSiteSuccess.vue": {
+    "file": "assets/SubmitSiteSuccess.js",
+    "src": "resources/js/Pages/SubmitSiteSuccess.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_ApplicationLogoNew.js",
+      "_language.js",
       "_ChevronDownIcon2.js",
       "_menu.js",
       "_use-outside-click.js"
     ]
   },
   "resources/js/Pages/Teams/Create.vue": {
-    "file": "assets/Create9.js",
+    "file": "assets/Create7.js",
     "src": "resources/js/Pages/Teams/Create.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -3309,13 +3193,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Teams/Edit.vue": {
-    "file": "assets/Edit9.js",
+    "file": "assets/Edit7.js",
     "src": "resources/js/Pages/Teams/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -3331,13 +3216,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Teams/Index.vue": {
-    "file": "assets/Index18.js",
+    "file": "assets/Index15.js",
     "src": "resources/js/Pages/Teams/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -3351,6 +3237,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -3367,7 +3254,7 @@
     ]
   },
   "resources/js/Pages/Types/Create.vue": {
-    "file": "assets/Create10.js",
+    "file": "assets/Create8.js",
     "src": "resources/js/Pages/Types/Create.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -3383,13 +3270,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Types/Edit.vue": {
-    "file": "assets/Edit10.js",
+    "file": "assets/Edit8.js",
     "src": "resources/js/Pages/Types/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -3405,13 +3293,14 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
     ]
   },
   "resources/js/Pages/Types/Index.vue": {
-    "file": "assets/Index19.js",
+    "file": "assets/Index16.js",
     "src": "resources/js/Pages/Types/Index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -3425,6 +3314,7 @@
       "_use-outside-click.js",
       "_menu.js",
       "_coin.js",
+      "_language.js",
       "_ScaleIcon.js",
       "_XMarkIcon.js",
       "_BellIcon.js"
@@ -3438,17 +3328,17 @@
       "resources/js/app.js"
     ]
   },
-  "filepond-plugin-file-validate-type.css": {
-    "file": "assets/filepond-plugin-file-validate-type.css",
-    "src": "filepond-plugin-file-validate-type.css"
-  },
-  "resources/js/Pages/Sites/IndexNew.css": {
-    "file": "assets/IndexNew.css",
-    "src": "resources/js/Pages/Sites/IndexNew.css"
+  "vue-multiselect.css": {
+    "file": "assets/vue-multiselect.css",
+    "src": "vue-multiselect.css"
   },
   "resources/js/Pages/Analytics.css": {
     "file": "assets/Analytics.css",
     "src": "resources/js/Pages/Analytics.css"
+  },
+  "filepond-plugin-file-validate-type.css": {
+    "file": "assets/filepond-plugin-file-validate-type.css",
+    "src": "filepond-plugin-file-validate-type.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.css",

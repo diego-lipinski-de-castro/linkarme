@@ -270,6 +270,7 @@ class Site extends Model implements Auditable
     public function types(): BelongsToMany
     {
         return $this->belongsToMany(Type::class)
+            ->using(SiteType::class)
             ->withTimestamps()
             ->withPivot([
                 'cost',

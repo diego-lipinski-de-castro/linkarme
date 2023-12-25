@@ -303,6 +303,7 @@ class SiteController extends Controller
      */
     public function update(UpdateSiteRequest $request, $id)
     {
+        /** @var Site $site */
         $site = Site::withTrashed()->findOrFail($id);
 
         DB::transaction(function () use($site, $request) {

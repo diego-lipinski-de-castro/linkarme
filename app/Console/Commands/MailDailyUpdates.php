@@ -41,30 +41,39 @@ class MailDailyUpdates extends Command
         $updates = Audit::query()
             ->with([
                 'auditable' => function ($query) {
-                    $query->withTrashed();
+                    // $query->withTrashed();
                 },
             ])
-            ->where('auditable_type', 'App\\Models\\Site')
+            ->whereIn('auditable_type', ['App\\Models\\Site', 'App\\Models\\SiteType'])
             ->whereIn('event', ['updated', 'deleted', 'restored'])
-            ->whereDate('created_at', now()->subDay()->format('Y-m-d'))
+            // ->whereDate('created_at', now()->subDay()->format('Y-m-d'))
+            ->whereDate('created_at', '>', now()->subDay()->format('Y-m-d'))
             // ->whereHas('auditable')
             ->get()
             ->filter(function ($item) {
+                
+                if($item->auditable_type == 'App\\Models\\SiteType') {
+                    $item->auditable->load([
+                        'site', 'type',
+                    ]);
+                }
 
-                if($item->event == 'updated') {
+                if($item->auditable_type == 'App\\Models\\Site') {
+                    if($item->event == 'updated') {
 
-                    if(
-                        isset($item->getModified()['status']) &&
-                        isset($item->getModified()['status']['new']) &&
-                        $item->getModified()['status']['new'] == 'REJECTED'
-                    ) {
-                        return false;
+                        if(
+                            isset($item->getModified()['status']) &&
+                            isset($item->getModified()['status']['new']) &&
+                            $item->getModified()['status']['new'] == 'REJECTED'
+                        ) {
+                            return false;
+                        }
+    
+                        return Arr::hasAny(
+                            $item->getModified(), 
+                            ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
+                        );
                     }
-
-                    return Arr::hasAny(
-                        $item->getModified(), 
-                        ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
-                    );
                 }
 
                 return true;

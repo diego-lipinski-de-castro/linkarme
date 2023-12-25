@@ -68,17 +68,17 @@ const form = useForm({
     facebook: site.facebook,
 
     owner_role: site.owner_role,
-    promo: site.promo,
-    restrict: site.restrict,
+    promo: site.promo ?? false,
+    restrict: site.restrict ?? false,
     restrict_detail: site.restrict_detail,
-    archive_article: site.archive_article,
+    archive_article: site.archive_article ?? false,
     archive_due: site.archive_due,
     links: site.links,
-    embed: site.embed,
+    embed: site.embed ?? false,
     images: site.images,
     example_article: site.example_article,
     rules: site.rules,
-    google_news: site.google_news,
+    google_news: site.google_news ?? false,
     global_account: site.global_account,
 
     types: typesProp.map(type => {
@@ -456,11 +456,13 @@ const submitNote = () => {
                                 <div class="flex items-center space-x-2">
                                     <Checkbox id="google_news" v-model:checked="form.google_news" name="google_news" />
                                     <InputLabel for="google_news" :value="$t('Google News')" />
+                                    <InputError class="mt-2" :message="form.errors.google_news" />
                                 </div>
 
                                 <div class="flex items-center space-x-2">
                                     <Checkbox id="embed" v-model:checked="form.embed" name="embed" />
                                     <InputLabel for="embed" :value="$t('Embed')" />
+                                    <InputError class="mt-2" :message="form.errors.embed" />
                                 </div>
 
                                 <div>
@@ -469,6 +471,7 @@ const submitNote = () => {
                                         <InputLabel for="restrict" :value="$t('Restriction')" />
                                     </div>
                                     <TextInput v-if="form.restrict" id="restrict_detail" v-model="form.restrict_detail" type="text" class="mt-1 block w-full border-t-0 border-l-0 border-r-0 border-b rounded-none shadow-none focus:ring-0 px-0" :placeholder="$t('Informe sobre as restrição')"/>
+                                    <InputError class="mt-2" :message="form.errors.restrict_detail" />
                                 </div>
 
                                 <div>
@@ -477,6 +480,7 @@ const submitNote = () => {
                                         <InputLabel for="archive_article" :value="$t('Archive article')" />
                                     </div>
                                     <TextInput v-if="form.archive_article" id="archive_due" v-model="form.archive_due" type="text" class="mt-1 block w-full border-t-0 border-l-0 border-r-0 border-b rounded-none shadow-none focus:ring-0 px-0" :placeholder="$t('Informe quanto tempo')"/>
+                                    <InputError class="mt-2" :message="form.errors.archive_due" />
                                 </div>
                             </div>
 
