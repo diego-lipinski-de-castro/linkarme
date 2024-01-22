@@ -7,13 +7,13 @@
     "file": "assets/login-bg.jpg",
     "src": "resources/js/assets/images/login-bg.jpg"
   },
-  "resources/js/assets/images/linking-slogan.png": {
-    "file": "assets/linking-slogan.png",
-    "src": "resources/js/assets/images/linking-slogan.png"
-  },
   "resources/js/assets/images/header-logo.png": {
     "file": "assets/header-logo.png",
     "src": "resources/js/assets/images/header-logo.png"
+  },
+  "resources/js/assets/images/linking-slogan.png": {
+    "file": "assets/linking-slogan.png",
+    "src": "resources/js/assets/images/linking-slogan.png"
   },
   "resources/js/assets/images/footer-logo.png": {
     "file": "assets/footer-logo.png",
@@ -3328,20 +3328,20 @@
       "resources/js/app.js"
     ]
   },
-  "vue-multiselect.css": {
-    "file": "assets/vue-multiselect.css",
-    "src": "vue-multiselect.css"
-  },
   "resources/js/Pages/Analytics.css": {
     "file": "assets/Analytics.css",
     "src": "resources/js/Pages/Analytics.css"
   },
-  "filepond-plugin-file-validate-type.css": {
-    "file": "assets/filepond-plugin-file-validate-type.css",
-    "src": "filepond-plugin-file-validate-type.css"
+  "vue-multiselect.css": {
+    "file": "assets/vue-multiselect.css",
+    "src": "vue-multiselect.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.css",
     "src": "resources/js/app.css"
+  },
+  "filepond-plugin-file-validate-type.css": {
+    "file": "assets/filepond-plugin-file-validate-type.css",
+    "src": "filepond-plugin-file-validate-type.css"
   }
 }

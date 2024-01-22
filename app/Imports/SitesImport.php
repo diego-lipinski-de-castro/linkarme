@@ -10,6 +10,8 @@ use App\Models\Seller;
 use App\Models\Site;
 use App\Models\Team;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -301,7 +303,11 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
                 !is_null($type['sale_coin']);
         });
 
-        $site->types()->sync($types);
+        try {
+            $site->types()->sync($types);
+        } catch (Exception $e) {
+            Log::debug([$site, $types, $e]);
+        }
     }
 
     public function rules(): array

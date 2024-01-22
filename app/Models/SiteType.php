@@ -28,6 +28,16 @@ class SiteType extends Pivot implements Auditable
         'sale_coin',
     ];
 
+    /**
+     * Auditable events.
+     *
+     * @var array
+     */
+    protected $auditEvents = [
+        'created',
+        'updated',
+    ];
+
     public function site()
     {
         return $this->belongsTo(Site::class);
