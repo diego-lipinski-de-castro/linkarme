@@ -431,7 +431,11 @@ class SiteController extends Controller
             $validated['notify_updated'],
         );
 
+        $start = now();
+
         $import->import(request()->file('file'));
+
+        $stop = now();
 
         $importFailures = collect();
 
@@ -451,13 +455,6 @@ class SiteController extends Controller
         $after = Site::count();
 
         $diff = $after - $before;
-
-        // $addedSites = Site::latest()->take($diff)->get();
-
-        // dump($diff);
-        // dd($addedSites);
-
-        // notify sites diff added
 
         $request->session()->flash('importFailures', $importFailures);
         $request->session()->flash('importDiff', $diff);
