@@ -344,7 +344,10 @@ class SiteController extends Controller
      */
     public function destroy($id)
     {
+        /** @var \App\Models\Site $site */
         $site = Site::withTrashed()->findOrFail($id);
+
+        $site->types()->detach();
 
         $site->forceDelete();
 
