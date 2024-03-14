@@ -40,14 +40,12 @@ class MailDailyUpdates extends Command
         $updates = Audit::query()
             ->with([
                 'auditable' => function ($query) {
-                    // $query->withTrashed();
+                    $query->withTrashed();
                 },
             ])
             ->whereIn('auditable_type', ['App\\Models\\Site', 'App\\Models\\SiteType'])
             ->whereIn('event', ['updated', 'deleted', 'restored'])
-            // ->whereDate('created_at', now()->subDay()->format('Y-m-d'))
             ->whereDate('created_at', '>', now()->subDay()->format('Y-m-d'))
-            // ->whereHas('auditable')
             ->get()
             ->filter(function (Audit $item) {
                 
@@ -97,6 +95,7 @@ class MailDailyUpdates extends Command
             });
 
         if(count($updates) == 0) {
+            Log::debug('No updates to send');
             return 0;
         }
 
@@ -113,7 +112,9 @@ class MailDailyUpdates extends Command
             ->get();
 
         foreach($clients as $client){
-            Mail::to($client)->send(new DailyUpdates($updates));
+            if(!blank($client->email)) {
+                Mail::to($client)->send(new DailyUpdates($updates));
+            }
         }
 
         return 0;

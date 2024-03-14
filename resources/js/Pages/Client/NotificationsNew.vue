@@ -4,11 +4,9 @@ import SiteUpdated from '@/Components/Notifications/SiteUpdated.vue';
 import SiteAdded from '@/Components/Notifications/SiteAdded.vue';
 import SiteDeleted from '@/Components/Notifications/SiteDeleted.vue';
 import SiteRestored from '@/Components/Notifications/SiteRestored.vue';
-import { Link } from '@inertiajs/inertia-vue3';
-import { computed } from 'vue'
 import {
-    ArrowLongLeftIcon,
-    ArrowLongRightIcon,
+    ArrowLeftIcon,
+    ArrowRightIcon,
     ChevronRightIcon,
     HomeIcon,
 } from '@heroicons/vue/20/solid'
@@ -20,6 +18,7 @@ const props = defineProps({
     notifications: Array,
     unreadNotifications: Array,
     coins: Object,
+    paginator: Object,
 });
 
 </script>
@@ -62,7 +61,7 @@ const props = defineProps({
             </div>
 
             <div class="mt-5">
-                <div v-if="unreadNotifications.length > 0" class="flex justify-between items-center pt-6">
+                <div v-if="unreadNotifications.length > 0" class="flex justify-between items-center mt-6">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         {{ $t('New notifications') }}
                     </h2>
@@ -79,7 +78,9 @@ const props = defineProps({
                 </ul>
 
                 <!--  -->
-                <div v-if="notifications.length > 0" class="flex justify-between items-center">
+                <div v-if="notifications.length > 0" :class="['flex justify-between items-center', {
+                    'mt-6': unreadNotifications.length > 0,
+                }]">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         {{ $t('Old notifications') }}
                     </h2>
@@ -94,6 +95,21 @@ const props = defineProps({
                         <SiteUpdated v-if="notification.type == 'App\\Notifications\\SiteUpdated'" :notification="notification" :coins="coins"/>
                     </li>
                 </ul>
+
+                <div v-if="paginator" class="mt-6 flex justify-end">
+                    <nav class="flex items-center space-x-2" aria-label="Pagination">
+                        <a v-if="paginator.prev_page_url" :href="paginator.prev_page_url" class="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700">
+                            <ArrowLeftIcon class="h-5 w-5" aria-hidden="true" />
+                            <span class="sr-only">Previous</span>
+                        </a>
+
+                        <a v-if="paginator.next_page_url" :href="paginator.next_page_url" class="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700">
+                            <ArrowRightIcon class="h-5 w-5" aria-hidden="true" />
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </nav>
+                </div>
+
             </div>
         </ClientLayoutNew>
     </AppSuspense>

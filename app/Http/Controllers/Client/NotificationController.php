@@ -14,7 +14,8 @@ class NotificationController extends Controller
     {
         $coins = config('coins');
 
-        $notifications = auth()->user()->notifications()->get();
+        $notifications = auth()->user()->notifications()->paginate(30);
+        $paginator = $notifications;
 
         $notifications->transform(function ($item) {
             $item->diff = $item->created_at->diffForHumans();
@@ -69,6 +70,7 @@ class NotificationController extends Controller
         auth()->user()->unreadNotifications()->update(['read_at' => now()]);
 
         return Inertia::render('Client/NotificationsNew', [
+            'paginator' => $paginator,
             'notifications' => auth()->user()->full ? $notifications : [],
             'unreadNotifications' => auth()->user()->full ? $unreadNotifications : [],
             'coins' => $coins,

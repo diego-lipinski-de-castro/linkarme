@@ -43,40 +43,62 @@ class MailWeekUpdates extends Command
                     $query->withTrashed();
                 },
             ])
-            ->where('auditable_type', 'App\\Models\\Site')
+            ->whereIn('auditable_type', ['App\\Models\\Site', 'App\\Models\\SiteType'])
             ->whereIn('event', ['updated', 'deleted', 'restored'])
             ->whereBetween('created_at', [
                 now()->subWeek()->format('Y-m-d'),
                 now()->addDay()->format('Y-m-d'),
             ])
             ->get()
-            ->filter(function ($item) {
+            ->filter(function (Audit $item) {
 
-                if($item->event == 'updated') {
+                if($item->auditable_type == 'App\\Models\\SiteType') {
 
-                    if(
-                        isset($item->getModified()['status']) &&
-                        isset($item->getModified()['status']['new']) &&
-                        $item->getModified()['status']['new'] == 'REJECTED'
-                    ) {
-                        return false;
+                    $item->auditable->load([
+                        'site', 'type',
+                    ]);
+
+                    return true;
+                }
+
+                if($item->auditable_type == 'App\\Models\\Site') {
+                    if($item->event == 'updated') {
+
+                        if(
+                            isset($item->getModified()['status']) &&
+                            isset($item->getModified()['status']['new']) &&
+                            $item->getModified()['status']['new'] == 'REJECTED'
+                        ) {
+                            return false;
+                        }
+    
+                        return Arr::hasAny(
+                            $item->getModified(), 
+                            ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
+                        );
                     }
-
-                    return Arr::hasAny(
-                        $item->getModified(), 
-                        ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
-                    );
                 }
 
                 return true;
             })
             ->transform(function ($item) {
-                $item->modified = $item->getModified();
+                $modified = $item->getModified();
+
+                if(isset($modified['cost'])) {
+                    unset($modified['cost']);
+                }
+
+                if(isset($modified['cost_coin'])) {
+                    unset($modified['cost_coin']);
+                }
+
+                $item->modified = $modified;
 
                 return $item;
             });
 
         if(count($updates) == 0) {
+            Log::debug('No updates to send');
             return 0;
         }
 
@@ -93,7 +115,9 @@ class MailWeekUpdates extends Command
             ->get();
 
         foreach($clients as $client){
-            Mail::to($client)->send(new WeekUpdates($updates));
+            if(!blank($client->email)) {
+                Mail::to($client)->send(new WeekUpdates($updates));
+            }
         }
 
         return 0;
