@@ -307,8 +307,6 @@ class SiteController extends Controller
             'url' => 'required',
             'cost' => 'required',
             'cost_coin' => 'required|in:BRL,EUR,USD',
-            // 'sale' => 'required',
-            // 'sale_coin' => 'required|in:BRL,EUR,USD',
             'types' => 'present|array|min:0',
         ]);
 
@@ -329,8 +327,8 @@ class SiteController extends Controller
             'cost' => Helper::extractNumbersFromString($validated['cost']),
             'cost_coin' => $validated['cost_coin'],
 
-            // 'sale' => Helper::extractNumbersFromString($validated['sale']),
-            // 'sale_coin' => $validated['sale_coin'],
+            'sale' => 0,
+            'sale_coin' => $validated['cost_coin'],
         ]);
 
         $types = collect($validated['types']);
@@ -340,9 +338,9 @@ class SiteController extends Controller
         $types = $types->mapWithKeys(function ($type) {
             return [$type['id'] => [
                 'cost' => Helper::extractNumbersFromString($type['cost']),
-                // 'sale' => Helper::extractNumbersFromString($type['sale']),
+                'sale' => 0,
                 'cost_coin' => $type['cost_coin'],
-                // 'sale_coin' => $type['sale_coin'],
+                'sale_coin' => $type['cost_coin'],
             ]];
         });
 

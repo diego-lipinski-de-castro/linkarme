@@ -97,11 +97,6 @@ onMounted(() => {
                                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                             Cost
                                                         </th>
-
-                                                        <th scope="col"
-                                                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                                            Sale
-                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -126,28 +121,6 @@ onMounted(() => {
                                                                     <label for="offer-cost_coin" class="sr-only">Moeda</label>
                                                                     <select disabled :value="selectedOffer.site.cost_coin" id="offer-cost_coin"
                                                                         name="offer-cost_coin"
-                                                                        class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                                                        <option value="BRL">BRL</option>
-                                                                        <option value="EUR">EUR</option>
-                                                                        <option value="USD">USD</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                        </td>
-
-                                                        <td class="px-3 py-3.5 text-sm text-gray-500">
-
-                                                            <div class="relative rounded-md shadow-sm">
-                                                                <input disabled :value="selectedOffer.site.sale"
-                                                                    v-money3="coins[selectedOffer.site.sale_coin]" type="text" name="offer-sale"
-                                                                    id="offer-sale"
-                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-
-                                                                <div class="absolute inset-y-0 right-0 flex items-center">
-                                                                    <label for="offer-sale_coin" class="sr-only">Moeda</label>
-                                                                    <select disabled :value="selectedOffer.site.sale_coin" id="offer-sale_coin"
-                                                                        name="offer-sale_coin"
                                                                         class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
@@ -193,30 +166,6 @@ onMounted(() => {
                                                             </div>
 
                                                         </td>
-
-                                                        <td :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
-                                                            <div
-                                                                :class="['relative rounded-md shadow-sm']">
-                                                                <input disabled v-model.lazy="selectedOffer.site.types[index].pivot.sale"
-                                                                    v-money3="coins[type.sale_coin]" type="text" 
-                                                                    :name="`offer-sale-${index}`"
-                                                                    :id="`offer-sale-${index}`"
-                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-
-                                                                <div class="absolute inset-y-0 right-0 flex items-center">
-                                                                    <label :for="`offer-sale_coin-${index}`" class="sr-only">Moeda</label>
-                                                                    <select disabled v-model="selectedOffer.site.types[index].pivot.sale_coin" :id="`offer-sale_coin-${index}`"
-                                                                        :name="`offer-sale_coin-${index}`"
-                                                                        class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                                                        <option value="BRL">BRL</option>
-                                                                        <option value="EUR">EUR</option>
-                                                                        <option value="USD">USD</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
-                                                        </td>
                                                     </tr>
                                                     <!--  -->
 
@@ -242,11 +191,6 @@ onMounted(() => {
                                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                             Cost
                                                         </th>
-
-                                                        <th scope="col"
-                                                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                                            Sale
-                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -271,28 +215,6 @@ onMounted(() => {
                                                                     <label for="offer-cost_coin" class="sr-only">Moeda</label>
                                                                     <select disabled :value="selectedOffer.cost_coin" id="offer-cost_coin"
                                                                         name="offer-cost_coin"
-                                                                        class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                                                        <option value="BRL">BRL</option>
-                                                                        <option value="EUR">EUR</option>
-                                                                        <option value="USD">USD</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                        </td>
-
-                                                        <td class="px-3 py-3.5 text-sm text-gray-500">
-
-                                                            <div class="relative rounded-md shadow-sm">
-                                                                <input disabled :value="selectedOffer.sale"
-                                                                    v-money3="coins[selectedOffer.sale_coin]" type="text" name="offer-sale"
-                                                                    id="offer-sale"
-                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-
-                                                                <div class="absolute inset-y-0 right-0 flex items-center">
-                                                                    <label for="offer-sale_coin" class="sr-only">Moeda</label>
-                                                                    <select disabled :value="selectedOffer.sale_coin" id="offer-sale_coin"
-                                                                        name="offer-sale_coin"
                                                                         class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
@@ -337,30 +259,6 @@ onMounted(() => {
                                                                 </div>
                                                             </div>
 
-                                                        </td>
-
-                                                        <td :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
-                                                            <div
-                                                                :class="['relative rounded-md shadow-sm']">
-                                                                <input disabled v-model.lazy="selectedOffer.types[index].pivot.sale"
-                                                                    v-money3="coins[type.sale_coin]" type="text" 
-                                                                    :name="`offer-sale-${index}`"
-                                                                    :id="`offer-sale-${index}`"
-                                                                    class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-
-                                                                <div class="absolute inset-y-0 right-0 flex items-center">
-                                                                    <label :for="`offer-sale_coin-${index}`" class="sr-only">Moeda</label>
-                                                                    <select disabled v-model="selectedOffer.types[index].pivot.sale_coin" :id="`offer-sale_coin-${index}`"
-                                                                        :name="`offer-sale_coin-${index}`"
-                                                                        class="bg-invisible focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                                                        <option value="BRL">BRL</option>
-                                                                        <option value="EUR">EUR</option>
-                                                                        <option value="USD">USD</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
                                                         </td>
                                                     </tr>
                                                     <!--  -->

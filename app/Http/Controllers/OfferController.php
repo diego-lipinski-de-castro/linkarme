@@ -39,17 +39,12 @@ class OfferController extends Controller
 
             'cost' => Helper::extractNumbersFromString($offer->cost),
             'cost_coin' => $offer->cost_coin,
-
-            'sale' => Helper::extractNumbersFromString($offer->sale),
-            'sale_coin' => $offer->sale_coin,
         ]);
 
         $types = $offer->types->mapWithKeys(function ($type) {
             return [$type->id => [
                 'cost' => Helper::extractNumbersFromString($type->pivot->cost),
-                'sale' => Helper::extractNumbersFromString($type->pivot->sale),
                 'cost_coin' => $type->pivot->cost_coin,
-                'sale_coin' => $type->pivot->sale_coin,
             ]];
         });
 
