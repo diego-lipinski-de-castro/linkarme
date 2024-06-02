@@ -310,7 +310,7 @@ onMounted(() => {
                                 <span class="flex items-center space-x-4">
                                     <span class="flex flex-1 space-x-2 truncate">
                                         <span class="text-sm text-gray-500">
-                                            {{ offer.site.url }}
+                                            {{ offer.site?.url ?? '#' }}
                                         </span>
                                     </span>
                                     <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
@@ -357,11 +357,11 @@ onMounted(() => {
                                     <tr v-else v-for="(offer, index) in offers" :key="index" class="bg-white">
                                         <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 hover:text-gray-900">
-                                            <a :href="route('sites.edit', offer.site.id)" target="_blank">{{ offer.site.url ?? '-' }}</a>
+                                            <a :href="route('sites.edit', offer.site?.id ?? '#')" target="_blank">{{ offer.site?.url ?? '-' }}</a>
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ offer.site.seller?.name ?? '-' }}
+                                            {{ offer.site?.seller?.name ?? '-' }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
