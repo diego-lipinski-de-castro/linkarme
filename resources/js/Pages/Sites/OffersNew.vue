@@ -361,11 +361,11 @@ onMounted(() => {
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ offer.site.seller.name ?? '-' }}
+                                            {{ offer.site.seller?.name ?? '-' }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ offer.seller.name ?? '-' }}
+                                            {{ offer.seller?.name ?? '-' }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
