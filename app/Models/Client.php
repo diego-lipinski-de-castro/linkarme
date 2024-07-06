@@ -114,6 +114,30 @@ class Client extends Authenticatable implements HasLocalePreference
         });
     }
 
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function ($query) use ($search) {
+            $query
+                ->where('name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%");
+        });
+    }
+
+    public function views()
+    {
+        return $this->hasMany(View::class);
+    }
+
+    public function logins()
+    {
+        return $this->hasMany(Login::class);
+    }
+
+    public function latestLogin()
+    {
+        return $this->hasOne(Login::class)->latest();
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -127,6 +151,11 @@ class Client extends Authenticatable implements HasLocalePreference
     public function notes()
     {
         return $this->morphMany(Note::class, 'owner');
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 
     public function favorites()

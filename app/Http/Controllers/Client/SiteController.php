@@ -11,6 +11,7 @@ use App\Models\Language;
 use App\Models\Project;
 use App\Models\Site;
 use App\Models\Type;
+use App\Models\View;
 use App\Sorts\NewSort;
 use App\Sorts\RecommendedSort;
 use Illuminate\Http\Request;
@@ -219,6 +220,11 @@ class SiteController extends Controller
      */
     public function show(Site $site)
     {
+        View::create([
+            'client_id' => auth()->id(),
+            'site_id' => $site->id,
+        ]);
+
         $site->load([
             'category',
             'language',

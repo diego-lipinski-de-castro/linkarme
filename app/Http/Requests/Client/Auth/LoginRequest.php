@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Client\Auth;
 
+use App\Models\Login;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,10 @@ class LoginRequest extends FormRequest
                 'email' => trans('auth.failed'),
             ]);
         }
+
+        Login::create([
+            'client_id' => Auth::guard('client')->id(),
+        ]);
 
         RateLimiter::clear($this->throttleKey());
     }

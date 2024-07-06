@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Jenssegers\Agent\Agent;
-use Laravel\Fortify\Rules\Password;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ClientController extends Controller
 {
@@ -26,14 +27,37 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::query()
-            ->with('consultant')
-            ->withCount('orders')
-            ->orderBy('name')
-            ->paginate();
+        $query = request()->query();
+
+        $filters = [
+            'search' => $query['filter']['search'] ?? null,
+            'full' => $query['filter']['full'] ?? null,
+        ];
+
+        $clients = QueryBuilder::for(Client::class)
+            ->defaultSort('name')
+            ->allowedFilters([
+                AllowedFilter::scope('search'),
+                AllowedFilter::exact('full'),
+            ])
+            ->with([
+                'consultant',
+                'latestLogin',
+            ])
+            ->withCount([
+                'logins',
+                'views',
+                'orders',
+                'projects',
+                'favorites',
+                'interests',
+            ])
+            ->paginate()
+            ->appends(request()->query());
 
         return Inertia::render('Clients/IndexNew', [
             'clients' => $clients,
+            'filters' => $filters,
         ]);
     }
 
@@ -68,6 +92,26 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        $client->load([
+            'consultant',
+            'latestLogin',
+            'projects',
+            'favorites',
+            'interests',
+            'orders',
+            'logins',
+            'views',
+        ]);
+
+        $client->loadCount([
+            'projects',
+            'favorites',
+            'interests',
+            'orders',
+            'views',
+            'logins',
+        ]);
+
         return Inertia::render('Clients/ShowNew', [
             'client' => $client,
         ]);
@@ -85,8 +129,28 @@ class ClientController extends Controller
             ->orderBy('name')
             ->get();
 
+        $client->load([
+            'consultant',
+            'latestLogin',
+            'projects' => fn($query) => $query->withCount('sites'),
+            'favorites',
+            'interests',
+            'orders' => fn($query) => $query->latest(),
+            'logins' => fn($query) => $query->latest(),
+            'views' => fn ($query) => $query->latest()->with('site'),
+        ]);
+
+        $client->loadCount([
+            'projects',
+            'favorites',
+            'interests',
+            'orders',
+            'views',
+            'logins',
+        ]);
+
         return Inertia::render('Clients/EditNew', [
-            'client' => $client->load('consultant'),
+            'client' => $client,
             'consultants' => $consultants,
             'sessions' => $this->sessions($request)->all(),
         ]);

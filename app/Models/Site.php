@@ -242,6 +242,11 @@ class Site extends Model implements Auditable
         return $this->belongsTo(Country::class);
     }
 
+    public function views()
+    {
+        return $this->hasMany(View::class);
+    }
+
     public function favorites()
     {
         return $this->belongsToMany(Client::class, 'favorites')->withTimestamps();

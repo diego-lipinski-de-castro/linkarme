@@ -147,31 +147,16 @@ await i18nextPromise
                 <Disclosure as="nav" class="relative z-10 border-b border-white border-opacity-50 lg:border-none"
                     v-slot="{ open }">
                     <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
-                        <div
-                            class="relative flex h-16 items-center justify-between lg:border-b lg:border-blue-400 lg:border-opacity-25">
-                            <Link :href="route('client.dashboard')" class="flex items-center px-2 lg:px-0">
-                                <div class="flex space-x-2 flex-shrink-0">
-                                    <img class="block h-8" src="@/assets/images/header-logo.png" alt="Linkarme" />
+                        <div class="relative flex h-16 items-center justify-between lg:border-b lg:border-blue-400 lg:border-opacity-25">
+                            <Link :href="route('dashboard')" class="flex items-center px-2 lg:px-0">
+                                <div class="flex flex-col sm:flex-row sm:space-x-2 flex-shrink-0">
+                                    <img class="block h-8 w-fit" src="@/assets/images/header-logo.png" alt="Linkarme" />
 
-                                    <div class="flex items-end h-6">
+                                    <div class="flex items-end mt-1 sm:mt-0 sm:h-6">
                                         <img class="block h-2" src="@/assets/images/linking-slogan.png" alt="Slogan" />
                                     </div>
                                 </div>
                             </Link>
-                            <!-- <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
-                                                <div class="w-full max-w-lg lg:max-w-xs">
-                                                    <label for="search" class="sr-only">Search</label>
-                                                    <div class="relative text-gray-400 focus-within:text-gray-600">
-                                                        <div
-                                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                            <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
-                                                        </div>
-                                                        <input id="search"
-                                                            class="block w-full rounded-md border border-transparent bg-white py-2 pl-10 pr-3 leading-5 text-gray-900 placeholder-gray-500 focus:border-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 sm:text-sm"
-                                                            placeholder="Search" type="search" name="search" />
-                                                    </div>
-                                                </div>
-                                            </div> -->
 
                             <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
                                 <Menu as="div" class="relative flex-shrink-0">
@@ -218,7 +203,7 @@ await i18nextPromise
 
                             <div class="flex lg:hidden">
                                 <DisclosureButton
-                                    class="inline-flex items-center justify-center rounded-md bg-blue-600 p-2 text-blue-200 hover:bg-blue-500 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
+                                    class="inline-flex items-center justify-center rounded-md p-2 text-blue-200 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
                                     <span class="sr-only">Open main menu</span>
                                     <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
                                     <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
@@ -227,11 +212,6 @@ await i18nextPromise
 
                             <div class="hidden lg:ml-4 lg:block">
                                 <div class="flex items-center">
-                                    <!-- <button type="button"
-                                                        class="flex-shrink-0 rounded-full bg-blue-600 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
-                                                        <span class="sr-only">View notifications</span>
-                                                        <BellIcon class="h-6 w-6" aria-hidden="true" />
-                                                    </button> -->
 
                                     <!-- Profile dropdown -->
                                     <Menu as="div" class="relative flex-shrink-0">
@@ -352,11 +332,6 @@ await i18nextPromise
                                     <div class="text-base font-medium text-white">{{ $page.props.user.name }}</div>
                                     <div class="text-sm font-medium text-blue-300">{{ $page.props.user.email }}</div>
                                 </div>
-                                <button type="button"
-                                    class="ml-auto flex-shrink-0 rounded-full bg-blue-600 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
-                                    <span class="sr-only">View notifications</span>
-                                    <BellIcon class="h-6 w-6" aria-hidden="true" />
-                                </button>
                             </div>
                             <div class="mt-3 space-y-1 px-2">
                                 <DisclosureButton as="a" :href="route('client.profile.show')"

@@ -27,6 +27,10 @@ import {
     InformationCircleIcon,
     TrashIcon,
     ArrowPathIcon,
+    ShoppingCartIcon,
+    EyeIcon,
+    HeartIcon,
+    FlagIcon,
 } from '@heroicons/vue/24/outline'
 import { debounce } from 'debounce';
 import { useTranslation } from "i18next-vue";
@@ -75,15 +79,16 @@ const _defaultColumns = [
     { key: 'da', label: t('DA'), visible: true },
     { key: 'dr', label: t('DR'), visible: true },
     { key: 'sponsor', label: t('Marked as sponsored'), visible: true },
-    { key: 'link_type', label: t('Link'), visible: true },
+    { key: 'link_type', label: t('Link'), visible: false },
     { key: 'ssl', label: t('SSL'), visible: false },
     { key: 'category', label: t('Category'), visible: false },
-    { key: 'obs', label: t('Obs'), visible: true },
+    { key: 'misc', label: t('Misc'), visible: false },
+    { key: 'obs', label: t('Obs'), visible: false },
     { key: 'example', label: t('Example'), visible: false },
     { key: 'inserted_at', label: t('Upload date'), visible: false },
-    { key: 'last_updated_at', label: t('Updated date'), visible: true },
+    { key: 'last_updated_at', label: t('Updated date'), visible: false },
     ...props.types.map(type => ({
-        key: `type-${type.id}`, label: type.name, visible: true
+        key: `type-${type.id}`, label: type.name, visible: false
     }))
 ];
 
@@ -96,6 +101,7 @@ const columns = ref(_columns)
 
 watch(columns, (n, o) => {
     localStorage.setItem('sites.index.columns', JSON.stringify(columns.value))
+    tippy('[data-tippy-content]');
 }, {
     deep: true,
 })
@@ -347,8 +353,8 @@ const expanded = ref([])
                             </div>
                         </div>
 
-                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-0">
-                            <div class="col-span-1 flex flex-col">
+                        <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-6 sm:gap-y-0">
+                            <div class="col-span-3 sm:col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <span class="block h-2 w-2 bg-green-500 rounded-full"></span>
                                     <span>{{ $t('Price range') }}</span>
@@ -373,7 +379,7 @@ const expanded = ref([])
                                 </div>
                             </div>
 
-                            <div class="col-span-1 flex flex-col">
+                            <div class="col-span-3 sm:col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <span class="block h-2 w-2 bg-yellow-500 rounded-full"></span>
                                     <span>{{ $t('Domain authority range') }}</span>
@@ -396,7 +402,7 @@ const expanded = ref([])
                                 </div>
                             </div>
 
-                            <div class="col-span-1 flex flex-col">
+                            <div class="col-span-3 sm:col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <span class="block h-2 w-2 bg-purple-500 rounded-full"></span>
                                     <span>{{ $t('Domain rating range') }}</span>
@@ -421,7 +427,7 @@ const expanded = ref([])
 
                             <div class="col-span-3"><hr class="my-5"></div>
 
-                            <div class="col-span-1 flex flex-col">
+                            <div class="col-span-3 sm:col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <GlobeAltIcon class="h-5 w-5" />
                                     <span>{{ $t('Language') }}</span>
@@ -448,14 +454,14 @@ const expanded = ref([])
                                 </div>
                             </div>
 
-                            <div class="col-span-2 flex flex-col">
+                            <div class="col-span-3 sm:col-span-2 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <GlobeAltIcon class="h-5 w-5" />
                                     <span>{{ $t('Country') }}</span>
                                 </span>
 
                                 <div class="mt-4 flex">
-                                    <div class="grid grid-rows-4 grid-flow-col gap-x-4 gap-y-2">
+                                    <div class="grid grid-flow-row grid-cols-3 sm:grid-cols-6 gap-x-4 gap-y-2">
                                         <div v-for="(country, index) in countries" :key="index"
                                             class="relative flex items-start">
                                             <div class="flex h-5 items-center">
@@ -500,7 +506,7 @@ const expanded = ref([])
 
                         <hr class="my-5">
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-6 sm:gap-y-0">
 
                             <div class="col-span-1 flex">
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
@@ -546,13 +552,13 @@ const expanded = ref([])
                                     :showLabels="false">
 
                                     <template #placeholder>
-                                        <span class="text-gray-500">Select...</span>
+                                        <span class="text-gray-500">{{ $t('Select...') }}</span>
                                     </template>
 
                                 </VueMultiselect>
                             </div>
 
-                            <div class="col-span-1">
+                            <div class="sm:col-span-1">
                                 <label for="search" class="text-sm font-medium">{{ $t('...or just find by name:') }}</label>
                                 <div class="mt-1 relative text-gray-400 focus-within:text-gray-600">
                                     <div class="pointer-events-none absolute inset-y-0 left-2 flex items-center"
@@ -560,7 +566,7 @@ const expanded = ref([])
                                         <MagnifyingGlassIcon class="ml-2 h-5 w-5" aria-hidden="true" />
                                     </div>
                                     <input v-model="filters.url" id="search" name="search"
-                                        class="ml-2 block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
+                                        class="w-full sm:w-fit ml-2 block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
                                         :placeholder="$t('Search')" type="search" />
                                 </div>
                             </div>
@@ -570,38 +576,32 @@ const expanded = ref([])
                     </div>
                 </div>
 
-                <div class="mt-5 hidden sm:block">
+                <div class="mt-5">
                     <div class="flex flex-col">
 
-                        <div class="flex justify-between items-center">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center">
                             <div>
                                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Showing results:') }}&nbsp;{{ sites.total }}&nbsp;{{ $t('sites found') }}</h2>
                             </div>
 
-                            <div class="flex space-x-3">
-                                <Link :href="route('sites.create')"
-                                    class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700">
-                                <span class="px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
+                            <div class="flex flex-wrap gap-3 mt-5 sm:mt-0">
+                                <Link :href="route('sites.create')" class="flex w-fit items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700">
+                                    <span class="whitespace-nowrap px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
                                 </Link>
 
-                                <button @click="openImportDialog = true"
-                                    class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Import') }}</span>
+                                <button @click="openImportDialog = true" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Import') }}</span>
                                     <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </button>
 
-                                <a :href="route('sites.exportUrls')"
-                                    class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export urls') }}</span>
-                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
-                                        aria-hidden="true" />
+                                <a :href="route('sites.exportUrls')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Export urls') }}</span>
+                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </a>
 
-                                <a :href="route('sites.exportPending')"
-                                    class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="ml-1 text-sm font-medium text-gray-700">{{ $t('Export pending') }}</span>
-                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
-                                        aria-hidden="true" />
+                                <a :href="route('sites.exportPending')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Export pending') }}</span>
+                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </a>
                             </div>
                         </div>
@@ -639,7 +639,7 @@ const expanded = ref([])
                         </div>
 
                         <div
-                            class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg">
+                            class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
@@ -701,11 +701,15 @@ const expanded = ref([])
                                         <th v-show="columns[7].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Category') }}</th>
-                                        
+
                                         <th v-show="columns[8].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Obs') }}</th>
+                                            scope="col">{{ $t('Misc') }}</th>
+                                        
                                         <th v-show="columns[9].visible"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Obs') }}</th>
+                                        <th v-show="columns[10].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -714,7 +718,7 @@ const expanded = ref([])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[10].visible"
+                                        <th v-show="columns[11].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -723,7 +727,7 @@ const expanded = ref([])
                                                     @onClick='(column) => sort = column' />
                                             </div>
                                         </th>
-                                        <th v-show="columns[11].visible"
+                                        <th v-show="columns[12].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             <div class="flex group">
@@ -805,21 +809,45 @@ const expanded = ref([])
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
                                             </td>
+
+                                            <td v-show="columns[8].visible" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                                <div class="hidden sm:grid grid-cols-4 grid-rows-1 gap-x-1.5">
+                                                    <span :data-tippy-content="`${site.orders_count} ${$t('Orders')}`" class="flex space-x-1 justify-start items-center">
+                                                        <span class="text-sm text-gray-500">{{ site.orders_count }}</span>
+                                                        <ShoppingCartIcon class="h-4 w-4 text-gray-500" />
+                                                    </span>
+
+                                                    <span :data-tippy-content="`${site.views_count} ${$t('Views')}`" class="flex space-x-1 justify-start items-center">
+                                                        <span class="text-sm text-gray-500">{{ site.views_count }}</span>
+                                                        <EyeIcon class="h-4 w-4 text-gray-500" />
+                                                    </span>
+                                                    
+                                                    <span :data-tippy-content="`${site.favorites_count} ${$t('Favorites')}`" class="flex space-x-1 justify-start items-center">
+                                                        <span class="text-sm text-gray-500">{{ site.favorites_count }}</span>
+                                                        <HeartIcon class="h-4 w-4 text-gray-500" />
+                                                    </span>
+
+                                                    <span :data-tippy-content="`${site.interests_count} ${$t('Interests')}`" class="flex space-x-1 justify-start items-center">
+                                                        <span class="text-sm text-gray-500">{{ site.interests_count }}</span>
+                                                        <FlagIcon class="h-4 w-4 text-gray-500" />
+                                                    </span>
+                                                </div>
+                                            </td>
                                             
-                                            <td v-show="columns[8].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            <td v-show="columns[9].visible"
+                                                class="px-4 py-4 text-sm text-gray-500">
                                                 {{ site.obs ?? '-' }}
                                             </td>
-                                            <td v-show="columns[9].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            <td v-show="columns[10].visible"
+                                                class="px-4 py-4 text-sm text-gray-500">
                                                 {{ site.example_article ?? '-' }}
                                             </td>
-                                            <td v-show="columns[10].visible"
+                                            <td v-show="columns[11].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_inserted_at }}
                                             </td>
 
-                                            <td v-show="columns[11].visible"
+                                            <td v-show="columns[12].visible"
                                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                                 {{ site.formatted_updated_at }}
                                             </td>

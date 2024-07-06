@@ -118,10 +118,15 @@ class SiteController extends Controller
             ->when(! isset($query['filter']['of_status']), function ($query) {
                 $query->ofStatus('APPROVED');
             })
-            ->withCount('orders')
             ->with([
                 'category',
                 'types',
+            ])
+            ->withCount([
+                'views',
+                'orders',
+                'favorites',
+                'interests',
             ])
             ->defaultSort('url')
             ->allowedSorts([
@@ -268,6 +273,8 @@ class SiteController extends Controller
             'country',
             'seller',
             'types',
+            'orders' => fn($query) => $query->latest()->with('client'),
+            'views' => fn($query) => $query->latest()->with('client'),
         ]);
 
         $categories = Category::orderBy('name')->get();
