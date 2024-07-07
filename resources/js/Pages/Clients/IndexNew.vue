@@ -23,8 +23,9 @@ import {
     LockClosedIcon,
 } from '@heroicons/vue/24/outline'
 import { computed, onMounted, reactive, watch } from 'vue';
-import { debounce } from 'debounce';
+
 import VueMultiselect from 'vue-multiselect'
+import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps({
     title: String,
@@ -44,9 +45,10 @@ const filters = reactive({
     full: props.filters.full,
 })
 
-watch(() => ({ ...filters }), debounce((n, o) => {
+watchDebounced(() => ({ ...filters }), (n, o) => {
     get()
-}, 400), {
+}, {
+    debounce: 400,
     deep: true,
 })
 

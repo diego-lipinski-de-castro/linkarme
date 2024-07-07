@@ -27,11 +27,12 @@ import {
     GlobeAltIcon,
 } from '@heroicons/vue/24/outline'
 
-import { debounce } from 'debounce';
+
 
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
+import { watchDebounced } from '@vueuse/core';
 
 const coinStore = useCoinStore()
 const { t } = useTranslation();
@@ -81,10 +82,11 @@ const filters = reactive({
 
 watch(sort, (n, o) => get());
 
-watch(() => ({ ...filters }), debounce((n, o) => {
+watchDebounced(() => ({ ...filters }), (n, o) => {
     get()
-}, 400), {
+}, {
     deep: true,
+    debounce: 400
 })
 
 const get = async () => {

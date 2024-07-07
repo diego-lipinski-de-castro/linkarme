@@ -51,13 +51,14 @@ import {
     MagnifyingGlassIcon,
 } from "@heroicons/vue/20/solid";
 
-import { debounce } from "debounce";
+
 import { useTranslation } from "i18next-vue";
 
 import vueFilePond from "vue-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import AppSuspense from "../../Layouts/AppSuspense.vue";
+import { watchDebounced } from "@vueuse/core";
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -130,12 +131,11 @@ const filters = ref({
 
 // watch(sort, (n, o) => get());
 
-watch(
+watchDebounced(
     filters,
-    debounce((n, o) => {
-        get();
-    }, 400),
+    (n, o) => get(),
     {
+        debounce: 400,
         deep: true,
     }
 );

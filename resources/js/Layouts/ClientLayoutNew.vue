@@ -1,37 +1,24 @@
 <script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { ref, computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
-import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {
-    Dialog,
-    DialogPanel,
     Menu,
     MenuButton,
     MenuItem,
     MenuItems,
-    TransitionChild,
-    TransitionRoot,
     Disclosure, DisclosureButton, DisclosurePanel,
 } from '@headlessui/vue'
 import {
-    BellIcon,
     ClockIcon,
     ScaleIcon,
     ComputerDesktopIcon,
     Bars3Icon,
     XMarkIcon,
-    MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
 import {
     ChevronDownIcon,
-    ChevronRightIcon,
     XCircleIcon,
     IdentificationIcon,
     HeartIcon,
@@ -44,7 +31,6 @@ import { useTranslation } from "i18next-vue";
 import { useLanguageStore } from '@/stores/language'
 import { useCoinStore } from '@/stores/coin'
 import { i18nextPromise } from "@/i18n.js";
-import { loadFull } from 'tsparticles'
 
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
@@ -61,8 +47,6 @@ const navigation = [
     { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
 ]
 
-const sidebarOpen = ref(false)
-
 const logout = () => {
     Inertia.post(route('client.logout'))
 }
@@ -71,7 +55,7 @@ const particlesOptions = {
     detectRetina: true,
     fullScreen: false,
     particles: {
-        number: { value: 100, density: { enable: true, value_area: 800 } },
+        number: { value: 150, density: { enable: true, value_area: 1000 } },
         color: { value: "#ffffff" },
         opacity: {
             value: 0.2,
@@ -83,7 +67,7 @@ const particlesOptions = {
             random: true,
             anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
         },
-        line_linked: {
+        links: {
             enable: true,
             distance: 150,
             color: "#ffffff",
@@ -116,11 +100,7 @@ const particlesOptions = {
             remove: { particles_nb: 2 }
         }
     },
-}
-
-const particlesInit = async (engine) => {
-    await loadFull(engine)
-}
+};
 
 await languageStore.loadLanguage(user.value.locale)
 await coinStore.setCoin(user.value.coin)
@@ -140,8 +120,7 @@ await i18nextPromise
 
             <div class="relative bg-gradient-to-b from-blue-700 via-blue-500 to-blue-400 pb-32">
                 <div class="absolute inset-0">
-                    <Particles id="tsparticles" class="w-full h-full" :particlesInit="particlesInit"
-                        :options="particlesOptions" />
+                    <vue-particles id="tsparticles" :options="particlesOptions" class="w-full h-full" />
                 </div>
 
                 <Disclosure as="nav" class="relative z-10 border-b border-white border-opacity-50 lg:border-none"

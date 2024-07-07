@@ -19,12 +19,13 @@ import {
     PencilSquareIcon,
     GlobeAltIcon,
 } from '@heroicons/vue/24/outline'
-import { debounce } from 'debounce';
+
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
 import { usePage } from '@inertiajs/inertia-vue3';
 import VueMultiselect from 'vue-multiselect'
+import { watchDebounced } from '@vueuse/core';
 
 const coinStore = useCoinStore()
 const { t } = useTranslation();
@@ -102,26 +103,14 @@ const filters = reactive({
 
 watch(sort, (n, o) => get());
 
-watch(() => ({ ...filters }), debounce((n, o) => {
-
-    // if (n.new !== o.new) {
-    //     sort.value = n.new === true ? 'new' : 'url';
-    //     return;
-    // }
-
-    // if (n.recommended !== o.recommended) {
-    //     sort.value = n.recommended === true ? 'recommended' : 'url';
-    //     return;
-    // }
-
+watchDebounced(() => ({ ...filters }), (n, o) => {
     get()
-}, 400), {
+}, {
+    debounce: 400,
     deep: true,
 })
 
 const get = async () => {
-    console.log('get');
-
     Inertia.get(route('seller.sites.index'), {
         sort: sort.value,
         filter: {

@@ -1,6 +1,5 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import Welcome from '@/Components/Welcome.vue';
 import AppSuspense from '../Layouts/AppSuspense.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 
@@ -8,9 +7,6 @@ const props = defineProps({
     data: Array,
     list: Array,
 })
-
-console.log(props.list)
-
 </script>
 
 <template>

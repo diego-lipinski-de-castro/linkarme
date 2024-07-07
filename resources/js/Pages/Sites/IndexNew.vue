@@ -32,7 +32,7 @@ import {
     HeartIcon,
     FlagIcon,
 } from '@heroicons/vue/24/outline'
-import { debounce } from 'debounce';
+
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
 import vueFilePond from 'vue-filepond';
@@ -40,6 +40,7 @@ import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 import VueMultiselect from 'vue-multiselect'
+import { watchDebounced } from '@vueuse/core';
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -127,20 +128,10 @@ const filters = reactive({
 
 watch(sort, (n, o) => get());
 
-watch(() => ({ ...filters }), debounce((n, o) => {
-
-    // if (n.new !== o.new) {
-    //     sort.value = n.new === true ? 'new' : 'url';
-    //     return;
-    // }
-
-    // if (n.recommended !== o.recommended) {
-    //     sort.value = n.recommended === true ? 'recommended' : 'url';
-    //     return;
-    // }
-
+watchDebounced(() => ({ ...filters }), (n, o) => {
     get()
-}, 400), {
+}, {
+    debounce: 400,
     deep: true,
 })
 

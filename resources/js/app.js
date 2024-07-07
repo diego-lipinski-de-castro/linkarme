@@ -15,7 +15,8 @@ import 'tippy.js/themes/light.css';
 import i18n from "./i18n";
 import AppSuspense from '@/Layouts/AppSuspense.vue'
 import Spinner from '@/Components/Spinner.vue'
-import Particles from "vue3-particles";
+import Particles from "@tsparticles/vue3";
+import { loadFull } from "tsparticles"
 
 window.tippy = tippy
 
@@ -61,7 +62,9 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(money)
             .use(pinia)
-            .use(Particles)
+            .use(Particles, {
+                init: async (engine) => await loadFull(engine)
+            })
             .component('AppSuspense', AppSuspense)
             .component('Spinner', Spinner)
             .mount(el);
