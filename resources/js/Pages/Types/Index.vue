@@ -42,7 +42,7 @@ const destroy = (type) => {
     <AppSuspense>
         <AppLayoutNew :title="$t('Types')">
             <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
-                <div class="flex flex-col min-h-48">
+                <div class="flex flex-col">
 
                     <div class="flex justify-between items-center space-x-2">
                         <h2 class="text-xl font-bold leading-tight">{{ $t('Types') }}</h2>

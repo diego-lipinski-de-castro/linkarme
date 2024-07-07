@@ -165,7 +165,7 @@ const copy = () => {
         <SellerLayoutNew :title="$t('Sites')">
             <div>
                 <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
-                    <div class="flex flex-col min-h-48">
+                    <div class="flex flex-col">
 
                         <div class="flex items-center space-x-2">
                             <div class="w-10">

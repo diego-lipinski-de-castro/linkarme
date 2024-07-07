@@ -160,7 +160,7 @@ const content = computed(() => {
     <AppSuspense>
         <ClientLayoutNew title="Sites">
             <div class="rounded-md bg-white px-5 py-4 shadow sm:px-6">
-                <div class="flex flex-col min-h-48">
+                <div class="flex flex-col">
 
                     <nav class="flex">
                         <ol role="list" class="flex items-center space-x-4">
