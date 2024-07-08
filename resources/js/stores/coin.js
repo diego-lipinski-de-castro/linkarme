@@ -20,14 +20,10 @@ export const useCoinStore = defineStore('coin', {
                 }
 
                 try {
-                    const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${coin}-${c}`, {
-                        transformRequest: (data, headers) => {
-                            delete headers.common['X-Requested-With']
-                            return data
-                        },
-                    })
+                    const res = await fetch(`https://economia.awesomeapi.com.br/json/last/${coin}-${c}`)
+                    const data = await res.json()
 
-                    this.ratios[c] = parseFloat(res.data[`${coin}${c}`].ask)
+                    this.ratios[c] = parseFloat(data[`${coin}${c}`].ask)
                 } catch (error) {
                     this.ratios[c] = 0
                 }

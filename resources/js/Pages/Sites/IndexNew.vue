@@ -747,7 +747,6 @@ const expanded = ref([])
                                                             class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                                         <span>
                                                             {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
-
                                                             {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
                                                         </span>
                                                     </span>
