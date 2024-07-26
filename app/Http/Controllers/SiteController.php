@@ -28,6 +28,7 @@ use App\Sorts\RecommendedSort;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -78,6 +79,12 @@ class SiteController extends Controller
             ->get();
 
         $query = request()->query();
+
+        $ratios = [
+            'BRL' => Arr::get($query, 'ratios.BRL', '1'),
+            'EUR' => Arr::get($query, 'ratios.EUR', '1'),
+            'USD' => Arr::get($query, 'ratios.USD', '1'),
+        ];
 
         $filters = [
             'sort' => Arr::get($query, 'sort', 'url'),
@@ -141,7 +148,20 @@ class SiteController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                AllowedFilter::custom('sale', new FilterLimiter, null, ''),
+                // AllowedFilter::custom('sale', new FilterLimiter, null, ''),
+                AllowedFilter::callback('sale', function ($query, $value) use ($ratios) {
+                    $from = Helper::extractNumbersFromString($value['from']);
+                    $to = Helper::extractNumbersFromString($value['to']);
+
+                    $query->where(function ($query) use ($from, $to, $ratios) {
+
+                        foreach($ratios as $coin => $ratio) {
+                            $query->orWhere(function ($query) use ($from, $to, $coin, $ratio) {
+                                $query->where('sale_coin', $coin)->where('sale', '>=', $from * (float) $ratio)->where('sale', '<=', $to * (float) $ratio);
+                            });
+                        }
+                    });
+                }),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
                 // AllowedFilter::custom('traffic', new FilterLimiter),

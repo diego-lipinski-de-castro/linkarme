@@ -135,9 +135,15 @@ watchDebounced(() => ({ ...filters }), (n, o) => {
     deep: true,
 })
 
+watch(() => coinStore.coin, (n , o) => {
+    filters.sale.from = Math.ceil(`${filters.sale.from}`.replace(/\D/g, '') / coinStore.ratios[o])
+    filters.sale.to = Math.ceil(`${filters.sale.to}`.replace(/\D/g, '') / coinStore.ratios[o])
+})
+
 const get = async () => {
     Inertia.get(route('sites.index'), {
         sort: sort.value,
+        ratios: coinStore.ratios,
         filter: {
             url: filters.url,
             sale: filters.sale,
