@@ -34,7 +34,7 @@ class StoreClientRequest extends FormRequest
             'password' => ['required'], 
             
             'locale' => ['nullable', 'in:en,es,pt'],
-            'coin' => ['nullable', 'in:BRL,EUR,USD'],
+            'coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
             'full' => ['required', 'boolean'],
         ];
     }

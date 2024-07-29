@@ -125,6 +125,7 @@ onMounted(() => {
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
                                                                         <option value="USD">USD</option>
+                                                                        <option value="GBP">GBP</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -161,6 +162,7 @@ onMounted(() => {
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
                                                                         <option value="USD">USD</option>
+                                                                        <option value="GBP">GBP</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -219,6 +221,7 @@ onMounted(() => {
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
                                                                         <option value="USD">USD</option>
+                                                                        <option value="GBP">GBP</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -255,6 +258,7 @@ onMounted(() => {
                                                                         <option value="BRL">BRL</option>
                                                                         <option value="EUR">EUR</option>
                                                                         <option value="USD">USD</option>
+                                                                        <option value="GBP">GBP</option>
                                                                     </select>
                                                                 </div>
                                                             </div>

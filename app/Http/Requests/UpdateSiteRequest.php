@@ -59,8 +59,8 @@ class UpdateSiteRequest extends FormRequest
 
             'cost' => 'nullable|integer',
             'sale' => 'nullable|integer',
-            'cost_coin' => 'nullable|in:BRL,EUR,USD',
-            'sale_coin' => 'nullable|in:BRL,EUR,USD',
+            'cost_coin' => 'nullable|in:BRL,EUR,USD,GBP',
+            'sale_coin' => 'nullable|in:BRL,EUR,USD,GBP',
 
             'last_posted' => 'nullable|date',
 

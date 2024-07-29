@@ -499,30 +499,12 @@ const submitNote = () => {
                                                                 <option value="BRL">BRL</option>
                                                                 <option value="EUR">EUR</option>
                                                                 <option value="USD">USD</option>
+                                                                <option value="GBP">GBP</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     
                                                 </td>
-
-                                                <!-- <td class="px-3 py-3.5 text-sm text-gray-500">
-                                                    
-                                                    <div class="relative rounded-md shadow-sm">
-                                                        <input v-model.lazy="form.sale" v-money3="coins[form.sale_coin]" type="text" name="sale" id="sale"
-                                                            class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-
-                                                        <div class="absolute inset-y-0 right-0 flex items-center">
-                                                            <label for="sale_coin" class="sr-only">Moeda</label>
-                                                            <select v-model="form.sale_coin" id="sale_coin" name="sale_coin"
-                                                                class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                                                <option value="BRL">BRL</option>
-                                                                <option value="EUR">EUR</option>
-                                                                <option value="USD">USD</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </td> -->
                                             </tr>
 
                                             <!--  -->
@@ -552,31 +534,12 @@ const submitNote = () => {
                                                                 <option value="BRL">BRL</option>
                                                                 <option value="EUR">EUR</option>
                                                                 <option value="USD">USD</option>
+                                                                <option value="GBP">GBP</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     
                                                 </td>
-
-                                                <!-- <td :class="['border-t border-transparent relative px-3 py-3.5 text-sm text-gray-500']">
-                                                    
-                                                    <div :class="['relative rounded-md shadow-sm', {'opacity-50': !type.available}]">
-                                                        <input :disabled="!type.available" v-model.lazy="type.sale" v-money3="coins[type.sale_coin]" type="text" name="sale" id="sale"
-                                                            class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-
-                                                        <div class="absolute inset-y-0 right-0 flex items-center">
-                                                            <label for="sale_coin" class="sr-only">Moeda</label>
-                                                            <select :disabled="!type.available" v-model="type.sale_coin" id="sale_coin" name="sale_coin"
-                                                                class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
-                                                                <option value="BRL">BRL</option>
-                                                                <option value="EUR">EUR</option>
-                                                                <option value="USD">USD</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="absolute -top-px left-0 right-6 h-px bg-gray-200" />
-                                                </td> -->
                                             </tr>
                                             <!--  -->
 

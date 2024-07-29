@@ -31,7 +31,7 @@ class UpdateClientRequest extends FormRequest
             'password' => ['nullable'],
             'full' => ['required', 'boolean'],
             'locale' => ['nullable', 'in:en,es,pt'],
-            'coin' => ['nullable', 'in:BRL,EUR,USD'],
+            'coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
             'notify_updates_via_email' => ['nullable', 'in:DAILY,WEEKLY,MONTHLY'],
         ];
     }

@@ -13,8 +13,6 @@ defineProps({
             
             <div>
                 <div class="max-w-7xl mx-auto rounded-md bg-white shadow">
-                    
-                    
 
                 </div>
 

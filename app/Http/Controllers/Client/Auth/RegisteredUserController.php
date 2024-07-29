@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
 
             'locale' => ['nullable', 'in:en,es,pt'],
-            'coin' => ['nullable', 'in:BRL,EUR,USD'],
+            'coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
 
             'notify_updates_via_email' => ['nullable', 'in:DAILY,WEEKLY,MONTHLY'],
 

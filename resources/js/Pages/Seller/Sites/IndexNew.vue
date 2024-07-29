@@ -113,6 +113,7 @@ watchDebounced(() => ({ ...filters }), (n, o) => {
 const get = async () => {
     Inertia.get(route('seller.sites.index'), {
         sort: sort.value,
+        ratios: coinStore.ratios,
         filter: {
             url: filters.url,
             cost: filters.cost,
@@ -286,7 +287,7 @@ const copy = () => {
                                 </span>
 
                                 <div class="mt-4 flex">
-                                    <div class="grid grid-rows-3 grid-flow-col gap-x-4 gap-y-2">
+                                    <div class="grid grid-flow-row grid-cols-3 sm:grid-cols-6 gap-x-4 gap-y-2">
                                         <div v-for="(country, index) in countries" :key="index"
                                             class="relative flex items-start">
                                             <div class="flex h-5 items-center">

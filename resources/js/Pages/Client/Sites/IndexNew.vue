@@ -132,6 +132,7 @@ watchDebounced(() => ({ ...filters }), (n, o) => {
 const get = async () => {
     Inertia.get(route('client.sites.index'), {
         sort: sort.value,
+        ratios: coinStore.ratios,
         filter: {
             url: filters.url,
             sale: filters.sale,

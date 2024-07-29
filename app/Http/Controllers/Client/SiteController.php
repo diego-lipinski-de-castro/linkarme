@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Filters\FilterLimiter;
 use App\Filters\UrlFilter;
+use App\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Country;
@@ -61,6 +62,13 @@ class SiteController extends Controller
 
         $query = request()->query();
 
+        $ratios = [
+            'BRL' => Arr::get($query, 'ratios.BRL', '1'),
+            'EUR' => Arr::get($query, 'ratios.EUR', '1'),
+            'USD' => Arr::get($query, 'ratios.USD', '1'),
+            'GBP' => Arr::get($query, 'ratios.GBP', '1'),
+        ];
+
         $filters = [
             'sort' => Arr::get($query, 'sort', 'url'),
             'filter' => [
@@ -117,10 +125,21 @@ class SiteController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                AllowedFilter::custom('sale', new FilterLimiter, null, ''),
+                AllowedFilter::callback('sale', function ($query, $value) use ($ratios) {
+                    $from = Helper::extractNumbersFromString($value['from']);
+                    $to = Helper::extractNumbersFromString($value['to']);
+
+                    $query->where(function ($query) use ($from, $to, $ratios) {
+
+                        foreach($ratios as $coin => $ratio) {
+                            $query->orWhere(function ($query) use ($from, $to, $coin, $ratio) {
+                                $query->where('sale_coin', $coin)->where('sale', '>=', $from * (float) $ratio)->where('sale', '<=', $to * (float) $ratio);
+                            });
+                        }
+                    });
+                }),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
-                // AllowedFilter::custom('traffic', new FilterLimiter),
                 'gambling',
                 'sponsor',
                 AllowedFilter::scope('recommended', 'auth_recommended'),

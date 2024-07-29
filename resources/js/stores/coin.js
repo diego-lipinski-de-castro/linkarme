@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
-import axios from 'axios'
 
-const coins = ['BRL', 'EUR', 'USD'];
+const coins = ['BRL', 'EUR', 'USD', 'GBP'];
 
 export const useCoinStore = defineStore('coin', {
     state: () => ({

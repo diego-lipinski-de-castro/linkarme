@@ -56,7 +56,7 @@ class SubmitSiteRequest extends FormRequest
             'google_news' => 'required|boolean',
 
             'cost' => 'nullable|integer',
-            'cost_coin' => 'nullable|in:BRL,EUR,USD',
+            'cost_coin' => 'nullable|in:BRL,EUR,USD,GBP',
 
             'paypal' => 'nullable',
             'pix' => 'nullable',

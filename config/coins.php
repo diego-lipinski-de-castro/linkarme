@@ -22,4 +22,11 @@ return [
         'suffix' => '',
         'precision' => 2,
     ],
+    'GBP' => [
+        'thousands' => ',',
+        'decimal' => '.',
+        'prefix' => '£ ',
+        'suffix' => '',
+        'precision' => 2,
+    ],
 ];

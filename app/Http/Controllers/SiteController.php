@@ -84,6 +84,7 @@ class SiteController extends Controller
             'BRL' => Arr::get($query, 'ratios.BRL', '1'),
             'EUR' => Arr::get($query, 'ratios.EUR', '1'),
             'USD' => Arr::get($query, 'ratios.USD', '1'),
+            'GBP' => Arr::get($query, 'ratios.GBP', '1'),
         ];
 
         $filters = [
@@ -148,7 +149,6 @@ class SiteController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                // AllowedFilter::custom('sale', new FilterLimiter, null, ''),
                 AllowedFilter::callback('sale', function ($query, $value) use ($ratios) {
                     $from = Helper::extractNumbersFromString($value['from']);
                     $to = Helper::extractNumbersFromString($value['to']);
@@ -164,14 +164,8 @@ class SiteController extends Controller
                 }),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
-                // AllowedFilter::custom('traffic', new FilterLimiter),
-                // AllowedFilter::custom('tf', new FilterLimiter),
                 'gambling',
                 'sponsor',
-                // 'ssl',
-                // 'cripto',
-                // 'banner',
-                // 'menu',
                 AllowedFilter::custom('new', new NewFilter),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::exact('country_id'),

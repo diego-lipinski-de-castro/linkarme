@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('offers', function (Blueprint $table) {
             $table->string('sale')->after('cost_coin');
-            $table->enum('sale_coin', ['BRL', 'EUR', 'USD'])->default('BRL')->after('sale');
+            $table->enum('sale_coin', ['BRL', 'EUR', 'USD', 'GBP'])->default('BRL')->after('sale');
         });
     }
 

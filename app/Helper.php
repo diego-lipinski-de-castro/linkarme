@@ -31,6 +31,7 @@ class Helper
         $options['BRL'] = 'pt_BR';
         $options['EUR'] = 'nl_NL';
         $options['USD'] = 'en_US';
+        $options['GBP'] = 'en_GB';
 
         $money = new Money($newCurr, new Currency($curr));
         $currencies = new ISOCurrencies();

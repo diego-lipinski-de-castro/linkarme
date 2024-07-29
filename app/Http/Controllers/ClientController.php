@@ -221,7 +221,7 @@ class ClientController extends Controller
             'password' => ['nullable'],
 
             'locale' => ['nullable', 'in:en,es,pt'],
-            'coin' => ['nullable', 'in:BRL,EUR,USD'],
+            'coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
             'full' => ['nullable', 'boolean'],
             'notify_updates_via_email' => ['nullable', 'in:DAILY,WEEKLY,MONTHLY'],
             

@@ -122,7 +122,7 @@ const computeSuggested = () => {
         
         cost = (cost) + (cost * 0.30) + 675;
 
-    } else if(['EUR', 'USD'].includes(form.cost_coin)) {
+    } else if(['EUR', 'USD', 'GBP'].includes(form.cost_coin)) {
 
         cost = ((cost + 135) * 0.15) + (cost + 135)
     }
@@ -138,7 +138,7 @@ const computeSuggestedForType = (type) => {
         
         cost = (cost) + (cost * 0.30) + 675;
 
-    } else if(['EUR', 'USD'].includes(type.cost_coin)) {
+    } else if(['EUR', 'USD', 'GBP'].includes(type.cost_coin)) {
 
         cost = ((cost + 135) * 0.15) + (cost + 135)
     }
@@ -617,6 +617,7 @@ const submitNote = () => {
                                                                     <option value="BRL">BRL</option>
                                                                     <option value="EUR">EUR</option>
                                                                     <option value="USD">USD</option>
+                                                                    <option value="GBP">GBP</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -636,6 +637,7 @@ const submitNote = () => {
                                                                     <option value="BRL">BRL</option>
                                                                     <option value="EUR">EUR</option>
                                                                     <option value="USD">USD</option>
+                                                                    <option value="GBP">GBP</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -646,7 +648,7 @@ const submitNote = () => {
 
                                                 <!--  -->
                                                 <tr v-for="(type, index) in form.types" :key="index">
-                                                    <td :class="'border-t border-transparent relative py-4 pl-4 pr-3 text-sm sm:pl-6'">
+                                                    <td class="border-t border-transparent relative py-4 pl-4 pr-3 text-sm sm:pl-6 align-top">
                                                         <div class="font-medium text-gray-900">
                                                             {{ type.name }}
                                                         </div>
@@ -654,11 +656,11 @@ const submitNote = () => {
                                                         <div class="absolute -top-px left-6 right-0 h-px bg-gray-200" />
                                                     </td>
 
-                                                    <td :class="['border-t border-gray-200 px-3 py-3.5 text-sm text-gray-500']">
+                                                    <td class="border-t border-gray-200 px-3 py-3.5 text-sm text-gray-500 align-top">
                                                         <Checkbox :id="type.id" v-model:checked="type.available" :name="type.id" />
                                                     </td>
 
-                                                    <td :class="['border-t border-gray-200 relative px-3 py-3.5 text-sm text-gray-500']">
+                                                    <td class="border-t border-gray-200 relative px-3 py-3.5 text-sm text-gray-500 align-top">
                                                         
                                                         <div :class="['relative rounded-md shadow-sm', {'opacity-50': !type.available}]">
                                                             <input @change="computeSuggestedForType(type)" :disabled="!type.available" v-model.lazy="type.cost" v-money3="coins[type.cost_coin]" type="text" name="cost" id="cost"
@@ -671,6 +673,7 @@ const submitNote = () => {
                                                                     <option value="BRL">BRL</option>
                                                                     <option value="EUR">EUR</option>
                                                                     <option value="USD">USD</option>
+                                                                    <option value="GBP">GBP</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -690,6 +693,7 @@ const submitNote = () => {
                                                                     <option value="BRL">BRL</option>
                                                                     <option value="EUR">EUR</option>
                                                                     <option value="USD">USD</option>
+                                                                    <option value="GBP">GBP</option>
                                                                 </select>
                                                             </div>
                                                         </div>

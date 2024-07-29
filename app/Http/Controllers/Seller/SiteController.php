@@ -56,6 +56,13 @@ class SiteController extends Controller
 
         $query = request()->query();
 
+        $ratios = [
+            'BRL' => Arr::get($query, 'ratios.BRL', '1'),
+            'EUR' => Arr::get($query, 'ratios.EUR', '1'),
+            'USD' => Arr::get($query, 'ratios.USD', '1'),
+            'GBP' => Arr::get($query, 'ratios.GBP', '1'),
+        ];
+
         $filters = [
             'sort' => Arr::get($query, 'sort', 'url'),
             'filter' => [
@@ -108,7 +115,19 @@ class SiteController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::custom('url', new UrlFilter),
-                AllowedFilter::custom('cost', new FilterLimiter, null, ''),
+                AllowedFilter::callback('cost', function ($query, $value) use ($ratios) {
+                    $from = Helper::extractNumbersFromString($value['from']);
+                    $to = Helper::extractNumbersFromString($value['to']);
+
+                    $query->where(function ($query) use ($from, $to, $ratios) {
+
+                        foreach($ratios as $coin => $ratio) {
+                            $query->orWhere(function ($query) use ($from, $to, $coin, $ratio) {
+                                $query->where('cost_coin', $coin)->where('cost', '>=', $from * (float) $ratio)->where('cost', '<=', $to * (float) $ratio);
+                            });
+                        }
+                    });
+                }),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
                 // AllowedFilter::custom('traffic', new FilterLimiter),
@@ -186,9 +205,8 @@ class SiteController extends Controller
             $types = $types->mapWithKeys(function ($type) {
                 return [$type['id'] => [
                     'cost' => Helper::extractNumbersFromString($type['cost']),
-                    // 'sale' => Helper::extractNumbersFromString($type['sale']),
                     'cost_coin' => $type['cost_coin'],
-                    // 'sale_coin' => $type['sale_coin'],
+                    'sale_coin' => $type['cost_coin'],
                 ]];
             });
 
@@ -251,9 +269,8 @@ class SiteController extends Controller
             $types = $types->mapWithKeys(function ($type) {
                 return [$type['id'] => [
                     'cost' => Helper::extractNumbersFromString($type['cost']),
-                    // 'sale' => Helper::extractNumbersFromString($type['sale']),
                     'cost_coin' => $type['cost_coin'],
-                    // 'sale_coin' => $type['sale_coin'],
+                    'sale_coin' => $type['cost_coin'],
                 ]];
             });
 
@@ -306,7 +323,7 @@ class SiteController extends Controller
         $validated = $request->validate([
             'url' => 'required',
             'cost' => 'required',
-            'cost_coin' => 'required|in:BRL,EUR,USD',
+            'cost_coin' => 'required|in:BRL,EUR,USD,GBP',
             'types' => 'present|array|min:0',
         ]);
 

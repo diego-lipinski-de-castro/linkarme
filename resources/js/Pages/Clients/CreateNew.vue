@@ -160,6 +160,7 @@ const submit = () => {
                                         <option value="USD">USD</option>
                                         <option value="EUR">EUR</option>
                                         <option value="BRL">BRL</option>
+                                        <option value="GBP">GBP</option>
                                     </select>
 
                                 </div>

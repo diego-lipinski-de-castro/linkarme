@@ -57,9 +57,7 @@ class StoreSiteRequest extends FormRequest
             'images' => 'nullable|integer',
 
             'cost' => 'nullable|integer',
-            // 'sale' => 'nullable|integer',
-            'cost_coin' => 'nullable|in:BRL,EUR,USD',
-            // 'sale_coin' => 'nullable|in:BRL,EUR,USD',
+            'cost_coin' => 'nullable|in:BRL,EUR,USD,GBP',
 
             'last_posted' => 'nullable|date',
 
