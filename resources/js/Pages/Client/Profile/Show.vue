@@ -1,5 +1,5 @@
 <script setup>
-import ClientLayout from '@/Layouts/ClientLayout.vue';
+import ClientLayout from '@/Layouts/ClientLayoutNew.vue';
 import DeleteUserForm from '@/Pages/Client/Profile/Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Client/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';

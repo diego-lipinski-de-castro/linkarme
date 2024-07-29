@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from '@/Layouts/AppLayoutNew.vue';
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 
 const props = defineProps({

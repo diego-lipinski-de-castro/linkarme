@@ -1,5 +1,5 @@
 <script setup>
-import SellerLayout from '@/Layouts/SellerLayout.vue';
+import SellerLayout from '@/Layouts/SellerLayoutNew.vue';
 import { computed } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";

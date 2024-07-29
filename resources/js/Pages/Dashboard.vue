@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from '@/Layouts/AppLayoutNew.vue';
 import Welcome from '@/Components/Welcome.vue';
 import AppSuspense from '../Layouts/AppSuspense.vue';
 import { Link } from '@inertiajs/inertia-vue3';

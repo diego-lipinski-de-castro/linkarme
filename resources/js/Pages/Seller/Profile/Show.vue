@@ -1,5 +1,5 @@
 <script setup>
-import SellerLayout from '@/Layouts/SellerLayout.vue';
+import SellerLayout from '@/Layouts/SellerLayoutNew.vue';
 import DeleteUserForm from '@/Pages/Seller/Profile/Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Seller/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';

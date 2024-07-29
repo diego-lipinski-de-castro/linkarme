@@ -1,5 +1,5 @@
 <script setup>
-import ClientLayout from '@/Layouts/ClientLayout.vue';
+import ClientLayout from '@/Layouts/ClientLayoutNew.vue';
 import SiteUpdated from '@/Components/Notifications/SiteUpdated.vue';
 import SiteAdded from '@/Components/Notifications/SiteAdded.vue';
 import SiteDeleted from '@/Components/Notifications/SiteDeleted.vue';

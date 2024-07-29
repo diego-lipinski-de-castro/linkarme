@@ -1,5 +1,5 @@
 <script setup>
-import ClientLayout from "@/Layouts/ClientLayout.vue";
+import ClientLayout from "@/Layouts/ClientLayoutNew.vue";
 import TableSortButton from "@/Components/TableSortButton.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
