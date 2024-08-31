@@ -1,9 +1,7 @@
 
 <script setup>
-import { ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { LinkIcon, PlusIcon, QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
 import { ColorPicker } from 'vue-accessible-color-picker'
 import { useForm } from '@inertiajs/inertia-vue3'
 
@@ -35,6 +33,10 @@ const updateColor = (event) => {
     form.color = event.cssColor
 }
 </script>
+
+<style>
+@import url('vue-accessible-color-picker/styles');
+</style>
 
 <template>
     <TransitionRoot as="template" :show="show">

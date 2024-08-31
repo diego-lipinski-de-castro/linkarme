@@ -8,9 +8,6 @@ import {
     MenuButton,
     MenuItem,
     MenuItems,
-    Switch,
-    SwitchGroup,
-    SwitchLabel,
 } from '@headlessui/vue'
 import {
     Cog6ToothIcon,

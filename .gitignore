@@ -16,3 +16,4 @@ yarn-error.log
 horizon.sh
 horizon.log
 lang/php_*.json
+.yarn
