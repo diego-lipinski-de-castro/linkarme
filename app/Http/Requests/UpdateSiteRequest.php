@@ -34,8 +34,8 @@ class UpdateSiteRequest extends FormRequest
             'obs' => 'nullable|string|max:600',
             'admin_obs' => 'nullable|string|max:600',
 
-            'da' => 'nullable|integer',
-            'dr' => 'nullable|integer',
+            'da' => 'nullable|integer|min:0|max:100',
+            'dr' => 'nullable|integer|min:0|max:100',
             'traffic' => 'nullable|integer',
             'tf' => 'nullable|integer',
 
