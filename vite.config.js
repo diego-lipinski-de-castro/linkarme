@@ -13,7 +13,9 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: "resources/js/app.js",
+            input: [
+                "resources/js/app.js",
+            ],
             refresh: true,
         }),
         vue({
@@ -25,4 +27,16 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                assetFileNames: (assetInfo) => {
+                    if (assetInfo.name === "app.css") {
+                        return "assets/app.css";
+                    }
+                    return "assets/[name][extname]";
+                },
+            },
+        },
+    },
 });
