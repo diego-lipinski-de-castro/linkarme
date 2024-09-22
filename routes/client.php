@@ -172,7 +172,7 @@ Route::group([
 
     Route::put('/password', [ProfileController::class, 'updatePassword'])
         ->middleware('auth:client')
-        ->name('password.update');
+        ->name('password.updatePassword');
 
     Route::delete('/user/other-browser-sessions', [OtherBrowserSessionsController::class, 'destroy'])
         ->middleware('auth:client')

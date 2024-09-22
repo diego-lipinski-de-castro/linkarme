@@ -18,7 +18,7 @@ const form = useForm({
 });
 
 const updatePassword = () => {
-    form.put(route('seller.password.update'), {
+    form.put(route('seller.password.updatePassword'), {
         errorBag: 'updatePassword',
         preserveScroll: true,
         onSuccess: () => form.reset(),

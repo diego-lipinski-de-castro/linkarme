@@ -121,5 +121,5 @@ Route::group([
 
     Route::put('/password', [ProfileController::class, 'updatePassword'])
         ->middleware('auth:seller')
-        ->name('password.update');
+        ->name('password.updatePassword');
 });
