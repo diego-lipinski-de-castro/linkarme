@@ -23,6 +23,7 @@ use App\Notifications\SiteAdded;
 use App\Notifications\SiteDeleted;
 use App\Notifications\SiteRestored;
 use App\Notifications\SiteUpdated;
+use App\Services\GoogleSheetService;
 use App\Sorts\NewSort;
 use App\Sorts\RecommendedSort;
 use Illuminate\Http\Request;
@@ -46,6 +47,18 @@ class SiteController extends Controller
      */
     public function index()
     {
+        $googleSheetService = new GoogleSheetService();
+
+        $sheet = 'Portais PT';
+
+        $column = 'D';
+
+        $query = 'trocajogo.com.br';
+
+        $row = $googleSheetService->getRowByCellValue($sheet, $column, $query);
+
+        dd($row);
+
         $coins = config('coins');
 
         $pendingCount = Site::query()

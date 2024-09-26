@@ -33,6 +33,27 @@ class GoogleSheetService
         return $response->getValues() ?? [];
     }
 
+    public function getRowByCellValue(string $sheetName, string $columnLetter, string $value)
+    {
+        // Fetch all data from the sheet
+        $range = $sheetName;
+        $data = $this->readSheet($range);
+
+        // Identify the column index based on the column letter
+        $columnIndex = ord(strtoupper($columnLetter)) - ord('A');
+
+        // Search for the row where the cell in the specified column matches the value
+        foreach ($data as $row) {
+            if (isset($row[$columnIndex]) && $row[$columnIndex] == $value) {
+                return $row; // Return the entire row
+            }
+        }
+
+        // Return null if not found
+        return null;
+    }
+
+
     /**
      * Append a row to the sheet.
      */
