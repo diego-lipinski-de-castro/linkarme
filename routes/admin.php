@@ -84,6 +84,7 @@ Route::prefix('admin')->group(function () {
     
     // orders
     Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware(['auth']);
+    Route::post('orders/go', [OrderController::class, 'go'])->name('orders.go')->middleware(['auth']);
     
     Route::resource('orders', OrderController::class)->middleware(['auth']);
     

@@ -23,11 +23,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $statuses = Order::STATUSES;
+        $coins = config('coins');
 
-        $sites = Site::query()
-            ->orderBy('url')
-            ->get();
+        $statuses = Order::STATUSES;
 
         $clients = Client::query()
             ->orderBy('name')
@@ -58,11 +56,12 @@ class OrderController extends Controller
         return Inertia::render('Orders/IndexNew', [
             'orders' => $orders,
             'statuses' => $statuses,
-            'sites' => $sites,
             'clients' => $clients,
             'sellers' => $sellers,
             'importFailures' => session('importFailures'),
             'importDiff' => session('importDiff'),
+            'sites' => session('sites'),
+            'coins' => $coins,
         ]);
     }
 
@@ -223,6 +222,27 @@ class OrderController extends Controller
         $request->session()->flash('importFailures', $importFailures);
         $request->session()->flash('importDiff', $diff);
 
+        return back();
+    }
+
+    public function go(Request $request)
+    {
+        $input = $request->validate([
+            'list' => ['required', 'string'],
+        ]);
+
+        $list = explode(PHP_EOL, $input['list']);
+
+        $sites = [];
+
+        foreach($list as $site) {
+            $sites[$site] = Site::query()
+                ->where('url', $site)
+                ->first();
+        }
+
+        $request->session()->flash('sites', $sites);
+        
         return back();
     }
 }

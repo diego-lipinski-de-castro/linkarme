@@ -1,10 +1,12 @@
 <script setup>
 import AppLayoutNew from "@/Layouts/AppLayoutNew.vue";
 import TableSortButton from "@/Components/TableSortButton.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
+import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { computed, onMounted, ref, watch } from "vue";
 import unionBy from "lodash/unionBy";
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
 import {
     Dialog,
     DialogPanel,
@@ -51,7 +53,6 @@ import {
     MagnifyingGlassIcon,
 } from "@heroicons/vue/20/solid";
 
-
 import { useTranslation } from "i18next-vue";
 
 import vueFilePond from "vue-filepond";
@@ -59,20 +60,23 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import AppSuspense from "../../Layouts/AppSuspense.vue";
 import { watchDebounced } from "@vueuse/core";
+import { useCoinStore } from '@/stores/coin'
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
+const coinStore = useCoinStore()
 const { t } = useTranslation();
 
 const props = defineProps({
     title: String,
     orders: Object,
     statuses: Object,
-    sites: Array,
     clients: Array,
     sellers: Array,
     importFailures: Object,
     importDiff: Number,
+    sites: Object,
+    coins: Object,
 });
 
 const links = computed(() => {
@@ -96,10 +100,10 @@ const _defaultColumns = [
 
 const _columns = localStorage.getItem("orders.index.columns")
     ? unionBy(
-          JSON.parse(localStorage.getItem("orders.index.columns")),
-          _defaultColumns,
-          "key"
-      )
+        JSON.parse(localStorage.getItem("orders.index.columns")),
+        _defaultColumns,
+        "key"
+    )
     : _defaultColumns;
 
 const columns = ref(_columns);
@@ -207,143 +211,115 @@ watch(openImportDialog, (n, o) => {
         }, 300);
     }
 });
+
+const form = useForm({
+    list: '',
+})
+
+const list = ref([])
+
+const submit = () => {
+    form.post(route('orders.go'), {
+        onSuccess: (res) => {
+            Inertia.reload({
+                only: ["sites"],
+            });
+
+            openOrderDialog.value = false
+            openSitesDialog.value = true
+
+            list.value = res.props.sites
+
+            form.reset();
+        }
+    });
+}
+
+const openOrderDialog = ref(false)
+const openSitesDialog = ref(false)
 </script>
 
 <template>
     <AppSuspense>
         <TransitionRoot as="template" :show="openImportDialog">
-            <Dialog
-                as="div"
-                class="relative z-10"
-                @close="openImportDialog = false"
-            >
-                <TransitionChild
-                    as="template"
-                    enter="ease-out duration-300"
-                    enter-from="opacity-0"
-                    enter-to="opacity-100"
-                    leave="ease-in duration-200"
-                    leave-from="opacity-100"
-                    leave-to="opacity-0"
-                >
-                    <div
-                        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                    />
+            <Dialog as="div" class="relative z-10" @close="openImportDialog = false">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
+                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                 </TransitionChild>
 
                 <div class="fixed inset-0 z-10 overflow-y-auto">
-                    <div
-                        class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
-                    >
-                        <TransitionChild
-                            as="template"
-                            enter="ease-out duration-300"
+                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <TransitionChild as="template" enter="ease-out duration-300"
                             enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            enter-to="opacity-100 translate-y-0 sm:scale-100"
-                            leave="ease-in duration-200"
+                            enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
                             leave-from="opacity-100 translate-y-0 sm:scale-100"
-                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        >
+                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                             <DialogPanel
-                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 max-h-96 sm:p-6"
-                            >
-                                <h3
-                                    class="text-center font-medium text-gray-900"
-                                >
+                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 max-h-96 sm:p-6">
+                                <h3 class="text-center font-medium text-gray-900">
                                     {{ $t("Import orders") }}
                                 </h3>
 
                                 <div class="mt-4 mx-auto w-96">
-                                    <file-pond
-                                        ref="importFilepond"
-                                        :server="{ process: uploadOrders }"
-                                        :instantUpload="true"
-                                        :allowRevert="false"
-                                        accepted-file-types="text/csv"
-                                        :dropOnPage="true"
-                                        :dropOnElement="false"
-                                        :dropValidation="true"
-                                    />
+                                    <file-pond ref="importFilepond" :server="{ process: uploadOrders }"
+                                        :instantUpload="true" :allowRevert="false" accepted-file-types="text/csv"
+                                        :dropOnPage="true" :dropOnElement="false" :dropValidation="true" />
                                 </div>
 
                                 <div v-if="importFinished" class="mt-8">
-                                    <span class="block text-center"
-                                        >{{ importDiff }} pedidos
-                                        adicionados.</span
-                                    >
+                                    <span class="block text-center">{{ importDiff }} pedidos
+                                        adicionados.</span>
 
-                                    <div
-                                        v-if="importFailures.length > 0"
-                                        class="mt-4"
-                                    >
+                                    <div v-if="importFailures.length > 0" class="mt-4">
                                         <div
-                                            class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg"
-                                        >
-                                            <table
-                                                class="min-w-full divide-y divide-gray-300"
-                                            >
+                                            class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                            <table class="min-w-full divide-y divide-gray-300">
                                                 <thead class="bg-gray-50">
                                                     <tr>
-                                                        <th
-                                                            scope="col"
-                                                            class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                                        >
+                                                        <th scope="col"
+                                                            class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                             Linha
                                                         </th>
-                                                        <th
-                                                            scope="col"
-                                                            class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 border-l"
-                                                        >
+                                                        <th scope="col"
+                                                            class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 border-l">
                                                             Coluna
                                                         </th>
-                                                        <th
-                                                            scope="col"
-                                                            class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 border-l"
-                                                        >
+                                                        <th scope="col"
+                                                            class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 border-l">
                                                             Valor
                                                         </th>
-                                                        <th
-                                                            scope="col"
-                                                            class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 border-l"
-                                                        >
+                                                        <th scope="col"
+                                                            class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 border-l">
                                                             Erro
                                                         </th>
                                                     </tr>
                                                 </thead>
-                                                <tbody
-                                                    class="divide-y divide-gray-200 bg-white"
-                                                >
-                                                    <tr
-                                                        v-for="(
+                                                <tbody class="divide-y divide-gray-200 bg-white">
+                                                    <tr v-for="(
                                                             failure, index
-                                                        ) in importFailures"
-                                                        :key="index"
-                                                    >
+                                                        ) in importFailures" :key="index">
                                                         <td
-                                                            class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6"
-                                                        >
+                                                            class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6">
                                                             {{ failure.row }}
                                                         </td>
                                                         <td
-                                                            class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 border-l"
-                                                        >
+                                                            class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 border-l">
                                                             {{
                                                                 failure.attribute
                                                             }}
                                                         </td>
                                                         <td
-                                                            class="whitespace-nowrap px-2 py-2 text-sm text-gray-900 border-l"
-                                                        >
+                                                            class="whitespace-nowrap px-2 py-2 text-sm text-gray-900 border-l">
                                                             {{
                                                                 failure.values[
-                                                                    failure
-                                                                        .attribute
+                                                                failure
+                                                                    .attribute
                                                                 ] ?? "-"
                                                             }}
                                                         </td>
                                                         <td
-                                                            class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 border-l"
-                                                        >
+                                                            class="whitespace-nowrap px-2 py-2 text-sm text-gray-500 border-l">
                                                             {{
                                                                 failure
                                                                     .errors[0]
@@ -362,6 +338,126 @@ watch(openImportDialog, (n, o) => {
             </Dialog>
         </TransitionRoot>
 
+        <TransitionRoot as="template" :show="openOrderDialog">
+            <Dialog as="div" class="relative z-10" @close="openOrderDialog = false">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
+                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </TransitionChild>
+
+                <div class="fixed inset-0 z-10 overflow-y-auto">
+                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <TransitionChild as="template" enter="ease-out duration-300"
+                            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
+                            leave-from="opacity-100 translate-y-0 sm:scale-100"
+                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                            <DialogPanel
+                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 max-h-96 sm:p-6">
+                                <h3 class="font-medium text-gray-900">
+                                    {{ $t("Add order") }}
+                                </h3>
+
+                                <div class="mt-4 mx-auto w-96">
+                                    <div>
+                                        <InputLabel for="list" :value="$t('Site list')" />
+                                        <textarea id="list" v-model="form.list" rows="5"
+                                            class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring-indigo-200 sm:text-sm"></textarea>
+                                        <InputError class="mt-2" :message="form.errors.list" />
+                                    </div>
+                                </div>
+
+                                <div class="text-right">
+                                    <button @click="submit" type="button" :disabled="form.processing"
+                                        class="mt-4 lex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 disabled:opacity-50">
+                                        <span class="px-1 text-sm font-medium text-white">{{ $t("Go") }}</span>
+                                    </button>
+                                </div>
+
+                            </DialogPanel>
+                        </TransitionChild>
+                    </div>
+                </div>
+            </Dialog>
+        </TransitionRoot>
+
+        <TransitionRoot as="template" :show="openSitesDialog">
+            <Dialog as="div" class="relative z-10" @close="openSitesDialog = false">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
+                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </TransitionChild>
+
+                <div class="fixed inset-0 z-10 overflow-y-auto">
+                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <TransitionChild as="template" enter="ease-out duration-300"
+                            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
+                            leave-from="opacity-100 translate-y-0 sm:scale-100"
+                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                            <DialogPanel
+                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 max-h-96 sm:p-6">
+                                <h3 class="font-medium text-gray-900">
+                                    {{ $t("Add order") }}
+                                </h3>
+
+                                <div class="mt-4 mx-auto w-96">
+                                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-300">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col"
+                                                        class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
+                                                        {{ $t('Site') }}</th>
+                                                    <th scope="col"
+                                                        class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                                        {{ $t('Price') }}</th>
+                                                    <th scope="col"
+                                                        class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
+                                                        <span class="sr-only">Edit</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-200 bg-white">
+                                                <tr v-for="(site, url) in list" :key="url">
+                                                    <td
+                                                        class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500">
+                                                        {{ url }}</td>
+                                                    <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
+                                                        <span v-if="site === null">Não encontrado</span>
+                                                        <span v-else>
+                                                            <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                                                <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <span>
+                                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                </span>
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                    <td
+                                                        class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="text-right">
+                                    <button type="button"
+                                        class="mt-4 lex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 disabled:opacity-50">
+                                        <span class="px-1 text-sm font-medium text-white">{{ $t("Copy") }}</span>
+                                    </button>
+                                </div>
+
+                            </DialogPanel>
+                        </TransitionChild>
+                    </div>
+                </div>
+            </Dialog>
+        </TransitionRoot>
+
         <AppLayoutNew :title="$t('Orders')">
             <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
                 <div class="flex flex-col">
@@ -370,28 +466,15 @@ watch(openImportDialog, (n, o) => {
                         <h2 class="text-xl font-bold leading-tight">{{ $t('Orders') }}</h2>
 
                         <div class="flex space-x-3">
-                            <Link
-                                :href="route('orders.create')"
-                                class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700"
-                            >
-                                <span
-                                    class="px-1 text-sm font-medium text-white"
-                                    >{{ $t("Add order") }}</span
-                                >
-                            </Link>
+                            <button @click="openOrderDialog = true"
+                                class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700">
+                                <span class="px-1 text-sm font-medium text-white">{{ $t("Add order") }}</span>
+                            </button>
 
-                            <button
-                                @click="openImportDialog = true"
-                                class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50"
-                            >
-                                <span
-                                    class="ml-1 text-sm font-medium text-gray-700"
-                                    >{{ $t("Import") }}</span
-                                >
-                                <CloudArrowUpIcon
-                                    class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
-                                    aria-hidden="true"
-                                />
+                            <button @click="openImportDialog = true"
+                                class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                <span class="ml-1 text-sm font-medium text-gray-700">{{ $t("Import") }}</span>
+                                <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             </button>
 
                             <!-- <a :href="route('orders.export')"
@@ -460,49 +543,32 @@ watch(openImportDialog, (n, o) => {
             </div>
 
             <div class="mt-5">
-                <div
-                    class="sm:hidden border border-gray-200 rounded-lg overflow-hidden"
-                >
+                <div class="sm:hidden border border-gray-200 rounded-lg overflow-hidden">
                     <ul role="list" class="divide-y divide-gray-200">
                         <li v-for="(order, index) in orders.data" :key="index">
-                            <Link
-                                :href="route('orders.edit', order.id)"
-                                class="block bg-white px-4 py-4 hover:bg-gray-50"
-                            >
-                                <span class="flex items-center space-x-4">
-                                    <span
-                                        class="flex flex-1 space-x-2 truncate"
-                                    >
-                                        <span class="text-sm text-gray-500">
-                                            {{ order.url }}
-                                        </span>
+                            <Link :href="route('orders.edit', order.id)"
+                                class="block bg-white px-4 py-4 hover:bg-gray-50">
+                            <span class="flex items-center space-x-4">
+                                <span class="flex flex-1 space-x-2 truncate">
+                                    <span class="text-sm text-gray-500">
+                                        {{ order.url }}
                                     </span>
-                                    <ChevronRightIcon
-                                        class="h-5 w-5 flex-shrink-0 text-gray-400"
-                                        aria-hidden="true"
-                                    />
                                 </span>
+                                <ChevronRightIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                            </span>
                             </Link>
                         </li>
                     </ul>
 
-                    <nav
-                        class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3"
-                        aria-label="Pagination"
-                    >
+                    <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3"
+                        aria-label="Pagination">
                         <div class="flex flex-1 justify-between">
-                            <Link
-                                :href="orders.prev_page_url"
-                                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500"
-                            >
-                                {{ $t("Previous") }}</Link
-                            >
-                            <Link
-                                :href="orders.next_page_url"
-                                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500"
-                            >
-                                {{ $t("Next") }}</Link
-                            >
+                            <Link :href="orders.prev_page_url"
+                                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
+                            {{ $t("Previous") }}</Link>
+                            <Link :href="orders.next_page_url"
+                                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
+                            {{ $t("Next") }}</Link>
                         </div>
                     </nav>
                 </div>
@@ -510,156 +576,107 @@ watch(openImportDialog, (n, o) => {
                 <div class="hidden sm:block">
                     <div class="flex flex-col">
                         <div
-                            class="min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg"
-                        >
+                            class="min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th
-                                            v-show="columns[0].visible"
+                                        <th v-show="columns[0].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Url") }}
                                         </th>
-                                        <th
-                                            v-show="columns[1].visible"
+                                        <th v-show="columns[1].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Client") }}
                                         </th>
-                                        <th
-                                            v-show="columns[2].visible"
+                                        <th v-show="columns[2].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Seller") }}
                                         </th>
-                                        <th
-                                            v-show="columns[3].visible"
+                                        <th v-show="columns[3].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Charged") }}
                                         </th>
-                                        <th
-                                            v-show="columns[4].visible"
+                                        <th v-show="columns[4].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Paid") }}
                                         </th>
-                                        <th
-                                            v-show="columns[5].visible"
+                                        <th v-show="columns[5].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Markup") }}
                                         </th>
-                                        <th
-                                            v-show="columns[6].visible"
+                                        <th v-show="columns[6].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Comission") }}
                                         </th>
-                                        <th
-                                            v-show="columns[7].visible"
+                                        <th v-show="columns[7].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Status") }}
                                         </th>
-                                        <th
-                                            v-show="columns[8].visible"
+                                        <th v-show="columns[8].visible"
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        >
+                                            scope="col">
                                             {{ $t("Created at") }}
                                         </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col"
-                                        ></th>
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col"></th>
                                     </tr>
                                 </thead>
-                                <tbody
-                                    class="divide-y divide-gray-200 bg-white"
-                                >
-                                    <tr
-                                        v-for="(order, index) in orders.data"
-                                        :key="index"
-                                        class="bg-white"
-                                    >
-                                        <td
-                                            v-show="columns[0].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm"
-                                        >
-                                            <a
-                                                :href="order.url"
-                                                target="_blank"
-                                                class="text-gray-500 hover:text-gray-900"
-                                            >
-                                                {{ order.url }}
+                                <tbody class="divide-y divide-gray-200 bg-white">
+                                    <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
+                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
+                                            <a :href="order.url" target="_blank"
+                                                class="text-gray-500 hover:text-gray-900">
+                                                {{ order.site?.url ?? '' }}
                                             </a>
                                         </td>
 
-                                        <td
-                                            v-show="columns[1].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[1].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.client?.name ?? "-" }}
                                         </td>
 
-                                        <td
-                                            v-show="columns[2].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[2].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.seller?.name ?? "-" }}
                                         </td>
 
-                                        <td
-                                            v-show="columns[3].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[3].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.formatted_charged ?? "-" }}
                                         </td>
 
-                                        <td
-                                            v-show="columns[4].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[4].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.formatted_paid ?? "-" }}
                                         </td>
 
-                                        <td
-                                            v-show="columns[5].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[5].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.formatted_markup ?? "-" }}
                                         </td>
 
-                                        <td
-                                            v-show="columns[6].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[6].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{
                                                 order.formatted_comission ?? "-"
                                             }}
                                         </td>
 
-                                        <td
-                                            v-show="columns[7].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[7].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.formatted_status ?? "-" }}
                                         </td>
 
-                                        <td
-                                            v-show="columns[8].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
-                                        >
+                                        <td v-show="columns[8].visible"
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{
                                                 new Date(
                                                     order.created_at
@@ -667,24 +684,14 @@ watch(openImportDialog, (n, o) => {
                                             }}
                                         </td>
 
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-sm"
-                                        >
-                                            <div
-                                                class="flex justify-end space-x-2"
-                                            >
-                                                <Link
-                                                    :href="
-                                                        route(
-                                                            'orders.edit',
-                                                            order.id
-                                                        )
-                                                    "
-                                                    class="text-blue-500 hover:text-blue-700"
-                                                >
-                                                    <PencilSquareIcon
-                                                        class="h-5 w-5"
-                                                    />
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                            <div class="flex justify-end space-x-2">
+                                                <Link :href="route(
+                                                    'orders.edit',
+                                                    order.id
+                                                )
+                                                    " class="text-blue-500 hover:text-blue-700">
+                                                <PencilSquareIcon class="h-5 w-5" />
                                                 </Link>
                                             </div>
                                         </td>
@@ -693,46 +700,29 @@ watch(openImportDialog, (n, o) => {
                             </table>
                         </div>
 
-                        <nav
-                            class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0"
-                        >
+                        <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
                             <div class="-mt-px flex w-0 flex-1">
-                                <Link
-                                    :href="orders.prev_page_url"
-                                    class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                >
-                                    <ArrowLongLeftIcon
-                                        class="mr-3 h-5 w-5 text-gray-400"
-                                        aria-hidden="true"
-                                    />
-                                    {{ $t("Previous") }}
+                                <Link :href="orders.prev_page_url"
+                                    class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                {{ $t("Previous") }}
                                 </Link>
                             </div>
                             <div class="hidden md:-mt-px md:flex">
-                                <Link
-                                    v-for="(link, index) in links"
-                                    :key="index"
-                                    :href="link.url"
-                                    :class="[
-                                        link.active
-                                            ? 'border-blue-500 text-blue-600'
-                                            : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                                        'inline-flex items-center border-t-2  px-4 pt-4 text-sm font-medium ',
-                                    ]"
-                                >
-                                    {{ link.label }}
+                                <Link v-for="(link, index) in links" :key="index" :href="link.url" :class="[
+                                    link.active
+                                        ? 'border-blue-500 text-blue-600'
+                                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                                    'inline-flex items-center border-t-2  px-4 pt-4 text-sm font-medium ',
+                                ]">
+                                {{ link.label }}
                                 </Link>
                             </div>
                             <div class="-mt-px flex w-0 flex-1 justify-end">
-                                <Link
-                                    :href="orders.next_page_url"
-                                    class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                                >
-                                    {{ $t("Next") }}
-                                    <ArrowLongRightIcon
-                                        class="ml-3 h-5 w-5 text-gray-400"
-                                        aria-hidden="true"
-                                    />
+                                <Link :href="orders.next_page_url"
+                                    class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                {{ $t("Next") }}
+                                <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 </Link>
                             </div>
                         </nav>

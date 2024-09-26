@@ -746,11 +746,8 @@ const expanded = ref([])
                                         <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1), 'bg-red-50': site.deleted_at !== null, }]">
                                             <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                                 <div class="flex space-x-2">
-                                                    <span
-                                                        :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
-                                                        class="relative flex space-x-2 items-center">
-                                                        <span v-if="site.sale_coin != coinStore.coin"
-                                                            class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                    <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                                        <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                                         <span>
                                                             {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
                                                             {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
