@@ -47,17 +47,17 @@ class SiteController extends Controller
      */
     public function index()
     {
-        $googleSheetService = new GoogleSheetService();
+        // $googleSheetService = new GoogleSheetService();
 
-        $sheet = 'Portais PT';
+        // $sheet = 'Portais PT';
 
-        $column = 'D';
+        // $column = 'D';
 
-        $query = 'trocajogo.com.br';
+        // $query = 'trocajogo.com.br';
 
-        $row = $googleSheetService->getRowByCellValue($sheet, $column, $query);
+        // $row = $googleSheetService->getRowByCellValue($sheet, $column, $query);
 
-        dd($row);
+        // dd($row);
 
         $coins = config('coins');
 

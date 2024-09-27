@@ -5,13 +5,6 @@ import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
-import {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    Switch, SwitchGroup, SwitchLabel,
-} from '@headlessui/vue'
 
 import {
     ArrowLongLeftIcon,
@@ -25,9 +18,8 @@ import {
 import {
     FireIcon,
     GlobeAltIcon,
+    ArrowTopRightOnSquareIcon,
 } from '@heroicons/vue/24/outline'
-
-
 
 import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
@@ -57,7 +49,8 @@ const links = computed(() => {
 })
 
 const _defaultColumns = [
-    { key: 'url', label: t('Url'), visible: true },
+    { key: 'url', label: t('Site'), visible: true },
+    { key: 'link', label: t('Link'), visible: true },
     { key: 'created_at', label: t('Date'), visible: false },
 ];
 
@@ -278,10 +271,15 @@ onMounted(() => {
                                         <th v-show="columns[0].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            {{ $t('Url') }}
+                                            {{ $t('Site') }}
                                         </th>
 
                                         <th v-show="columns[1].visible"
+                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Link') }}
+                                        </th>
+
+                                        <th v-show="columns[2].visible"
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Date') }}
                                         </th>
@@ -289,12 +287,18 @@ onMounted(() => {
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
-                                        <td v-show="columns[0].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ order.url }}
+                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            {{ order.site?.url }}
+                                        </td>
+
+                                        <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            <a :href="order.url" target="_blank" :title="order.url" class="text-blue-500 hover:text-blue-700 flex space-x-1">
+                                                <span>{{ $t('Open') }}</span>
+                                                <ArrowTopRightOnSquareIcon class="size-4"/>
+                                            </a>
                                         </td>
                                     
-                                        <td v-show="columns[1].visible"
+                                        <td v-show="columns[2].visible"
                                             class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ new Date(order.created_at).toLocaleString() }}
                                         </td>

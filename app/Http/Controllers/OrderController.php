@@ -237,6 +237,9 @@ class OrderController extends Controller
 
         foreach($list as $site) {
             $sites[$site] = Site::query()
+                ->with([
+                    'seller',
+                ])
                 ->where('url', $site)
                 ->first();
         }

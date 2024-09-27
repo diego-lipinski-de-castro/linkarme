@@ -81,15 +81,15 @@ const toggleFavorite = async (site) => {
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center">
                                     <img class="hidden h-16 w-16 rounded-full sm:block"
-                                        :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
+                                        :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" />
                                     <div>
                                         <div class="flex items-center">
                                             <img class="h-16 w-16 rounded-full sm:hidden"
-                                                :src="$page.props.user.profile_photo_url"
-                                                :alt="$page.props.user.name" />
+                                                :src="$page.props.auth.user.profile_photo_url"
+                                                :alt="$page.props.auth.user.name" />
                                             <h1
                                                 class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
-                                                {{ greeting }}, {{ $page.props.user.name }}</h1>
+                                                {{ greeting }}, {{ $page.props.auth.user.name }}</h1>
                                         </div>
                                         <dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
                                             <dt v-if="false" class="sr-only">Company</dt>
@@ -99,8 +99,8 @@ const toggleFavorite = async (site) => {
                                                     aria-hidden="true" />
                                                 Duke street studio
                                             </dd>
-                                            <dt v-if="$page.props.user.full" class="sr-only">Account status</dt>
-                                            <dd v-if="$page.props.user.full"
+                                            <dt v-if="$page.props.auth.user.full" class="sr-only">Account status</dt>
+                                            <dd v-if="$page.props.auth.user.full"
                                                 class="mt-3 flex items-center text-sm font-medium capitalize text-gray-500 sm:mr-6 sm:mt-0">
                                                 <CheckCircleIcon class="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400"
                                                     aria-hidden="true" />

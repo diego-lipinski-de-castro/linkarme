@@ -35,7 +35,7 @@ import { i18nextPromise } from "@/i18n.js";
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
 const { t } = useTranslation();
-const user = computed(() => usePage().props.value.user)
+const user = computed(() => usePage().props.value.auth.user)
 
 defineProps({
     title: String,
@@ -198,8 +198,8 @@ await i18nextPromise
                                             <MenuButton
                                                 class="flex rounded-full bg-blue-600 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
                                                 <span class="sr-only">Open user menu</span>
-                                                <img class="h-8 w-8 rounded-full" :src="$page.props.user.profile_photo_url"
-                                                    :alt="$page.props.user.name" />
+                                                <img class="h-8 w-8 rounded-full" :src="$page.props.auth.user.profile_photo_url"
+                                                    :alt="$page.props.auth.user.name" />
                                             </MenuButton>
                                         </div>
                                         <transition enter-active-class="transition ease-out duration-100"
@@ -213,7 +213,7 @@ await i18nextPromise
 
                                                 <span class="flex flex-col px-4 py-4">
                                                     <span class="text-xs text-gray-500">{{ $t('Signed in as') }}</span>
-                                                    <span class="text-sm font-bold">{{ $page.props.user.name }}</span>
+                                                    <span class="text-sm font-bold">{{ $page.props.auth.user.name }}</span>
                                                 </span>
 
                                                 <hr>
@@ -305,11 +305,11 @@ await i18nextPromise
                         <div class="border-t border-blue-700 pt-4 pb-3">
                             <div class="flex items-center px-5">
                                 <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" :src="$page.props.user.profile_photo_url" alt="" />
+                                    <img class="h-10 w-10 rounded-full" :src="$page.props.auth.user.profile_photo_url" alt="" />
                                 </div>
                                 <div class="ml-3">
-                                    <div class="text-base font-medium text-white">{{ $page.props.user.name }}</div>
-                                    <div class="text-sm font-medium text-blue-300">{{ $page.props.user.email }}</div>
+                                    <div class="text-base font-medium text-white">{{ $page.props.auth.user.name }}</div>
+                                    <div class="text-sm font-medium text-blue-300">{{ $page.props.auth.user.email }}</div>
                                 </div>
                             </div>
                             <div class="mt-3 space-y-1 px-2">

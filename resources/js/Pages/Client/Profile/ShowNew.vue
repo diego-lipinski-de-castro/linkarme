@@ -55,11 +55,11 @@ onMounted(() => {
                     
                     <div class="grid grid-cols-5">
                         
-                        <div v-if="null != $page.props.user.consultant" class="col-span-3 px-5 py-6 sm:px-6 flex flex-col space-y-2 border-r border-gray-300 border-opacity-50">
+                        <div v-if="null != $page.props.auth.user.consultant" class="col-span-3 px-5 py-6 sm:px-6 flex flex-col space-y-2 border-r border-gray-300 border-opacity-50">
                             <span class="text-sm text-gray-900">{{ $t('Your current Linking consultant') }}</span>
                             <span class="flex items-center space-x-2">
-                                <img class="h-8 w-8 rounded-full" :src="$page.props.user.consultant.profile_photo_url" :alt="$page.props.user.consultant.name" />
-                                <span class="text-sm text-gray-500">{{ $page.props.user.consultant.name }}&nbsp;|&nbsp;{{ $page.props.user.consultant.email }}&nbsp;|&nbsp;{{ $page.props.user.consultant.phone }}</span>
+                                <img class="h-8 w-8 rounded-full" :src="$page.props.auth.user.consultant.profile_photo_url" :alt="$page.props.auth.user.consultant.name" />
+                                <span class="text-sm text-gray-500">{{ $page.props.auth.user.consultant.name }}&nbsp;|&nbsp;{{ $page.props.auth.user.consultant.email }}&nbsp;|&nbsp;{{ $page.props.auth.user.consultant.phone }}</span>
                             </span>
                         </div>
 

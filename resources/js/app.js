@@ -5,7 +5,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
+import { ZiggyVue } from 'ziggy-js';
 import money, { format } from "v-money3";
 import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
@@ -59,7 +59,7 @@ createInertiaApp({
 
         return _app
             .use(plugin)
-            .use(ZiggyVue, Ziggy)
+            .use(ZiggyVue)
             .use(money)
             .use(pinia)
             .use(Particles, {
