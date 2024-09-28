@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImpersonateController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
@@ -87,6 +88,9 @@ Route::prefix('admin')->group(function () {
     Route::post('orders/go', [OrderController::class, 'go'])->name('orders.go')->middleware(['auth']);
     
     Route::resource('orders', OrderController::class)->middleware(['auth']);
+
+    // invoices
+    Route::resource('invoices', InvoiceController::class)->middleware(['auth']);
     
     // clients
     Route::resource('clients', ClientController::class)->middleware(['auth']);

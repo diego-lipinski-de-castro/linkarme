@@ -120,7 +120,7 @@ const format = coins['BRL']
                             </div>
 
                             <div class="col-span-6">
-                                <InputLabel for="url" :value="$t('URL')"/>
+                                <InputLabel for="url" :value="$t('Link')"/>
                                 <TextInput id="url" v-model="form.url" type="text" class="mt-1 block w-full"/>
                                 <InputError class="mt-2" :message="form.errors.url"/>
                             </div>
@@ -179,6 +179,12 @@ const format = coins['BRL']
                         </form>
                     </div>
                 </div>
+
+                <hr class="my-5">
+
+                <pre>
+                    {{ order.items }}
+                </pre>
             </div>
         </AppLayoutNew>
     </AppSuspense>

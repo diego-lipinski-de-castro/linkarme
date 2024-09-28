@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->boolean('paid')->default(false);
+            $table->boolean('money_in_the_bank')->default(false);
             $table->string('invoice_number')->nullable();
             $table->string('invoice_link')->nullable();
         });

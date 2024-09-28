@@ -10,16 +10,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import {
     Dialog,
     DialogPanel,
-    DialogTitle,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
     TransitionChild,
     TransitionRoot,
-    Switch,
-    SwitchGroup,
-    SwitchLabel,
 } from "@headlessui/vue";
 
 import {
@@ -30,7 +22,8 @@ import {
 } from "@heroicons/vue/20/solid";
 
 import {
-    ArrowTopRightOnSquareIcon
+    ArrowTopRightOnSquareIcon,
+    PaperClipIcon
 } from '@heroicons/vue/24/outline'
 
 import {
@@ -361,7 +354,7 @@ const openSitesDialog = ref(false)
                             <DialogPanel
                                 class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 max-h-96 sm:p-6">
                                 <h3 class="font-medium text-gray-900">
-                                    {{ $t("Add order") }}
+                                    {{ $t("Quick order") }}
                                 </h3>
 
                                 <div class="mt-4 mx-auto w-96">
@@ -374,8 +367,7 @@ const openSitesDialog = ref(false)
                                 </div>
 
                                 <div class="text-right">
-                                    <button @click="submit" type="button" :disabled="form.processing"
-                                        class="mt-4 lex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 disabled:opacity-50">
+                                    <button @click="submit" type="button" :disabled="form.processing" class="mt-4 max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 disabled:opacity-50">
                                         <span class="px-1 text-sm font-medium text-white">{{ $t("Go") }}</span>
                                     </button>
                                 </div>
@@ -404,7 +396,7 @@ const openSitesDialog = ref(false)
                             <DialogPanel
                                 class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:p-6">
                                 <h3 class="font-medium text-gray-900">
-                                    {{ $t("Add order") }}
+                                    {{ $t("Quick order") }}
                                 </h3>
 
                                 <div class="mt-4 mx-auto">
@@ -464,10 +456,19 @@ const openSitesDialog = ref(false)
                                     </div>
                                 </div>
 
-                                <div class="text-right">
+                                <div class="mt-4 flex justify-end space-x-2">
+                                    <button type="button" class="flex max-w-xs items-center rounded-md text-blue-500 border border-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-50 transition-all">
+                                        <span class="px-1 text-sm font-medium">{{ $t("Copy") }}</span>
+                                    </button>
+
+                                    <button  class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-all">
+                                        <span class="px-1 text-sm font-medium text-white">{{ $t("Add order") }}</span>
+                                    </button>
+
                                     <button type="button"
-                                        class="mt-4 lex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 disabled:opacity-50">
-                                        <span class="px-1 text-sm font-medium text-white">{{ $t("Copy") }}</span>
+                                        class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 p-2 hover:bg-gray-50 transition-all">
+                                        <span class="ml-1 text-sm font-medium text-gray-700">{{ $t("Generate invoice") }}</span>
+                                        <PaperClipIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                     </button>
                                 </div>
 
@@ -486,13 +487,16 @@ const openSitesDialog = ref(false)
                         <h2 class="text-xl font-bold leading-tight">{{ $t('Orders') }}</h2>
 
                         <div class="flex space-x-3">
-                            <button @click="openOrderDialog = true"
-                                class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700">
-                                <span class="px-1 text-sm font-medium text-white">{{ $t("Add order") }}</span>
+                            <button @click="openOrderDialog = true" class="flex max-w-xs items-center rounded-md text-blue-500 border border-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-50 transition-all">
+                                <span class="px-1 text-sm font-medium">{{ $t("Quick order") }}</span>
                             </button>
 
+                            <Link :href="route('orders.create')" class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-all">
+                                <span class="px-1 text-sm font-medium text-white">{{ $t("Add order") }}</span>
+                            </Link>
+
                             <button @click="openImportDialog = true"
-                                class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                class="flex max-w-xs items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 p-2 hover:bg-gray-50 transition-all">
                                 <span class="ml-1 text-sm font-medium text-gray-700">{{ $t("Import") }}</span>
                                 <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                             </button>

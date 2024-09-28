@@ -48,6 +48,10 @@ Route::group([
         ->name('bugs.store')
         ->middleware(['auth:client']);
 
+    Route::post('sites/go', [SiteController::class, 'go'])
+        ->name('sites.go')
+        ->middleware(['auth:client']);
+
     Route::get('sites', [SiteController::class, 'index'])
         ->name('sites.index')
         ->middleware(['auth:client']);

@@ -3,8 +3,8 @@
 <script setup>
 import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
+import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
@@ -13,6 +13,10 @@ import {
     MenuItem,
     MenuItems,
     Switch, SwitchGroup, SwitchLabel,
+    Dialog,
+    DialogPanel,
+    TransitionChild,
+    TransitionRoot,
 } from '@headlessui/vue'
 import {
     ArrowLongLeftIcon,
@@ -23,6 +27,7 @@ import {
     GlobeAltIcon,
     PlusCircleIcon,
     InformationCircleIcon,
+    XMarkIcon,
 } from '@heroicons/vue/24/outline'
 
 import { useTranslation } from "i18next-vue";
@@ -50,6 +55,8 @@ const props = defineProps({
     types: Array,
 
     projects: Array,
+
+    list: Object,
 });
 
 const links = computed(() => {
@@ -191,10 +198,100 @@ onMounted(() => {
 
 const expanded = ref([])
 
+const form = useForm({
+    selected: [],
+})
+
+const submit = () => {
+    form.post(route('client.sites.go'), {
+        preserveScroll: true,
+        onSuccess: (res) => {
+            openSitesDialog.value = true
+            // form.reset();
+        },
+        onError: (error) => {
+            console.log('onError', error)
+        }
+    });
+}
+
+const openSitesDialog = ref(false)
 </script>
 
 <template>
     <AppSuspense>
+        <TransitionRoot as="template" :show="openSitesDialog">
+            <Dialog as="div" class="relative z-10" @close="openSitesDialog = false">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
+                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </TransitionChild>
+
+                <div class="fixed inset-0 z-10 overflow-y-auto">
+                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <TransitionChild as="template" enter="ease-out duration-300"
+                            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
+                            leave-from="opacity-100 translate-y-0 sm:scale-100"
+                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                            <DialogPanel
+                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:p-6">
+                                <h3 class="font-medium text-gray-900">
+                                    {{ $t("Add order") }}
+                                </h3>
+
+                                <div class="mt-4 mx-auto">
+                                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-300">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
+                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor') }}</th>
+                                                    <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
+                                                        <span class="sr-only">Edit</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-200 bg-white">
+                                                <tr v-for="(site, url) in list" :key="url">
+                                                    <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500"> {{ url }}</td>
+
+                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <span v-if="site === null">-</span>
+                                                        <span v-else>
+                                                            <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                                                <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <span>
+                                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                </span>
+                                                            </span>
+                                                        </span>
+                                                    </td>
+
+                                                    <td
+                                                        class="relative whitespace-nowrap px-3 py-2 text-right text-sm font-medium sm:pr-0">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="text-right">
+                                    <button type="button"
+                                        class="mt-4 lex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 disabled:opacity-50">
+                                        <span class="px-1 text-sm font-medium text-white">{{ $t("Add order") }}</span>
+                                    </button>
+                                </div>
+
+                            </DialogPanel>
+                        </TransitionChild>
+                    </div>
+                </div>
+            </Dialog>
+        </TransitionRoot>
+
         <ClientLayoutNew title="Sites">
             <div>
                 <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
@@ -510,6 +607,8 @@ const expanded = ref([])
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
+                                        <th class="bg-gray-50 pl-4 py-3 text-left text-sm font-semibold text-gray-900">    
+                                        </th>
                                         <th v-show="columns[0].visible"
                                             class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
@@ -611,6 +710,12 @@ const expanded = ref([])
                                     <template v-for="(site, index) in sites.data" :key="index">
 
                                         <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1), 'bg-red-50': site.deleted_at !== null, }]">
+                                            <td class="pl-4 py-4">
+                                                <div class="w-fit">
+                                                    <input v-model="form.selected" :value="site.url" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" />
+                                                </div>
+                                            </td>
+
                                             <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                                 <div class="flex space-x-2">
                                                     <span class="relative flex space-x-2 items-center">
@@ -628,7 +733,7 @@ const expanded = ref([])
                                             <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
                                                 <Link :href="route('client.sites.show', site.id)"
                                                     class="text-gray-500 hover:text-gray-900">
-                                                {{ site.real_url }}
+                                                {{ site.url }}
                                                 </Link>
                                             </td>
                                             <td v-show="columns[2].visible"
@@ -819,5 +924,17 @@ const expanded = ref([])
                 </div>
             </div>
         </div>
+
+        <Transition>
+            <span v-if="form.selected.length > 0" class="fixed bottom-10 left-[50%] -translate-x-1/2  inline-flex rounded-md shadow-sm">
+                <button @click="form.selected = []" type="button" class="relative inline-flex items-center bg-blue-500 rounded-l-md px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors focus:z-10">
+                    <XMarkIcon class="size-4"/>
+                </button>
+                <button @click="submit" :disabled="form.processing" type="button" class="disabled:opacity-50 relative ml-px inline-flex items-center bg-blue-500 rounded-r-md px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors focus:z-10">
+                    <span v-if="form.processing">{{ $t('Generating order') }}</span>
+                    <span v-else>{{ $t('Add order for') }} {{ form.selected.length }} {{ form.selected.length === 1 ? $t('site') : $t('sites') }}</span>
+                </button>
+            </span>
+        </Transition>
     </ClientLayoutNew>
 </AppSuspense></template>

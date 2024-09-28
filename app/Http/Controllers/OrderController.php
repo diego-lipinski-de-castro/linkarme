@@ -76,10 +76,6 @@ class OrderController extends Controller
 
         $statuses = Order::STATUSES;
 
-        $sites = Site::query()
-            ->orderBy('url')
-            ->get();
-
         $clients = Client::query()
             ->orderBy('name')
             ->get();
@@ -91,9 +87,9 @@ class OrderController extends Controller
         return Inertia::render('Orders/CreateNew', [
             'coins' => $coins,
             'statuses' => $statuses,
-            'sites' => $sites,
             'clients' => $clients,
             'sellers' => $sellers,
+            'sites' => session('sites'),
         ]);
     }
 
@@ -130,6 +126,12 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         $order->load([
+            'items' => function ($query) {
+                $query->with([
+                    'site',
+                    'links',
+                ]);
+            },
             'site',
             'client',
             'seller',
@@ -138,10 +140,6 @@ class OrderController extends Controller
         $coins = config('coins');
 
         $statuses = Order::STATUSES;
-
-        $sites = Site::query()
-            ->orderBy('url')
-            ->get();
 
         $clients = Client::query()
             ->orderBy('name')
@@ -155,7 +153,6 @@ class OrderController extends Controller
             'order' => $order,
             'coins' => $coins,
             'statuses' => $statuses,
-            'sites' => $sites,
             'clients' => $clients,
             'sellers' => $sellers,
         ]);

@@ -166,6 +166,7 @@ class SiteController extends Controller
             'categories' => $categories,
             'types' => $types,
             'projects' => $projects,
+            'list' => session('list'),
         ]);
     }
 
@@ -294,6 +295,26 @@ class SiteController extends Controller
     {
         $project->sites()->toggle([$site->id]);
 
+        return back();
+    }
+
+    public function go(Request $request)
+    {
+        $input = $request->validate([
+            'selected' => ['required', 'array'],
+            'selected.*' => ['required', 'string'],
+        ]);
+
+        $sites = [];
+
+        foreach($input['selected'] as $site) {
+            $sites[$site] = Site::query()
+                ->where('url', $site)
+                ->first();
+        }
+
+        $request->session()->flash('list', $sites);
+        
         return back();
     }
 }

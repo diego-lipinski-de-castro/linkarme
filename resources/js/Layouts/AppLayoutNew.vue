@@ -39,6 +39,7 @@ const navigation = [
     { name: t('Dashboard'), href: route('dashboard'), icon: ComputerDesktopIcon, current: route().current('dashboard') },
     { name: t('Sites'), href: route('sites.index'), icon: ClockIcon, current: route().current('sites.*') },
     { name: t('Orders'), href: route('orders.index'), icon: ScaleIcon, current: route().current('orders.*') },
+    { name: t('Invoices'), href: route('invoices.index'), icon: ScaleIcon, current: route().current('invoices.*') },
     { name: t('Clients'), href: route('clients.index'), icon: ClockIcon, current: route().current('clients.*') },
     { name: t('Sellers'), href: route('sellers.index'), icon: ClockIcon, current: route().current('sellers.*') },
     { name: t('Categories'), href: route('categories.index'), icon: ClockIcon, current: route().current('categories.*') },

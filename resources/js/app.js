@@ -17,6 +17,7 @@ import AppSuspense from '@/Layouts/AppSuspense.vue'
 import Spinner from '@/Components/Spinner.vue'
 import Particles from "@tsparticles/vue3";
 import { loadFull } from "tsparticles"
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 
 window.tippy = tippy
 
@@ -65,6 +66,7 @@ createInertiaApp({
             .use(Particles, {
                 init: async (engine) => await loadFull(engine)
             })
+            .use(autoAnimatePlugin)
             .component('AppSuspense', AppSuspense)
             .component('Spinner', Spinner)
             .mount(el);

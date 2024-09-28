@@ -64,6 +64,11 @@ class Order extends Model implements Auditable
         });
     }
 
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
     public function site()
     {
         return $this->belongsTo(Site::class);

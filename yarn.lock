@@ -1513,6 +1513,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@formkit/auto-animate@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "@formkit/auto-animate@npm:0.8.2"
+  checksum: 10c0/0b24af241c229f37643cd62ea78fd7fddf621c06516cf62452035ea0bf489b6b53068eea47abb40b6bb3653bb91c1efad8b7257014a3559d26ad77b47b5337cb
+  languageName: node
+  linkType: hard
+
 "@headlessui/vue@npm:^1.7.23":
   version: 1.7.23
   resolution: "@headlessui/vue@npm:1.7.23"
@@ -8506,6 +8513,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@alpinejs/persist": "npm:^3.14.1"
+    "@formkit/auto-animate": "npm:^0.8.2"
     "@headlessui/vue": "npm:^1.7.23"
     "@heroicons/vue": "npm:^2.1.5"
     "@inertiajs/inertia": "npm:^0.11.1"
