@@ -65,6 +65,16 @@ class GoogleSheetService
     }
 
     /**
+     * Append multiple rows to the sheet.
+     */
+    public function appendRows(string $range, array $values)
+    {
+        $body = new Sheets\ValueRange(['values' => $values]);
+        $params = ['valueInputOption' => 'RAW'];
+        return $this->service->spreadsheets_values->append($this->spreadsheetId, $range, $body, $params);
+    }
+
+    /**
      * Update a specific range in the sheet.
      */
     public function updateCell(string $range, array $values)

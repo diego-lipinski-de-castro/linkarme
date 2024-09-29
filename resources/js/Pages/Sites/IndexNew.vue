@@ -588,17 +588,22 @@ const expanded = ref([])
 
                                 <button @click="openImportDialog = true" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
                                     <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Import') }}</span>
-                                    <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </button>
 
                                 <a :href="route('sites.exportUrls')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
                                     <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Export urls') }}</span>
-                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                    <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </a>
 
                                 <a :href="route('sites.exportPending')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
                                     <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Export pending') }}</span>
-                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                    <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                </a>
+
+                                <a v-show="false" :href="route('sites.sync')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Sync') }}</span>
+                                    <ArrowPathIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                                 </a>
                             </div>
                         </div>

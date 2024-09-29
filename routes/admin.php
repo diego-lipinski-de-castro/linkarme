@@ -67,6 +67,7 @@ Route::prefix('admin')->group(function () {
     Route::post('sites/import', [SiteController::class, 'import'])->name('sites.import')->middleware(['auth']); // ok
     Route::get('sites/exportUrls', [SiteController::class, 'exportUrls'])->name('sites.exportUrls')->middleware(['auth']); // ok
     Route::get('sites/exportPending', [SiteController::class, 'exportPending'])->name('sites.exportPending')->middleware(['auth']); // ok
+    Route::get('sites/sync', [SiteController::class, 'sync'])->name('sites.sync')->middleware(['auth']); // ok
     
     Route::get('sites/offers', [OfferController::class, 'index'])->name('sites.offers')->middleware(['auth']);
     

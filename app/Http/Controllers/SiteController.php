@@ -47,18 +47,6 @@ class SiteController extends Controller
      */
     public function index()
     {
-        // $googleSheetService = new GoogleSheetService();
-
-        // $sheet = 'Portais PT';
-
-        // $column = 'D';
-
-        // $query = 'trocajogo.com.br';
-
-        // $row = $googleSheetService->getRowByCellValue($sheet, $column, $query);
-
-        // dd($row);
-
         $coins = config('coins');
 
         $pendingCount = Site::query()
@@ -495,6 +483,31 @@ class SiteController extends Controller
 
         $request->session()->flash('importFailures', $importFailures);
         $request->session()->flash('importDiff', $diff);
+
+        return back();
+    }
+
+    public function sync(Request $request)
+    {
+        $googleSheetService = new GoogleSheetService();
+
+        $sheet = 'Lista';
+
+        $sites = Site::query()
+            ->limit(10)
+            ->get();
+
+        $list = [];
+        
+        foreach($sites as $site) {
+            $list[] = [
+                $site->url,
+                $site->da,
+                $site->dr
+            ];
+        };
+
+        $googleSheetService->appendRows($sheet, $list);
 
         return back();
     }
