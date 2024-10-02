@@ -24,6 +24,7 @@ use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\ProjectController;
 use App\Http\Controllers\Client\SiteController;
 use App\Http\Controllers\Client\BugController;
+use App\Http\Controllers\Client\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/clientes/login', '/login');
@@ -79,8 +80,21 @@ Route::group([
     Route::put('sites/{site}/note', [NoteController::class, 'update'])->name('notes.update')->middleware(['auth:client']);
 
     // 
+    Route::get('carts', [CartController::class, 'index'])
+        ->name('carts.index')
+        ->middleware(['auth:client']);
+
+    Route::post('carts', [CartController::class, 'store'])
+        ->name('carts.store')
+        ->middleware(['auth:client']);
+
+    // 
     Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index')
+        ->middleware(['auth:client']);
+
+    Route::post('orders', [OrderController::class, 'store'])
+        ->name('orders.store')
         ->middleware(['auth:client']);
 
     Route::get('projects', [ProjectController::class, 'index'])

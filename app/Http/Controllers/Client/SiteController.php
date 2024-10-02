@@ -6,6 +6,7 @@ use App\Filters\FilterLimiter;
 use App\Filters\UrlFilter;
 use App\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
@@ -33,11 +34,11 @@ class SiteController extends Controller
     {
         $coins = config('coins');
 
-        $favorites = auth()->user()->favorites_ids;
-        $interests = auth()->user()->interests_ids;
+        $favorites = auth('client')->user()->favorites_ids;
+        $interests = auth('client')->user()->interests_ids;
 
         $projects = Project::query()
-            ->ofClient(auth()->id())
+            ->ofClient(auth('client')->id())
             ->orderBy('name')
             ->get();
 
@@ -155,6 +156,12 @@ class SiteController extends Controller
             ->paginate(50)
             ->appends(request()->query());
 
+        $cartItems = Cart::query()
+            ->ofClient(auth('client')->id())
+            ->with('items')
+            ->first()
+            ?->items->pluck('url');
+
         return Inertia::render('Client/Sites/IndexNew', [
             'sites' => $sites,
             'coins' => $coins,
@@ -167,6 +174,7 @@ class SiteController extends Controller
             'types' => $types,
             'projects' => $projects,
             'list' => session('list'),
+            'cartItems' => $cartItems,
         ]);
     }
 
@@ -286,7 +294,7 @@ class SiteController extends Controller
 
     public function interest(Site $site)
     {
-        auth()->user()->interests()->toggle([$site->id]);
+        auth('client')->user()->interests()->toggle([$site->id]);
 
         return back();
     }

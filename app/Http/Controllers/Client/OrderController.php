@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewOrder;
+use App\Models\Cart;
 use App\Models\Country;
 use App\Models\Language;
 use App\Models\Order;
 use App\Models\Site;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -90,5 +95,26 @@ class OrderController extends Controller
             'sites' => $sites,
             'orders' => $orders,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        DB::transaction(function () {
+            $cart = Cart::query()
+                ->ofClient(auth('client')->id())
+                ->with('items')
+                ->first();
+
+            $order = Order::create([
+                'client_id' => auth('client')->id(),
+                'status' => 'WAITING',
+            ]);
+
+            $cart->delete();
+        });
+
+        // Mail::to(User::all())->send(new NewOrder);
+
+        return back();
     }
 }

@@ -205,7 +205,7 @@ const saleTotal = computed(() => {
                                             </thead>
                                             <tbody class="divide-y divide-gray-200 bg-white">
                                                 <tr v-for="(site, url) in list" :key="url">
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500"> {{ url }}</td>
+                                                    <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{{ url }}</td>
 
                                                     <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         {{ site === null ? '-' : site.seller?.name }}
@@ -278,7 +278,7 @@ const saleTotal = computed(() => {
                     <div class="ml-12 mr-16">
                         <form @submit.prevent="submit" class="grid grid-cols-1 sm:grid-cols-6 gap-6">
 
-                            <div class="col-span-6">
+                            <div class="col-span-3">
                                 <label for="status" class="block text-sm font-medium text-gray-700">{{ $t('Status') }}</label>
                                 <div class="mt-1">
 
@@ -302,18 +302,6 @@ const saleTotal = computed(() => {
                                 </div>
 
                                 <InputError class="mt-2" :message="form.errors.client_id"/>
-                            </div>
-
-                            <div class="col-span-3">
-                                <label for="seller_id" class="block text-sm font-medium text-gray-700">{{ $t('Seller') }}</label>
-                                <div class="mt-1">
-                                    <select v-model="form.seller_id" id="seller_id" name="seller_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                                        <option :value="null">Selecione</option>
-                                        <option v-for="(seller, index) in sellers" :key="index" :value="seller.id">{{ seller.name }}</option>
-                                    </select>
-                                </div>
-
-                                <InputError class="mt-2" :message="form.errors.seller_id"/>
                             </div>
 
                             <div class="col-span-6">
@@ -399,18 +387,6 @@ const saleTotal = computed(() => {
                                     <span class="px-1 text-sm font-medium text-white">{{ $t("Add sites") }}</span>
                                 </button>
 
-                            </div>
-
-                            <div class="col-span-6">
-                                <label for="site_id" class="block text-sm font-medium text-gray-700">{{ $t('Site') }}</label>
-                                <div class="mt-1">
-                                    <select v-model="form.site_id" id="site_id" name="site_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                                        <option :value="null">Selecione</option>
-                                        <option v-for="(site, index) in sites" :key="index" :value="site.id">{{ site.url }}</option>
-                                    </select>
-                                </div>
-
-                                <InputError class="mt-2" :message="form.errors.site_id"/>
                             </div>
 
                             <div class="col-span-6">

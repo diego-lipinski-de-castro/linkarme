@@ -66,7 +66,10 @@ class Order extends Model implements Auditable
 
     public function items()
     {
-        return $this->hasMany(Item::class);
+        return $this
+            ->belongsToMany(Site::class, 'order_item')
+            ->using(OrderItem::class)
+            ->withTimestamps();
     }
 
     public function site()

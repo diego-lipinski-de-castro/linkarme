@@ -28,6 +28,8 @@ import {
     PlusCircleIcon,
     InformationCircleIcon,
     XMarkIcon,
+    ShoppingBagIcon,
+    TrashIcon,
 } from '@heroicons/vue/24/outline'
 
 import { useTranslation } from "i18next-vue";
@@ -57,6 +59,8 @@ const props = defineProps({
     projects: Array,
 
     list: Object,
+
+    cartItems: Array,
 });
 
 const links = computed(() => {
@@ -199,8 +203,20 @@ onMounted(() => {
 const expanded = ref([])
 
 const form = useForm({
-    selected: [],
+    selected: props.cartItems,
 })
+
+watch(() => form.selected, () => {
+    updateCart();
+})
+
+const updateCart = () => {
+    form.post(route('client.carts.store'), {
+        preserveScroll: true,
+    })
+}
+
+const mutableList = ref(props.list ?? {});
 
 const submit = () => {
     form.post(route('client.sites.go'), {
@@ -208,6 +224,8 @@ const submit = () => {
         onSuccess: (res) => {
             openSitesDialog.value = true
             // form.reset();
+
+            mutableList.value = res.props.list;
         },
         onError: (error) => {
             console.log('onError', error)
@@ -216,6 +234,15 @@ const submit = () => {
 }
 
 const openSitesDialog = ref(false)
+
+const removeFromList = (k) => {
+    delete mutableList.value[k];
+    form.selected = Object.keys(mutableList.value);
+}
+
+const submitOrder = () => {
+    
+}
 </script>
 
 <template>
@@ -235,9 +262,9 @@ const openSitesDialog = ref(false)
                             leave-from="opacity-100 translate-y-0 sm:scale-100"
                             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                             <DialogPanel
-                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:p-6">
+                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:p-6 min-w-96">
                                 <h3 class="font-medium text-gray-900">
-                                    {{ $t("Add order") }}
+                                    {{ $t("Your basket") }}
                                 </h3>
 
                                 <div class="mt-4 mx-auto">
@@ -245,6 +272,7 @@ const openSitesDialog = ref(false)
                                         <table class="min-w-full divide-y divide-gray-300">
                                             <thead class="bg-gray-50">
                                                 <tr>
+                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
                                                     <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
                                                     <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor') }}</th>
                                                     <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
@@ -253,7 +281,15 @@ const openSitesDialog = ref(false)
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-200 bg-white">
-                                                <tr v-for="(site, url) in list" :key="url">
+                                                <tr v-for="(site, url) in mutableList" :key="url">
+                                                    <td class="whitespace-nowrap pl-4 py-2 text-red-500 hover:text-red-700 transition-all">
+                                                        <div class="flex items-center w-fit">
+                                                            <button @click="removeFromList(url)" type="button" class="min-w-5">
+                                                                <TrashIcon class="size-5"/>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+
                                                     <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500"> {{ url }}</td>
 
                                                     <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
@@ -279,9 +315,9 @@ const openSitesDialog = ref(false)
                                 </div>
 
                                 <div class="text-right">
-                                    <button type="button"
+                                    <button @click="submitOrder" type="button"
                                         class="mt-4 lex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 disabled:opacity-50">
-                                        <span class="px-1 text-sm font-medium text-white">{{ $t("Add order") }}</span>
+                                        <span class="px-1 text-sm font-medium text-white">{{ $t("Submit order") }}</span>
                                     </button>
                                 </div>
 
@@ -927,12 +963,10 @@ const openSitesDialog = ref(false)
 
         <Transition>
             <span v-if="form.selected.length > 0" class="fixed bottom-10 left-[50%] -translate-x-1/2  inline-flex rounded-md shadow-sm">
-                <button @click="form.selected = []" type="button" class="relative inline-flex items-center bg-blue-500 rounded-l-md px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors focus:z-10">
-                    <XMarkIcon class="size-4"/>
-                </button>
-                <button @click="submit" :disabled="form.processing" type="button" class="disabled:opacity-50 relative ml-px inline-flex items-center bg-blue-500 rounded-r-md px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors focus:z-10">
+                <button @click="submit" :disabled="form.processing" type="button" class="disabled:opacity-50 relative inline-flex items-center space-x-2 bg-blue-500 rounded-md px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors focus:z-10">
+                    <ShoppingBagIcon class="size-5"/>
                     <span v-if="form.processing">{{ $t('Generating order') }}</span>
-                    <span v-else>{{ $t('Add order for') }} {{ form.selected.length }} {{ form.selected.length === 1 ? $t('site') : $t('sites') }}</span>
+                    <span v-else>{{ form.selected.length }} {{ form.selected.length === 1 ? $t('site') : $t('sites') }} {{ $t('on your basket') }}</span>
                 </button>
             </span>
         </Transition>
