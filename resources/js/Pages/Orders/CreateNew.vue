@@ -30,10 +30,7 @@ const { coins, statuses, sites, clientes, sellers } = defineProps({
 
 const form = useForm({
     status: null,
-    site_id: null,
     client_id: null,
-    seller_id: null,
-    url: '',
     receipt_date: '',
     delivery_date: '',
     payment_date: '',
@@ -94,8 +91,7 @@ const costTotal = computed(() => {
 
     for(let site of form.sites) {
         total += Math.ceil((site.cost / coinStore.ratios[site.cost_coin]) / 100);
-        
-        console.log([site.cost_coin, site.cost], [coinStore.coin, Math.ceil((site.cost / coinStore.ratios[site.cost_coin]) / 100)])
+    
     }
 
     total = app.appContext.config.globalProperties.$filters.currency(total, {
@@ -111,8 +107,7 @@ const saleTotal = computed(() => {
 
     for(let site of form.sites) {
         total += Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100);
-        
-        console.log([site.sale_coin, site.sale], [coinStore.coin, Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100)])
+    
     }
 
     total = app.appContext.config.globalProperties.$filters.currency(total, {
@@ -387,12 +382,6 @@ const saleTotal = computed(() => {
                                     <span class="px-1 text-sm font-medium text-white">{{ $t("Add sites") }}</span>
                                 </button>
 
-                            </div>
-
-                            <div class="col-span-6">
-                                <InputLabel for="url" :value="$t('URL')"/>
-                                <TextInput id="url" v-model="form.url" type="text" class="mt-1 block w-full"/>
-                                <InputError class="mt-2" :message="form.errors.url"/>
                             </div>
 
                             <div class="col-span-2">

@@ -28,13 +28,13 @@ class OrderController extends Controller
     {
         $coins = config('coins');
 
-        $favorites = auth()->user()->favorites_ids;
-        $interests = auth()->user()->interests_ids;
+        $favorites = auth('client')->user()->favorites_ids;
+        $interests = auth('client')->user()->interests_ids;
 
         $languages = Language::query()
             ->whereHas('sites', function ($query) {
                 $query->whereHas('orders', function ($query) {
-                    $query->ofClient(auth()->id());
+                    $query->ofClient(auth('client')->id());
                 });
             })
             ->orderBy('name')
@@ -43,7 +43,7 @@ class OrderController extends Controller
         $countries = Country::query()
             ->whereHas('sites', function ($query) {
                 $query->whereHas('orders', function ($query) {
-                    $query->ofClient(auth()->id());
+                    $query->ofClient(auth('client')->id());
                 });
             })
             ->orderBy('name')
@@ -51,11 +51,11 @@ class OrderController extends Controller
 
         $sites = Site::query()
             ->whereHas('orders', function ($query) {
-                $query->ofClient(auth()->id());
+                $query->ofClient(auth('client')->id());
             })
             ->withCount([
                 'orders' => function ($query) {
-                    $query->ofClient(auth()->id());
+                    $query->ofClient(auth('client')->id());
                 },
             ])
             ->orderBy('orders_count', 'DESC')
@@ -72,16 +72,8 @@ class OrderController extends Controller
         ];
 
         $orders = QueryBuilder::for(Order::class)
-            ->ofClient(auth()->id())
-            ->with([
-                'site',
-                'site.category',
-            ])
+            ->ofClient(auth('client')->id())
             ->defaultSort('-created_at')
-            ->allowedSorts([])
-            ->allowedFilters([
-
-            ])
             ->paginate(30)
             ->appends(request()->query());
 
@@ -99,21 +91,33 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        DB::transaction(function () {
+        $orderCreated = DB::transaction(function () {
             $cart = Cart::query()
                 ->ofClient(auth('client')->id())
                 ->with('items')
                 ->first();
+
+            if(blank($cart)) {
+                return null;
+            }
 
             $order = Order::create([
                 'client_id' => auth('client')->id(),
                 'status' => 'WAITING',
             ]);
 
+            $order->items()->sync($cart->items->pluck('id'));
+
             $cart->delete();
+
+            return $order;
         });
 
-        // Mail::to(User::all())->send(new NewOrder);
+        if(blank($orderCreated)) {
+            return back();
+        }
+
+        Mail::to(User::all())->send(new NewOrder($orderCreated));
 
         return back();
     }

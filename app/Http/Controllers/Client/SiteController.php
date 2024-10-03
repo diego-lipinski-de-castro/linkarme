@@ -174,7 +174,7 @@ class SiteController extends Controller
             'types' => $types,
             'projects' => $projects,
             'list' => session('list'),
-            'cartItems' => $cartItems,
+            'cartItems' => $cartItems ?? [],
         ]);
     }
 

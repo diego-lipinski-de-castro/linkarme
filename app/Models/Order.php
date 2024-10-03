@@ -24,10 +24,7 @@ class Order extends Model implements Auditable
     ];
 
     protected $fillable = [
-        'site_id',
         'client_id',
-        'seller_id',
-        'url',
         'broken',
         'ssl',
         'receipt_date',
@@ -72,19 +69,9 @@ class Order extends Model implements Auditable
             ->withTimestamps();
     }
 
-    public function site()
-    {
-        return $this->belongsTo(Site::class);
-    }
-
     public function client()
     {
         return $this->belongsTo(Client::class);
-    }
-
-    public function seller()
-    {
-        return $this->belongsTo(Seller::class);
     }
 
     public function checks()
@@ -92,19 +79,9 @@ class Order extends Model implements Auditable
         return $this->morphMany(Check::class, 'checkable');
     }
 
-    public function scopeOfSite($query, $site)
-    {
-        return $query->where('site_id', $site);
-    }
-
     public function scopeOfClient($query, $client)
     {
         return $query->where('client_id', $client);
-    }
-
-    public function scopeOfSeller($query, $seller)
-    {
-        return $query->where('seller_id', $seller);
     }
 
     public function scopeStatus($query, $status)

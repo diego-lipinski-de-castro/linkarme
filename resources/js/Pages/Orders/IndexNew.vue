@@ -58,6 +58,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import AppSuspense from "../../Layouts/AppSuspense.vue";
 import { watchDebounced } from "@vueuse/core";
 import { useCoinStore } from '@/stores/coin'
+import { getOrderStatusColor } from '@/utils'
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -82,42 +83,6 @@ const links = computed(() => {
     _links.pop();
     return _links;
 });
-
-const _defaultColumns = [
-    { key: "url", label: t("Portal"), visible: true },
-    { key: "link", label: t("Link"), visible: true },
-    { key: "client", label: t("Client"), visible: true },
-    { key: "seller", label: t("Seller"), visible: true },
-    { key: "charged", label: t("Charged"), visible: true },
-    { key: "paid", label: t("Paid"), visible: true },
-    { key: "markup", label: t("Markup"), visible: true },
-    { key: "comission", label: t("Comission"), visible: true },
-    { key: "status", label: t("Status"), visible: true },
-    { key: "created_at", label: t("Created at"), visible: true },
-];
-
-const _columns = localStorage.getItem("orders.index.columns")
-    ? unionBy(
-        JSON.parse(localStorage.getItem("orders.index.columns")),
-        _defaultColumns,
-        "key"
-    )
-    : _defaultColumns;
-
-const columns = ref(_columns);
-
-watch(
-    columns,
-    (n, o) => {
-        localStorage.setItem(
-            "orders.index.columns",
-            JSON.stringify(columns.value)
-        );
-    },
-    {
-        deep: true,
-    }
-);
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
@@ -604,52 +569,44 @@ const openSitesDialog = ref(false)
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th v-show="columns[0].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Portal") }}
-                                        </th>
-                                        <th v-show="columns[1].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Link") }}
-                                        </th>
-                                        <th v-show="columns[2].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Client") }}
                                         </th>
-                                        <th v-show="columns[3].visible"
+
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            {{ $t("Seller") }}
+                                            {{ $t("Invoice") }}
                                         </th>
-                                        <th v-show="columns[4].visible"
+
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Charged") }}
                                         </th>
-                                        <th v-show="columns[5].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Paid") }}
                                         </th>
-                                        <th v-show="columns[6].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Markup") }}
                                         </th>
-                                        <th v-show="columns[7].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Comission") }}
                                         </th>
-                                        <th v-show="columns[8].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Status") }}
                                         </th>
-                                        <th v-show="columns[9].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Created at") }}
@@ -660,58 +617,45 @@ const openSitesDialog = ref(false)
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
-                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="order.url" target="_blank"
-                                                class="text-gray-500 hover:text-gray-900">
-                                                {{ order.site?.url ?? '' }}
-                                            </a>
-                                        </td>
-
-                                        <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="order.url" target="_blank" :title="order.url" class="text-blue-500 hover:text-blue-700 flex space-x-1">
-                                                <span>{{ $t('Open') }}</span>
-                                                <ArrowTopRightOnSquareIcon class="size-4"/>
-                                            </a>
-                                        </td>
-
-                                        <td v-show="columns[2].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.client?.name ?? "-" }}
                                         </td>
 
-                                        <td v-show="columns[3].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ order.seller?.name ?? "-" }}
+                                            #123456
                                         </td>
 
-                                        <td v-show="columns[4].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.formatted_charged ?? "-" }}
                                         </td>
 
-                                        <td v-show="columns[5].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.formatted_paid ?? "-" }}
                                         </td>
 
-                                        <td v-show="columns[6].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.formatted_markup ?? "-" }}
                                         </td>
 
-                                        <td v-show="columns[7].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{
                                                 order.formatted_comission ?? "-"
                                             }}
                                         </td>
 
-                                        <td v-show="columns[8].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ order.formatted_status ?? "-" }}
+                                        <td class="whitespace-nowrap px-6 py-4 text-xs text-white">
+                                            <span :class="['px-2 py-1 rounded-md font-bold', getOrderStatusColor(order)]">
+                                                {{ order.formatted_status ?? "-" }}
+                                            </span>
                                         </td>
 
-                                        <td v-show="columns[9].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{
                                                 new Date(

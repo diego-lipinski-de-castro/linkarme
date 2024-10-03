@@ -25,6 +25,7 @@ import { useTranslation } from "i18next-vue";
 import { useCoinStore } from '@/stores/coin'
 import AppSuspense from '../../../Layouts/AppSuspense.vue';
 import { watchDebounced } from '@vueuse/core';
+import { getOrderStatusColor } from '@/utils'
 
 const coinStore = useCoinStore()
 const { t } = useTranslation();
@@ -46,25 +47,6 @@ const links = computed(() => {
     _links.shift()
     _links.pop()
     return _links
-})
-
-const _defaultColumns = [
-    { key: 'url', label: t('Site'), visible: true },
-    { key: 'link', label: t('Link'), visible: true },
-    { key: 'created_at', label: t('Date'), visible: false },
-];
-
-const _columns =
-    localStorage.getItem('client.orders.index.columns') ?
-        unionBy(JSON.parse(localStorage.getItem('client.orders.index.columns')), _defaultColumns, 'key')
-        : _defaultColumns
-
-const columns = ref(_columns)
-
-watch(columns, (n, o) => {
-    localStorage.setItem('client.orders.index.columns', JSON.stringify(columns.value))
-}, {
-    deep: true,
 })
 
 const sort = ref(props.filters.sort)
@@ -238,29 +220,8 @@ onMounted(() => {
                 <div class="mt-5 hidden sm:block">
                     <div class="flex flex-col">
 
-                        <div>
+                        <div class="mt-5">
                             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Showing results for your orders:') }}&nbsp;{{ '379' }}&nbsp;{{ $t('of') }}&nbsp;{{' 512' }}&nbsp;{{ $t('total') }}</h2>
-                        </div>
-
-                        <hr class="my-5">
-
-                        <div class="flex flex-col">
-                            <span class="font-bold text-sm whitespace-nowrap">{{ $t('Column filter:') }}</span>
-                            <div class="mt-2 flex flex-wrap">
-                                <div v-for="(column, index) in columns" :key="index" class="px-4 py-2 relative flex">
-                                    <div class="flex items-center h-5">
-                                        <input v-model="column.visible" :value="column.key" :id="column.key"
-                                            :name="column.key" type="checkbox"
-                                            class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" />
-                                    </div>
-
-                                    <div class="ml-2 text-sm">
-                                        <label :for="column.key" class="font-medium text-gray-700 whitespace-nowrap">{{
-                                            column.label
-                                        }}</label>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div
@@ -268,39 +229,46 @@ onMounted(() => {
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th v-show="columns[0].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            {{ $t('Site') }}
+                                            {{ $t('Invoice') }}
                                         </th>
 
-                                        <th v-show="columns[1].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Link') }}
                                         </th>
 
-                                        <th v-show="columns[2].visible"
+                                        <th
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Date') }}
+                                            scope="col">{{ $t('Created at') }}
+                                        </th>
+
+                                        <th
+                                            class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">{{ $t('Updated at') }}
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
-                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            {{ order.site?.url }}
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            #123456
                                         </td>
 
-                                        <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            <a :href="order.url" target="_blank" :title="order.url" class="text-blue-500 hover:text-blue-700 flex space-x-1">
-                                                <span>{{ $t('Open') }}</span>
-                                                <ArrowTopRightOnSquareIcon class="size-4"/>
-                                            </a>
+                                        <td class="whitespace-nowrap px-4 py-4 text-xs text-white">
+                                            <span :class="['px-2 py-1 rounded-md font-bold', getOrderStatusColor(order)]">
+                                                {{ order.formatted_status ?? "-" }}
+                                            </span>
                                         </td>
                                     
-                                        <td v-show="columns[2].visible"
-                                            class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ new Date(order.created_at).toLocaleString() }}
+                                        </td>
+
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                            {{ new Date(order.updated_at).toLocaleString() }}
                                         </td>
                                     </tr>
                                 </tbody>

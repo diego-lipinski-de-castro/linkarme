@@ -60,7 +60,10 @@ const props = defineProps({
 
     list: Object,
 
-    cartItems: Array,
+    cartItems: {
+        type: Array,
+        default: () => [],
+    }
 });
 
 const links = computed(() => {
@@ -221,6 +224,7 @@ const mutableList = ref(props.list ?? {});
 const submit = () => {
     form.post(route('client.sites.go'), {
         preserveScroll: true,
+        preserveState: true,
         onSuccess: (res) => {
             openSitesDialog.value = true
             // form.reset();
@@ -241,7 +245,10 @@ const removeFromList = (k) => {
 }
 
 const submitOrder = () => {
-    
+    Inertia.post(route('client.orders.store'), {
+        preserveScroll: true,
+        preserveState: true,
+    })
 }
 </script>
 

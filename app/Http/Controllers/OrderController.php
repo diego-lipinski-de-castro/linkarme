@@ -37,9 +37,7 @@ class OrderController extends Controller
 
         $orders = QueryBuilder::for(Order::class)
             ->with([
-                'site',
                 'client',
-                'seller',
             ])
             ->defaultSort('-created_at')
             // ->allowedSorts([])
@@ -126,15 +124,8 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         $order->load([
-            'items' => function ($query) {
-                $query->with([
-                    'site',
-                    'links',
-                ]);
-            },
-            'site',
+            'items',
             'client',
-            'seller',
         ]);
 
         $coins = config('coins');
@@ -145,16 +136,11 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
-        $sellers = Seller::query()
-            ->orderBy('name')
-            ->get();
-
         return Inertia::render('Orders/EditNew', [
             'order' => $order,
             'coins' => $coins,
             'statuses' => $statuses,
             'clients' => $clients,
-            'sellers' => $sellers,
         ]);
     }
 

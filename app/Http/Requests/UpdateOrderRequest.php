@@ -26,12 +26,7 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'status' => 'required|in:WAITING,PRODUCTION,SUBMITTED,PROCESSING,PUBLISHED,INVOICE,COMPLETED',
-            'site_id' => 'required|exists:sites,id',
             'client_id' => 'required|exists:clients,id',
-            'seller_id' => 'required|exists:sellers,id',
-            'url' => 'required|string|max:255',
-            // 'ssl' => '',
-            // 'broken' => '',
             'receipt_date' => 'nullable|date',
             'delivery_date' => 'nullable|date',
             'payment_date' => 'nullable|date',
