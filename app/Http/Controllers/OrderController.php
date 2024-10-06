@@ -38,6 +38,7 @@ class OrderController extends Controller
         $orders = QueryBuilder::for(Order::class)
             ->with([
                 'client',
+                'invoice',
             ])
             ->defaultSort('-created_at')
             // ->allowedSorts([])
@@ -124,7 +125,11 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         $order->load([
-            'items',
+            'items' => function ($query) {
+                $query->with([
+                    'seller',
+                ]);
+            },
             'client',
         ]);
 
@@ -141,6 +146,7 @@ class OrderController extends Controller
             'coins' => $coins,
             'statuses' => $statuses,
             'clients' => $clients,
+            'sites' => session('sites'),
         ]);
     }
 

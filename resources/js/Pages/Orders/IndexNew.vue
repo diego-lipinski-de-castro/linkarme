@@ -201,6 +201,17 @@ const submit = () => {
 
 const openOrderDialog = ref(false)
 const openSitesDialog = ref(false)
+
+const invoiceForm = useForm({
+    selected: [],
+})
+
+const submitInvoice = () => {
+    invoiceForm.post(route('invoices.store'), {
+        preserveScroll: true,
+        preserveState: true,
+    })
+}
 </script>
 
 <template>
@@ -569,37 +580,22 @@ const openSitesDialog = ref(false)
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
+                                        <th class="bg-gray-50 pl-4 py-3 text-left text-sm font-semibold text-gray-900">    
+                                        </th>
+                                        <th
+                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">
+                                            {{ $t("Number") }}
+                                        </th>
                                         <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Client") }}
                                         </th>
-
                                         <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Invoice") }}
-                                        </th>
-
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Charged") }}
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Paid") }}
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Markup") }}
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Comission") }}
                                         </th>
                                         <th
                                             class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
@@ -617,36 +613,27 @@ const openSitesDialog = ref(false)
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
+                                        <td class="pl-4 py-4">
+                                            <div v-if="order.invoice === null" class="w-fit">
+                                                <input v-model="invoiceForm.selected" :value="order.id" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" />
+                                            </div>
+                                        </td>
+
+                                        <td
+                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                            #{{ order.number }}
+                                        </td>
+
                                         <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ order.client?.name ?? "-" }}
                                         </td>
 
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            #123456
-                                        </td>
-
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ order.formatted_charged ?? "-" }}
-                                        </td>
-
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ order.formatted_paid ?? "-" }}
-                                        </td>
-
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ order.formatted_markup ?? "-" }}
-                                        </td>
-
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{
-                                                order.formatted_comission ?? "-"
-                                            }}
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                            <Link v-if="order.invoice" :href="route('invoices.edit', order.invoice.id)" class="text-blue-500 hover:text-blue-700 transition-colors">
+                                                #{{ order.invoice?.number }}
+                                            </Link>
+                                            <span v-else>-</span>
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4 text-xs text-white">
@@ -709,6 +696,16 @@ const openSitesDialog = ref(false)
                     </div>
                 </div>
             </div>
+
+            <Transition>
+                <span v-if="invoiceForm.selected.length > 0" class="fixed bottom-10 left-[50%] -translate-x-1/2  inline-flex rounded-md shadow-sm">
+                    <button @click="submitInvoice" :disabled="invoiceForm.processing" type="button" class="disabled:opacity-50 relative inline-flex items-center space-x-2 bg-blue-500 rounded-md px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors focus:z-10">
+                        <PaperClipIcon class="size-5"/>
+                        <span v-if="invoiceForm.processing">{{ $t('Generating invoice') }}</span>
+                        <span v-else>{{ $t('Generate invoice for') }} {{ invoiceForm.selected.length }} {{ invoiceForm.selected.length === 1 ? $t('order') : $t('orders') }}</span>
+                    </button>
+                </span>
+            </Transition>
         </AppLayoutNew>
     </AppSuspense>
 </template>

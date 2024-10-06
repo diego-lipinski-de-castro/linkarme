@@ -28,6 +28,7 @@ class Seller extends Authenticatable
         'email',
         'phone',
         'password',
+        'comission',
     ];
 
     /**
@@ -47,6 +48,7 @@ class Seller extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'comission' => 'integer',
     ];
 
     /**

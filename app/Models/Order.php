@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Support\Str;
 
 class Order extends Model implements Auditable
 {
@@ -24,6 +25,7 @@ class Order extends Model implements Auditable
     ];
 
     protected $fillable = [
+        'number',
         'client_id',
         'broken',
         'ssl',
@@ -36,6 +38,7 @@ class Order extends Model implements Auditable
         'comission',
         'company',
         'status',
+        'invoice_id',
     ];
 
     protected $casts = [
@@ -53,11 +56,13 @@ class Order extends Model implements Auditable
     protected static function booted()
     {
         static::creating(function ($order) {
-            $order->url = trim($order->url);
-        });
+            if (! blank($order->number)) {
+                return;
+            }
 
-        static::updating(function ($order) {
-            $order->url = trim($order->url);
+            do {
+                $order->setAttribute('number', Str::upper(Str::random(6)));
+            } while (self::where('number', $order->number)->exists());
         });
     }
 
@@ -77,6 +82,11 @@ class Order extends Model implements Auditable
     public function checks()
     {
         return $this->morphMany(Check::class, 'checkable');
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
     }
 
     public function scopeOfClient($query, $client)

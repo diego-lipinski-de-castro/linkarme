@@ -20,7 +20,7 @@ const app = getCurrentInstance()
 
 const coinStore = useCoinStore()
 
-const { coins, statuses, sites, clientes, sellers } = defineProps({
+const { coins, statuses, clientes, sellers, sites } = defineProps({
     coins: Object,
     statuses: Object,
     clients: Array,

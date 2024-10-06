@@ -30,6 +30,7 @@ class StoreSellerRequest extends FormRequest
             'phone' => ['nullable'],
             // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'password' => ['required'],
+            'comission' => ['nullable'],
         ];
     }
 

@@ -26,6 +26,7 @@ const form = useForm({
     email: seller.email,
     password: '',
     phone: seller.phone,
+    comission: seller.comission,
 });
 
 const submit = () => {

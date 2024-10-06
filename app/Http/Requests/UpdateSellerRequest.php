@@ -30,6 +30,7 @@ class UpdateSellerRequest extends FormRequest
             'phone' => ['nullable'],
             // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'password' => ['nullable'],
+            'comission' => ['nullable'],
         ];
     }
 

@@ -21,6 +21,7 @@ const form = useForm({
     email: '',
     password: '',
     phone: '',
+    comission: 0,
 });
 
 const submit = () => {

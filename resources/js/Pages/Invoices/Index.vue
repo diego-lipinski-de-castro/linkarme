@@ -147,7 +147,7 @@ const get = async () => {
 
 <template>
     <AppSuspense>
-    
+
         <AppLayoutNew :title="$t('Invoices')">
             <div class="rounded-md bg-white px-5 py-6 shadow sm:px-6">
                 <div class="flex flex-col">
@@ -156,8 +156,9 @@ const get = async () => {
                         <h2 class="text-xl font-bold leading-tight">{{ $t('Invoices') }}</h2>
 
                         <div class="flex space-x-3">
-                            <Link :href="route('invoices.create')" class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-all">
-                                <span class="px-1 text-sm font-medium text-white">{{ $t("Add invoice") }}</span>
+                            <Link :href="route('invoices.create')"
+                                class="flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-all">
+                            <span class="px-1 text-sm font-medium text-white">{{ $t("Add invoice") }}</span>
                             </Link>
                         </div>
                     </div>
@@ -202,53 +203,15 @@ const get = async () => {
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th v-show="columns[0].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            {{ $t("Portal") }}
+                                            {{ $t("Number") }}
                                         </th>
-                                        <th v-show="columns[1].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Link") }}
-                                        </th>
-                                        <th v-show="columns[2].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Client") }}
-                                        </th>
-                                        <th v-show="columns[3].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Seller") }}
-                                        </th>
-                                        <th v-show="columns[4].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Charged") }}
-                                        </th>
-                                        <th v-show="columns[5].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Paid") }}
-                                        </th>
-                                        <th v-show="columns[6].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Markup") }}
-                                        </th>
-                                        <th v-show="columns[7].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            {{ $t("Comission") }}
-                                        </th>
-                                        <th v-show="columns[8].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Status") }}
                                         </th>
-                                        <th v-show="columns[9].visible"
-                                            class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
                                             {{ $t("Created at") }}
                                         </th>
@@ -258,59 +221,16 @@ const get = async () => {
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(invoice, index) in invoices.data" :key="index" class="bg-white">
-                                        <td v-show="columns[0].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="invoice.url" target="_blank"
-                                                class="text-gray-500 hover:text-gray-900">
-                                                {{ invoice.site?.url ?? '' }}
-                                            </a>
-                                        </td>
-
-                                        <td v-show="columns[1].visible" class="whitespace-nowrap px-6 py-4 text-sm">
-                                            <a :href="invoice.url" target="_blank" :title="invoice.url" class="text-blue-500 hover:text-blue-700 flex space-x-1">
-                                                <span>{{ $t('Open') }}</span>
-                                                <ArrowTopRightOnSquareIcon class="size-4"/>
-                                            </a>
-                                        </td>
-
-                                        <td v-show="columns[2].visible"
+                                        <td
                                             class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ invoice.client?.name ?? "-" }}
+                                            #{{ invoice.number }}
                                         </td>
 
-                                        <td v-show="columns[3].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ invoice.seller?.name ?? "-" }}
-                                        </td>
-
-                                        <td v-show="columns[4].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ invoice.formatted_charged ?? "-" }}
-                                        </td>
-
-                                        <td v-show="columns[5].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ invoice.formatted_paid ?? "-" }}
-                                        </td>
-
-                                        <td v-show="columns[6].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ invoice.formatted_markup ?? "-" }}
-                                        </td>
-
-                                        <td v-show="columns[7].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{
-                                                invoice.formatted_comission ?? "-"
-                                            }}
-                                        </td>
-
-                                        <td v-show="columns[8].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{ invoice.formatted_status ?? "-" }}
                                         </td>
 
-                                        <td v-show="columns[9].visible"
-                                            class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {{
                                                 new Date(
                                                     invoice.created_at
