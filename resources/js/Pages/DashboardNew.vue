@@ -12,7 +12,7 @@ const props = defineProps({
 <template>
     <AppSuspense>
         <AppLayoutNew :title="$t('Dashboard')">
-            <div>
+            <div v-show="false">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 sm:gap-y-6 rounded-md overflow-hidden shadow-sm sm:rounded-none sm:shadow-none">
                     <Link v-for="(item, index) in data" :key="index" :href="item.link" class="px-8 py-6 bg-white overflow-hidden shadow-sm sm:rounded-md border-b sm:border-none sm:hover:shadow-lg transition-all">
                         <span class="text-2xl">{{ item.value }} {{ item.label }}</span>
