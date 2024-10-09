@@ -16,7 +16,6 @@ import {
     PencilSquareIcon,
     TrashIcon,
     EyeIcon,
-    ArrowRightOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 
@@ -149,10 +148,6 @@ const destroy = (seller) => {
                                                     class="text-red-500 hover:text-red-700">
                                                     <TrashIcon class="h-5 w-5" />
                                                 </button>
-
-                                                <a :href="route('impersonate', [seller.id, 'seller', 'seller.dashboard'])" class="text-purple-500 hover:text-purple-700">
-                                                    <ArrowRightOnRectangleIcon class="h-5 w-5" />
-                                                </a>
                                             </div>
                                         </td>
                                     </tr>

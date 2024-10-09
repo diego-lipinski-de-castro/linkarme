@@ -54,8 +54,6 @@ class SiteController extends Controller
             ->ofStatus('PENDING')
             ->count();
 
-        $offersCount = Offer::count();
-
         $countries = Country::query()
             ->whereHas('sites')
             ->orderBy('name')
@@ -183,7 +181,6 @@ class SiteController extends Controller
             'coins' => $coins,
             'filters' => $filters,
             'pendingCount' => $pendingCount,
-            'offersCount' => $offersCount,
             'countries' => $countries,
             'languages' => $languages,
             'categories' => $categories,

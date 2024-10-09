@@ -6,13 +6,18 @@ import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import unionBy from 'lodash/unionBy'
 import {
     Dialog,
     DialogPanel,
     TransitionChild,
     TransitionRoot,
-    Switch, SwitchGroup, SwitchLabel,
+    Switch,
+    SwitchGroup,
+    SwitchLabel,
+    Menu,
+    MenuButton,
+    MenuItems,
+    MenuItem,
 } from '@headlessui/vue'
 import {
     ArrowLongLeftIcon,
@@ -20,6 +25,7 @@ import {
     CloudArrowDownIcon,
     CloudArrowUpIcon,
     MagnifyingGlassIcon,
+    ChevronUpDownIcon,
 } from '@heroicons/vue/20/solid'
 import {
     PencilSquareIcon,
@@ -40,7 +46,8 @@ import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 import VueMultiselect from 'vue-multiselect'
-import { watchDebounced } from '@vueuse/core';
+import { watchDebounced, useStorage } from '@vueuse/core';
+import draggable from 'vuedraggable';
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -62,7 +69,6 @@ const props = defineProps({
     importDiff: Number,
 
     pendingCount: Number,
-    offersCount: Number,
 
     filters: Object,
 });
@@ -74,34 +80,32 @@ const links = computed(() => {
     return _links
 })
 
-const _defaultColumns = [
-    { key: 'sale', label: t('Price'), visible: true },
-    { key: 'url', label: t('Domain'), visible: true },
-    { key: 'da', label: t('DA'), visible: true },
-    { key: 'dr', label: t('DR'), visible: true },
-    { key: 'sponsor', label: t('Marked as sponsored'), visible: true },
-    { key: 'link_type', label: t('Link'), visible: false },
-    { key: 'ssl', label: t('SSL'), visible: false },
-    { key: 'category', label: t('Category'), visible: false },
-    { key: 'misc', label: t('Misc'), visible: false },
-    { key: 'obs', label: t('Obs'), visible: false },
-    { key: 'example', label: t('Example'), visible: false },
-    { key: 'inserted_at', label: t('Upload date'), visible: false },
-    { key: 'last_updated_at', label: t('Updated date'), visible: false },
+const columns = useStorage('sites.index.columns', [
+    { key: 'sale', label: t('Price'), visible: true, sortable: true, },
+    { key: 'url', label: t('Domain'), visible: true, sortable: true, },
+    { key: 'da', label: t('DA'), visible: true, sortable: true, },
+    { key: 'dr', label: t('DR'), visible: true, sortable: true, },
+    { key: 'link_type', label: t('Link'), visible: false, sortable: false, },
+    { key: 'tr', label: t('TR'), visible: true, sortable: true, },
+    { key: 'country', label: t('Country'), visible: false, sortable: false, },
+    { key: 'language', label: t('Language'), visible: false, sortable: false, },
+    // { key: 'sponsor', label: t('Marked as sponsored'), visible: true, sortable: false, },
+    { key: 'category', label: t('Category'), visible: false, sortable: false, },
+    // Nichos aceitos
+    // { key: 'misc', label: t('Misc'), visible: false, sortable: false, },
+    { key: 'obs', label: t('Obs'), visible: false, sortable: false, },
+    { key: 'example', label: t('Example'), visible: false, sortable: false, },
+    { key: 'ssl', label: t('SSL'), visible: false, sortable: false, },
+    { key: 'inserted_at', label: t('Upload date'), visible: false, sortable: true, },
+    { key: 'last_updated_at', label: t('Updated date'), visible: false, sortable: true, },
     ...props.types.map(type => ({
-        key: `type-${type.id}`, label: type.name, visible: false
+        key: `type-${type.id}`, label: type.name, visible: false, sortable: false,
     }))
-];
+])
 
-const _columns =
-    localStorage.getItem('sites.index.columns') ?
-        unionBy(JSON.parse(localStorage.getItem('sites.index.columns')), _defaultColumns, 'key')
-        : _defaultColumns
-
-const columns = ref(_columns)
+const visibleColumns = computed(() => columns.value.filter((column) => column.visible))
 
 watch(columns, (n, o) => {
-    localStorage.setItem('sites.index.columns', JSON.stringify(columns.value))
     tippy('[data-tippy-content]');
 }, {
     deep: true,
@@ -110,7 +114,6 @@ watch(columns, (n, o) => {
 const sort = ref(props.filters.sort)
 
 const filters = reactive({
-    // sellers filter
     url: props.filters.filter.url,
     sale: { from: props.filters.filter.sale.from, to: props.filters.filter.sale.to },
     da: { from: props.filters.filter.da.from, to: props.filters.filter.da.to },
@@ -612,17 +615,14 @@ const expanded = ref([])
                             <Link v-if="pendingCount > 0" :href="route('sites.index', { 'filter[of_status]': 'PENDING' })"
                                 class="w-fit text-sm font-medium text-blue-500 hover:text-blue-700">{{ pendingCount }} sites
                                 aguardando aprovação.</Link>
-
-                            <Link v-if="offersCount > 0" :href="route('sites.offers')"
-                                class="w-fit text-sm font-medium text-blue-500 hover:text-blue-700"> 
-                                {{ offersCount > 1 ? `${offersCount} novas ofertas de valor` : `${offersCount} nova oferta de valor` }}
-                            </Link>
                         </div>
 
                         <hr class="my-5">
 
-                        <div class="flex flex-col">
-                            <span class="font-bold text-sm whitespace-nowrap">{{ $t('Column filter:') }}</span>
+                        <div class="flex justify-end">
+                            <!-- <span class="font-bold text-sm whitespace-nowrap">{{ $t('Column filter:') }}</span>
+
+
                             <div class="mt-2 flex flex-wrap">
                                 <div v-for="(column, index) in columns" :key="index" class="px-4 py-2 relative flex">
                                     <div class="flex items-center h-5">
@@ -637,7 +637,63 @@ const expanded = ref([])
                                         }}</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
+
+                            <Menu as="div" class="relative order-2 lg:order-1">
+                                <div>
+                                    <MenuButton
+                                        class="text-gray-700 shadow-sm bg-white border border-gray-300 flex justify-center items-center rounded-md px-3 py-1 text-sm"
+                                    >
+                                        {{ $t('Columns') }}
+                                    </MenuButton>
+                                </div>
+
+                                <transition
+                                    enter-active-class="transition ease-out duration-100"
+                                    enter-from-class="transform opacity-0 scale-95"
+                                    enter-to-class="transform opacity-100 scale-100"
+                                    leave-active-class="transition ease-in duration-75"
+                                    leave-from-class="transform opacity-100 scale-100"
+                                    leave-to-class="transform opacity-0 scale-95"
+                                >
+                                    <MenuItems
+                                        class="overflow-y-scroll absolute right-0 z-10 mt-2 w-64 max-h-96 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-gray-300 focus:outline-none"
+                                    >
+                                        <div class="flex">
+                                            <draggable
+                                                v-model="columns"
+                                                tag="div"
+                                                group="columns"
+                                                ghost-class="ghost"
+                                                item-key="columns"
+                                                handle=".handler"
+                                                class="divide-y divide-gray-200 w-full min-h-full flex flex-col font-medium"
+                                            >
+                                                <template #item="{ element }">
+                                                    <div class="text-sm px-2">
+                                                        <div class="flex w-full items-center gap-2 py-2.5 pr-2">
+                                                            <span class="cursor-grab block handler">
+                                                                <ChevronUpDownIcon class="opacity-50 h-5 w-4" />
+                                                            </span>
+                                                            <span class="w-full font-medium text-gray-700">{{
+                                                                element.label
+                                                            }}</span>
+                                                            <input
+                                                                v-model="element.visible"
+                                                                :value="element.key"
+                                                                :id="element.key"
+                                                                :name="element.key"
+                                                                type="checkbox"
+                                                                class="focus:ring-rauzee-light-500 h-4 w-4 text-rauzee-light-600 border-gray-300 rounded"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </draggable>
+                                        </div>
+                                    </MenuItems>
+                                </transition>
+                            </Menu>
                         </div>
 
                         <div
@@ -645,103 +701,21 @@ const expanded = ref([])
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th v-show="columns[0].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Price') }}</span>
-                                                <TableSortButton column='sale' :current="sort"
-                                                    @onClick='(column) => sort = column' />
+                                        <th v-for="column in visibleColumns" :key="column.key" class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900" scope="col">
+                                            <div v-if="column.sortable">
+                                                <div class="flex group">
+                                                    <span class="block">{{ column.label }}</span>
+                                                    <TableSortButton :column='column.key' :current="sort" @onClick='(column) => sort = column' />
+                                                </div>
                                             </div>
-                                        </th>
 
-                                        <th v-show="columns[1].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Domain') }}</span>
-                                                <TableSortButton column='url' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-                                        <th v-show="columns[2].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('DA') }}</span>
-                                                <TableSortButton column='da' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-
-                                        <th v-show="columns[3].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('DR') }}</span>
-                                                <TableSortButton column='dr' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-                                        
-                                        <th v-show="columns[4].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Marked as sponsored') }}</th>
-
-                                        <th v-for="(type, index) in types" v-show="columns[columns.length - types.length + index].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ type.name }}</th>
-
-                                        <th v-show="columns[5].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Link') }}</th>
-
-                                        <th v-show="columns[6].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('SSL') }}</th>
-                                            
-                                        <th v-show="columns[7].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Category') }}</th>
-
-                                        <th v-show="columns[8].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Misc') }}</th>
-                                        
-                                        <th v-show="columns[9].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Obs') }}</th>
-                                        <th v-show="columns[10].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Example') }}</span>
-                                                <TableSortButton column='example' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-                                        <th v-show="columns[11].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Upload date') }}</span>
-                                                <TableSortButton column='inserted_at' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
-                                        </th>
-                                        <th v-show="columns[12].visible"
-                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                            <div class="flex group">
-                                                <span class="block">{{ $t('Updated date') }}</span>
-                                                <TableSortButton column='last_updated_at' :current="sort"
-                                                    @onClick='(column) => sort = column' />
-                                            </div>
+                                            <span v-else>
+                                                {{ column.label }}
+                                            </span>
                                         </th>
 
                                         <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-
                                         </th>
                                     </tr>
                                 </thead>
@@ -749,105 +723,106 @@ const expanded = ref([])
 
                                     <template v-for="(site, index) in sites.data" :key="index">
                                         <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1), 'bg-red-50': site.deleted_at !== null, }]">
-                                            <td v-show="columns[0].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                                <div class="flex space-x-2">
-                                                    <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
-                                                        <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                                        <span>
-                                                            {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
-                                                            {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+
+                                            <td v-for="column in visibleColumns" :key="columns.key" class="whitespace-nowrap px-4 py-4 text-sm">
+
+                                                <div v-if="column.key === 'sale'">
+                                                    <div class="flex space-x-2">
+                                                        <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                                            <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                            <span>
+                                                                {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                                {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                            </span>
                                                         </span>
-                                                    </span>
 
-                                                    <button v-if="site.types.length > 0" type="button" @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) :  expanded.push(index)"
-                                                        class="text-gray-500 hover:text-gray-700">
-                                                        <InformationCircleIcon class="h-5 w-5" />
-                                                    </button>
+                                                        <button v-if="site.types.length > 0" type="button" @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) :  expanded.push(index)"
+                                                            class="text-gray-500 hover:text-gray-700">
+                                                            <InformationCircleIcon class="h-5 w-5" />
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </td>
-                                            <td v-show="columns[1].visible" class="whitespace-nowrap px-4 py-4 text-sm">
-                                                <Link :href="route('sites.edit', site.id)" :class="[{
-                                                    'text-gray-500 hover:text-gray-900': site.deleted_at === null,
-                                                    'text-red-500 hover:text-red-700': site.deleted_at !== null,
-                                                }, 'flex items-center space-x-2']">
-                                                    <img :src="`https://www.google.com/s2/favicons?domain=${site.url}`"/>
-                                                    <span>{{ site.url }}</span>
-                                                </Link>
-                                            </td>
-                                            <td v-show="columns[2].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.da ?? '-' }}
-                                            </td>
-                                            <td v-show="columns[3].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.dr ?? '-' }}
-                                            </td>
-                                          
-                                            <td v-show="columns[4].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ $t(site.sponsor ? 'Yes' : 'No') }}
-                                            </td>
-                                            
-                                            <td v-for="(type, index) in types" v-show="columns[columns.length - types.length + index].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.types.find(t => t.id == type.id) ? $t('Yes') : $t('No') }}
-                                            </td>
 
-                                            <td v-show="columns[5].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.link_type }}
-                                            </td>
-
-                                            <td v-show="columns[6].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ $t(site.ssl ? 'Yes' : 'No') }}
-                                            </td>
-
-                                            <td v-show="columns[7].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
-                                            </td>
-
-                                            <td v-show="columns[8].visible" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                <div class="hidden sm:grid grid-cols-4 grid-rows-1 gap-x-1.5">
-                                                    <span :data-tippy-content="`${site.orders_count} ${$t('Orders')}`" class="flex space-x-1 justify-start items-center">
-                                                        <span class="text-sm text-gray-500">{{ site.orders_count }}</span>
-                                                        <ShoppingCartIcon class="h-4 w-4 text-gray-500" />
-                                                    </span>
-
-                                                    <span :data-tippy-content="`${site.views_count} ${$t('Views')}`" class="flex space-x-1 justify-start items-center">
-                                                        <span class="text-sm text-gray-500">{{ site.views_count }}</span>
-                                                        <EyeIcon class="h-4 w-4 text-gray-500" />
-                                                    </span>
-                                                    
-                                                    <span :data-tippy-content="`${site.favorites_count} ${$t('Favorites')}`" class="flex space-x-1 justify-start items-center">
-                                                        <span class="text-sm text-gray-500">{{ site.favorites_count }}</span>
-                                                        <HeartIcon class="h-4 w-4 text-gray-500" />
-                                                    </span>
-
-                                                    <span :data-tippy-content="`${site.interests_count} ${$t('Interests')}`" class="flex space-x-1 justify-start items-center">
-                                                        <span class="text-sm text-gray-500">{{ site.interests_count }}</span>
-                                                        <FlagIcon class="h-4 w-4 text-gray-500" />
-                                                    </span>
+                                                <div v-if="column.key === 'url'">
+                                                    <Link :href="route('sites.edit', site.id)" :class="[{
+                                                        'text-gray-500 hover:text-gray-900': site.deleted_at === null,
+                                                        'text-red-500 hover:text-red-700': site.deleted_at !== null,
+                                                    }, 'flex items-center space-x-2']">
+                                                        <img :src="`https://www.google.com/s2/favicons?domain=${site.url}`"/>
+                                                        <span>{{ site.url }}</span>
+                                                    </Link>
                                                 </div>
-                                            </td>
-                                            
-                                            <td v-show="columns[9].visible"
-                                                class="px-4 py-4 text-sm text-gray-500">
-                                                {{ site.obs ?? '-' }}
-                                            </td>
-                                            <td v-show="columns[10].visible"
-                                                class="px-4 py-4 text-sm text-gray-500">
-                                                {{ site.example_article ?? '-' }}
-                                            </td>
-                                            <td v-show="columns[11].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.formatted_inserted_at }}
-                                            </td>
+                                                
+                                                <div v-if="column.key === 'da'">
+                                                    {{ site.da ?? '-' }}
+                                                </div>
 
-                                            <td v-show="columns[12].visible"
-                                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                                {{ site.formatted_updated_at }}
+                                                <div v-if="column.key === 'dr'">
+                                                    {{ site.dr ?? '-' }}
+                                                </div>
+
+                                                <div v-if="column.key === 'sponsor'">
+                                                    {{ $t(site.sponsor ? 'Yes' : 'No') }}
+                                                </div>
+
+                                                <div v-if="column.key === 'link_type'">
+                                                    {{ site.link_type }}
+                                                </div>
+
+                                                <div v-if="column.key === 'ssl'">
+                                                    {{ $t(site.ssl ? 'Yes' : 'No') }}
+                                                </div>
+
+                                                <div v-if="column.key === 'category'">
+                                                    <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
+                                                </div>
+
+                                                <div v-if="column.key === 'misc'">
+                                                    <div class="grid grid-cols-4 grid-rows-1 gap-x-1.5">
+                                                        <span :data-tippy-content="`${site.orders_count} ${$t('Orders')}`" class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.orders_count }}</span>
+                                                            <ShoppingCartIcon class="h-4 w-4 text-gray-500" />
+                                                        </span>
+
+                                                        <span :data-tippy-content="`${site.views_count} ${$t('Views')}`" class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.views_count }}</span>
+                                                            <EyeIcon class="h-4 w-4 text-gray-500" />
+                                                        </span>
+                                                        
+                                                        <span :data-tippy-content="`${site.favorites_count} ${$t('Favorites')}`" class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.favorites_count }}</span>
+                                                            <HeartIcon class="h-4 w-4 text-gray-500" />
+                                                        </span>
+
+                                                        <span :data-tippy-content="`${site.interests_count} ${$t('Interests')}`" class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.interests_count }}</span>
+                                                            <FlagIcon class="h-4 w-4 text-gray-500" />
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div v-if="column.key === 'obs'">
+                                                    {{ site.obs ?? '-' }}
+                                                </div>
+
+                                                <div v-if="column.key === 'example'">
+                                                    {{ site.example_article ?? '-' }}
+                                                </div>
+
+                                                <div v-if="column.key === 'inserted_at'">
+                                                    {{ site.formatted_inserted_at }}
+                                                </div>
+
+                                                <div v-if="column.key === 'last_updated_at'">
+                                                    {{ site.formatted_updated_at }}
+                                                </div>
+
+                                                <div v-for="type in types" :key="type.id">
+                                                    <div v-if="column.key === `type-${type.id}`">
+                                                        {{ site.types.find(t => t.id == type.id) ? $t('Yes') : $t('No') }}    
+                                                    </div>
+                                                </div>
+
                                             </td>
 
                                             <td class="whitespace-nowrap px-4 py-4 text-sm">
@@ -867,23 +842,11 @@ const expanded = ref([])
                                         </tr>
 
                                         <tr v-show="site.types.length > 0 && expanded.includes(index)">
-                                            <td :colspan="columns.filter(c => c.visible).length + 1" class="px-4 py-4 text-sm">
+                                            <td :colspan="visibleColumns.length + 1" class="px-4 py-4 text-sm">
 
                                                 <ul class="space-y-2">
 
                                                     <li v-for="(type, j) in site.types" :key="j">
-                                                        <!-- <span
-                                                            :data-tippy-content="type.pivot.cost_coin != coinStore.coin ? `${$filters.currency(type.pivot.cost / 100, coins[type.pivot.cost_coin])}` : null"
-                                                            class="relative flex space-x-2 items-center">
-                                                            <span v-if="type.pivot.cost_coin != coinStore.coin"
-                                                                class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                                            <span>
-                                                                {{ type.pivot.cost_coin != coinStore.coin ? '~ ' : null }}
-
-                                                                {{ $filters.currency(Math.ceil((type.pivot.cost / coinStore.ratios[type.pivot.cost_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
-                                                            </span>
-                                                        </span> -->
-                                                        
                                                         <div class="flex space-x-2">
                                                             <span
                                                                 :data-tippy-content="type.pivot.sale_coin != coinStore.coin ? `${$filters.currency(type.pivot.sale / 100, coins[type.pivot.sale_coin])}` : null"

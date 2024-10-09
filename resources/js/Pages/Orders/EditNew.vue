@@ -96,27 +96,39 @@ const remove = (index) => {
 let editingColumn = ref(null);
 let editingRow = ref(null);
 let editingSite = ref(null);
+let editingValue = ref('')
 
 const edit = (column, row, site) => {
     editingColumn.value = column;
     editingRow.value = row;
     editingSite.value = site;
 
+    editingValue.value = Math.ceil((site[column] / coinStore.ratios[site[`${column}_coin`]]) / 100) * 100;
+
     openEditDialog.value = true
 }
 
 const update = (all) => {
+    if(Number.isInteger(editingValue.value)) return;
+
+    const rawValue = app.appContext.config.globalProperties.$filters.unformat(editingValue.value, coins[coinStore.coin]) * 100;
+    
+    const coin = editingSite.value[`${editingColumn.value}_coin`];
+
+    const value = Math.floor(rawValue * coinStore.ratios[coin])
+
     if(all) {
         form.sites
             .filter(site => site.url === editingSite.value.url)
             .forEach(site => {
-                site[editingColumn.value] = 999;
+                site[editingColumn.value] = value;
             })
     } else {
-        form.sites[editingRow.value][editingColumn.value] = 999;
+        form.sites[editingRow.value][editingColumn.value] = value;
     }
 
     openEditDialog.value = false;
+    editingValue.value = '';
 }
 
 const showEditAll = computed(() => {
@@ -157,6 +169,45 @@ const saleTotal = computed(() => {
 
     return total;
 
+})
+
+const markup = (site) => {
+    let mark = Math.ceil(((site.sale - site.cost) / coinStore.ratios[site.sale_coin]) / 100)
+
+    return app.appContext.config.globalProperties.$filters.currency(mark, {
+        ...coins[coinStore.coin],
+        precision: 0,
+    })
+}
+
+const markupTotal = computed(() => {
+    let total = 0
+
+    for(let site of form.sites) {
+        total += Math.ceil(((site.sale - site.cost) / coinStore.ratios[site.sale_coin]) / 100);
+    }
+
+    total = app.appContext.config.globalProperties.$filters.currency(total, {
+        ...coins[coinStore.coin],
+        precision: 0,
+    });
+
+    return total;
+})
+
+const comissionTotal = computed(() => {
+    let total = 0
+
+    for(let site of form.sites) {
+        total += 0;
+    }
+
+    total = app.appContext.config.globalProperties.$filters.currency(total, {
+        ...coins[coinStore.coin],
+        precision: 0,
+    });
+
+    return total;
 })
 </script>
         
@@ -314,15 +365,14 @@ const saleTotal = computed(() => {
                             <DialogPanel
                                 class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 max-h-96 sm:p-6">
                                 <h3 class="font-medium text-gray-900">
-                                    {{ $t("Edit") }}
+                                    <span v-if="editingColumn === 'cost'">{{ $t('Editar valor de compra') }}</span>
+                                    <span v-if="editingColumn === 'sale'">{{ $t('Editar valor de venda') }}</span>
                                 </h3>
 
                                 <div class="mt-4 mx-auto w-96">
                                     <div>
-                                        <InputLabel for="" :value="$t('New value')" />
-                                        <input id="" rows="5"
-                                            class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring-indigo-200 sm:text-sm"></input>
-                                        <!-- <InputError class="mt-2" :message="listForm.errors.list" /> -->
+                                        <InputLabel for="value" :value="$t('Valor')" />
+                                        <input v-model="editingValue" v-money3="coins[coinStore.coin]" id="value" rows="5" class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring-indigo-200 sm:text-sm"></input>
                                     </div>
                                 </div>
 
@@ -400,6 +450,7 @@ const saleTotal = computed(() => {
                                             <tr>
                                                 <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
                                                 <th scope="col" class="whitespace-nowrap pr-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
+                                                <th scope="col" class="whitespace-nowrap pr-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Link') }}</th>
                                                 <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Vendedor') }}</th>
                                                 <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de compra') }}</th>
                                                 <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de venda') }}</th>
@@ -410,7 +461,7 @@ const saleTotal = computed(() => {
                                         <tbody class="divide-y divide-gray-200 bg-white">
 
                                             <tr v-if="form.sites.length === 0">
-                                                <td colspan="5" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 italic">
+                                                <td colspan="8" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 italic">
                                                     {{ $t('No site have been added to this order yet.') }}
                                                 </td>
                                             </tr>
@@ -434,6 +485,19 @@ const saleTotal = computed(() => {
                                                         <a :href="route('sites.edit', site.id)" target="_blank" class="block text-blue-500 hover:text-blue-700">
                                                             <ArrowTopRightOnSquareIcon class="size-4"/>
                                                         </a>
+                                                    </div>
+                                                </td>
+
+                                                <td class="whitespace-nowrap pr-3 py-2 text-sm text-gray-500">
+                                                    <div v-if="true" class="flex space-x-1">
+                                                        <span>{{ 'Link' }}</span>
+                                                        <a :href="'#'" target="_blank" class="block text-blue-500 hover:text-blue-700">
+                                                            <ArrowTopRightOnSquareIcon class="size-4"/>
+                                                        </a>
+                                                    </div>
+
+                                                    <div v-else class="flex space-x-1">
+                                                        <button class="text-blue-500 hover:text-blue-700">{{ $t('Add link') }}</button>
                                                     </div>
                                                 </td>
 
@@ -478,7 +542,7 @@ const saleTotal = computed(() => {
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                     <span v-if="site === null">-</span>
                                                     <span v-else>
-                                                        Markup
+                                                        {{ markup(site) }}
                                                     </span>
                                                 </td>
 
@@ -493,7 +557,7 @@ const saleTotal = computed(() => {
 
                                         <tfoot v-if="form.sites.length > 0">
                                             <tr>
-                                                <td colspan="3" class="px-3 py-2"></td>
+                                                <td colspan="4" class="px-3 py-2"></td>
 
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                     ~ {{ costTotal }}
@@ -502,10 +566,10 @@ const saleTotal = computed(() => {
                                                     ~ {{ saleTotal }}
                                                 </td>
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    ~ {{ saleTotal }}
+                                                    ~ {{ markupTotal }}
                                                 </td>
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    ~ {{ saleTotal }}
+                                                    ~ {{ comissionTotal }}
                                                 </td>
                                             </tr>
                                         </tfoot>

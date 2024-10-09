@@ -6,7 +6,7 @@ import { createInertiaApp } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from 'ziggy-js';
-import money, { format } from "v-money3";
+import money, { format, unformat } from "v-money3";
 import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 import tippy from 'tippy.js';
@@ -55,6 +55,21 @@ createInertiaApp({
                 minimumNumberOfCharacters: 0,
             }) {
                 return format(v, f);
+            },
+            unformat(v, f = {
+                prefix: 'R$ ',
+                suffix: '',
+                thousands: '.',
+                decimal: ',',
+                precision: 2,
+                disableNegative: false,
+                disabled: false,
+                min: null,
+                max: null,
+                allowBlank: false,
+                minimumNumberOfCharacters: 0,
+            }) {
+                return unformat(v, f);
             },
         };
 
