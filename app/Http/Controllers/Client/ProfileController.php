@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
-use Jenssegers\Agent\Agent;
+use Laravel\Jetstream\Agent;
 
 class ProfileController extends Controller
 {
@@ -91,7 +91,7 @@ class ProfileController extends Controller
      * Create a new agent instance from the given session.
      *
      * @param  mixed  $session
-     * @return \Jenssegers\Agent\Agent
+     * @return Agent
      */
     protected function createAgent($session)
     {

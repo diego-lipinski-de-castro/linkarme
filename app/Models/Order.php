@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Support\Str;
@@ -74,27 +77,32 @@ class Order extends Model implements Auditable
             ->withTimestamps();
     }
 
-    public function client()
+    public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
 
-    public function checks()
+    public function checks(): MorphMany
     {
         return $this->morphMany(Check::class, 'checkable');
     }
 
-    public function invoice()
+    public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }
 
-    public function scopeOfClient($query, $client)
+    public function scopeSmart($query, $search): Builder
+    {
+        return $query->where('number', 'like', "$search%");
+    }
+
+    public function scopeOfClient($query, $client): Builder
     {
         return $query->where('client_id', $client);
     }
 
-    public function scopeStatus($query, $status)
+    public function scopeStatus($query, $status): Builder
     {
         return $query->where('status', $status);
     }

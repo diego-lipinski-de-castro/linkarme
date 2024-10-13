@@ -22,7 +22,7 @@ import {
     EyeIcon,
     LockClosedIcon,
 } from '@heroicons/vue/24/outline'
-import { computed, onMounted, reactive, watch } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 
 import VueMultiselect from 'vue-multiselect'
 import { watchDebounced } from '@vueuse/core';
@@ -118,13 +118,11 @@ onMounted(() => {
                             </div>
                         </div>
 
-
                         <div class="col-span-1">
                             <label class="text-sm font-medium">{{ $t('Filter by type') }}</label>
 
                             <VueMultiselect class="mt-1 ml-2" placeholder="Select..." v-model="filters.full"
                                 track-by="value" label="name" :options="[
-                                    { name: 'Todos', value: '' },
                                     { name: 'Full', value: true },
                                     { name: 'Limitado', value: false },
                                 ]" :multiple="false" :searchable="false" :close-on-select="true" selectLabel=""

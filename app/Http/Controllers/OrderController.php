@@ -43,10 +43,8 @@ class OrderController extends Controller
             ->defaultSort('-created_at')
             // ->allowedSorts([])
             ->allowedFilters([
-                AllowedFilter::exact('site_id'),
+                AllowedFilter::scope('search', 'smart'),
                 AllowedFilter::exact('client_id'),
-                AllowedFilter::exact('seller_id'),
-                'url',
                 AllowedFilter::exact('status'),
             ])
             ->paginate(15)

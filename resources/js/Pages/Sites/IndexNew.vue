@@ -37,6 +37,7 @@ import {
     EyeIcon,
     HeartIcon,
     FlagIcon,
+    ArrowTopRightOnSquareIcon,
 } from '@heroicons/vue/24/outline'
 
 import { useTranslation } from "i18next-vue";
@@ -714,9 +715,9 @@ const expanded = ref([])
                                             </span>
                                         </th>
 
-                                        <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                        <!-- <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                        </th>
+                                        </th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
@@ -743,14 +744,24 @@ const expanded = ref([])
                                                     </div>
                                                 </div>
 
-                                                <div v-if="column.key === 'url'">
-                                                    <Link :href="route('sites.edit', site.id)" :class="[{
-                                                        'text-gray-500 hover:text-gray-900': site.deleted_at === null,
-                                                        'text-red-500 hover:text-red-700': site.deleted_at !== null,
+                                                <div v-if="column.key === 'url'" class="flex items-center space-x-2">
+                                                    <span :class="[{
+                                                        'text-gray-500': site.deleted_at === null,
+                                                        'text-red-500': site.deleted_at !== null,
                                                     }, 'flex items-center space-x-2']">
                                                         <img :src="`https://www.google.com/s2/favicons?domain=${site.url}`"/>
                                                         <span>{{ site.url }}</span>
+                                                    </span>
+
+                                                    <Link :href="route('sites.edit', site.id)"
+                                                        class="text-blue-500 hover:text-blue-700 -mt-1">
+                                                        <PencilSquareIcon class="h-5 w-5" />
                                                     </Link>
+
+                                                    <a :href="`https://${site.url}`" target="_blank"
+                                                        class="text-blue-500 hover:text-blue-700 -mt-1">
+                                                        <ArrowTopRightOnSquareIcon class="h-5 w-5" />
+                                                    </a>
                                                 </div>
                                                 
                                                 <div v-if="column.key === 'da'">
@@ -825,7 +836,7 @@ const expanded = ref([])
 
                                             </td>
 
-                                            <td class="whitespace-nowrap px-4 py-4 text-sm">
+                                            <!-- <td class="whitespace-nowrap px-4 py-4 text-sm">
                                                 <div class="flex justify-end space-x-3">
                                                     <Link :href="route('sites.edit', site.id)"
                                                         class="text-blue-500 hover:text-blue-700">
@@ -838,7 +849,7 @@ const expanded = ref([])
                                                         <ArrowPathIcon v-else class="h-5 w-5" />
                                                     </button>
                                                 </div>
-                                            </td>
+                                            </td> -->
                                         </tr>
 
                                         <tr v-show="site.types.length > 0 && expanded.includes(index)">

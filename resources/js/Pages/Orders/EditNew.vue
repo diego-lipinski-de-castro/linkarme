@@ -2,14 +2,14 @@
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
-import { ref, computed, getCurrentInstance } from 'vue'
+import { ref, computed, getCurrentInstance, toRaw } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
-import { PencilIcon, TrashIcon, PlusCircleIcon, DocumentDuplicateIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
+import { PencilIcon, TrashIcon, PlusCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
 import {
     Dialog,
     DialogPanel,
@@ -19,15 +19,13 @@ import {
 import { useCoinStore } from '@/stores/coin'
 
 const app = getCurrentInstance()
-
 const coinStore = useCoinStore()
 
-const { order, coins, statuses, clientes, sellers, sites } = defineProps({
+const { order, coins, statuses, clients } = defineProps({
     order: Object,
     coins: Object,
     statuses: Object,
     clients: Array,
-    sellers: Array,
     sites: Object,
 });
 
@@ -37,10 +35,6 @@ const form = useForm({
     receipt_date: order.receipt_date,
     delivery_date: order.delivery_date,
     payment_date: order.payment_date,
-    charged: order.charged,
-    paid: order.paid,
-    markup: order.markup,
-    comission: order.comission,
     sites: order.items,
 });
 
@@ -57,8 +51,6 @@ const listForm = useForm({
 })
 
 const list = ref([])
-
-const format = coins['BRL']
 
 const go = () => {
     listForm.post(route('orders.go'), {
@@ -78,7 +70,7 @@ const openEditDialog = ref(false)
 
 const add = (site = null, index) => {
     if(site) {
-        form.sites = form.sites.toSpliced(index, 0, site)
+        form.sites = form.sites.toSpliced(index, 0, structuredClone(toRaw(site)))
         return;
     }
 
@@ -562,12 +554,15 @@ const comissionTotal = computed(() => {
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                     ~ {{ costTotal }}
                                                 </td>
+
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                     ~ {{ saleTotal }}
                                                 </td>
+
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                     ~ {{ markupTotal }}
                                                 </td>
+                                                
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                     ~ {{ comissionTotal }}
                                                 </td>

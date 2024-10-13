@@ -335,12 +335,12 @@ const submitNote = () => {
                             <form @submit.prevent="toggle" class="space-x-2 flex">
 
                                 <button v-if="site.deleted_at != null" type="submit"
-                                    class="text-sm font-medium bg-green-500 hover:bg-green-700 px-2 py-1 rounded-md text-white">
+                                    class="text-sm font-medium bg-green-500 hover:bg-green-700 px-2 py-1 rounded-md text-white transition-colors">
                                     Reativar
                                 </button>
 
                                 <button v-else type="submit"
-                                    class="text-sm font-medium bg-yellow-500 hover:bg-yellow-700 px-2 py-1 rounded-md text-white">
+                                    class="text-sm font-medium bg-yellow-500 hover:bg-yellow-700 px-2 py-1 rounded-md text-white transition-colors">
                                     Inativar
                                 </button>
 
