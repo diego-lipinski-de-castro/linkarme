@@ -22,6 +22,7 @@ import AppSuspense from '../../Layouts/AppSuspense.vue';
 const props = defineProps({
     title: String,
     sellers: Object,
+    coins: Object,
 });
 
 const links = computed(() => {
@@ -109,7 +110,7 @@ const destroy = (seller) => {
 
                                         <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            {{ $t('Sites') }}
+                                            {{ $t('Comission') }}
                                         </th>
 
                                         <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
@@ -130,7 +131,7 @@ const destroy = (seller) => {
                                             {{ seller.email ?? '-' }}
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                            {{ seller.sites_count }}
+                                            {{ $filters.currency(seller.comission / 100, coins[seller.comission_coin]) }}
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4 text-sm">
                                             <div class="flex space-x-3">

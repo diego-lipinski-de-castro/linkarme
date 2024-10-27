@@ -17,13 +17,15 @@ class SellerController extends Controller
      */
     public function index()
     {
+        $coins = config('coins');
+
         $sellers = Seller::query()
-            ->withCount('sites')
             ->orderBy('name')
             ->paginate();
         
         return Inertia::render('Sellers/IndexNew', [
             'sellers' => $sellers,
+            'coins' => $coins,
         ]);
     }
 
@@ -34,7 +36,11 @@ class SellerController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Sellers/CreateNew');
+        $coins = config('coins');
+
+        return Inertia::render('Sellers/CreateNew', [
+            'coins' => $coins,
+        ]);
     }
 
     /**
@@ -79,8 +85,11 @@ class SellerController extends Controller
      */
     public function edit(Seller $seller)
     {
+        $coins = config('coins');
+
         return Inertia::render('Sellers/EditNew', [
             'seller' => $seller,
+            'coins' => $coins,
         ]);
     }
 

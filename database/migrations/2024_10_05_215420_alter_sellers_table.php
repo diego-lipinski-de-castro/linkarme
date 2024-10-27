@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('sellers', function (Blueprint $table) {
             $table->integer('comission')->default(0);
+            $table->enum('comission_coin', ['BRL', 'EUR', 'USD', 'GBP'])->default('BRL');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('sellers', function (Blueprint $table) {
             $table->dropColumn('comission');
+            $table->dropColumn('comission_coin');
         });
     }
 };

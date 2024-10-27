@@ -1,8 +1,7 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
-import { computed, ref, watch } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3';
+import { ref } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -14,6 +13,10 @@ import { UserCircleIcon } from '@heroicons/vue/24/outline';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 
+defineProps({
+    coins: Object,
+});
+
 const showPassword = ref(false)
 
 const form = useForm({
@@ -21,7 +24,8 @@ const form = useForm({
     email: '',
     password: '',
     phone: '',
-    comission: 0,
+    comission: '',
+    comission_coin: 'BRL',
 });
 
 const submit = () => {
@@ -31,7 +35,6 @@ const submit = () => {
 const generatePassword = () => {
     form.password = Math.random().toString(36).slice(-8);
 }
-
 </script>
         
 <template>
@@ -93,6 +96,29 @@ const generatePassword = () => {
                                 <InputLabel for="phone" :value="$t('Phone')" />
                                 <TextInput id="phone" v-model="form.phone" type="phone" class="mt-1 block w-full" />
                                 <InputError :message="form.errors.phone" class="mt-2" />
+                            </div>
+
+                            <div>
+                                <InputLabel for="comission" :value="$t('Comission')" />
+
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input v-model.lazy="form.comission" v-money3="coins[form.comission_coin]"
+                                        type="text" name="comission" id="comission"
+                                        class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+
+                                    <div class="absolute inset-y-0 right-0 flex items-center">
+                                        <label for="comission_coin" class="sr-only">Moeda</label>
+                                        <select v-model="form.comission_coin" id="comission_coin" name="comission_coin"
+                                            class="focus:ring-blue-500 focus:border-blue-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
+                                            <option value="BRL">BRL</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="USD">USD</option>
+                                            <option value="GBP">GBP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <InputError :message="form.errors.comission" class="mt-2" />
                             </div>
 
                             <div class="self-end mb-1 flex">

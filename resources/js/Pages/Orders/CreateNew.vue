@@ -550,7 +550,7 @@ const comissionTotal = computed(() => {
                                                     {{ site === null ? '-' : site.seller?.name }}
                                                 </td>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
                                                     <span v-if="site === null">-</span>
                                                     <span v-else class="flex items-center space-x-1">
                                                         <span :data-tippy-content="site.cost_coin != coinStore.coin ? `${$filters.currency(site.cost / 100, coins[site.cost_coin])}` : null" class="relative flex space-x-2 items-center">
@@ -567,7 +567,7 @@ const comissionTotal = computed(() => {
                                                     </span>
                                                 </td>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
                                                     <span v-if="site === null">-</span>
                                                     <span v-else class="flex items-center space-x-1">
                                                         <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
@@ -594,7 +594,21 @@ const comissionTotal = computed(() => {
                                                 <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                     <span v-if="site === null">-</span>
                                                     <span v-else>
-                                                        Comissão
+                                                        {{ $filters.currency(site.seller.comission / 100, coins[site.seller.comission_coin]) }}
+                                                    </span>
+
+                                                    <span class="flex items-center space-x-1">
+                                                        <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                                            <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                            <span>
+                                                                {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                                {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                            </span>
+                                                        </span>
+
+                                                        <button @click="edit('sale', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
+                                                            <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
+                                                        </button>
                                                     </span>
                                                 </td>
                                             </tr>

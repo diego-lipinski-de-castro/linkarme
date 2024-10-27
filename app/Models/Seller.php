@@ -23,6 +23,7 @@ class Seller extends Model
         'email',
         'phone',
         'comission',
+        'comission_coin',
     ];
 
     /**
