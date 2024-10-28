@@ -94,6 +94,8 @@ class Order extends Model implements Auditable
 
     public function scopeSmart($query, $search): Builder
     {
+        $search = str_replace('#', '', $search);
+
         return $query->where('number', 'like', "$search%");
     }
 

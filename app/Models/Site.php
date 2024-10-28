@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -270,6 +271,11 @@ class Site extends Model implements Auditable
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'project_site')->withTimestamps();
+    }
+
+    public function offers(): HasMany
+    {
+        return $this->hasMany(Offer::class);
     }
 
     public function types(): BelongsToMany

@@ -289,6 +289,10 @@ class SiteController extends Controller
             'views' => fn($query) => $query->latest()->with('client'),
         ]);
 
+        $site->loadCount([
+            'offers'
+        ]);
+
         $categories = Category::orderBy('name')->get();
         $languages = Language::orderBy('name')->get();
         $countries = Country::orderBy('name')->get();
