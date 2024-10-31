@@ -283,26 +283,18 @@ const showOffersDialog = ref(false)
                                     </button>
                                 </div>
                                 <div class="sm:flex sm:items-start">
-                                    <div
-                                        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                        <ExclamationTriangleIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
-                                    </div>
-                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                        <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">{{
-                                            $t('Confirm sale value') }}</DialogTitle>
-                                        <div class="mt-2">
-                                            <p class="text-sm text-gray-500">Você informou um valor de venda menor que o
-                                                valor sugerido.</p>
-                                        </div>
-                                    </div>
+                                    <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">{{ $t('Offers') }}</DialogTitle>
                                 </div>
+
+                                <div class="mt-2 text-sm text-gray-500">
+                                    <!-- offers list -->
+                                    <p>Offers list for this website</p>
+                                </div>
+
                                 <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                                     <button type="button"
-                                        class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">{{
-                                            $t('Confirm') }}</button>
-                                    <button type="button"
                                         class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                                        @click="showOffersDialog = false">{{ $t('Cancel') }}</button>
+                                        @click="showOffersDialog = false">{{ $t('Close') }}</button>
                                 </div>
                             </DialogPanel>
                         </TransitionChild>

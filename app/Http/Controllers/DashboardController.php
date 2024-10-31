@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Country;
 use App\Models\Language;
 use App\Models\Order;
+use App\Models\Site;
 use App\Models\Team;
 use Inertia\Inertia;
 
@@ -93,9 +94,26 @@ class DashboardController extends Controller
         $data = json_decode(json_encode($data));
         $list = json_decode(json_encode($list));
 
+        $news = Site::query()
+            ->ofStatus('APPROVED')
+            ->where('inserted_at', '>', now()->subDays(60)->endOfDay())
+            ->whereDoesntHave('orders')
+            ->orderByRaw('dr DESC, da DESC, traffic DESC')
+            ->take(5)
+            ->get();
+
+        $recommended = Site::query()
+            ->ofStatus('APPROVED')
+            ->withCount('orders')
+            ->orderByRaw('orders_count DESC, dr DESC, da DESC, traffic DESC')
+            ->take(5)
+            ->get();
+
         return Inertia::render('DashboardNew', [
             'data' => $data,
             'list' => $list,
+            'news' => $news,
+            'recommended' => $recommended,
         ]);
     }
 

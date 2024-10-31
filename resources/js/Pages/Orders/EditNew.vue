@@ -68,6 +68,14 @@ const openOrderDialog = ref(false)
 const openSitesDialog = ref(false)
 const openEditDialog = ref(false)
 
+const openLinkDialog = ref(false)
+const linkValue = ref('')
+
+let editingColumn = ref(null);
+let editingRow = ref(null);
+let editingSite = ref(null);
+let editingValue = ref('')
+
 const add = (site = null, index) => {
     if(site) {
         form.sites = form.sites.toSpliced(index, 0, structuredClone(toRaw(site)))
@@ -85,10 +93,17 @@ const remove = (index) => {
     form.sites.splice(index, 1)
 }
 
-let editingColumn = ref(null);
-let editingRow = ref(null);
-let editingSite = ref(null);
-let editingValue = ref('')
+const addLink = (row) => {
+    editingRow.value = row;
+    linkValue.value = form.sites[editingRow.value].link;
+    openLinkDialog.value = true;
+}
+
+const addLinkConfirm = () => {
+    form.sites[editingRow.value].link = linkValue.value.replace(/^https?:\/\//, '');
+    openLinkDialog.value = false;
+    linkValue.value = '';
+}
 
 const edit = (column, row, site) => {
     editingColumn.value = column;
@@ -191,7 +206,8 @@ const comissionTotal = computed(() => {
     let total = 0
 
     for(let site of form.sites) {
-        total += 0;
+        if(!site.seller) continue;
+        total += Math.ceil(((site.seller.comission) / coinStore.ratios[site.seller.comission_coin]) / 100);
     }
 
     total = app.appContext.config.globalProperties.$filters.currency(total, {
@@ -389,6 +405,50 @@ const comissionTotal = computed(() => {
             </Dialog>
         </TransitionRoot>
 
+        <TransitionRoot as="template" :show="openLinkDialog">
+            <Dialog as="div" class="relative z-10" @close="openLinkDialog = false">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
+                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </TransitionChild>
+
+                <div class="fixed inset-0 z-10 overflow-y-auto">
+                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <TransitionChild as="template" enter="ease-out duration-300"
+                            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
+                            leave-from="opacity-100 translate-y-0 sm:scale-100"
+                            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                            <DialogPanel
+                                class="relative transform overflow-scroll rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 max-h-96 sm:p-6">
+                                <h3 class="font-medium text-gray-900">
+                                    {{ $t('Adicionar link') }}
+                                </h3>
+
+                                <div class="mt-4 mx-auto w-96">
+                                    <div>
+                                        <InputLabel for="link" :value="$t('Link')" />
+                                        <input v-model="linkValue" id="link" class="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring-indigo-200 sm:text-sm" />
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 flex justify-end space-x-2">
+                                    <button @click="openLinkDialog = false" type="button" class="rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 px-3 py-2 hover:bg-gray-50 transition-all">
+                                        <span class="text-sm font-medium text-gray-700">{{ $t("Back") }}</span>
+                                    </button>
+
+                                    <button @click="addLinkConfirm" type="button" :disabled="false" class="rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-3 py-2 hover:bg-blue-700 disabled:opacity-50 transition-all">
+                                        <span class="text-sm font-medium text-white">{{ $t("Add") }}</span>
+                                    </button>
+                                </div>
+
+                            </DialogPanel>
+                        </TransitionChild>
+                    </div>
+                </div>
+            </Dialog>
+        </TransitionRoot>
+
         <AppLayoutNew :title="$t('Edit order')">
             <div class="max-w-7xl mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
                 <div class="flex items-center space-x-2 px-5">
@@ -437,138 +497,168 @@ const comissionTotal = computed(() => {
                             <div class="col-span-6">
 
                                 <div class="overflow-hidden border border-gray-300 sm:rounded-lg">
-                                    <table class="min-w-full divide-y divide-gray-300">
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                                <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                                                <th scope="col" class="whitespace-nowrap pr-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
-                                                <th scope="col" class="whitespace-nowrap pr-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Link') }}</th>
-                                                <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Vendedor') }}</th>
-                                                <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de compra') }}</th>
-                                                <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de venda') }}</th>
-                                                <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Markup') }}</th>
-                                                <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Comissão') }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-gray-200 bg-white">
+                                    <div class="overflow-x-scroll">
+                                        <table class="min-w-full divide-y divide-gray-300">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="whitespace-nowrap pl-4 pr-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Link') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Vendedor') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de compra') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de venda') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Markup') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Comissão') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 1') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 2') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 3') }}</th>
+                                                </tr>
+                                            </thead>
 
-                                            <tr v-if="form.sites.length === 0">
-                                                <td colspan="8" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 italic">
-                                                    {{ $t('No site have been added to this order yet.') }}
-                                                </td>
-                                            </tr>
+                                            <tbody class="divide-y divide-gray-200 bg-white">
 
-                                            <tr v-else v-for="(site, index) in form.sites" :key="index">
-                                                <td class="whitespace-nowrap pl-4 py-2 transition-all">
-                                                    <div class="flex items-center w-fit space-x-2">
-                                                        <button @click="remove(index)" type="button" class="min-w-5 text-red-500 hover:text-red-700">
-                                                            <TrashIcon class="size-5"/>
-                                                        </button>
+                                                <tr v-if="form.sites.length === 0">
+                                                    <td colspan="11" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 italic">
+                                                        {{ $t('No site have been added to this order yet.') }}
+                                                    </td>
+                                                </tr>
 
-                                                        <button @click="add(site, index)" type="button" class="min-w-5 text-blue-500 hover:text-blue-700">
-                                                            <PlusCircleIcon class="size-5"/>
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                                <tr v-else v-for="(site, index) in form.sites" :key="index">
+                                                    <td class="whitespace-nowrap pl-4 pr-2 py-2 transition-all">
+                                                        <div class="flex items-center w-fit space-x-2">
+                                                            <button @click="remove(index)" type="button" class="min-w-5 text-red-500 hover:text-red-700">
+                                                                <TrashIcon class="size-5"/>
+                                                            </button>
 
-                                                <td class="whitespace-nowrap pr-3 py-2 text-sm text-gray-500">
-                                                    <div class="flex space-x-1">
-                                                        <span>{{ site.url }}</span>
-                                                        <a :href="route('sites.edit', site.id)" target="_blank" class="block text-blue-500 hover:text-blue-700">
-                                                            <ArrowTopRightOnSquareIcon class="size-4"/>
-                                                        </a>
-                                                    </div>
-                                                </td>
+                                                            <button @click="add(site, index)" type="button" class="min-w-5 text-blue-500 hover:text-blue-700">
+                                                                <PlusCircleIcon class="size-5"/>
+                                                            </button>
+                                                        </div>
+                                                    </td>
 
-                                                <td class="whitespace-nowrap pr-3 py-2 text-sm text-gray-500">
-                                                    <div v-if="true" class="flex space-x-1">
-                                                        <span>{{ 'Link' }}</span>
-                                                        <a :href="'#'" target="_blank" class="block text-blue-500 hover:text-blue-700">
-                                                            <ArrowTopRightOnSquareIcon class="size-4"/>
-                                                        </a>
-                                                    </div>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                                        <div class="flex space-x-1">
+                                                            <span class="truncate w-36">{{ site.url }}</span>
+                                                            <a :href="route('sites.edit', site.id)" target="_blank" class="block text-blue-500 hover:text-blue-700">
+                                                                <ArrowTopRightOnSquareIcon class="size-4"/>
+                                                            </a>
+                                                        </div>
+                                                    </td>
 
-                                                    <div v-else class="flex space-x-1">
-                                                        <button class="text-blue-500 hover:text-blue-700">{{ $t('Add link') }}</button>
-                                                    </div>
-                                                </td>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                                        <div v-if="site.link" class="flex space-x-1">
+                                                            <span :data-tippy-content="`${site.link}`" class="truncate w-36">{{ site.link }}</span>
+                                                            <a :href="`https://${site.link}`" target="_blank" class="block text-blue-500 hover:text-blue-700">
+                                                                <ArrowTopRightOnSquareIcon class="size-4"/>
+                                                            </a>
+                                                        </div>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    {{ site === null ? '-' : site.seller?.name ?? '-' }}
-                                                </td>
+                                                        <div v-else class="flex space-x-1">
+                                                            <button @click="addLink(index)" type="button" class="text-blue-500 hover:text-blue-700">{{ $t('Add link') }}</button>
+                                                        </div>
+                                                    </td>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
-                                                    <span v-if="site === null">-</span>
-                                                    <span v-else class="flex items-center space-x-1">
-                                                        <span :data-tippy-content="site.cost_coin != coinStore.coin ? `${$filters.currency(site.cost / 100, coins[site.cost_coin])}` : null" class="relative flex space-x-2 items-center">
-                                                            <span v-if="site.cost_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                                            <span>
-                                                                {{ site.cost_coin != coinStore.coin ? '~ ' : null }}
-                                                                {{ $filters.currency(Math.ceil((site.cost / coinStore.ratios[site.cost_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        {{ site === null ? '-' : site.seller?.name ?? '-' }}
+                                                    </td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
+                                                        <span v-if="site === null">-</span>
+                                                        <span v-else class="flex items-center space-x-1">
+                                                            <span :data-tippy-content="site.cost_coin != coinStore.coin ? `${$filters.currency(site.cost / 100, coins[site.cost_coin])}` : null" class="relative flex space-x-2 items-center">
+                                                                <span v-if="site.cost_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <span>
+                                                                    {{ site.cost_coin != coinStore.coin ? '~ ' : null }}
+                                                                    {{ $filters.currency(Math.ceil((site.cost / coinStore.ratios[site.cost_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                </span>
                                                             </span>
+
+                                                            <button @click="edit('cost', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
+                                                                <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
+                                                            </button>
                                                         </span>
+                                                    </td>
 
-                                                        <button @click="edit('cost', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
-                                                            <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
-                                                        </button>
-                                                    </span>
-                                                </td>
-
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
-                                                    <span v-if="site === null">-</span>
-                                                    <span v-else class="flex items-center space-x-1">
-                                                        <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
-                                                            <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                                            <span>
-                                                                {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
-                                                                {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
+                                                        <span v-if="site === null">-</span>
+                                                        <span v-else class="flex items-center space-x-1">
+                                                            <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
+                                                                <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <span>
+                                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                </span>
                                                             </span>
+
+                                                            <button @click="edit('sale', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
+                                                                <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
+                                                            </button>
                                                         </span>
+                                                    </td>
 
-                                                        <button @click="edit('sale', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
-                                                            <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
-                                                        </button>
-                                                    </span>
-                                                </td>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <span v-if="site === null">-</span>
+                                                        <span v-else>
+                                                            {{ markup(site) }}
+                                                        </span>
+                                                    </td>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    <span v-if="site === null">-</span>
-                                                    <span v-else>
-                                                        {{ markup(site) }}
-                                                    </span>
-                                                </td>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <span v-if="site === null || site.seller === null">-</span>
+                                                        <span v-else class="flex items-center space-x-1">
+                                                            <span class="relative flex space-x-2 items-center">
+                                                                <span v-if="site.seller.comission_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <span>
+                                                                    {{ site.seller.comission_coin != coinStore.coin ? '~ ' : null }}
+                                                                    {{ $filters.currency(Math.ceil((site.seller.comission / coinStore.ratios[site.seller.comission_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                </span>
+                                                            </span>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    <span v-if="site === null">-</span>
-                                                    <span v-else>
-                                                        Comissão
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                                            <button @click="edit('sale', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
+                                                                <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
+                                                            </button>
+                                                        </span>
+                                                    </td>
 
-                                        <tfoot v-if="form.sites.length > 0">
-                                            <tr>
-                                                <td colspan="4" class="px-3 py-2"></td>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <Checkbox id="status1" name="status1" />
+                                                    </td>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    ~ {{ costTotal }}
-                                                </td>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <Checkbox id="status2" name="status2" />
+                                                    </td>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    ~ {{ saleTotal }}
-                                                </td>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <Checkbox id="status3" name="status3" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
 
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    ~ {{ markupTotal }}
-                                                </td>
-                                                
-                                                <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                    ~ {{ comissionTotal }}
-                                                </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                            <tfoot v-if="form.sites.length > 0">
+                                                <tr>
+                                                    <td colspan="4" class="px-3 py-2"></td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        ~ {{ costTotal }}
+                                                    </td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        ~ {{ saleTotal }}
+                                                    </td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        ~ {{ markupTotal }}
+                                                    </td>
+                                                    
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        ~ {{ comissionTotal }}
+                                                    </td>
+
+                                                    <td colspan="3" class="border-l px-3 py-2"></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
                                 </div>
 
                                 <button @click="openOrderDialog = true;" type="button" class="mt-2 flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-all">

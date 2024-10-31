@@ -204,7 +204,8 @@ const comissionTotal = computed(() => {
     let total = 0
 
     for(let site of form.sites) {
-        total += 0;
+        if(!site.seller) continue;
+        total += Math.ceil(((site.seller.comission) / coinStore.ratios[site.seller.comission_coin]) / 100);
     }
 
     total = app.appContext.config.globalProperties.$filters.currency(total, {
@@ -500,16 +501,16 @@ const comissionTotal = computed(() => {
                                             <thead class="bg-gray-50">
                                                 <tr>
                                                     <th scope="col" class="whitespace-nowrap pl-4 pr-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Link') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Vendedor') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de compra') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de venda') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Markup') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Comissão') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 1') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 2') }}</th>
-                                                    <th scope="col" class="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 3') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Link') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Vendedor') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de compra') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de venda') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Markup') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Comissão') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 1') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 2') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 3') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-200 bg-white">
@@ -533,18 +534,18 @@ const comissionTotal = computed(() => {
                                                         </div>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                                         <div class="flex space-x-1">
-                                                            <span>{{ site.url }}</span>
+                                                            <span class="truncate w-36">{{ site.url }}</span>
                                                             <a :href="route('sites.edit', site.id)" target="_blank" class="block text-blue-500 hover:text-blue-700">
                                                                 <ArrowTopRightOnSquareIcon class="size-4"/>
                                                             </a>
                                                         </div>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                                         <div v-if="site.link" class="flex space-x-1">
-                                                            <span :data-tippy-content="`${site.link}`" class="truncate max-w-40">{{ site.link }}</span>
+                                                            <span :data-tippy-content="`${site.link}`" class="truncate w-36">{{ site.link }}</span>
                                                             <a :href="`https://${site.link}`" target="_blank" class="block text-blue-500 hover:text-blue-700">
                                                                 <ArrowTopRightOnSquareIcon class="size-4"/>
                                                             </a>
@@ -555,11 +556,13 @@ const comissionTotal = computed(() => {
                                                         </div>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                        {{ site === null ? '-' : site.seller?.name }}
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <span class="truncate w-36">
+                                                            {{ site === null ? '-' : site.seller?.name }}
+                                                        </span>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
                                                         <span v-if="site === null">-</span>
                                                         <span v-else class="flex items-center space-x-1">
                                                             <span :data-tippy-content="site.cost_coin != coinStore.coin ? `${$filters.currency(site.cost / 100, coins[site.cost_coin])}` : null" class="relative flex space-x-2 items-center">
@@ -576,7 +579,7 @@ const comissionTotal = computed(() => {
                                                         </span>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
                                                         <span v-if="site === null">-</span>
                                                         <span v-else class="flex items-center space-x-1">
                                                             <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
@@ -593,25 +596,21 @@ const comissionTotal = computed(() => {
                                                         </span>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         <span v-if="site === null">-</span>
                                                         <span v-else>
                                                             {{ markup(site) }}
                                                         </span>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                        <span v-if="site === null">-</span>
-                                                        <span v-else>
-                                                            {{ $filters.currency(site.seller.comission / 100, coins[site.seller.comission_coin]) }}
-                                                        </span>
-
-                                                        <span class="flex items-center space-x-1">
-                                                            <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
-                                                                <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <span v-if="site === null || site.seller === null">-</span>
+                                                        <span v-else class="flex items-center space-x-1">
+                                                            <span class="relative flex space-x-2 items-center">
+                                                                <span v-if="site.seller.comission_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                                                 <span>
-                                                                    {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
-                                                                    {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                    {{ site.seller.comission_coin != coinStore.coin ? '~ ' : null }}
+                                                                    {{ $filters.currency(Math.ceil((site.seller.comission / coinStore.ratios[site.seller.comission_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
                                                                 </span>
                                                             </span>
 
@@ -621,15 +620,15 @@ const comissionTotal = computed(() => {
                                                         </span>
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         <Checkbox id="status1" name="status1" />
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         <Checkbox id="status2" name="status2" />
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         <Checkbox id="status3" name="status3" />
                                                     </td>
                                                 </tr>
@@ -639,21 +638,23 @@ const comissionTotal = computed(() => {
                                                 <tr>
                                                     <td colspan="4" class="px-3 py-2"></td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         ~ {{ costTotal }}
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         ~ {{ saleTotal }}
                                                     </td>
 
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         ~ {{ markupTotal }}
                                                     </td>
                                                     
-                                                    <td class="whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         ~ {{ comissionTotal }}
                                                     </td>
+
+                                                    <td colspan="3" class="border-l px-3 py-2"></td>
                                                 </tr>
                                             </tfoot>
                                         </table>
