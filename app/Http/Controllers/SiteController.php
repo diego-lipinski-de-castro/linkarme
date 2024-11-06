@@ -287,6 +287,7 @@ class SiteController extends Controller
             'types',
             'orders' => fn($query) => $query->latest()->with('client'),
             'views' => fn($query) => $query->latest()->with('client'),
+            'offers',
         ]);
 
         $site->loadCount([

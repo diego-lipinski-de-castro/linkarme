@@ -287,14 +287,24 @@ const showOffersDialog = ref(false)
                                 </div>
 
                                 <div class="mt-2 text-sm text-gray-500">
-                                    <!-- offers list -->
-                                    <p>Offers list for this website</p>
+                                    <p v-if="site.offers_count == 0">Esse site não possui nenhuma oferta.</p>
+                                    <div v-else>
+                                        <span v-for="offer in site.offers" :key="offer.id">
+                                            <pre class="whitespace-pre-line">
+                                                {{ offer }}
+                                            </pre>
+                                        </span>
+                                    </div>
                                 </div>
 
-                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                <div class="mt-5 flex justify-end space-x-3">
                                     <button type="button"
-                                        class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                                        class="rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
                                         @click="showOffersDialog = false">{{ $t('Close') }}</button>
+
+                                    <button type="button"
+                                        class="rounded-md bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-3 py-2 hover:bg-blue-700 disabled:opacity-50 transition-all text-sm font-medium text-white"
+                                        @click="showOffersDialog = false">{{ $t('Upload') }}</button>
                                 </div>
                             </DialogPanel>
                         </TransitionChild>
