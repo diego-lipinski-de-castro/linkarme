@@ -36,6 +36,7 @@ const tabIndex = ref(0);
 const tabs = [
     t('Account'),
     t('Orders'),
+    t('Invoices'),
     t('Logins'),
     t('Views'),
     t('Misc'),
@@ -757,6 +758,38 @@ const generatePassword = () => {
                             <th
                                 class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                 scope="col">
+                                {{ $t('Number') }}
+                            </th>
+
+                            <th
+                                class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                scope="col">{{ $t('Date') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        <tr v-for="(invoice, index) in client.invoices" :key="index" class="bg-white">
+                            <td
+                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                {{ invoice.url }}
+                            </td>
+                        
+                            <td
+                                class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                                {{ new Date(invoice.created_at).toLocaleString() }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div v-show="tabIndex == 3" class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-md">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th
+                                class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                scope="col">
                                 {{ $t('Date') }}
                             </th>
                         </tr>
@@ -772,7 +805,7 @@ const generatePassword = () => {
                 </table>
             </div>
 
-            <div v-show="tabIndex == 3" class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-md">
+            <div v-show="tabIndex == 4" class="mt-5 min-w-full overflow-hidden overflow-x-auto align-middle border border-gray-200 sm:rounded-md">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
@@ -804,7 +837,7 @@ const generatePassword = () => {
                 </table>
             </div>
 
-            <div v-show="tabIndex == 4" class="mt-5">
+            <div v-show="tabIndex == 5" class="mt-5">
                 <div class="min-w-full overflow-hidden overflow-x-scroll align-middle border border-gray-200 sm:rounded-md">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>

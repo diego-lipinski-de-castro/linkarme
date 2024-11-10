@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\DateBetweenFilter;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Imports\OrdersImport;
@@ -35,6 +36,13 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
+        $query = request()->query();
+
+        $filters = [
+            'search' => $query['filter']['search'] ?? null,
+            'created_at' => $query['filter']['created_at'] ?? [],
+        ];
+
         $orders = QueryBuilder::for(Order::class)
             ->with([
                 'client',
@@ -46,19 +54,21 @@ class OrderController extends Controller
                 AllowedFilter::scope('search', 'smart'),
                 AllowedFilter::exact('client_id'),
                 AllowedFilter::exact('status'),
+                AllowedFilter::custom('created_at', new DateBetweenFilter),
             ])
             ->paginate(15)
             ->appends(request()->query());
 
         return Inertia::render('Orders/IndexNew', [
             'orders' => $orders,
+            'filters' => $filters,
             'statuses' => $statuses,
             'clients' => $clients,
             'sellers' => $sellers,
+            'coins' => $coins,
             'importFailures' => session('importFailures'),
             'importDiff' => session('importDiff'),
             'sites' => session('sites'),
-            'coins' => $coins,
         ]);
     }
 

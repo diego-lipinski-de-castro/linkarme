@@ -474,11 +474,6 @@ const submitInvoice = () => {
                                 <span class="block text-xs text-gray-400">{{ $t('Choose filters to start') }}</span>
                             </div>
                         </div>
-
-                        <Link :href="route('orders.create')"
-                            class="flex md:hidden max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-colors">
-                        <span class="px-1 text-sm font-medium text-white">{{ $t('Add client') }}</span>
-                        </Link>
                     </div>
 
                     <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 md:gap-y-0">

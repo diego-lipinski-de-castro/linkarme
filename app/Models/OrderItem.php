@@ -14,6 +14,17 @@ class OrderItem extends Pivot
     protected $fillable = [
         'order_id',
         'site_id',
+        
+        'link',
+        
+        'cost',
+        'cost_coin',
+        
+        'sale',
+        'sale_coin',
+
+        'comission',
+        'comission_coin',
     ];
 
     public function site()
@@ -21,8 +32,18 @@ class OrderItem extends Pivot
         return $this->belongsTo(Site::class);
     }
 
-    public function links()
+    public function getFormattedCostAttribute()
     {
-        return $this->hasMany(Link::class);
+        return 'R$ '.number_format($this->cost / 100, 2, ',', '.');
+    }
+
+    public function getFormattedSaleAttribute()
+    {
+        return 'R$ '.number_format($this->sale / 100, 2, ',', '.');
+    }
+
+    public function getFormattedComissionAttribute()
+    {
+        return 'R$ '.number_format($this->comission / 100, 2, ',', '.');
     }
 }

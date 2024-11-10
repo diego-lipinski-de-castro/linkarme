@@ -6,12 +6,10 @@ use App\Http\Requests\StoreClientRequest;
 use App\Models\Client;
 use App\Models\Seller;
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Laravel\Jetstream\Agent;
@@ -138,6 +136,7 @@ class ClientController extends Controller
             'orders' => fn($query) => $query->latest(),
             'logins' => fn($query) => $query->latest(),
             'views' => fn ($query) => $query->latest()->with('site'),
+            'invoices',
         ]);
 
         $client->loadCount([
@@ -173,7 +172,7 @@ class ClientController extends Controller
                     ->where('user_id', $request->user()->getAuthIdentifier())
                     ->orderBy('last_activity', 'desc')
                     ->get()
-        )->map(function ($session) use ($request) {
+        )->map(function (object $session) use ($request) {
             $agent = $this->createAgent($session);
 
             return (object) [

@@ -53,7 +53,6 @@ class GoogleSheetService
         return null;
     }
 
-
     /**
      * Append a row to the sheet.
      */

@@ -450,7 +450,7 @@ const comissionTotal = computed(() => {
         </TransitionRoot>
 
         <AppLayoutNew :title="$t('Edit order')">
-            <div class="max-w-7xl mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
+            <div class="mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
                 <div class="flex items-center space-x-2 px-5">
                     <div class="w-10">
                         <PencilIcon class="h-6 w-6" />
@@ -507,8 +507,8 @@ const comissionTotal = computed(() => {
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Vendedor') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de compra') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de venda') }}</th>
-                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Markup') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Comissão') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Markup') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 1') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 2') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 3') }}</th>
@@ -597,13 +597,6 @@ const comissionTotal = computed(() => {
                                                     </td>
 
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                        <span v-if="site === null">-</span>
-                                                        <span v-else>
-                                                            {{ markup(site) }}
-                                                        </span>
-                                                    </td>
-
-                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         <span v-if="site === null || site.seller === null">-</span>
                                                         <span v-else class="flex items-center space-x-1">
                                                             <span class="relative flex space-x-2 items-center">
@@ -617,6 +610,13 @@ const comissionTotal = computed(() => {
                                                             <button @click="edit('sale', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
                                                                 <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
                                                             </button>
+                                                        </span>
+                                                    </td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <span v-if="site === null">-</span>
+                                                        <span v-else>
+                                                            {{ markup(site) }}
                                                         </span>
                                                     </td>
 
@@ -645,13 +645,13 @@ const comissionTotal = computed(() => {
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         ~ {{ saleTotal }}
                                                     </td>
-
-                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                        ~ {{ markupTotal }}
-                                                    </td>
                                                     
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         ~ {{ comissionTotal }}
+                                                    </td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        ~ {{ markupTotal }}
                                                     </td>
 
                                                     <td colspan="3" class="border-l px-3 py-2"></td>

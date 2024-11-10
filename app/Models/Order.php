@@ -35,10 +35,6 @@ class Order extends Model implements Auditable
         'receipt_date',
         'delivery_date',
         'payment_date',
-        'charged',
-        'paid',
-        'markup',
-        'comission',
         'company',
         'status',
         'invoice_id',
@@ -49,10 +45,6 @@ class Order extends Model implements Auditable
     ];
 
     protected $appends = [
-        'formatted_charged',
-        'formatted_paid',
-        'formatted_markup',
-        'formatted_comission',
         'formatted_status',
     ];
 
@@ -114,23 +106,35 @@ class Order extends Model implements Auditable
         return self::STATUSES[$this->status];
     }
 
-    public function getFormattedChargedAttribute()
+    public function getTotalCostAttribute()
     {
-        return 'R$ '.number_format($this->charged / 100, 2, ',', '.');
+        $total = 0;
+
+        foreach ($this->items as $item) {
+            $total += $item->cost;
+        }
+
+        return $total;
     }
 
-    public function getFormattedPaidAttribute()
+    public function getFormattedTotalCostAttribute()
     {
-        return 'R$ '.number_format($this->paid / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->total_cost / 100, 2, ',', '.');
     }
 
-    public function getFormattedMarkupAttribute()
+    public function getTotalSaleAttribute()
     {
-        return 'R$ '.number_format($this->markup / 100, 2, ',', '.');
+        $total = 0;
+
+        foreach ($this->items as $item) {
+            $total += $item->sale;
+        }
+
+        return $total;
     }
 
-    public function getFormattedComissionAttribute()
+    public function getFormattedTotalSaleAttribute()
     {
-        return 'R$ '.number_format($this->comission / 100, 2, ',', '.');
+        return 'R$ '.number_format($this->total_sale / 100, 2, ',', '.');
     }
 }

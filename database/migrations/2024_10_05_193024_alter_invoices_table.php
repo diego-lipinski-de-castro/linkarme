@@ -12,8 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->dropForeign(['order_id']);
-            $table->dropColumn('order_id');
+            $table->foreignId('client_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+
+            $table->boolean('paid')->default(false);
+
+            $table->integer('value')->default(0);
+            $table->enum('value_coin', ['BRL', 'EUR', 'USD', 'GBP'])->default('BRL');
+
+            $table->integer('discount')->default(0);
+            $table->enum('discount_coin', ['BRL', 'EUR', 'USD', 'GBP'])->default('BRL');
+
+            $table->string('bank')->nullable();
+            $table->string('payment_link')->nullable();
+            $table->string('file_path')->nullable();
         });
     }
 
@@ -23,9 +37,17 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->foreignId('order_id')
-                ->constrained()
-                ->cascadeOnDelete();
+            $table->dropForeign(['client_id']);
+            $table->dropColumn('client_id');
+
+            $table->dropColumn('paid');
+
+            $table->dropColumn(['value', 'value_coin']);
+            $table->dropColumn(['discount', 'discount_coin']);
+
+            $table->dropColumn('bank');
+            $table->dropColumn('payment_link');
+            $table->dropColumn('file_path');
         });
     }
 };

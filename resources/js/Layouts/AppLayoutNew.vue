@@ -140,7 +140,7 @@ await i18nextPromise
 
                 <Disclosure as="nav" class="relative z-10 border-b border-white border-opacity-50 lg:border-none"
                     v-slot="{ open }">
-                    <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
+                    <div class="mx-auto max-w-[1440px] px-2 sm:px-4 lg:px-8">
                         <div
                             class="relative flex h-16 items-center justify-between lg:border-b lg:border-blue-400 lg:border-opacity-25">
                             <Link :href="route('dashboard')" class="flex items-center px-2 lg:px-0">
@@ -351,7 +351,7 @@ await i18nextPromise
                     </DisclosurePanel>
                 </Disclosure>
                 <header class="hidden sm:block relative py-10">
-                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                         <div class="z-10 flex space-x-4">
                             <Link v-for="item in navigation" :key="item.name" :href="item.href"
                                 :class="[item.current ? 'bg-blue-900 text-white' : 'text-white hover:bg-blue-700 hover:bg-opacity-50', 'transition-colors rounded-md py-2 px-3 text-sm font-medium']"
@@ -362,13 +362,13 @@ await i18nextPromise
             </div>
 
             <main class="-mt-24 sm:-mt-32 mb-auto relative">
-                <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-[1440px] px-4 pb-12 sm:px-6 lg:px-8">
                     <slot />
                 </div>
             </main>
 
             <footer class="bg-blue-900">
-                <div class="flex justify-end items-center space-x-12 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                <div class="flex justify-end items-center space-x-12 mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
                     <span class="text-white">&#169; {{ new Date().getFullYear() }} Linking. {{ $t('All rights reserved.')
                         }}</span>
 

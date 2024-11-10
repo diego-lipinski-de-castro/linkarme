@@ -26,6 +26,7 @@ import {
     CloudArrowUpIcon,
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
+    ChevronDownIcon,
 } from '@heroicons/vue/20/solid'
 import {
     PencilSquareIcon,
@@ -621,31 +622,17 @@ const expanded = ref([])
                         <hr class="my-5">
 
                         <div class="flex justify-end">
-                            <!-- <span class="font-bold text-sm whitespace-nowrap">{{ $t('Column filter:') }}</span>
-
-
-                            <div class="mt-2 flex flex-wrap">
-                                <div v-for="(column, index) in columns" :key="index" class="px-4 py-2 relative flex">
-                                    <div class="flex items-center h-5">
-                                        <input v-model="column.visible" :value="column.key" :id="column.key"
-                                            :name="column.key" type="checkbox"
-                                            class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded" />
-                                    </div>
-
-                                    <div class="ml-2 text-sm">
-                                        <label :for="column.key" class="font-medium text-gray-700 whitespace-nowrap">{{
-                                            column.label
-                                        }}</label>
-                                    </div>
-                                </div>
-                            </div> -->
 
                             <Menu as="div" class="relative order-2 lg:order-1">
                                 <div>
                                     <MenuButton
                                         class="text-gray-700 shadow-sm bg-white border border-gray-300 flex justify-center items-center rounded-md px-3 py-1 text-sm"
                                     >
-                                        {{ $t('Columns') }}
+                                        <span>
+                                            {{ $t('Columns') }}
+                                        </span>
+
+                                        <ChevronDownIcon class="size-5"/>
                                     </MenuButton>
                                 </div>
 

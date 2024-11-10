@@ -143,6 +143,11 @@ class Client extends Authenticatable implements HasLocalePreference
         return $this->hasMany(Order::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     public function consultant()
     {
         return $this->belongsTo(Seller::class, 'seller_id');

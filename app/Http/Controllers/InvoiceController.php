@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\DateBetweenFilter;
 use App\Models\Invoice;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class InvoiceController extends Controller
 {
@@ -16,11 +19,25 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::query()
-            ->paginate();
+        $query = request()->query();
+
+        $filters = [
+            'search' => $query['filter']['search'] ?? null,
+            'created_at' => $query['filter']['created_at'] ?? [],
+        ];
+        
+        $invoices = QueryBuilder::for(Invoice::class)
+            ->defaultSort('-created_at')
+            ->allowedFilters([
+                AllowedFilter::custom('created_at', new DateBetweenFilter),
+            ])
+            ->paginate()
+            ->appends(request()->query());
 
         return Inertia::render('Invoices/Index', [
             'invoices' => $invoices,
+            'filters' => $filters,
+            'banks' => Invoice::BANKS,
         ]);
     }
 
@@ -53,6 +70,15 @@ class InvoiceController extends Controller
 
         return Inertia::render('Invoices/Edit', [
             'invoice' => $invoice,
+            'banks' => Invoice::BANKS,
+            'coins' => config('coins'),
         ]);
+    }
+
+    public function update(Invoice $invoice, Request $request)
+    {
+
+
+        return back();
     }
 }
