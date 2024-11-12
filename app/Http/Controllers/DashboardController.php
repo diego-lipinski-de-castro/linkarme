@@ -18,67 +18,67 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $updates = Audit::query()
-            ->with([
-                'auditable' => function ($query) {
-                    $query->withTrashed();
-                },
-            ])
-            ->whereIn('auditable_type', ['App\\Models\\Site', 'App\\Models\\SiteType'])
-            ->whereIn('event', ['updated', 'deleted', 'restored'])
-            ->whereDate('created_at', '>', now()->subMonths(6)->format('Y-m-d'))
-            ->get()
-            ->filter(function (Audit $item) {
+        // $updates = Audit::query()
+        //     ->with([
+        //         'auditable' => function ($query) {
+        //             $query->withTrashed();
+        //         },
+        //     ])
+        //     ->whereIn('auditable_type', ['App\\Models\\Site', 'App\\Models\\SiteType'])
+        //     ->whereIn('event', ['updated', 'deleted', 'restored'])
+        //     ->whereDate('created_at', '>', now()->subMonths(6)->format('Y-m-d'))
+        //     ->get()
+        //     ->filter(function (Audit $item) {
                 
-                if($item->auditable_type == 'App\\Models\\SiteType') {
+        //         if($item->auditable_type == 'App\\Models\\SiteType') {
 
-                    $item->auditable->load([
-                        'site', 'type',
-                    ]);
+        //             $item->auditable->load([
+        //                 'site', 'type',
+        //             ]);
 
-                    return true;
-                }
+        //             return true;
+        //         }
 
-                if($item->auditable_type == 'App\\Models\\Site') {
-                    if($item->event == 'updated') {
+        //         if($item->auditable_type == 'App\\Models\\Site') {
+        //             if($item->event == 'updated') {
 
-                        if(
-                            isset($item->getModified()['status']) &&
-                            isset($item->getModified()['status']['new']) &&
-                            $item->getModified()['status']['new'] == 'REJECTED'
-                        ) {
-                            return false;
-                        }
+        //                 if(
+        //                     isset($item->getModified()['status']) &&
+        //                     isset($item->getModified()['status']['new']) &&
+        //                     $item->getModified()['status']['new'] == 'REJECTED'
+        //                 ) {
+        //                     return false;
+        //                 }
     
-                        return Arr::hasAny(
-                            $item->getModified(), 
-                            ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
-                        );
-                    }
-                }
+        //                 return Arr::hasAny(
+        //                     $item->getModified(), 
+        //                     ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
+        //                 );
+        //             }
+        //         }
 
-                return true;
-            })
-            ->transform(function (Audit $item) {
-                $modified = $item->getModified();
+        //         return true;
+        //     })
+        //     ->transform(function (Audit $item) {
+        //         $modified = $item->getModified();
                 
-                if(isset($modified['cost'])) {
-                    unset($modified['cost']);
-                }
+        //         if(isset($modified['cost'])) {
+        //             unset($modified['cost']);
+        //         }
 
-                if(isset($modified['cost_coin'])) {
-                    unset($modified['cost_coin']);
-                }
+        //         if(isset($modified['cost_coin'])) {
+        //             unset($modified['cost_coin']);
+        //         }
 
-                $item->modified = $modified;
+        //         $item->modified = $modified;
 
-                $item->key = $item->auditable->url;
+        //         $item->key = $item->auditable->url;
 
-                return $item;
-            })
-            ->filter(fn (Audit $item) => strlen($item->auditable->url) > 0)
-            ->groupBy('key')
-            ->all();
+        //         return $item;
+        //     })
+        //     ->filter(fn (Audit $item) => strlen($item->auditable->url) > 0)
+        //     ->groupBy('key')
+        //     ->all();
 
         // dd($updates);
 
