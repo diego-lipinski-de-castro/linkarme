@@ -27,22 +27,20 @@
             We just have the following changes on our base:
         </div>
 
-        <ul role="list" class="">
+        <ul role="list" class="divide-y divide-gray-300">
             @foreach($updates as $site => $update)
 
-                <li class="even:bg-gray-100">
+                <li class="py-4 pl-10 pr-6">
 
-                    <div class="ml-3 pt-4 px-4 sm:px-6 flex-col flex justify-between">
-                        <a href="{{ $site }}" class="text-base font-medium underline text-blue-500">{{ $site }}</a>
-                    </div>
+                    <a href="{{ $site }}" class="mb-4 block text-base font-medium underline text-blue-500">{{ $site }}</a>
                     
-                    @foreach($update as $audit)
+                    <div class="space-y-2">
+                        @foreach($update as $audit)
 
-                        @if($audit->auditable_type == 'App\\Models\\Site')
-                            @if($audit->event == 'updated')
-                            <div class="flex items-center space-x-3 pb-4 px-4 sm:px-6">
-                                <div class="flex-1 space-y-1 ml-3">
-                                    <p class="mt-3 text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
+                            @if($audit->auditable_type == 'App\\Models\\Site')
+                                @if($audit->event == 'updated')
+                                <div>
+                                    <p class="-mb-1 text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
 
                                     @foreach($audit->modified as $attribute => $value)
 
@@ -148,15 +146,11 @@
 
                                     @endforeach
                                 </div>
-                            </div>
-                            @endif
+                                @endif
 
-                            @if($audit->event == 'deleted')
-                            <div class="flex items-center space-x-3 pb-4 px-4 sm:px-6">
-                                <div class="flex-1 space-y-1 ml-3">
-                                    <div class="flex-col flex justify-between">
-                                        <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
-                                    </div>
+                                @if($audit->event == 'deleted')
+                                <div>
+                                    <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
 
                                     <p class="text-base text-gray-900">
                                         <span class="break-words">
@@ -164,15 +158,11 @@
                                         </span>
                                     </p>
                                 </div>
-                            </div>
-                            @endif
+                                @endif
 
-                            @if($audit->event == 'restored')
-                            <div class="flex items-center space-x-3 pb-4 px-4 sm:px-6">
-                                <div class="flex-1 space-y-1 ml-3">
-                                    <div class="flex-col flex justify-between">
-                                        <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
-                                    </div>
+                                @if($audit->event == 'restored')
+                                <div>
+                                    <p class="text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
 
                                     <p class="text-base text-gray-900">
                                         <span class="break-words">
@@ -180,63 +170,63 @@
                                         </span>
                                     </p>
                                 </div>
-                            </div>
-                            @endif
-                        @endif
-
-                        @if($audit->auditable_type == 'App\\Models\\SiteType')
-                            <li class="even:bg-gray-100">
-                                @if($audit->event == 'updated')
-                                    <div class="flex items-center space-x-3 px-4 py-4 sm:px-6">
-
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
-                                        </svg>
-
-                                        <div class="flex-1 space-y-1 ml-3">
-                                            <div class="flex-col flex justify-between">
-                                                <a href="#" class="text-base font-medium underline text-blue-500">{{ $audit->auditable->site->url }}</a>
-                                                <p class="mt-1 text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
-                                            </div>
-
-                                            @foreach($audit->modified as $attribute => $value)
-
-                                                @php
-
-                                                    if($attribute == 'sale') {
-                                                        $value['old'] = App\Helper::formatCurrency($value['old'] / 100, $audit->auditable->sale_coin);
-                                                        $value['new'] = App\Helper::formatCurrency($value['new'] / 100, $audit->auditable->sale_coin);
-                                                    }
-
-                                                    if($attribute == 'sale_coin') {
-                                                        $value['old'] = App\Helper::formatCurrency($audit->auditable->sale / 100, $value['old']);
-                                                        $value['new'] = App\Helper::formatCurrency($audit->auditable->sale / 100, $value['new']);
-
-                                                        $attribute = 'sale';
-                                                    }
-
-                                                @endphp
-
-                                                <p class="text-base text-gray-900">
-                                                    <span class="break-words">
-                                                        {{
-                                                            __('email.attributes.pivot.updated', [
-                                                                'attribute' => $attribute,
-                                                                'pivot' => strtolower($audit->auditable->type->name),
-                                                                'old' => $value['old'],
-                                                                'new' => $value['new'],
-                                                            ])
-                                                        }}
-                                                    </span>
-                                                </p>
-
-                                            @endforeach
-                                        </div>
-                                    </div>
                                 @endif
-                            </li>
-                        @endif
-                    @endforeach
+                            @endif
+
+                            @if($audit->auditable_type == 'App\\Models\\SiteType')
+                                <li class="even:bg-gray-100">
+                                    @if($audit->event == 'updated')
+                                        <div class="flex items-center space-x-3 px-4 py-4 sm:px-6">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+                                            </svg>
+
+                                            <div class="flex-1 space-y-1 ml-3">
+                                                <div class="flex-col flex justify-between">
+                                                    <a href="#" class="text-base font-medium underline text-blue-500">{{ $audit->auditable->site->url }}</a>
+                                                    <p class="mt-1 text-sm text-gray-500">{{ date_format($audit->created_at, 'd/m/Y H:i') }}</p>
+                                                </div>
+
+                                                @foreach($audit->modified as $attribute => $value)
+
+                                                    @php
+
+                                                        if($attribute == 'sale') {
+                                                            $value['old'] = App\Helper::formatCurrency($value['old'] / 100, $audit->auditable->sale_coin);
+                                                            $value['new'] = App\Helper::formatCurrency($value['new'] / 100, $audit->auditable->sale_coin);
+                                                        }
+
+                                                        if($attribute == 'sale_coin') {
+                                                            $value['old'] = App\Helper::formatCurrency($audit->auditable->sale / 100, $value['old']);
+                                                            $value['new'] = App\Helper::formatCurrency($audit->auditable->sale / 100, $value['new']);
+
+                                                            $attribute = 'sale';
+                                                        }
+
+                                                    @endphp
+
+                                                    <p class="text-base text-gray-900">
+                                                        <span class="break-words">
+                                                            {{
+                                                                __('email.attributes.pivot.updated', [
+                                                                    'attribute' => $attribute,
+                                                                    'pivot' => strtolower($audit->auditable->type->name),
+                                                                    'old' => $value['old'],
+                                                                    'new' => $value['new'],
+                                                                ])
+                                                            }}
+                                                        </span>
+                                                    </p>
+
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                </li>
+                            @endif
+                        @endforeach
+                    </div>
                 </li>
             @endforeach
         </ul>
