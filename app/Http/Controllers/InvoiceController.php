@@ -77,7 +77,11 @@ class InvoiceController extends Controller
 
     public function update(Invoice $invoice, Request $request)
     {
+        $input = $request->validate([
+            
+        ]);
 
+        $invoice->update($input);
 
         return back();
     }

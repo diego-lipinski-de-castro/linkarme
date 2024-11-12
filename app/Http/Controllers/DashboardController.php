@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DailyUpdates;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\Country;
@@ -9,12 +10,80 @@ use App\Models\Language;
 use App\Models\Order;
 use App\Models\Site;
 use App\Models\Team;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
+use OwenIt\Auditing\Models\Audit;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        $updates = Audit::query()
+            ->with([
+                'auditable' => function ($query) {
+                    $query->withTrashed();
+                },
+            ])
+            ->whereIn('auditable_type', ['App\\Models\\Site', 'App\\Models\\SiteType'])
+            ->whereIn('event', ['updated', 'deleted', 'restored'])
+            ->whereDate('created_at', '>', now()->subMonths(6)->format('Y-m-d'))
+            ->get()
+            ->filter(function (Audit $item) {
+                
+                if($item->auditable_type == 'App\\Models\\SiteType') {
+
+                    $item->auditable->load([
+                        'site', 'type',
+                    ]);
+
+                    return true;
+                }
+
+                if($item->auditable_type == 'App\\Models\\Site') {
+                    if($item->event == 'updated') {
+
+                        if(
+                            isset($item->getModified()['status']) &&
+                            isset($item->getModified()['status']['new']) &&
+                            $item->getModified()['status']['new'] == 'REJECTED'
+                        ) {
+                            return false;
+                        }
+    
+                        return Arr::hasAny(
+                            $item->getModified(), 
+                            ['sale', 'gambling', 'cdb', 'cripto', 'sponsor', 'status']
+                        );
+                    }
+                }
+
+                return true;
+            })
+            ->transform(function (Audit $item) {
+                $modified = $item->getModified();
+                
+                if(isset($modified['cost'])) {
+                    unset($modified['cost']);
+                }
+
+                if(isset($modified['cost_coin'])) {
+                    unset($modified['cost_coin']);
+                }
+
+                $item->modified = $modified;
+
+                $item->key = $item->auditable->url;
+
+                return $item;
+            })
+            ->filter(fn (Audit $item) => strlen($item->auditable->url) > 0)
+            ->groupBy('key')
+            ->all();
+
+        // dd($updates);
+
+        return new DailyUpdates($updates);
+
         $data = [
             [
                 'label' => 'Pedidos em aberto',
