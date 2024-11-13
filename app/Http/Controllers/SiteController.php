@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\SitesExport;
 use App\Filters\FilterLimiter;
+use App\Filters\FollowFilter;
 use App\Filters\NewFilter;
 use App\Filters\UrlFilter;
 use App\Helper;
@@ -106,8 +107,8 @@ class SiteController extends Controller
                     'to' => Arr::get($query, 'filter.dr.to', Site::ofStatus('APPROVED')->max('dr')),
                 ],
 
-                'gambling' => filter_var(Arr::get($query, 'filter.gambling', false), FILTER_VALIDATE_BOOL),
                 'sponsor' => filter_var(Arr::get($query, 'filter.sponsor', false), FILTER_VALIDATE_BOOL),
+                'follow' => filter_var(Arr::get($query, 'filter.follow', false), FILTER_VALIDATE_BOOL),
 
                 'new' => filter_var(Arr::get($query, 'filter.new', false), FILTER_VALIDATE_BOOL),
 
@@ -163,8 +164,8 @@ class SiteController extends Controller
                 }),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
-                'gambling',
                 'sponsor',
+                AllowedFilter::custom('follow', new FollowFilter),
                 AllowedFilter::custom('new', new NewFilter),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::exact('country_id'),

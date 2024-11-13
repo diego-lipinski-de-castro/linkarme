@@ -17,8 +17,6 @@ return new class extends Migration
                 ->constrained()
                 ->nullOnDelete();
 
-            $table->boolean('paid')->default(false);
-
             $table->integer('value')->default(0);
             $table->enum('value_coin', ['BRL', 'EUR', 'USD', 'GBP'])->default('BRL');
 
@@ -39,8 +37,6 @@ return new class extends Migration
         Schema::table('invoices', function (Blueprint $table) {
             $table->dropForeign(['client_id']);
             $table->dropColumn('client_id');
-
-            $table->dropColumn('paid');
 
             $table->dropColumn(['value', 'value_coin']);
             $table->dropColumn(['discount', 'discount_coin']);

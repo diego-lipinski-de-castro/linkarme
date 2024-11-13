@@ -493,6 +493,14 @@ const comissionTotal = computed(() => {
                                 <InputError class="mt-2" :message="form.errors.client_id"/>
                             </div>
 
+                            <div>
+                                Status de produção: Em redação, Aguardando aprovação do artigo, Enviado ao portal, Publicado
+                            </div>
+                            
+                            <div>
+                                Status Financeiro: Recebido do Cliente, Portal Pago, Comissão Paga
+                            </div>
+
                             <div class="col-span-6">
 
                                 <div class="overflow-hidden border border-gray-300 sm:rounded-lg">

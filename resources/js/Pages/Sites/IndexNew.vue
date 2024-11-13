@@ -87,13 +87,12 @@ const columns = useStorage('sites.index.columns', [
     { key: 'url', label: t('Domain'), visible: true, sortable: true, },
     { key: 'da', label: t('DA'), visible: true, sortable: true, },
     { key: 'dr', label: t('DR'), visible: true, sortable: true, },
+    { key: 'sponsor', label: t('Sponsored'), visible: true, sortable: false, },
     { key: 'link_type', label: t('Link'), visible: false, sortable: false, },
     { key: 'tr', label: t('TR'), visible: true, sortable: true, },
     { key: 'country', label: t('Country'), visible: false, sortable: false, },
     { key: 'language', label: t('Language'), visible: false, sortable: false, },
-    // { key: 'sponsor', label: t('Marked as sponsored'), visible: true, sortable: false, },
     { key: 'category', label: t('Category'), visible: false, sortable: false, },
-    // Nichos aceitos
     // { key: 'misc', label: t('Misc'), visible: false, sortable: false, },
     { key: 'obs', label: t('Obs'), visible: false, sortable: false, },
     { key: 'example', label: t('Example'), visible: false, sortable: false, },
@@ -120,8 +119,8 @@ const filters = reactive({
     sale: { from: props.filters.filter.sale.from, to: props.filters.filter.sale.to },
     da: { from: props.filters.filter.da.from, to: props.filters.filter.da.to },
     dr: { from: props.filters.filter.dr.from, to: props.filters.filter.dr.to },
-    gambling: props.filters.filter.gambling,
     sponsor: props.filters.filter.sponsor,
+    follow: props.filters.filter.follow,
     // recommended: props.filters.filter.recommended,
     // new: props.filters.filter.new,
     language_id: props.filters.filter.language_id,
@@ -154,8 +153,8 @@ const get = async () => {
             sale: filters.sale,
             da: filters.da,
             dr: filters.dr,
-            gambling: filters.gambling,
             sponsor: filters.sponsor,
+            follow: filters.follow,
             // ...(filters.recommended && {
             //     recommended: filters.recommended,
             // }),
@@ -513,14 +512,26 @@ const expanded = ref([])
                             <div class="col-span-1 flex">
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Marked as sponsored') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Not sponsored') }}</span>
                                     </SwitchLabel>
 
-                                <Switch v-model="filters.sponsor"
-                                    :class="[filters.sponsor ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
-                                    <span aria-hidden="true"
-                                        :class="[filters.sponsor ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
-                                </Switch>
+                                    <Switch v-model="filters.sponsor"
+                                        :class="[!filters.sponsor ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        <span aria-hidden="true"
+                                            :class="[!filters.sponsor ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
+                                    </Switch>
+                                </SwitchGroup>
+
+                                <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
+                                    <SwitchLabel as="span" class="flex h-full">
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Follow') }}</span>
+                                    </SwitchLabel>
+
+                                    <Switch v-model="filters.follow"
+                                        :class="[filters.follow ? 'bg-blue-600' : 'bg-gray-200', 'ml-2 relative inline-flex h-4 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2']">
+                                        <span aria-hidden="true"
+                                            :class="[filters.follow ? 'translate-x-5' : '-translate-x-1', '-translate-y-1 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out border border-gray-300']" />
+                                    </Switch>
                                 </SwitchGroup>
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">

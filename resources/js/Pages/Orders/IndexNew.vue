@@ -188,6 +188,20 @@ const submitInvoice = () => {
         preserveState: true,
     })
 }
+
+const canSelect = (order) => {
+    if(invoiceForm.selected.length === 0) {
+        return true;
+    }
+
+    const _order = props.orders.data.find(o => o.id === invoiceForm.selected[0])
+    
+    if (order.client_id !== _order.client_id) {
+        return false;
+    }
+
+    return order.invoice === null;
+}
 </script>
 
 <template>
@@ -625,7 +639,7 @@ const submitInvoice = () => {
                                     <tbody class="divide-y divide-gray-200 bg-white">
                                         <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
                                             <td class="pl-4 py-4">
-                                                <div v-if="order.invoice === null" class="w-fit">
+                                                <div v-if="canSelect(order)" class="w-fit">
                                                     <input v-model="invoiceForm.selected" :value="order.id"
                                                         type="checkbox"
                                                         class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" />
