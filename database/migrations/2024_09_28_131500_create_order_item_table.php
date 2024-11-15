@@ -32,6 +32,12 @@ return new class extends Migration
             $table->enum('sale_coin', ['BRL', 'EUR', 'USD', 'GBP'])->default('BRL');
             $table->enum('comission_coin', ['BRL', 'EUR', 'USD', 'GBP'])->default('BRL');
 
+            $table->boolean('received')->nullable();
+            $table->boolean('paid')->nullable();
+            $table->boolean('comissioned')->nullable();
+
+            $table->string('link_status')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

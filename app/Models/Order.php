@@ -127,6 +127,7 @@ class Order extends Model implements Auditable
         $total = 0;
 
         foreach ($this->items as $item) {
+            dd($item);
             $total += $item->sale;
         }
 

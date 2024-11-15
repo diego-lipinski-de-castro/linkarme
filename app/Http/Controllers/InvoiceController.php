@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\DateBetweenFilter;
+use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Invoice;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -75,13 +76,9 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function update(Invoice $invoice, Request $request)
+    public function update(Invoice $invoice, UpdateInvoiceRequest $request)
     {
-        $input = $request->validate([
-            
-        ]);
-
-        $invoice->update($input);
+        $invoice->update($request->validated());
 
         return back();
     }

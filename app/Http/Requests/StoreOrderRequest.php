@@ -25,16 +25,28 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required|in:WAITING,PRODUCTION,SUBMITTED,PROCESSING,PUBLISHED,INVOICE,COMPLETED',
-            'client_id' => 'required|exists:clients,id',
-            'receipt_date' => 'nullable|date',
-            'delivery_date' => 'nullable|date',
-            'payment_date' => 'nullable|date',
-            'charged' => 'nullable',
-            'paid' => 'nullable',
-            'markup' => 'nullable',
-            'comission' => 'nullable',
-            'company' => 'nullable', 
+            'status' => ['required', 'in:WAITING,PRODUCTION,SUBMITTED,PROCESSING,PUBLISHED,INVOICE,COMPLETED'],
+            'client_id' => ['required', 'exists:clients,id'],
+
+            'items' => ['nullable', 'array', 'min:0'],
+
+            'items.*.site_id' => ['required', 'exists:sites,id'],
+            
+            'items.*.link' => ['nullable', 'string'],
+            
+            'items.*.cost' => ['nullable', 'integer'],
+            'items.*.sale' => ['nullable', 'integer'],
+            'items.*.comission' => ['nullable', 'integer'],
+
+            'items.*.received' => ['nullable', 'boolean'],
+            'items.*.paid' => ['nullable', 'boolean'],
+            'items.*.comissioned' => ['nullable', 'boolean'],
+
+            'items.*.link_status' => ['nullable', 'in:SUBMITTED,PRODUCTION,WAITING,PUBLISHED'],
+            
+            'receipt_date' => ['nullable', 'date'],
+            'delivery_date' => ['nullable', 'date'],
+            'payment_date' => ['nullable', 'date'],
         ];
     }
 
@@ -46,10 +58,6 @@ class StoreOrderRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'charged' => Helper::extractNumbersFromString($this->charged),
-            'paid' => Helper::extractNumbersFromString($this->paid),
-            'markup' => Helper::extractNumbersFromString($this->markup),
-            'comission' => Helper::extractNumbersFromString($this->comission),
         ]);
     }
 }

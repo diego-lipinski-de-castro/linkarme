@@ -37,7 +37,27 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('orders.store'), {
+    console.log(form.data())
+    form.transform((data) => ({
+        status: data.status,
+        client_id: data.client_id,
+
+        items: data.sites.map((item) => ({
+            site_id: item.id,
+            link: item.link,
+            cost: item.cost,
+            sale: item.sale,
+            comission: item.comission,
+            received: item.received,
+            paid: item.paid,
+            comissioned: item.comissioned,
+            link_status: item.link_status,
+        })),
+
+        receipt_date: data.receipt_date,
+        delivery_date: data.delivery_date,
+        payment_date: data.payment_date,
+    })).post(route('orders.store'), {
         onError(error) {
             console.log(error)
         }
@@ -76,11 +96,23 @@ const editingValue = ref('')
 
 const add = (site = null, index) => {
     if(site) {
-        form.sites = form.sites.toSpliced(index, 0, structuredClone(toRaw(site)))
+        const newSite = structuredClone(toRaw(site));
+
+        newSite.received = false;
+        newSite.paid = false;
+        newSite.comissioned = false;
+        newSite.link_status = null;
+
+        form.sites = form.sites.toSpliced(index, 0, newSite)
         return;
     }
 
     for(let url of Object.keys(list.value)) {
+        list.value[url].received = false;
+        list.value[url].paid = false;
+        list.value[url].comissioned = false;
+        list.value[url].link_status = null;
+
         form.sites.push(list.value[url])
     }
 
@@ -108,27 +140,46 @@ const edit = (column, row, site) => {
     editingRow.value = row;
     editingSite.value = site;
 
-    editingValue.value = Math.ceil((site[column] / coinStore.ratios[site[`${column}_coin`]]) / 100) * 100;
+    if(column === 'comission') {
+        editingValue.value = Math.ceil((site.seller?.comission / coinStore.ratios[site.seller?.comission_coin]) / 100) * 100;
+    } else {
+        editingValue.value = Math.ceil((site[column] / coinStore.ratios[site[`${column}_coin`]]) / 100) * 100;
+    }
+
     openEditDialog.value = true;
 }
 
 const update = (all) => {
     if(Number.isInteger(editingValue.value)) return;
 
-    const rawValue = app.appContext.config.globalProperties.$filters.unformat(editingValue.value, coins[coinStore.coin]) * 100;
-    
-    const coin = editingSite.value[`${editingColumn.value}_coin`];
+    if(editingColumn.value === 'comission') {
+        const rawValue = app.appContext.config.globalProperties.$filters.unformat(editingValue.value, coins[coinStore.coin]) * 100;
+        const coin = editingSite.value.seller.comission_coin;
+        const value = Math.floor(rawValue * coinStore.ratios[coin])
 
-    const value = Math.floor(rawValue * coinStore.ratios[coin])
-
-    if(all) {
-        form.sites
-            .filter(site => site.url === editingSite.value.url)
-            .forEach(site => {
-                site[editingColumn.value] = value;
-            })
+        if(all) {
+            form.sites
+                .filter(site => site.url === editingSite.value.url)
+                .forEach(site => {
+                    site.seller.comission = value;
+                })
+        } else {
+            form.sites[editingRow.value].seller.comission = value;
+        }
     } else {
-        form.sites[editingRow.value][editingColumn.value] = value;
+        const rawValue = app.appContext.config.globalProperties.$filters.unformat(editingValue.value, coins[coinStore.coin]) * 100;
+        const coin = editingSite.value[`${editingColumn.value}_coin`];
+        const value = Math.floor(rawValue * coinStore.ratios[coin])
+
+        if(all) {
+            form.sites
+                .filter(site => site.url === editingSite.value.url)
+                .forEach(site => {
+                    site[editingColumn.value] = value;
+                })
+        } else {
+            form.sites[editingRow.value][editingColumn.value] = value;
+        }
     }
 
     openEditDialog.value = false;
@@ -177,7 +228,7 @@ const saleTotal = computed(() => {
 })
 
 const markup = (site) => {
-    let mark = Math.ceil(((site.sale - site.cost) / coinStore.ratios[site.sale_coin]) / 100)
+    let mark = Math.ceil(((site.sale - site.cost - (site.seller?.comission ?? 0)) / coinStore.ratios[site.sale_coin]) / 100)
 
     return app.appContext.config.globalProperties.$filters.currency(mark, {
         ...coins[coinStore.coin],
@@ -189,7 +240,7 @@ const markupTotal = computed(() => {
     let total = 0
 
     for(let site of form.sites) {
-        total += Math.ceil(((site.sale - site.cost) / coinStore.ratios[site.sale_coin]) / 100);
+        total += Math.ceil(((site.sale - site.cost - (site.seller?.comission ?? 0)) / coinStore.ratios[site.sale_coin]) / 100);
     }
 
     total = app.appContext.config.globalProperties.$filters.currency(total, {
@@ -375,6 +426,7 @@ const comissionTotal = computed(() => {
                                 <h3 class="font-medium text-gray-900">
                                     <span v-if="editingColumn === 'cost'">{{ $t('Editar valor de compra') }}</span>
                                     <span v-if="editingColumn === 'sale'">{{ $t('Editar valor de venda') }}</span>
+                                    <span v-if="editingColumn === 'comission'">{{ $t('Editar valor de comissão') }}</span>
                                 </h3>
 
                                 <div class="mt-4 mx-auto w-96">
@@ -493,18 +545,10 @@ const comissionTotal = computed(() => {
                                 <InputError class="mt-2" :message="form.errors.client_id"/>
                             </div>
 
-                            <div>
-                                Status de produção: Em redação, Aguardando aprovação do artigo, Enviado ao portal, Publicado
-                            </div>
-                            
-                            <div>
-                                Status Financeiro: Recebido do Cliente, Portal Pago, Comissão Paga
-                            </div>
-
                             <div class="col-span-6">
 
                                 <div class="overflow-hidden border border-gray-300 sm:rounded-lg">
-                                    <div class="overflow-x-scroll">
+                                    <div>
                                         <table class="min-w-full divide-y divide-gray-300">
                                             <thead class="bg-gray-50">
                                                 <tr>
@@ -516,9 +560,10 @@ const comissionTotal = computed(() => {
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de venda') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Comissão') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Markup') }}</th>
-                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 1') }}</th>
-                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 2') }}</th>
-                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status 3') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Recebido') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Pago') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Comissão') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Status') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-200 bg-white">
@@ -574,7 +619,7 @@ const comissionTotal = computed(() => {
                                                         <span v-if="site === null">-</span>
                                                         <span v-else class="flex items-center space-x-1">
                                                             <span :data-tippy-content="site.cost_coin != coinStore.coin ? `${$filters.currency(site.cost / 100, coins[site.cost_coin])}` : null" class="relative flex space-x-2 items-center">
-                                                                <span v-if="site.cost_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <!-- <span v-if="site.cost_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span> -->
                                                                 <span>
                                                                     {{ site.cost_coin != coinStore.coin ? '~ ' : null }}
                                                                     {{ $filters.currency(Math.ceil((site.cost / coinStore.ratios[site.cost_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
@@ -591,7 +636,7 @@ const comissionTotal = computed(() => {
                                                         <span v-if="site === null">-</span>
                                                         <span v-else class="flex items-center space-x-1">
                                                             <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
-                                                                <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <!-- <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span> -->
                                                                 <span>
                                                                     {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
                                                                     {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
@@ -604,18 +649,18 @@ const comissionTotal = computed(() => {
                                                         </span>
                                                     </td>
 
-                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900 group">
                                                         <span v-if="site === null || site.seller === null">-</span>
                                                         <span v-else class="flex items-center space-x-1">
                                                             <span class="relative flex space-x-2 items-center">
-                                                                <span v-if="site.seller.comission_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                                <!-- <span v-if="site.seller.comission_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span> -->
                                                                 <span>
                                                                     {{ site.seller.comission_coin != coinStore.coin ? '~ ' : null }}
                                                                     {{ $filters.currency(Math.ceil((site.seller.comission / coinStore.ratios[site.seller.comission_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
                                                                 </span>
                                                             </span>
 
-                                                            <button @click="edit('sale', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
+                                                            <button @click="edit('comission', index, site)" type="button" class="p-1 scale-0 group-hover:scale-100 transition-all">
                                                                 <PencilIcon class="-mt-1 size-4 text-blue-500 hover:text-blue-700"/>
                                                             </button>
                                                         </span>
@@ -624,20 +669,54 @@ const comissionTotal = computed(() => {
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         <span v-if="site === null">-</span>
                                                         <span v-else>
-                                                            {{ markup(site) }}
+                                                            ~ {{ markup(site) }}
                                                         </span>
                                                     </td>
 
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                        <Checkbox id="status1" name="status1" />
+                                                        <div>
+                                                            <input
+                                                                v-model="site.received"
+                                                                type="checkbox"
+                                                                id="received"
+                                                                name="received"
+                                                                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                            >
+                                                        </div>
                                                     </td>
 
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                        <Checkbox id="status2" name="status2" />
+                                                        <div>
+                                                            <input
+                                                                v-model="site.paid"
+                                                                type="checkbox"
+                                                                id="paid"
+                                                                name="paid"
+                                                                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                            >
+                                                        </div>
                                                     </td>
 
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
-                                                        <Checkbox id="status3" name="status3" />
+                                                        <div>
+                                                            <input
+                                                                v-model="site.comissioned"
+                                                                type="checkbox"
+                                                                id="comissioned"
+                                                                name="comissioned"
+                                                                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                            >
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
+                                                        <select v-model="site.link_status" id="link_status" name="link_status" class="block w-52 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                                            <option :value="null">{{ $t('Selecione') }}</option>
+                                                            <option value="SUBMITTED">{{ $t('Enviado ao portal') }}</option>
+                                                            <option value="PRODUCTION">{{ $t('Em redação') }}</option>
+                                                            <option value="WAITING">{{ $t('Aguardando aprovação') }}</option>
+                                                            <option value="PUBLISHED">{{ $t('Publicado') }}</option>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                             </tbody>

@@ -98,7 +98,7 @@ const submit = () => {
                             </div>
 
                             <div>
-                                <label for="calculated" class="block text-sm font-medium text-gray-700">{{ $t('Valor calculado') }}</label>
+                                <label for="calculated" class="block text-sm font-medium text-gray-700">{{ $t('Valor dos pedidos') }}</label>
 
                                 <div class="mt-1">
                                     {{ invoice.calculated_value }}
