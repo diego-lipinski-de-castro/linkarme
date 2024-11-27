@@ -25,11 +25,13 @@ const { coins, statuses, clients, sites } = defineProps({
     statuses: Object,
     clients: Array,
     sites: Object,
+    types: Array,
 });
 
 const form = useForm({
     status: null,
     client_id: null,
+    type_id: null,
     receipt_date: '',
     delivery_date: '',
     payment_date: '',
@@ -41,16 +43,22 @@ const submit = () => {
     form.transform((data) => ({
         status: data.status,
         client_id: data.client_id,
+        type_id: data.type_id,
 
         items: data.sites.map((item) => ({
             site_id: item.id,
+            seller_id: item.seller?.id,
+
             link: item.link,
+
             cost: item.cost,
             sale: item.sale,
-            comission: item.comission,
+            comission: item.seller?.comission ?? 0,
+
             received: item.received,
             paid: item.paid,
             comissioned: item.comissioned,
+
             link_status: item.link_status,
         })),
 
@@ -266,10 +274,6 @@ const comissionTotal = computed(() => {
 
     return total;
 })
-
-// tippy('[data-tippy-content]', {
-//     interactive: true,
-// });
 </script>
         
 <template>
@@ -546,9 +550,20 @@ const comissionTotal = computed(() => {
                             </div>
 
                             <div class="col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">{{ $t('Type') }}</label>
+                                <div class="mt-1">
+                                    <select v-model="form.type_id" id="type_id" name="type_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                        <option :value="null">Selecione</option>
+                                        <option v-for="(type, index) in types" :key="index" :value="type.id">{{ type.name }}</option>
+                                    </select>
+                                </div>
+                                <InputError class="mt-2" :message="form.errors.type_id"/>
+                            </div>
+
+                            <div class="col-span-6">
 
                                 <div class="overflow-hidden border border-gray-300 sm:rounded-lg">
-                                    <div>
+                                    <div class="overflow-x-scroll">
                                         <table class="min-w-full divide-y divide-gray-300">
                                             <thead class="bg-gray-50">
                                                 <tr>
@@ -569,7 +584,7 @@ const comissionTotal = computed(() => {
                                             <tbody class="divide-y divide-gray-200 bg-white">
 
                                                 <tr v-if="form.sites.length === 0">
-                                                    <td colspan="11" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 italic">
+                                                    <td colspan="12" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 italic">
                                                         {{ $t('No site have been added to this order yet.') }}
                                                     </td>
                                                 </tr>
@@ -741,7 +756,7 @@ const comissionTotal = computed(() => {
                                                         ~ {{ markupTotal }}
                                                     </td>
 
-                                                    <td colspan="3" class="border-l px-3 py-2"></td>
+                                                    <td colspan="4" class="border-l px-3 py-2"></td>
                                                 </tr>
                                             </tfoot>
                                         </table>

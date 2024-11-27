@@ -139,7 +139,7 @@ watchDebounced(() => ({ ...filters }), (n, o) => {
     deep: true,
 })
 
-watch(() => coinStore.coin, (n , o) => {
+watch(() => coinStore.coin, (n, o) => {
     filters.sale.from = Math.ceil(`${filters.sale.from}`.replace(/\D/g, '') / coinStore.ratios[o])
     filters.sale.to = Math.ceil(`${filters.sale.to}`.replace(/\D/g, '') / coinStore.ratios[o])
 })
@@ -237,13 +237,13 @@ onMounted(() => {
 const expanded = ref([])
 
 </script>
-        
+
 <template>
     <AppSuspense>
         <TransitionRoot as="template" :show="openImportDialog">
             <Dialog as="div" class="relative z-10" @close="openImportDialog = false">
-                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100"
-                    leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
+                    enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                 </TransitionChild>
 
@@ -260,27 +260,36 @@ const expanded = ref([])
                                 <h3 class="text-center font-medium text-gray-900">Importar sites</h3>
 
                                 <div class="mt-4 mx-auto w-96">
-                                    <file-pond ref="importFilepond" :server="{ process: uploadSites }" :instantUpload="false"
-                                        :allowRevert="false" accepted-file-types="text/csv" :dropOnPage="true"
-                                        :dropOnElement="false" :dropValidation="true" credits="false"/>
+                                    <file-pond ref="importFilepond" :server="{ process: uploadSites }"
+                                        :instantUpload="false" :allowRevert="false" accepted-file-types="text/csv"
+                                        :dropOnPage="true" :dropOnElement="false" :dropValidation="true"
+                                        credits="false" />
                                 </div>
 
                                 <div v-if="!importFinished" class="mt-4 mx-auto w-96">
                                     <div class="relative flex items-start">
                                         <div class="flex h-5 items-center">
-                                            <input v-model="notifyAdded" id="notify-added" name="notify-added" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                            <input v-model="notifyAdded" id="notify-added" name="notify-added"
+                                                type="checkbox"
+                                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                                         </div>
                                         <div class="ml-2 text-sm">
-                                            <label for="notify-added" class="font-medium text-gray-700 whitespace-nowrap">Notificar sites adicionados</label>
+                                            <label for="notify-added"
+                                                class="font-medium text-gray-700 whitespace-nowrap">Notificar sites
+                                                adicionados</label>
                                         </div>
                                     </div>
 
                                     <div class="mt-2 relative flex items-start">
                                         <div class="flex h-5 items-center">
-                                            <input v-model="notifyUpdated" id="notify-updated" name="notify-updated" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                            <input v-model="notifyUpdated" id="notify-updated" name="notify-updated"
+                                                type="checkbox"
+                                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                                         </div>
                                         <div class="ml-2 text-sm">
-                                            <label for="notify-updated" class="font-medium text-gray-700 whitespace-nowrap">Notificar sites atualizados</label>
+                                            <label for="notify-updated"
+                                                class="font-medium text-gray-700 whitespace-nowrap">Notificar sites
+                                                atualizados</label>
                                         </div>
                                     </div>
                                 </div>
@@ -289,7 +298,8 @@ const expanded = ref([])
                                     <span class="block text-center">{{ importDiff }} sites adicionados.</span>
 
                                     <div v-if="importFailures.length > 0" class="mt-4">
-                                        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                        <div
+                                            class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                                             <table class="min-w-full divide-y divide-gray-300">
                                                 <thead class="bg-gray-50">
                                                     <tr>
@@ -371,10 +381,11 @@ const expanded = ref([])
                                     </div>
 
                                     <div class="flex items-center">
-                                        <label for="to_sale" class="text-xs text-gray-500 self-start text-right">{{ $t('To')
-                                        }}</label>
-                                        <input v-model="filters.sale.to" v-money3="coinFormat" id="to_sale" name="to_sale"
-                                            type="text"
+                                        <label for="to_sale" class="text-xs text-gray-500 self-start text-right">{{
+                                            $t('To')
+                                            }}</label>
+                                        <input v-model="filters.sale.to" v-money3="coinFormat" id="to_sale"
+                                            name="to_sale" type="text"
                                             class="ml-2 w-[7rem] bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0" />
                                     </div>
                                 </div>
@@ -395,8 +406,9 @@ const expanded = ref([])
                                     </div>
 
                                     <div class="flex items-center">
-                                        <label for="to_da" class="text-xs text-gray-500 self-start text-right">{{ $t('To')
-                                        }}</label>
+                                        <label for="to_da" class="text-xs text-gray-500 self-start text-right">{{
+                                            $t('To')
+                                            }}</label>
                                         <input v-model="filters.da.to" id="to_da" name="to_da" type="text"
                                             class="ml-2 w-[7rem] bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0" />
                                     </div>
@@ -418,15 +430,18 @@ const expanded = ref([])
                                     </div>
 
                                     <div class="flex items-center">
-                                        <label for="to_dr" class="text-xs text-gray-500 self-start text-right">{{ $t('To')
-                                        }}</label>
+                                        <label for="to_dr" class="text-xs text-gray-500 self-start text-right">{{
+                                            $t('To')
+                                            }}</label>
                                         <input v-model="filters.dr.to" id="to_dr" name="to_dr" type="text"
                                             class="ml-2 w-[7rem] bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0" />
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-span-3"><hr class="my-5"></div>
+                            <div class="col-span-3">
+                                <hr class="my-5">
+                            </div>
 
                             <div class="col-span-3 sm:col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
@@ -434,55 +449,55 @@ const expanded = ref([])
                                     <span>{{ $t('Language') }}</span>
                                 </span>
 
-                            <div class="mt-4 flex">
-                                <div class="grid grid-rows-4 grid-flow-col gap-x-4 gap-y-2">
-                                    <div v-for="(language, index) in languages" :key="index"
-                                        class="relative flex items-start">
-                                            <div class="flex h-5 items-center">
-                                                <input :value="language.id" v-model="filters.language_id"
-                                                    :id="`language-${language.id}`" :name="`language-${language.id}`"
-                                                    type="checkbox"
-                                                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                                            </div>
-                                            <div class="ml-2 text-sm">
-                                                <label :for="`language-${language.id}`"
-                                                    class="font-medium text-gray-700 whitespace-nowrap">{{ language.name
-                                                    }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="mt-4">
+                                    <VueMultiselect key="language" class="mt-1 ml-2" v-model="filters.language_id" track-by="value"
+                                        label="name" placeholder="Select..." :options="languages.map((language) => ({
+                                            name: language.name,
+                                            value: language.id,
+                                        }))" :multiple="true" :searchable="false" :close-on-select="false"
+                                        selectLabel="" deselectLabel="" :showLabels="false">
 
+                                        <template #placeholder>
+                                            <span class="text-gray-500">{{ $t('Select...') }}</span>
+                                        </template>
+
+                                    </VueMultiselect>
                                 </div>
                             </div>
 
-                            <div class="col-span-3 sm:col-span-2 flex flex-col">
+                            <div class="col-span-3 sm:col-span-1 flex flex-col">
                                 <span class="flex items-center space-x-2 text-sm font-medium">
                                     <GlobeAltIcon class="h-5 w-5" />
                                     <span>{{ $t('Country') }}</span>
                                 </span>
 
-                                <div class="mt-4 flex">
-                                    <div class="grid grid-flow-row grid-cols-3 sm:grid-cols-6 gap-x-4 gap-y-2">
-                                        <div v-for="(country, index) in countries" :key="index"
-                                            class="relative flex items-start">
-                                            <div class="flex h-5 items-center">
-                                                <input :value="country.id" v-model="filters.country_id"
-                                                    :id="`country-${country.id}`" :name="`country-${country.id}`"
-                                                    type="checkbox"
-                                                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                                            </div>
-                                            <div class="ml-2 text-sm">
-                                                <label :for="`country-${country.id}`"
-                                                    class="font-medium text-gray-700 whitespace-nowrap">{{ country.name
-                                                    }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="mt-4">
+                                    <VueMultiselect key="country" class="mt-1 ml-2" v-model="filters.country_id" track-by="value"
+                                        label="name" placeholder="Select..." :options="countries.map((country) => ({
+                                            name: country.name,
+                                            value: country.id,
+                                            code: country.code,
+                                        }))" :multiple="true" :searchable="true" :close-on-select="false"
+                                        selectLabel="" deselectLabel="" :showLabels="false">
 
+                                        <template #option="{ option }">
+                                            <div class="flex items-center">
+                                                <img :src="`/img/country-flags/${option.code}.svg`" class="size-5" />
+                                                <span class="ml-2">{{ option.name }}</span>
+                                            </div>
+                                        </template>
+
+                                        <template #placeholder>
+                                            <span class="text-gray-500">{{ $t('Select...') }}</span>
+                                        </template>
+
+                                    </VueMultiselect>
                                 </div>
                             </div>
 
-                            <div class="col-span-3"><hr class="my-5"></div>
+                            <div class="col-span-3">
+                                <hr class="my-5">
+                            </div>
 
                             <div class="col-span-1">
                                 <span class="text-sm font-medium">{{ $t('Category') }}</span>
@@ -490,7 +505,8 @@ const expanded = ref([])
                                 <select v-model="filters.category_id" id="category_id" name="category_id"
                                     class="mt-4 ml-2 w-full bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0">
                                     <option :value="null">{{ $t('All') }}</option>
-                                    <option v-for="(category, index) in categories" :key="index" :value="category.id">{{ category.title }}</option>
+                                    <option v-for="(category, index) in categories" :key="index" :value="category.id">{{
+                                        category.title }}</option>
                                 </select>
                             </div>
 
@@ -500,7 +516,8 @@ const expanded = ref([])
                                 <select v-model="filters.seller_id" id="seller_id" name="seller_id"
                                     class="mt-4 ml-2 w-full bg-gray-100 text-sm font-medium border border-gray-300 rounded-md focus:ring-0">
                                     <option :value="null">{{ $t('All') }}</option>
-                                    <option v-for="(seller, index) in sellers" :key="index" :value="seller.id">{{ seller.name }}</option>
+                                    <option v-for="(seller, index) in sellers" :key="index" :value="seller.id">{{
+                                        seller.name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -512,7 +529,8 @@ const expanded = ref([])
                             <div class="col-span-1 flex">
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Not sponsored') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Not sponsored')
+                                            }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.sponsor"
@@ -524,7 +542,8 @@ const expanded = ref([])
 
                                 <SwitchGroup as="div" class="col-span-1 px-4 flex justify-end items-center">
                                     <SwitchLabel as="span" class="flex h-full">
-                                        <span class="text-sm font-medium self-center text-right">{{ $t('Follow') }}</span>
+                                        <span class="text-sm font-medium self-center text-right">{{ $t('Follow')
+                                            }}</span>
                                     </SwitchLabel>
 
                                     <Switch v-model="filters.follow"
@@ -550,19 +569,9 @@ const expanded = ref([])
                             <div class="col-span-1">
                                 <label class="text-sm font-medium">{{ $t('Filter by types') }}</label>
 
-                                <VueMultiselect
-                                    class="mt-1 ml-2"
-                                    v-model="filters.types"
-                                    track-by="id"
-                                    label="name"
-                                    placeholder="Select..."
-                                    :options="types"
-                                    :multiple="true"
-                                    :searchable="false"
-                                    :close-on-select="false"
-                                    selectLabel=""
-                                    deselectLabel=""
-                                    :showLabels="false">
+                                <VueMultiselect class="mt-1 ml-2" v-model="filters.types" track-by="id" label="name"
+                                    placeholder="Select..." :options="types" :multiple="true" :searchable="false"
+                                    :close-on-select="false" selectLabel="" deselectLabel="" :showLabels="false">
 
                                     <template #placeholder>
                                         <span class="text-gray-500">{{ $t('Select...') }}</span>
@@ -572,7 +581,8 @@ const expanded = ref([])
                             </div>
 
                             <div class="sm:col-span-1">
-                                <label for="search" class="text-sm font-medium">{{ $t('...or just find by name:') }}</label>
+                                <label for="search" class="text-sm font-medium">{{ $t('...or just find by name:')
+                                    }}</label>
                                 <div class="mt-1 relative text-gray-400 focus-within:text-gray-600">
                                     <div class="pointer-events-none absolute inset-y-0 left-2 flex items-center"
                                         aria-hidden="true">
@@ -594,40 +604,60 @@ const expanded = ref([])
 
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center">
                             <div>
-                                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Showing results:') }}&nbsp;{{ sites.total }}&nbsp;{{ $t('sites found') }}</h2>
+                                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Showing results:')
+                                    }}&nbsp;{{
+                                    sites.total }}&nbsp;{{ $t('sites found') }}</h2>
                             </div>
 
                             <div class="flex flex-wrap gap-3 mt-5 sm:mt-0">
-                                <Link :href="route('sites.create')" class="flex w-fit items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700">
-                                    <span class="whitespace-nowrap px-1 text-sm font-medium text-white">{{ $t('Add site') }}</span>
+                                <Link :href="route('sites.create')"
+                                    class="flex w-fit items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700">
+                                <span class="whitespace-nowrap px-1 text-sm font-medium text-white">{{ $t('Add site')
+                                    }}</span>
                                 </Link>
 
-                                <button @click="openImportDialog = true" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Import') }}</span>
-                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                <button @click="openImportDialog = true"
+                                    class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{
+                                        $t('Import') }}</span>
+                                    <CloudArrowDownIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
+                                        aria-hidden="true" />
                                 </button>
 
-                                <a :href="route('sites.exportUrls')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Export urls') }}</span>
-                                    <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                <a :href="route('sites.exportUrls')"
+                                    class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{
+                                        $t('Export urls')
+                                        }}</span>
+                                    <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
+                                        aria-hidden="true" />
                                 </a>
 
-                                <a :href="route('sites.exportPending')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Export pending') }}</span>
-                                    <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                <a :href="route('sites.exportPending')"
+                                    class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{
+                                        $t('Export pending')
+                                        }}</span>
+                                    <CloudArrowUpIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
+                                        aria-hidden="true" />
                                 </a>
 
-                                <a v-show="false" :href="route('sites.sync')" class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
-                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{ $t('Sync') }}</span>
-                                    <ArrowPathIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                <a v-show="false" :href="route('sites.sync')"
+                                    class="flex w-fit items-center rounded-md bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-gray-50">
+                                    <span class="whitespace-nowrap sm:ml-1 text-sm font-medium text-gray-700">{{
+                                        $t('Sync') }}</span>
+                                    <ArrowPathIcon class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400"
+                                        aria-hidden="true" />
                                 </a>
                             </div>
                         </div>
 
                         <div class="flex flex-col mt-5">
-                            <Link v-if="pendingCount > 0" :href="route('sites.index', { 'filter[of_status]': 'PENDING' })"
-                                class="w-fit text-sm font-medium text-blue-500 hover:text-blue-700">{{ pendingCount }} sites
-                                aguardando aprovação.</Link>
+                            <Link v-if="pendingCount > 0"
+                                :href="route('sites.index', { 'filter[of_status]': 'PENDING' })"
+                                class="w-fit text-sm font-medium text-blue-500 hover:text-blue-700">{{ pendingCount }}
+                            sites
+                            aguardando aprovação.</Link>
                         </div>
 
                         <hr class="my-5">
@@ -637,37 +667,27 @@ const expanded = ref([])
                             <Menu as="div" class="relative order-2 lg:order-1">
                                 <div>
                                     <MenuButton
-                                        class="text-gray-700 shadow-sm bg-white border border-gray-300 flex justify-center items-center rounded-md px-3 py-1 text-sm"
-                                    >
+                                        class="text-gray-700 shadow-sm bg-white border border-gray-300 flex justify-center items-center rounded-md px-3 py-1 text-sm">
                                         <span>
                                             {{ $t('Columns') }}
                                         </span>
 
-                                        <ChevronDownIcon class="size-5"/>
+                                        <ChevronDownIcon class="size-5" />
                                     </MenuButton>
                                 </div>
 
-                                <transition
-                                    enter-active-class="transition ease-out duration-100"
+                                <transition enter-active-class="transition ease-out duration-100"
                                     enter-from-class="transform opacity-0 scale-95"
                                     enter-to-class="transform opacity-100 scale-100"
                                     leave-active-class="transition ease-in duration-75"
                                     leave-from-class="transform opacity-100 scale-100"
-                                    leave-to-class="transform opacity-0 scale-95"
-                                >
+                                    leave-to-class="transform opacity-0 scale-95">
                                     <MenuItems
-                                        class="overflow-y-scroll absolute right-0 z-10 mt-2 w-64 max-h-96 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-gray-300 focus:outline-none"
-                                    >
+                                        class="overflow-y-scroll absolute right-0 z-10 mt-2 w-64 max-h-96 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-gray-300 focus:outline-none">
                                         <div class="flex">
-                                            <draggable
-                                                v-model="columns"
-                                                tag="div"
-                                                group="columns"
-                                                ghost-class="ghost"
-                                                item-key="columns"
-                                                handle=".handler"
-                                                class="divide-y divide-gray-200 w-full min-h-full flex flex-col font-medium"
-                                            >
+                                            <draggable v-model="columns" tag="div" group="columns" ghost-class="ghost"
+                                                item-key="columns" handle=".handler"
+                                                class="divide-y divide-gray-200 w-full min-h-full flex flex-col font-medium">
                                                 <template #item="{ element }">
                                                     <div class="text-sm px-2">
                                                         <div class="flex w-full items-center gap-2 py-2.5 pr-2">
@@ -676,15 +696,10 @@ const expanded = ref([])
                                                             </span>
                                                             <span class="w-full font-medium text-gray-700">{{
                                                                 element.label
-                                                            }}</span>
-                                                            <input
-                                                                v-model="element.visible"
-                                                                :value="element.key"
-                                                                :id="element.key"
-                                                                :name="element.key"
-                                                                type="checkbox"
-                                                                class="focus:ring-rauzee-light-500 h-4 w-4 text-rauzee-light-600 border-gray-300 rounded"
-                                                            />
+                                                                }}</span>
+                                                            <input v-model="element.visible" :value="element.key"
+                                                                :id="element.key" :name="element.key" type="checkbox"
+                                                                class="focus:ring-rauzee-light-500 h-4 w-4 text-rauzee-light-600 border-gray-300 rounded" />
                                                         </div>
                                                     </div>
                                                 </template>
@@ -700,11 +715,14 @@ const expanded = ref([])
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th v-for="column in visibleColumns" :key="column.key" class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900" scope="col">
+                                        <th v-for="column in visibleColumns" :key="column.key"
+                                            class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                                            scope="col">
                                             <div v-if="column.sortable">
                                                 <div class="flex group">
                                                     <span class="block">{{ column.label }}</span>
-                                                    <TableSortButton :column='column.key' :current="sort" @onClick='(column) => sort = column' />
+                                                    <TableSortButton :column='column.key' :current="sort"
+                                                        @onClick='(column) => sort = column' />
                                                 </div>
                                             </div>
 
@@ -712,30 +730,34 @@ const expanded = ref([])
                                                 {{ column.label }}
                                             </span>
                                         </th>
-
-                                        <!-- <th class="bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">
-                                        </th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
 
                                     <template v-for="(site, index) in sites.data" :key="index">
-                                        <tr :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length -1 && !expanded.includes(index), 'border-t': expanded.includes(index -1), 'bg-red-50': site.deleted_at !== null, }]">
+                                        <tr
+                                            :class="['bg-white border-gray-200', { 'border-b': index < sites.data.length - 1 && !expanded.includes(index), 'border-t': expanded.includes(index - 1), 'bg-red-50': site.deleted_at !== null, }]">
 
-                                            <td v-for="column in visibleColumns" :key="columns.key" class="whitespace-nowrap px-4 py-4 text-sm">
+                                            <td v-for="column in visibleColumns" :key="columns.key"
+                                                class="whitespace-nowrap px-4 py-4 text-sm">
 
                                                 <div v-if="column.key === 'sale'">
                                                     <div class="flex space-x-2">
-                                                        <span :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null" class="relative flex space-x-2 items-center">
-                                                            <span v-if="site.sale_coin != coinStore.coin" class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                                        <span
+                                                            :data-tippy-content="site.sale_coin != coinStore.coin ? `${$filters.currency(site.sale / 100, coins[site.sale_coin])}` : null"
+                                                            class="relative flex space-x-2 items-center">
+                                                            <span v-if="site.sale_coin != coinStore.coin"
+                                                                class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                                             <span>
                                                                 {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
-                                                                {{ $filters.currency(Math.ceil((site.sale / coinStore.ratios[site.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                {{ $filters.currency(Math.ceil((site.sale /
+                                                                    coinStore.ratios[site.sale_coin]) / 100), {
+                                                                ...coins[coinStore.coin], precision: 0, }) }}
                                                             </span>
                                                         </span>
 
-                                                        <button v-if="site.types.length > 0" type="button" @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) :  expanded.push(index)"
+                                                        <button v-if="site.types.length > 0" type="button"
+                                                            @click="expanded.includes(index) ? expanded = expanded.filter(k => k != index) : expanded.push(index)"
                                                             class="text-gray-500 hover:text-gray-700">
                                                             <InformationCircleIcon class="h-5 w-5" />
                                                         </button>
@@ -747,13 +769,14 @@ const expanded = ref([])
                                                         'text-gray-500': site.deleted_at === null,
                                                         'text-red-500': site.deleted_at !== null,
                                                     }, 'flex items-center space-x-2']">
-                                                        <img :src="`https://www.google.com/s2/favicons?domain=${site.url}`"/>
+                                                        <img
+                                                            :src="`https://www.google.com/s2/favicons?domain=${site.url}`" />
                                                         <span>{{ site.url }}</span>
                                                     </span>
 
                                                     <Link :href="route('sites.edit', site.id)"
                                                         class="text-blue-500 hover:text-blue-700 -mt-1">
-                                                        <PencilSquareIcon class="h-5 w-5" />
+                                                    <PencilSquareIcon class="h-5 w-5" />
                                                     </Link>
 
                                                     <a :href="`https://${site.url}`" target="_blank"
@@ -761,7 +784,7 @@ const expanded = ref([])
                                                         <ArrowTopRightOnSquareIcon class="h-5 w-5" />
                                                     </a>
                                                 </div>
-                                                
+
                                                 <div v-if="column.key === 'da'">
                                                     {{ site.da ?? '-' }}
                                                 </div>
@@ -783,28 +806,48 @@ const expanded = ref([])
                                                 </div>
 
                                                 <div v-if="column.key === 'category'">
-                                                    <span :data-tippy-content="site.category?.subtitle">{{ site.category?.title ?? '-' }}</span>
+                                                    <span :data-tippy-content="site.category?.subtitle">{{
+                                                        site.category?.title ?? '-' }}</span>
+                                                </div>
+
+                                                <div v-if="column.key === 'country'">
+                                                    {{ site.country?.name ?? '-' }}
+                                                </div>
+
+                                                <div v-if="column.key === 'language'">
+                                                    {{ site.language?.name ?? '-' }}
                                                 </div>
 
                                                 <div v-if="column.key === 'misc'">
                                                     <div class="grid grid-cols-4 grid-rows-1 gap-x-1.5">
-                                                        <span :data-tippy-content="`${site.orders_count} ${$t('Orders')}`" class="flex space-x-1 justify-start items-center">
-                                                            <span class="text-sm text-gray-500">{{ site.orders_count }}</span>
+                                                        <span
+                                                            :data-tippy-content="`${site.orders_count} ${$t('Orders')}`"
+                                                            class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.orders_count
+                                                                }}</span>
                                                             <ShoppingCartIcon class="h-4 w-4 text-gray-500" />
                                                         </span>
 
-                                                        <span :data-tippy-content="`${site.views_count} ${$t('Views')}`" class="flex space-x-1 justify-start items-center">
-                                                            <span class="text-sm text-gray-500">{{ site.views_count }}</span>
+                                                        <span :data-tippy-content="`${site.views_count} ${$t('Views')}`"
+                                                            class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.views_count
+                                                                }}</span>
                                                             <EyeIcon class="h-4 w-4 text-gray-500" />
                                                         </span>
-                                                        
-                                                        <span :data-tippy-content="`${site.favorites_count} ${$t('Favorites')}`" class="flex space-x-1 justify-start items-center">
-                                                            <span class="text-sm text-gray-500">{{ site.favorites_count }}</span>
+
+                                                        <span
+                                                            :data-tippy-content="`${site.favorites_count} ${$t('Favorites')}`"
+                                                            class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.favorites_count
+                                                                }}</span>
                                                             <HeartIcon class="h-4 w-4 text-gray-500" />
                                                         </span>
 
-                                                        <span :data-tippy-content="`${site.interests_count} ${$t('Interests')}`" class="flex space-x-1 justify-start items-center">
-                                                            <span class="text-sm text-gray-500">{{ site.interests_count }}</span>
+                                                        <span
+                                                            :data-tippy-content="`${site.interests_count} ${$t('Interests')}`"
+                                                            class="flex space-x-1 justify-start items-center">
+                                                            <span class="text-sm text-gray-500">{{ site.interests_count
+                                                                }}</span>
                                                             <FlagIcon class="h-4 w-4 text-gray-500" />
                                                         </span>
                                                     </div>
@@ -828,7 +871,8 @@ const expanded = ref([])
 
                                                 <div v-for="type in types" :key="type.id">
                                                     <div v-if="column.key === `type-${type.id}`">
-                                                        {{ site.types.find(t => t.id == type.id) ? $t('Yes') : $t('No') }}    
+                                                        {{ site.types.find(t => t.id == type.id) ? $t('Yes') : $t('No')
+                                                        }}
                                                     </div>
                                                 </div>
 
@@ -863,9 +907,12 @@ const expanded = ref([])
                                                                 <span v-if="type.pivot.sale_coin != coinStore.coin"
                                                                     class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                                                 <span>
-                                                                    {{ type.pivot.sale_coin != coinStore.coin ? '~ ' : null }}
+                                                                    {{ type.pivot.sale_coin != coinStore.coin ? '~ ' :
+                                                                    null }}
 
-                                                                    {{ $filters.currency(Math.ceil((type.pivot.sale / coinStore.ratios[type.pivot.sale_coin]) / 100), { ...coins[coinStore.coin], precision: 0, }) }}
+                                                                    {{ $filters.currency(Math.ceil((type.pivot.sale /
+                                                                        coinStore.ratios[type.pivot.sale_coin]) / 100), {
+                                                                    ...coins[coinStore.coin], precision: 0, }) }}
                                                                 </span>
                                                             </span>
 
@@ -910,4 +957,3 @@ const expanded = ref([])
         </AppLayoutNew>
     </AppSuspense>
 </template>
-        

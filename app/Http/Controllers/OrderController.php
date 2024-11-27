@@ -8,8 +8,10 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Imports\OrdersImport;
 use App\Models\Client;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Seller;
 use App\Models\Site;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -40,6 +42,8 @@ class OrderController extends Controller
 
         $filters = [
             'search' => $query['filter']['search'] ?? null,
+            'client' => $query['filter']['client'] ?? null,
+            'status' => $query['filter']['status'] ?? null,
             'created_at' => $query['filter']['created_at'] ?? [],
         ];
 
@@ -52,7 +56,7 @@ class OrderController extends Controller
             // ->allowedSorts([])
             ->allowedFilters([
                 AllowedFilter::scope('search', 'smart'),
-                AllowedFilter::exact('client_id'),
+                AllowedFilter::exact('client', 'client_id'),
                 AllowedFilter::exact('status'),
                 AllowedFilter::custom('created_at', new DateBetweenFilter),
             ])
@@ -87,7 +91,7 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
-        $sellers = Seller::query()
+        $types = Type::query()
             ->orderBy('name')
             ->get();
 
@@ -95,7 +99,7 @@ class OrderController extends Controller
             'coins' => $coins,
             'statuses' => $statuses,
             'clients' => $clients,
-            'sellers' => $sellers,
+            'types' => $types,
             'sites' => session('sites'),
         ]);
     }
@@ -108,7 +112,23 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        Order::create($request->validated());
+        $order = Order::create($request->validated());
+
+        foreach($request->validated()['items'] as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'site_id' => optional($item)['site_id'],
+                'seller_id' => optional($item)['seller_id'],
+                'link' => optional($item)['link'],
+                'cost' => optional($item)['cost'],
+                'sale' => optional($item)['sale'],
+                'comission' => optional($item)['comission'],
+                'received' => optional($item)['received'],
+                'paid' => optional($item)['paid'],
+                'comissioned' => optional($item)['comissioned'],
+                'link_status' => optional($item)['link_status'],
+            ]);
+        }
 
         return redirect()->route('orders.index');
     }
@@ -149,11 +169,16 @@ class OrderController extends Controller
             ->orderBy('name')
             ->get();
 
+        $types = Type::query()
+            ->orderBy('name')
+            ->get();
+
         return Inertia::render('Orders/EditNew', [
             'order' => $order,
             'coins' => $coins,
             'statuses' => $statuses,
             'clients' => $clients,
+            'types' => $types,
             'sites' => session('sites'),
         ]);
     }

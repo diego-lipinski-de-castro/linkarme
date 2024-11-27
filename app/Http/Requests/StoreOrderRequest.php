@@ -27,10 +27,12 @@ class StoreOrderRequest extends FormRequest
         return [
             'status' => ['required', 'in:WAITING,PRODUCTION,SUBMITTED,PROCESSING,PUBLISHED,INVOICE,COMPLETED'],
             'client_id' => ['required', 'exists:clients,id'],
+            'type_id' => ['required', 'exists:types,id'],
 
             'items' => ['nullable', 'array', 'min:0'],
 
             'items.*.site_id' => ['required', 'exists:sites,id'],
+            'items.*.seller_id' => ['nullable', 'exists:sellers,id'],
             
             'items.*.link' => ['nullable', 'string'],
             

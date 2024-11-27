@@ -110,6 +110,8 @@ class SiteController extends Controller
             ->ofStatus('APPROVED')
             ->withCount('orders')
             ->with([
+                'country',
+                'language',
                 'category',
                 'types',
             ])

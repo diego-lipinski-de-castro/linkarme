@@ -22,6 +22,11 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
+            $table->foreignId('seller_id')
+                ->nullable()
+                ->constrained()
+                ->cascadeOnDelete();
+
             $table->string('link')->nullable();
 
             $table->integer('cost')->default(0);

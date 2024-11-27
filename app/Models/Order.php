@@ -29,14 +29,13 @@ class Order extends Model implements Auditable
 
     protected $fillable = [
         'number',
+        'status',
         'client_id',
-        'broken',
-        'ssl',
+        'type_id',
         'receipt_date',
         'delivery_date',
         'payment_date',
         'company',
-        'status',
         'invoice_id',
     ];
 
@@ -66,6 +65,25 @@ class Order extends Model implements Auditable
         return $this
             ->belongsToMany(Site::class, 'order_item')
             ->using(OrderItem::class)
+            ->withPivot(([
+                'seller_id',
+
+                'link',
+
+                'cost',
+                'sale',
+                'comission',
+
+                'cost_coin',
+                'sale_coin',
+                'comission_coin',
+
+                'received',
+                'paid',
+                'comissioned',
+
+                'link_status',
+            ]))
             ->withTimestamps();
     }
 

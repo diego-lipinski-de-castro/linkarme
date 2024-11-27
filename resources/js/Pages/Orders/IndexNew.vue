@@ -69,6 +69,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 const filters = ref({
     search: params["filter[search]"] ?? null,
+    client: params["filter[client]"] ?? null,
     status: params["filter[status]"] ?? null,
 });
 
@@ -87,9 +88,9 @@ const get = async () => {
     Inertia.get(
         route("orders.index"),
         {
-            // sort: sort.value,
             filter: {
                 search: filters.value.search,
+                client: filters.value.client,
                 status: filters.value.status,
             },
         },
@@ -492,7 +493,7 @@ const canSelect = (order) => {
 
                     <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 md:gap-y-0">
 
-                        <div class="col-span-full md:col-span-2">
+                        <div class="col-span-1">
                             <label for="search" class="text-sm font-medium">{{ $t('Find by number:')
                                 }}</label>
                             <div class="mt-1 relative text-gray-400 focus-within:text-gray-600">
@@ -507,9 +508,26 @@ const canSelect = (order) => {
                         </div>
 
                         <div class="col-span-1">
+                            <label class="text-sm font-medium">{{ $t('Filter by client') }}</label>
+
+                            <VueMultiselect key="client" class="mt-1 ml-2" placeholder="Select..." v-model="filters.client"
+                                track-by="value" label="name" :options="clients.map((client) => ({
+                                    name: client.name,
+                                    value: client.id,
+                                }))" :multiple="false" :searchable="true" :close-on-select="true" selectLabel=""
+                                deselectLabel="" :showLabels="false">
+
+                                <template #placeholder>
+                                    <span class="text-gray-500">{{ $t('Select...') }}</span>
+                                </template>
+
+                            </VueMultiselect>
+                        </div>
+
+                        <div class="col-span-1">
                             <label class="text-sm font-medium">{{ $t('Filter by status') }}</label>
 
-                            <VueMultiselect class="mt-1 ml-2" placeholder="Select..." v-model="filters.status"
+                            <VueMultiselect key="status" class="mt-1 ml-2" placeholder="Select..." v-model="filters.status"
                                 track-by="value" label="name" :options="[
                                     { name: 'Aguardando', value: 'WAITING' },
                                     { name: 'Produção do artigo', value: 'PRODUCTION' },

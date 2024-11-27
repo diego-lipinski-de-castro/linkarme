@@ -121,12 +121,16 @@ class SiteController extends Controller
             ],
         ];
 
+        // dd($filters);
+
         $sites = QueryBuilder::for(Site::class)
             ->withTrashed()
             ->when(! isset($query['filter']['of_status']), function ($query) {
                 $query->ofStatus('APPROVED');
             })
             ->with([
+                'country',
+                'language',
                 'category',
                 'types',
             ])
@@ -164,9 +168,9 @@ class SiteController extends Controller
                 }),
                 AllowedFilter::custom('da', new FilterLimiter, null, ''),
                 AllowedFilter::custom('dr', new FilterLimiter, null, ''),
-                'sponsor',
-                AllowedFilter::custom('follow', new FollowFilter),
-                AllowedFilter::custom('new', new NewFilter),
+                // 'sponsor',
+                // AllowedFilter::custom('follow', new FollowFilter),
+                // AllowedFilter::custom('new', new NewFilter),
                 AllowedFilter::exact('language_id'),
                 AllowedFilter::exact('country_id'),
                 AllowedFilter::exact('category_id'),
