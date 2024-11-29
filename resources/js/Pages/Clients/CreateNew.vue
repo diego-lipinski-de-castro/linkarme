@@ -52,7 +52,7 @@ const submit = () => {
 <template>
     <AppSuspense>
         <AppLayoutNew :title="$t('Add client')">
-            <div class="max-w-7xl mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
+            <div class="max-w-[1600px] mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
                 <div class="flex items-center space-x-2 px-5">
                     <div class="w-10">
                         <UserCircleIcon class="h-8 w-8" />

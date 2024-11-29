@@ -9,14 +9,11 @@ import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline';
+import { PencilIcon, PlusIcon, TrashIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
 import { useCoinStore } from '@/stores/coin'
 import vueFilePond from "vue-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import {
-    ArrowTopRightOnSquareIcon,
-} from '@heroicons/vue/24/outline';
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -26,16 +23,18 @@ const { invoice } = defineProps({
 });
 
 const form = useForm({
-    value: null,
-    value_coin: 'BRL',
+    _method: 'PUT',
 
-    discount: null,
-    discount_coin: 'BRL',
+    value: invoice.value,
+    value_coin: invoice.value_coin,
 
-    paid: false,
+    discount: invoice.discount,
+    discount_coin: invoice.discount_coin,
 
-    bank: null,
-    payment_link:  '',
+    paid: invoice.paid,
+
+    bank: invoice.bank,
+    payment_link:  invoice.payment_link,
 });
 
 const uploadInvoice = (
@@ -51,7 +50,12 @@ const uploadInvoice = (
 }
 
 const submit = () => {
-    form.put(route('invoices.update', invoice.id), {
+    form.post(route('invoices.update', invoice.id), {
+        forceFormData: true,
+        preserveScroll: true,
+        onSuccess: () => {
+            console.log('success')
+        },
         onError(error) {
             console.log(error)
         }

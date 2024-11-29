@@ -12,6 +12,7 @@ import {
     ChatBubbleBottomCenterTextIcon,
     EyeIcon,
     EyeSlashIcon,
+    ArrowTopRightOnSquareIcon,
 } from '@heroicons/vue/24/outline'
 import { Inertia } from '@inertiajs/inertia';
 import { ref } from 'vue';
@@ -183,7 +184,7 @@ const generatePassword = () => {
             </div>
 
             <form v-show="tabIndex == 0" @submit.prevent="update">
-                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow">
+                <div class="mt-10 max-w-[1600px] mx-auto rounded-md bg-white shadow">
                     <div class="px-5 py-6 sm:px-6">
                         <span class="text-sm text-gray-900">{{ $t('Current Linking consultant') }}</span>
                         <span class="mt-2 flex items-center space-x-2">
@@ -202,7 +203,7 @@ const generatePassword = () => {
                     </div>
                 </div>
 
-                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
+                <div class="mt-10 max-w-[1600px] mx-auto rounded-md bg-white shadow overflow-hidden pt-5">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-2 px-5">
                             <div class="w-10">
@@ -566,7 +567,7 @@ const generatePassword = () => {
                     </div>
                 </div>
 
-                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow pt-5">
+                <div class="mt-10 max-w-[1600px] mx-auto rounded-md bg-white shadow pt-5">
                     <div class="flex items-center space-x-2 px-5">
                         <div class="w-10">
                             <CurrencyDollarIcon class="h-8 w-8" />
@@ -663,7 +664,7 @@ const generatePassword = () => {
                     </div>
                 </div>
 
-                <div class="mt-10 max-w-7xl mx-auto rounded-md bg-white shadow pt-5">
+                <div class="mt-10 max-w-[1600px] mx-auto rounded-md bg-white shadow pt-5">
                     <div class="flex items-center space-x-2 px-5">
                         <div class="w-10">
                             <KeyIcon class="h-8 w-8" />
@@ -726,7 +727,7 @@ const generatePassword = () => {
                             <th
                                 class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                 scope="col">
-                                {{ $t('Url') }}
+                                {{ $t('Number') }}
                             </th>
 
                             <th
@@ -739,7 +740,7 @@ const generatePassword = () => {
                         <tr v-for="(order, index) in client.orders" :key="index" class="bg-white">
                             <td
                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                {{ order.url }}
+                                {{ order.number }}
                             </td>
                         
                             <td
@@ -771,7 +772,10 @@ const generatePassword = () => {
                         <tr v-for="(invoice, index) in client.invoices" :key="index" class="bg-white">
                             <td
                                 class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                {{ invoice.url }}
+                                <a :href="route('invoices.edit', invoice.id)" target="_blank" class="flex space-x-1 text-sm text-blue-500 hover:text-blue-700">
+                                    <span>#{{ invoice.number }}</span>
+                                    <ArrowTopRightOnSquareIcon class="size-4" />
+                                </a>
                             </td>
                         
                             <td
@@ -838,7 +842,7 @@ const generatePassword = () => {
             </div>
 
             <div v-show="tabIndex == 5" class="mt-5">
-                <div class="min-w-full overflow-hidden overflow-x-scroll align-middle border border-gray-200 sm:rounded-md">
+                <div class="min-w-full overflow-hidden align-middle border border-gray-200 sm:rounded-md">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
@@ -856,6 +860,12 @@ const generatePassword = () => {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
+                            <tr v-if="client.projects.length === 0">
+                                <td colspan="2" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 italic">
+                                    {{ $t('No projects have been added by this client yet.') }}
+                                </td>
+                            </tr>
+
                             <tr v-for="(project, index) in client.projects" :key="index" class="bg-white">
                                 <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                     <div class="flex items-center space-x-3">
@@ -873,7 +883,7 @@ const generatePassword = () => {
                     </table>
                 </div>
 
-                <div class="mt-10 min-w-full overflow-hidden overflow-x-scroll align-middle border border-gray-200 sm:rounded-md">
+                <div class="mt-10 min-w-full overflow-hidden align-middle border border-gray-200 sm:rounded-md">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
@@ -885,7 +895,13 @@ const generatePassword = () => {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
-                            <tr v-for="(site, index) in client.favorites" :key="index" class="bg-white">
+                            <tr v-if="client.favorites.length === 0">
+                                <td colspan="1" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 italic">
+                                    {{ $t('No favorites have been added by this client yet.') }}
+                                </td>
+                            </tr>
+
+                            <tr v-else v-for="(site, index) in client.favorites" :key="index" class="bg-white">
                                 <td
                                     class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                     {{ site.url }}
@@ -895,7 +911,7 @@ const generatePassword = () => {
                     </table>
                 </div>
 
-                <div class="mt-10 min-w-full overflow-hidden overflow-x-scroll align-middle border border-gray-200 sm:rounded-md">
+                <div class="mt-10 min-w-full overflow-hidden align-middle border border-gray-200 sm:rounded-md">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
@@ -907,7 +923,13 @@ const generatePassword = () => {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
-                            <tr v-for="(site, index) in client.interests" :key="index" class="bg-white">
+                            <tr v-if="client.interests.length === 0">
+                                <td colspan="1" class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 italic">
+                                    {{ $t('No interests have been added by this client yet.') }}
+                                </td>
+                            </tr>
+
+                            <tr v-else v-for="(site, index) in client.interests" :key="index" class="bg-white">
                                 <td
                                     class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                     {{ site.url }}

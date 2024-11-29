@@ -49,9 +49,11 @@ class InvoiceController extends Controller
             'selected.*' => ['exists:orders,id'],
         ]);
 
+        $order = Order::find($input['selected'][0]);
+
         /** @var Invoice $invoice */
         $invoice = Invoice::create([
-
+            'client_id' => $order->client_id,
         ]);
 
         Order::query()
