@@ -66,6 +66,10 @@ class Order extends Model implements Auditable
             ->belongsToMany(Site::class, 'order_item')
             ->using(OrderItem::class)
             ->withPivot(([
+                'id',
+
+                'order_id',
+                'site_id',
                 'seller_id',
 
                 'link',

@@ -118,14 +118,23 @@ class OrderController extends Controller
             OrderItem::create([
                 'order_id' => $order->id,
                 'site_id' => optional($item)['site_id'],
+                
                 'seller_id' => optional($item)['seller_id'],
+
                 'link' => optional($item)['link'],
+
                 'cost' => optional($item)['cost'],
                 'sale' => optional($item)['sale'],
                 'comission' => optional($item)['comission'],
+
+                'cost_coin' => optional($item)['cost_coin'],
+                'sale_coin' => optional($item)['sale_coin'],
+                'comission_coin' => optional($item)['comission_coin'],
+
                 'received' => optional($item)['received'],
                 'paid' => optional($item)['paid'],
                 'comissioned' => optional($item)['comissioned'],
+
                 'link_status' => optional($item)['link_status'],
             ]);
         }
@@ -193,6 +202,45 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         $order->update($request->validated());
+
+        foreach($request->validated()['items'] as $item) {
+            $data = [
+                'site_id' => optional($item)['site_id'],
+                    
+                'seller_id' => optional($item)['seller_id'],
+
+                'link' => optional($item)['link'],
+
+                'cost' => optional($item)['cost'],
+                'sale' => optional($item)['sale'],
+                'comission' => optional($item)['comission'],
+
+                'cost_coin' => optional($item)['cost_coin'],
+                'sale_coin' => optional($item)['sale_coin'],
+                'comission_coin' => optional($item)['comission_coin'],
+
+                'received' => optional($item)['received'],
+                'paid' => optional($item)['paid'],
+                'comissioned' => optional($item)['comissioned'],
+
+                'link_status' => optional($item)['link_status'],
+            ];
+
+            if(!isset($item['id'])) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    ...$data,
+                ]);
+
+                continue;
+            }
+
+            $item = OrderItem::find($item['id']);
+
+            if($item) {
+                $item->update($data);
+            }
+        }
 
         return redirect()->route('orders.index');
     }

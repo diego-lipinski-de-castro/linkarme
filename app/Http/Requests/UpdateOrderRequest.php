@@ -31,6 +31,8 @@ class UpdateOrderRequest extends FormRequest
 
             'items' => ['nullable', 'array', 'min:0'],
 
+            'items.*.id' => ['nullable', 'exists:order_item,id'],
+
             'items.*.site_id' => ['required', 'exists:sites,id'],
             'items.*.seller_id' => ['nullable', 'exists:sellers,id'],
             
@@ -39,6 +41,10 @@ class UpdateOrderRequest extends FormRequest
             'items.*.cost' => ['nullable', 'integer'],
             'items.*.sale' => ['nullable', 'integer'],
             'items.*.comission' => ['nullable', 'integer'],
+
+            'items.*.cost_coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
+            'items.*.sale_coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
+            'items.*.comission_coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
 
             'items.*.received' => ['nullable', 'boolean'],
             'items.*.paid' => ['nullable', 'boolean'],

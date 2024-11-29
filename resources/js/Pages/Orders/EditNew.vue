@@ -30,8 +30,6 @@ const { order, coins, statuses, clients } = defineProps({
     types: Array,
 });
 
-console.log(order.items);
-
 const form = useForm({
     status: order.status,
     client_id: order.client_id,
@@ -42,11 +40,20 @@ const form = useForm({
     sites: order.items.map((item) => ({
         ...item,
 
+        id: item.pivot.id,
+
+        site_id: item.pivot.site_id,
+        seller_id: item.seller?.id,
+
         link: item.pivot.link,
 
         cost: item.pivot.cost,
         sale: item.pivot.sale,
         comission: item.pivot.comission,
+
+        cost_coin: item.pivot.cost_coin,
+        sale_coin: item.pivot.sale_coin,
+        comission_coin: item.pivot.comission_coin,
 
         received: item.pivot.received,
         paid: item.pivot.paid,
@@ -63,7 +70,9 @@ const submit = () => {
         type_id: data.type_id,
 
         items: data.sites.map((item) => ({
-            site_id: item.id,
+            id: item.pivot?.id,
+
+            site_id: item.site_id,
             seller_id: item.seller?.id,
 
             link: item.link,
@@ -71,6 +80,10 @@ const submit = () => {
             cost: item.cost,
             sale: item.sale,
             comission: item.seller?.comission ?? 0,
+
+            cost_coin: item.pivot?.cost_coin ?? coinStore.coin,
+            sale_coin: item.pivot?.sale_coin ?? coinStore.coin,
+            comission_coin: item.pivot?.comission_coin ?? coinStore.coin,
 
             received: item.received,
             paid: item.paid,
@@ -123,6 +136,8 @@ const add = (site = null, index) => {
     if(site) {
         const newSite = structuredClone(toRaw(site));
 
+        newSite.site_id = newSite.id;
+        newSite.link = null;
         newSite.received = false;
         newSite.paid = false;
         newSite.comissioned = false;
@@ -133,6 +148,8 @@ const add = (site = null, index) => {
     }
 
     for(let url of Object.keys(list.value)) {
+        list.value[url].site_id = list.value[url].id;
+        list.value[url].link = null;
         list.value[url].received = false;
         list.value[url].paid = false;
         list.value[url].comissioned = false;

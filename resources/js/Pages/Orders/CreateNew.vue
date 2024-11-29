@@ -39,7 +39,6 @@ const form = useForm({
 });
 
 const submit = () => {
-    console.log(form.data())
     form.transform((data) => ({
         status: data.status,
         client_id: data.client_id,
@@ -54,6 +53,10 @@ const submit = () => {
             cost: item.cost,
             sale: item.sale,
             comission: item.seller?.comission ?? 0,
+
+            cost_coin: coinStore.coin,
+            sale_coin: coinStore.coin,
+            comission_coin: coinStore.coin,
 
             received: item.received,
             paid: item.paid,
@@ -106,6 +109,7 @@ const add = (site = null, index) => {
     if(site) {
         const newSite = structuredClone(toRaw(site));
 
+        newSite.link = null;
         newSite.received = false;
         newSite.paid = false;
         newSite.comissioned = false;
@@ -116,6 +120,7 @@ const add = (site = null, index) => {
     }
 
     for(let url of Object.keys(list.value)) {
+        list.value[url].link = null;
         list.value[url].received = false;
         list.value[url].paid = false;
         list.value[url].comissioned = false;

@@ -40,6 +40,10 @@ class StoreOrderRequest extends FormRequest
             'items.*.sale' => ['nullable', 'integer'],
             'items.*.comission' => ['nullable', 'integer'],
 
+            'items.*.cost_coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
+            'items.*.sale_coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
+            'items.*.comission_coin' => ['nullable', 'in:BRL,EUR,USD,GBP'],
+
             'items.*.received' => ['nullable', 'boolean'],
             'items.*.paid' => ['nullable', 'boolean'],
             'items.*.comissioned' => ['nullable', 'boolean'],
@@ -50,16 +54,5 @@ class StoreOrderRequest extends FormRequest
             'delivery_date' => ['nullable', 'date'],
             'payment_date' => ['nullable', 'date'],
         ];
-    }
-
-    /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-        ]);
     }
 }
