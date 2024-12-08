@@ -5,6 +5,7 @@ import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
+import { EyeIcon } from '@heroicons/vue/24/outline'
 
 import {
     ArrowLongLeftIcon,
@@ -232,12 +233,12 @@ onMounted(() => {
                                         <th
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">
-                                            {{ $t('Invoice') }}
+                                            {{ $t('Number') }}
                                         </th>
 
                                         <th
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
-                                            scope="col">{{ $t('Link') }}
+                                            scope="col">{{ $t('Status') }}
                                         </th>
 
                                         <th
@@ -249,12 +250,15 @@ onMounted(() => {
                                             class="whitespace-nowrap bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-900"
                                             scope="col">{{ $t('Updated at') }}
                                         </th>
+
+                                        <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                     <tr v-for="(order, index) in orders.data" :key="index" class="bg-white">
                                         <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                            #123456
+                                            #{{ order.number }}
                                         </td>
 
                                         <td class="whitespace-nowrap px-4 py-4 text-xs text-white">
@@ -270,6 +274,18 @@ onMounted(() => {
                                         <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                                             {{ new Date(order.updated_at).toLocaleString() }}
                                         </td>
+
+                                        <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                                <div class="flex justify-end space-x-2">
+                                                    <Link :href="route(
+                                                        'client.orders.show',
+                                                        order.id
+                                                    )
+                                                        " class="text-blue-500 hover:text-blue-700">
+                                                    <EyeIcon class="h-5 w-5" />
+                                                    </Link>
+                                                </div>
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>

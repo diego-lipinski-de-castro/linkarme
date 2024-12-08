@@ -86,9 +86,4 @@ class Invoice extends Model
 
         return $total;
     }
-
-    public function getFormattedCalculatedValueAttribute()
-    {
-        return 'R$ '.number_format($this->calculated_value / 100, 2, ',', '.');
-    }
 }

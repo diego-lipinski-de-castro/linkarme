@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import { PencilIcon, PlusIcon, TrashIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
@@ -60,6 +61,10 @@ const submit = () => {
             console.log(error)
         }
     });
+}
+
+const generate = () => {
+    
 }
 </script>
         
@@ -176,12 +181,19 @@ const submit = () => {
                             </div>
 
                             <div>
-                                <file-pond :server="{ process: uploadInvoice }"
+                                <InputLabel for="file" :value="$t('Arquivo')" />
+                                <div class="mt-1">
+                                    <file-pond :server="{ process: uploadInvoice }"
                                     :instantUpload="false" :allowProcess="false" :allowRevert="false"
                                     :dropOnPage="true" :dropOnElement="false" />
+                                </div>
                             </div>
 
-                            <div class="self-end mb-1 flex">
+                            <div class="self-end mb-1 flex space-x-2">
+                                <SecondaryButton @click="generate">
+                                    {{ $t('Generate') }}
+                                </SecondaryButton>
+
                                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                                     Save
                                 </PrimaryButton>

@@ -44,7 +44,7 @@ defineProps({
 const navigation = [
     { name: t('Dashboard'), href: route('client.dashboard'), icon: ComputerDesktopIcon, current: route().current('client.dashboard') },
     { name: t('Sites'), href: route('client.sites.index'), icon: ClockIcon, current: route().current('client.sites.index') },
-    { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders.index') },
+    { name: t('Orders'), href: route('client.orders.index'), icon: ScaleIcon, current: route().current('client.orders*') },
 ]
 
 const logout = () => {

@@ -97,6 +97,10 @@ Route::group([
         ->name('orders.store')
         ->middleware(['auth:client']);
 
+    Route::get('orders/{order}', [OrderController::class, 'show'])
+        ->name('orders.show')
+        ->middleware(['auth:client']);
+
     Route::get('projects', [ProjectController::class, 'index'])
         ->name('projects.index')
         ->middleware(['auth:client']);

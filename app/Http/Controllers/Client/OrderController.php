@@ -121,4 +121,27 @@ class OrderController extends Controller
 
         return back();
     }
+
+    public function show($id)
+    {
+        $order = Order::query()
+            ->ofClient(auth('client')->id())
+            ->findOrFail($id);
+
+        $order->load([
+            'items' => function ($query) {
+                $query->with([
+                    'seller',
+                ]);
+            },
+            'type',
+        ]);
+
+        $coins = config('coins');
+
+        return Inertia::render('Client/Orders/Show', [
+            'order' => $order,
+            'coins' => $coins,
+        ]);
+    }
 }

@@ -549,6 +549,7 @@ const comissionTotal = computed(() => {
 
                     <div>
                         <span class="block font-bold">{{ $t('Edit order') }}</span>
+                        <span class="block text-xs text-gray-500">#{{ order.number }}</span>
                     </div>
                 </div>
 

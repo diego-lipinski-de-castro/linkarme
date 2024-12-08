@@ -70,6 +70,8 @@ const { t } = useTranslation();
 const props = defineProps({
     title: String,
     invoices: Object,
+    clients: Array,
+    coins: Object,
 });
 
 const links = computed(() => {
@@ -122,6 +124,8 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const sort = ref(params.sort ?? "-created_at");
 
 const filters = ref({
+    search: params["filter[search]"] ?? null,
+    client: params["filter[client]"] ?? null,
 });
 
 watchDebounced(
@@ -139,6 +143,8 @@ const get = async () => {
         {
             sort: sort.value,
             filter: {
+                search: filters.value.search,
+                client: filters.value.client,
             },
         },
         {
@@ -170,7 +176,7 @@ const get = async () => {
 
                     <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 md:gap-y-0">
 
-                        <div class="col-span-full md:col-span-2">
+                        <div class="col-span-1">
                             <label for="search" class="text-sm font-medium">{{ $t('Find by number:')
                                 }}</label>
                             <div class="mt-1 relative text-gray-400 focus-within:text-gray-600">
@@ -182,6 +188,23 @@ const get = async () => {
                                     class="ml-2 w-full block border border-gray-300 rounded-md py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 sm:text-sm"
                                     :placeholder="$t('Search')" type="search" />
                             </div>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="text-sm font-medium">{{ $t('Filter by client') }}</label>
+
+                            <VueMultiselect key="client" class="mt-1 ml-2" placeholder="Select..." v-model="filters.client"
+                                track-by="value" label="name" :options="clients.map((client) => ({
+                                    name: client.name,
+                                    value: client.id,
+                                }))" :multiple="false" :searchable="true" :close-on-select="true" selectLabel=""
+                                deselectLabel="" :showLabels="false">
+
+                                <template #placeholder>
+                                    <span class="text-gray-500">{{ $t('Select...') }}</span>
+                                </template>
+
+                            </VueMultiselect>
                         </div>
 
                         <div class="col-span-1">
@@ -264,6 +287,12 @@ const get = async () => {
                                                 scope="col">
                                                 {{ $t("Number") }}
                                             </th>
+
+                                            <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                                scope="col">
+                                                {{ $t("Client") }}
+                                            </th>
+
                                             <th class="whitespace-nowrap bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                                 scope="col">
                                                 {{ $t("Status") }}
@@ -281,6 +310,10 @@ const get = async () => {
                                             <td
                                                 class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                                 #{{ invoice.number }}
+                                            </td>
+
+                                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                                {{ invoice.client?.name ?? "-" }}
                                             </td>
 
                                             <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">

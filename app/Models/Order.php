@@ -106,6 +106,11 @@ class Order extends Model implements Auditable
         return $this->belongsTo(Invoice::class);
     }
 
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class);
+    }
+
     public function scopeSmart($query, $search): Builder
     {
         $search = str_replace('#', '', $search);
@@ -128,36 +133,14 @@ class Order extends Model implements Auditable
         return self::STATUSES[$this->status];
     }
 
-    public function getTotalCostAttribute()
-    {
-        $total = 0;
-
-        foreach ($this->items as $item) {
-            $total += $item->cost;
-        }
-
-        return $total;
-    }
-
-    public function getFormattedTotalCostAttribute()
-    {
-        return 'R$ '.number_format($this->total_cost / 100, 2, ',', '.');
-    }
-
     public function getTotalSaleAttribute()
     {
         $total = 0;
 
         foreach ($this->items as $item) {
-            dd($item);
             $total += $item->sale;
         }
 
         return $total;
-    }
-
-    public function getFormattedTotalSaleAttribute()
-    {
-        return 'R$ '.number_format($this->total_sale / 100, 2, ',', '.');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\DateBetweenFilter;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -20,24 +21,35 @@ class InvoiceController extends Controller
      */
     public function index()
     {
+        $clients = Client::query()
+            ->orderBy('name')
+            ->get();
+
         $query = request()->query();
 
         $filters = [
             'search' => $query['filter']['search'] ?? null,
+            'client' => $query['filter']['client'] ?? null,
             'created_at' => $query['filter']['created_at'] ?? [],
         ];
         
         $invoices = QueryBuilder::for(Invoice::class)
+            ->with([
+                'client',
+            ])
             ->defaultSort('-created_at')
             ->allowedFilters([
+                AllowedFilter::scope('search', 'smart'),
+                AllowedFilter::exact('client', 'client_id'),
                 AllowedFilter::custom('created_at', new DateBetweenFilter),
             ])
-            ->paginate()
+            ->paginate(15)
             ->appends(request()->query());
 
         return Inertia::render('Invoices/Index', [
             'invoices' => $invoices,
             'filters' => $filters,
+            'clients' => $clients,
             'banks' => Invoice::BANKS,
         ]);
     }
