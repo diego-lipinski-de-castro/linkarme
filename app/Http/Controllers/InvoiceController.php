@@ -9,6 +9,8 @@ use App\Models\Invoice;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -95,5 +97,23 @@ class InvoiceController extends Controller
         $invoice->update($request->validated());
 
         return back();
+    }
+
+    public function generate(Invoice $invoice, Request $request)
+    {
+        $pdf = Pdf::view('invoice_pdf', [
+            'invoice' => $invoice,
+        ])
+            ->format('A4')
+            ->withBrowsershot(function (Browsershot $browsershot) {
+                $browsershot->setNodeBinary(config('pdf.node_path'));
+                $browsershot->setNpmBinary(config('pdf.npm_path'));
+                if (app()->environment('production')) {
+                    $browsershot->setChromePath(config('pdf.chrome_path'));
+                }
+            })
+            ->name('linkarme-invoice.pdf');
+
+        return $pdf->download();
     }
 }

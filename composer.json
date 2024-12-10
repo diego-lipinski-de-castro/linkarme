@@ -24,6 +24,7 @@
         "owen-it/laravel-auditing": "^13.6.8",
         "predis/predis": "^2.2.2",
         "psr/simple-cache": "^3.0.0",
+        "spatie/laravel-pdf": "^1.5",
         "spatie/laravel-query-builder": "^6.1.0",
         "spatie/ssl-certificate": "^2.6.8",
         "tightenco/ziggy": "^2.3.0"

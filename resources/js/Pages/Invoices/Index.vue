@@ -61,6 +61,7 @@ import AppSuspense from "../../Layouts/AppSuspense.vue";
 import { watchDebounced } from "@vueuse/core";
 import { useCoinStore } from '@/stores/coin';
 import VueMultiselect from 'vue-multiselect';
+import VueTailwindDatepicker from "vue-tailwind-datepicker";
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -126,6 +127,12 @@ const sort = ref(params.sort ?? "-created_at");
 const filters = ref({
     search: params["filter[search]"] ?? null,
     client: params["filter[client]"] ?? null,
+    created_at: params["filter[created_at]"] ?? [],
+});
+
+const formatter = ref({
+    date: 'DD/MM/YYYY',
+    month: 'MM',
 });
 
 watchDebounced(
@@ -142,10 +149,7 @@ const get = async () => {
         route("invoices.index"),
         {
             sort: sort.value,
-            filter: {
-                search: filters.value.search,
-                client: filters.value.client,
-            },
+            filter: filters.value,
         },
         {
             preserveState: true,
@@ -174,7 +178,7 @@ const get = async () => {
                         </div>
                     </div>
 
-                    <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 md:gap-y-0">
+                    <div class="mt-5 grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-3 md:gap-y-0">
 
                         <div class="col-span-1">
                             <label for="search" class="text-sm font-medium">{{ $t('Find by number:')
@@ -227,6 +231,13 @@ const get = async () => {
                                 </template>
 
                             </VueMultiselect>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="text-sm font-medium">{{ $t('Date') }}</label>
+                            <div class="mt-1 ml-2">
+                                <vue-tailwind-datepicker v-model="filters.created_at" i18n="pt-br" :formatter="formatter" />
+                            </div>
                         </div>
 
                     </div>

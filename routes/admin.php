@@ -91,6 +91,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('orders', OrderController::class)->middleware(['auth']);
 
     // invoices
+    Route::get('invoices/{invoice}/generate', [InvoiceController::class, 'generate'])->withTrashed()->name('invoices.generate')->middleware(['auth']);
     Route::resource('invoices', InvoiceController::class)->middleware(['auth']);
     
     // clients

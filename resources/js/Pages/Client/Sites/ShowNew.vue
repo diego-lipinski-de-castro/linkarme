@@ -308,9 +308,7 @@ const submit = () => {
                                             <td class="px-3 py-3.5 text-sm text-gray-500 align-top">
 
                                                 <div class="relative">
-                                                    <input :value="site.sale" v-money3="coins[site.sale_coin]"
-                                                        type="text" name="sale" id="sale"
-                                                        class="sm:text-sm border-0 focus:outline-0" />
+                                                    {{ $filters.currency(site.sale / 100, coins[site.sale_coin]) }}
                                                 </div>
 
                                             </td>

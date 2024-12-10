@@ -36,6 +36,7 @@ import { watchDebounced } from "@vueuse/core";
 import { useCoinStore } from '@/stores/coin'
 import { getOrderStatusColor } from '@/utils'
 import VueMultiselect from 'vue-multiselect'
+import VueTailwindDatepicker from "vue-tailwind-datepicker";
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -71,6 +72,12 @@ const filters = ref({
     search: params["filter[search]"] ?? null,
     client: params["filter[client]"] ?? null,
     status: params["filter[status]"] ?? null,
+    created_at: params["filter[created_at]"] ?? [],
+});
+
+const formatter = ref({
+    date: 'DD/MM/YYYY',
+    month: 'MM',
 });
 
 // watch(sort, (n, o) => get());
@@ -88,11 +95,7 @@ const get = async () => {
     Inertia.get(
         route("orders.index"),
         {
-            filter: {
-                search: filters.value.search,
-                client: filters.value.client,
-                status: filters.value.status,
-            },
+            filter: filters.value,
         },
         {
             preserveState: true,
@@ -191,12 +194,12 @@ const submitInvoice = () => {
 }
 
 const canSelect = (order) => {
-    if(invoiceForm.selected.length === 0) {
+    if (invoiceForm.selected.length === 0) {
         return true;
     }
 
     const _order = props.orders.data.find(o => o.id === invoiceForm.selected[0])
-    
+
     if (order.client_id !== _order.client_id) {
         return false;
     }
@@ -413,7 +416,8 @@ const canSelect = (order) => {
                                                                     {{ site.cost_coin != coinStore.coin ? '~ ' : null }}
                                                                     {{ $filters.currency(Math.ceil((site.cost /
                                                                         coinStore.ratios[site.cost_coin]) / 100), {
-                                                                    ...coins[coinStore.coin], precision: 0, }) }}
+                                                                        ...coins[coinStore.coin], precision: 0,
+                                                                    }) }}
                                                                 </span>
                                                             </span>
                                                         </span>
@@ -432,7 +436,8 @@ const canSelect = (order) => {
                                                                     {{ site.sale_coin != coinStore.coin ? '~ ' : null }}
                                                                     {{ $filters.currency(Math.ceil((site.sale /
                                                                         coinStore.ratios[site.sale_coin]) / 100), {
-                                                                    ...coins[coinStore.coin], precision: 0, }) }}
+                                                                        ...coins[coinStore.coin], precision: 0,
+                                                                    }) }}
                                                                 </span>
                                                             </span>
                                                         </span>
@@ -491,7 +496,7 @@ const canSelect = (order) => {
                         </div>
                     </div>
 
-                    <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 md:gap-y-0">
+                    <div class="mt-5 grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-3 md:gap-y-0">
 
                         <div class="col-span-1">
                             <label for="search" class="text-sm font-medium">{{ $t('Find by number:')
@@ -510,8 +515,8 @@ const canSelect = (order) => {
                         <div class="col-span-1">
                             <label class="text-sm font-medium">{{ $t('Filter by client') }}</label>
 
-                            <VueMultiselect key="client" class="mt-1 ml-2" placeholder="Select..." v-model="filters.client"
-                                track-by="value" label="name" :options="clients.map((client) => ({
+                            <VueMultiselect key="client" class="mt-1 ml-2" placeholder="Select..."
+                                v-model="filters.client" track-by="value" label="name" :options="clients.map((client) => ({
                                     name: client.name,
                                     value: client.id,
                                 }))" :multiple="false" :searchable="true" :close-on-select="true" selectLabel=""
@@ -527,8 +532,8 @@ const canSelect = (order) => {
                         <div class="col-span-1">
                             <label class="text-sm font-medium">{{ $t('Filter by status') }}</label>
 
-                            <VueMultiselect key="status" class="mt-1 ml-2" placeholder="Select..." v-model="filters.status"
-                                track-by="value" label="name" :options="[
+                            <VueMultiselect key="status" class="mt-1 ml-2" placeholder="Select..."
+                                v-model="filters.status" track-by="value" label="name" :options="[
                                     { name: 'Aguardando', value: 'WAITING' },
                                     { name: 'Produção do artigo', value: 'PRODUCTION' },
                                     { name: 'Enviado para vendedor', value: 'SUBMITTED' },
@@ -544,6 +549,13 @@ const canSelect = (order) => {
                                 </template>
 
                             </VueMultiselect>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="text-sm font-medium">{{ $t('Date') }}</label>
+                            <div class="mt-1 ml-2">
+                                <vue-tailwind-datepicker v-model="filters.created_at" i18n="pt-br" :formatter="formatter" />
+                            </div>
                         </div>
 
                     </div>
