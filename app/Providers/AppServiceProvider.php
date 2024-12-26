@@ -5,15 +5,18 @@ namespace App\Providers;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
+use Fedeisas\LaravelMailCssInliner\CssInlinerPlugin;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Gate::define('viewApiDocs', function (?Authenticatable $user = null) {
+            return true;
+        });
+
         Scramble::routes(function (Route $route) {
             return Str::startsWith($route->uri, 'api/');
         });
