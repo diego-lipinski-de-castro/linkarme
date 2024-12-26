@@ -45,6 +45,12 @@ return [
             'driver' => 'session',
             'provider' => 'clients',
         ],
+
+        'api-seller' => [
+            'driver' => 'token',
+            'provider' => 'sellers',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -74,6 +80,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Client::class,
         ],
+
+        'sellers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Seller::class,
+        ],
     ],
 
     /*
@@ -101,6 +112,13 @@ return [
 
         'clients' => [
             'provider' => 'clients',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'sellers' => [
+            'provider' => 'sellers',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

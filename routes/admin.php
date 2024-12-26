@@ -98,6 +98,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('clients', ClientController::class)->middleware(['auth']);
     
     // sellers
+    Route::post('sellers/{seller}/generateApiToken', [SellerController::class, 'generateApiToken'])->name('sellers.generateApiToken')->middleware(['auth']);
     Route::resource('sellers', SellerController::class)->middleware(['auth']);
     
     // misc

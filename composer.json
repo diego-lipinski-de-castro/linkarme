@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "dedoc/scramble": "^0.11.31",
         "doctrine/dbal": "^4.1.1",
         "fedeisas/laravel-mail-css-inliner": "^5.3.0",
         "google/apiclient": "^2.17",

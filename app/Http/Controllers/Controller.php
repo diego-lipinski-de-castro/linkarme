@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Dedoc\Scramble\Attributes\ExcludeRouteFromDocs;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -11,6 +12,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    #[ExcludeRouteFromDocs]
     public function locale($locale)
     {
         if(!in_array($locale, ['en', 'pt', 'es'])) {

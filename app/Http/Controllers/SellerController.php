@@ -88,8 +88,9 @@ class SellerController extends Controller
         $coins = config('coins');
 
         return Inertia::render('Sellers/EditNew', [
-            'seller' => $seller,
+            'seller' => $seller->load('tokens'),
             'coins' => $coins,
+            'token' => session('token'),
         ]);
     }
 
@@ -118,5 +119,14 @@ class SellerController extends Controller
         $seller->delete();
 
         return back();
+    }
+
+    public function generateApiToken(Seller $seller)
+    {
+        $seller->tokens()->delete();
+
+        $token = $seller->createToken('API Token');
+
+        return back()->with('token', $token->plainTextToken);
     }
 }
