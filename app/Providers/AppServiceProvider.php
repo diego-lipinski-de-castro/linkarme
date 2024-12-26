@@ -12,6 +12,7 @@ use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -35,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Gate::define('viewApiDocs', function () {
+            return true;
+        });
+
         Scramble::routes(function (Route $route) {
             return Str::startsWith($route->uri, 'api/');
         });
