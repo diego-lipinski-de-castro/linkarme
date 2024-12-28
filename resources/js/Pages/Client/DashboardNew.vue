@@ -5,8 +5,7 @@ import SiteAdded from '@/Components/Notifications/SiteAdded.vue';
 import SiteDeleted from '@/Components/Notifications/SiteDeleted.vue';
 import SiteRestored from '@/Components/Notifications/SiteRestored.vue';
 import { computed } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
+import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import {
     Dialog,

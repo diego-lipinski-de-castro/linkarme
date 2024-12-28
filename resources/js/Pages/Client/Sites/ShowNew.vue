@@ -1,6 +1,6 @@
 <script setup>
 import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { computed } from 'vue'
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';

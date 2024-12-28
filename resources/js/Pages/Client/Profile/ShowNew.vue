@@ -11,7 +11,7 @@ import UpdateEmailForm from '@/Pages/Client/Profile/PartialsNew/UpdateEmailForm.
 import UpdateContactForm from '@/Pages/Client/Profile/PartialsNew/UpdateContactForm.vue';
 import UpdateInvoiceForm from '@/Pages/Client/Profile/PartialsNew/UpdateInvoiceForm.vue';
 import BugForm from '@/Pages/Client/Profile/PartialsNew/BugForm.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/vue3';
 import { onMounted } from 'vue'
 import {
     UserCircleIcon,

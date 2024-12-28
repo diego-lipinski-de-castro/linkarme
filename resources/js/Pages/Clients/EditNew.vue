@@ -4,7 +4,7 @@ import DeleteUserForm from '@/Pages/Clients/PartialsNew/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Clients/PartialsNew/LogoutOtherBrowserSessionsForm.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';
 import TwoFactorAuthenticationForm from '@/Pages/Clients/PartialsNew/TwoFactorAuthenticationForm.vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import {
     UserCircleIcon,
     KeyIcon,
@@ -14,7 +14,6 @@ import {
     EyeSlashIcon,
     ArrowTopRightOnSquareIcon,
 } from '@heroicons/vue/24/outline'
-import { Inertia } from '@inertiajs/inertia';
 import { ref } from 'vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import InputError from '@/Components/InputError.vue';

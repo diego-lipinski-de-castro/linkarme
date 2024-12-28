@@ -1,6 +1,5 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { Inertia } from "@inertiajs/inertia";
 import { onMounted, ref } from 'vue'
 import {
     ChevronRightIcon,

@@ -3,8 +3,7 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
+import { Link } from '@inertiajs/vue3';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import {
     Dialog,

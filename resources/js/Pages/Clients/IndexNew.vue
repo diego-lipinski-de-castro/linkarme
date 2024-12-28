@@ -2,8 +2,7 @@
 
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { Link } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
+import { Link } from '@inertiajs/vue3';
 import {
     ChevronRightIcon,
     ArrowLongLeftIcon,

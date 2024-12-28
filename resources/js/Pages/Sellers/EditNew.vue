@@ -1,7 +1,6 @@
 <script setup>
 import AppLayoutNew from "@/Layouts/AppLayoutNew.vue";
 import { Link, useForm, router } from "@inertiajs/inertia-vue3";
-import { Inertia } from "@inertiajs/inertia";
 import { computed, ref, watch } from "vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";

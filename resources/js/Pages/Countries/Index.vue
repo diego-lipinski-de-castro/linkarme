@@ -1,8 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
+import { Link } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue'
 import {
     CheckCircleIcon,

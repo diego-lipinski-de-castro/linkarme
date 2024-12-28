@@ -1,6 +1,6 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import {
     UserCircleIcon,

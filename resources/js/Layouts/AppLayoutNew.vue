@@ -1,6 +1,5 @@
 <script setup>
-import { Inertia } from '@inertiajs/inertia';
-import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import Banner from '@/Components/Banner.vue';
 import {
     Menu,
@@ -25,7 +24,7 @@ import { useTranslation } from "i18next-vue";
 import { useLanguageStore } from '@/stores/language'
 import { useCoinStore } from '@/stores/coin'
 import { i18nextPromise } from "@/i18n.js";
-import { usePage } from '@inertiajs/inertia-vue3';
+import { usePage, router } from '@inertiajs/vue3';
 
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
@@ -51,7 +50,7 @@ const navigation = [
 ]
 
 const logout = () => {
-    Inertia.post(route('logout'))
+    router.post(route('logout'))
 }
 
 const particlesOptions = {

@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
-import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import Banner from '@/Components/Banner.vue';
 import {
     Menu,

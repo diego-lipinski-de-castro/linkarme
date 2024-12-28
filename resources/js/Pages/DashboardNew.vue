@@ -1,7 +1,7 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
 import AppSuspense from '../Layouts/AppSuspense.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/vue3';
 import {
     CloudArrowUpIcon,
     HandThumbUpIcon,

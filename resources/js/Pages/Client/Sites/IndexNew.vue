@@ -3,8 +3,7 @@
 <script setup>
 import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Inertia } from "@inertiajs/inertia";
-import { Link, useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {

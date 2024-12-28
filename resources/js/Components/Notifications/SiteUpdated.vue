@@ -1,6 +1,5 @@
 <script setup>
-import { Link } from '@inertiajs/inertia-vue3';
-import { Inertia } from "@inertiajs/inertia";
+import { Link } from '@inertiajs/vue3';
 import { useTranslation } from "i18next-vue";
 import { getCurrentInstance } from 'vue'
 
