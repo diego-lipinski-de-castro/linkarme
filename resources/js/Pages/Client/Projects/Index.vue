@@ -1,6 +1,6 @@
 <script setup>
 import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import {
     Menu,
@@ -25,7 +25,7 @@ const props = defineProps({
 });
 
 const destroy = (project) => {
-    Inertia.delete(route('client.projects.destroy', project))
+    router.delete(route('client.projects.destroy', project))
 }
 
 const open = ref(false)

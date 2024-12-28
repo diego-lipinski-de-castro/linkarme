@@ -1,7 +1,7 @@
 <script setup>
 import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import {
@@ -82,7 +82,7 @@ const filters = reactive({
 watch(sort, (n, o) => get());
 
 const get = async () => {
-    Inertia.get(route('client.sites.list'), {
+    router.get(route('client.sites.list'), {
         sort: sort.value,
         filter: {
             ...(filters.favorites && {
@@ -101,13 +101,13 @@ const get = async () => {
 }
 
 const toggleFavorite = async (site) => {
-    Inertia.post(route('client.sites.favorite', site), null, {
+    router.post(route('client.sites.favorite', site), null, {
         preserveScroll: true,
     })
 }
 
 const toggleInterest = async (site) => {
-    Inertia.post(route('client.sites.interest', site), null, {
+    router.post(route('client.sites.interest', site), null, {
         preserveScroll: true,
     })
 }

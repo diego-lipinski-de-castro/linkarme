@@ -1,7 +1,7 @@
 <script setup>
 import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import unionBy from 'lodash/unionBy'
 import { EyeIcon } from '@heroicons/vue/24/outline'
@@ -65,7 +65,7 @@ watchDebounced(() => ({ ...filters }), (n, o) => {
 })
 
 const get = async () => {
-    Inertia.get(route('client.orders.index'), {
+    router.get(route('client.orders.index'), {
         sort: sort.value,
         filter: {
 

@@ -2,7 +2,7 @@
 
 <script setup>
 import AppLayoutNew from "@/Layouts/AppLayoutNew.vue";
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, router } from '@inertiajs/vue3';
 import { computed, ref, watch } from "vue";
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -91,7 +91,7 @@ watchDebounced(
 );
 
 const get = async () => {
-    Inertia.get(
+    router.get(
         route("orders.index"),
         {
             filter: filters.value,
@@ -115,7 +115,7 @@ const uploadOrders = (
     progress,
     abort
 ) => {
-    Inertia.post(
+    router.post(
         route("orders.import"),
         {
             file: file,
@@ -147,7 +147,7 @@ watch(openImportDialog, (n, o) => {
     if (!n) {
         setTimeout(() => {
             importFinished.value = false;
-            Inertia.reload({
+            router.reload({
                 only: ["importFailures", "importDiff"],
             });
         }, 300);
@@ -164,7 +164,7 @@ const submit = () => {
     form.post(route('orders.go'), {
         preserveScroll: true,
         onSuccess: (res) => {
-            Inertia.reload({
+            router.reload({
                 only: ["sites"],
             });
 

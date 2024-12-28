@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, Link, usePage, router } from '@inertiajs/vue3';
 import Banner from '@/Components/Banner.vue';
 import {
     Menu,
@@ -47,7 +47,7 @@ const navigation = [
 ]
 
 const logout = () => {
-    Inertia.post(route('client.logout'))
+    router.post(route('client.logout'))
 }
 
 const particlesOptions = {

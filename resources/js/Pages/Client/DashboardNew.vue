@@ -5,7 +5,7 @@ import SiteAdded from '@/Components/Notifications/SiteAdded.vue';
 import SiteDeleted from '@/Components/Notifications/SiteDeleted.vue';
 import SiteRestored from '@/Components/Notifications/SiteRestored.vue';
 import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import {
     Dialog,
@@ -77,7 +77,7 @@ const greeting = computed(() => {
 })
 
 const toggleFavorite = async (site) => {
-    Inertia.post(route('client.sites.favorite', site), null, {
+    router.post(route('client.sites.favorite', site), null, {
         preserveScroll: true,
     })
 }

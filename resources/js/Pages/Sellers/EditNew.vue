@@ -1,6 +1,6 @@
 <script setup>
 import AppLayoutNew from "@/Layouts/AppLayoutNew.vue";
-import { Link, useForm, router } from "@inertiajs/inertia-vue3";
+import { Link, useForm, router } from "@inertiajs/vue3";
 import { computed, ref, watch } from "vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -37,7 +37,7 @@ const generatePassword = () => {
 };
 
 const generateApiToken = () => {
-    Inertia.post(route("sellers.generateApiToken", seller.id), {
+    router.post(route("sellers.generateApiToken", seller.id), {
         preserveState: true,
         onSuccess: (res) => {
             console.log(res.props)

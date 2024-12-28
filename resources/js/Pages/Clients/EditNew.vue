@@ -141,7 +141,7 @@ const updatePhotoPreview = () => {
 };
 
 const deletePhoto = () => {
-    // Inertia.delete(route('client.current-user-photo.destroy'), {
+    // router.delete(route('client.current-user-photo.destroy'), {
     //     preserveScroll: true,
     //     onSuccess: () => {
     //         photoPreview.value = null;

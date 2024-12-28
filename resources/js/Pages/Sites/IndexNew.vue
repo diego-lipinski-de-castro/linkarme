@@ -3,7 +3,7 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import {
     Dialog,
@@ -144,7 +144,7 @@ watch(() => coinStore.coin, (n, o) => {
 })
 
 const get = async () => {
-    Inertia.get(route('sites.index'), {
+    router.get(route('sites.index'), {
         sort: sort.value,
         ratios: coinStore.ratios,
         filter: {
@@ -173,7 +173,7 @@ const get = async () => {
 }
 
 const toggle = async (id) => {
-    Inertia.post(route('sites.toggle', id), null, {
+    router.post(route('sites.toggle', id), null, {
         preserveScroll: true,
         preserveState: true,
     })
@@ -187,7 +187,7 @@ const notifyAdded = ref(false)
 const notifyUpdated = ref(false)
 
 const uploadSites = (fieldName, file, metadata, load, error, progress, abort) => {
-    Inertia.post(route('sites.import'), {
+    router.post(route('sites.import'), {
         file: file,
         notify_added: notifyAdded.value,
         notify_updated: notifyUpdated.value,
@@ -217,7 +217,7 @@ watch(openImportDialog, (n, o) => {
     if (!n) {
         setTimeout(() => {
             importFinished.value = false
-            Inertia.reload({
+            router.reload({
                 only: ['importFailures', 'importDiff'],
             })
         }, 300)

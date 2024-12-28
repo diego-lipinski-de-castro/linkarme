@@ -7,6 +7,7 @@ import {
 import AppSuspense from '../../Layouts/AppSuspense.vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     title: String,
@@ -23,7 +24,7 @@ const showOffer = (offer) => {
 }
 
 const accept = (offer) => {
-    Inertia.post(route('offers.accept', offer), null, {
+    router.post(route('offers.accept', offer), null, {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {
@@ -34,7 +35,7 @@ const accept = (offer) => {
 }
 
 const reject = (offer) => {
-    Inertia.delete(route('offers.reject', offer), {
+    router.delete(route('offers.reject', offer), {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {

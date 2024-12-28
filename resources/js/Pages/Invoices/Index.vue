@@ -3,7 +3,7 @@
 <script setup>
 import AppLayoutNew from "@/Layouts/AppLayoutNew.vue";
 import TableSortButton from "@/Components/TableSortButton.vue";
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, router } from '@inertiajs/vue3';
 import { computed, onMounted, ref, watch } from "vue";
 import unionBy from "lodash/unionBy";
 import InputError from '@/Components/InputError.vue';
@@ -144,7 +144,7 @@ watchDebounced(
 );
 
 const get = async () => {
-    Inertia.get(
+    router.get(
         route("invoices.index"),
         {
             sort: sort.value,

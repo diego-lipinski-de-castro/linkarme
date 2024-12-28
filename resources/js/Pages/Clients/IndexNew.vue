@@ -2,7 +2,7 @@
 
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import {
     ChevronRightIcon,
     ArrowLongLeftIcon,
@@ -52,7 +52,7 @@ watchDebounced(() => ({ ...filters }), (n, o) => {
 })
 
 const get = () => {
-    Inertia.get(route('clients.index'), {
+    router.get(route('clients.index'), {
         filter: {
             search: filters.search,
             full: filters.full?.value,
@@ -64,7 +64,7 @@ const get = () => {
 }
 
 const destroy = (client) => {
-    Inertia.delete(route('clients.destroy', client), {
+    router.delete(route('clients.destroy', client), {
         preserveScroll: true,
         preserveState: true,
     })

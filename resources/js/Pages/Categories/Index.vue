@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue'
 import {
     CheckCircleIcon,
@@ -29,7 +29,7 @@ const links = computed(() => {
 })
 
 const destroy = (category) => {
-    Inertia.delete(route('categories.destroy', category), {
+    router.delete(route('categories.destroy', category), {
         preserveScroll: true,
         preserveState: true,
     })
