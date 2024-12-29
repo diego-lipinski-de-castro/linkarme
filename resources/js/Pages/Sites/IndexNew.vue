@@ -234,7 +234,6 @@ onMounted(() => {
 
 
 const expanded = ref([])
-
 </script>
 
 <template>
@@ -876,21 +875,6 @@ const expanded = ref([])
                                                 </div>
 
                                             </td>
-
-                                            <!-- <td class="whitespace-nowrap px-4 py-4 text-sm">
-                                                <div class="flex justify-end space-x-3">
-                                                    <Link :href="route('sites.edit', site.id)"
-                                                        class="text-blue-500 hover:text-blue-700">
-                                                        <PencilSquareIcon class="h-5 w-5" />
-                                                    </Link>
-
-                                                    <button @click="toggle(site.id)"
-                                                        :class="[site.deleted_at === null ? 'text-red-500 hover:text-red-700' : 'text-green-500 hover:text-green-700']">
-                                                        <TrashIcon v-if="site.deleted_at === null" class="h-5 w-5" />
-                                                        <ArrowPathIcon v-else class="h-5 w-5" />
-                                                    </button>
-                                                </div>
-                                            </td> -->
                                         </tr>
 
                                         <tr v-show="site.types.length > 0 && expanded.includes(index)">
@@ -930,20 +914,25 @@ const expanded = ref([])
 
                         <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
                             <div class="-mt-px flex w-0 flex-1">
-                                <Link :href="sites.prev_page_url"
+                                <Link v-if="sites.prev_page_url" :href="sites.prev_page_url"
                                     class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                 <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 {{ $t('Previous') }}
                                 </Link>
                             </div>
                             <div class="hidden md:-mt-px md:flex">
-                                <Link v-for="(link, index) in links" :key="index" :href="link.url"
-                                    :class="[link.active ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'inline-flex items-center border-t-2  px-4 pt-4 text-sm font-medium ']">
-                                {{ link.label }}
-                                </Link>
+                                <template v-for="(link, index) in links" :key="index">
+                                    <Link v-if="link.url" :href="link.url"
+                                        :class="[link.active ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'inline-flex items-center border-t-2  px-4 pt-4 text-sm font-medium ']">
+                                    {{ link.label }}
+                                    </Link>
+                                    <span v-else class="inline-flex items-center border-t-2  px-4 pt-4 text-sm font-medium ">
+                                        {{ link.label }}
+                                    </span>
+                                </template>
                             </div>
                             <div class="-mt-px flex w-0 flex-1 justify-end">
-                                <Link :href="sites.next_page_url"
+                                <Link v-if="sites.next_page_url" :href="sites.next_page_url"
                                     class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                 {{ $t('Next') }}
                                 <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />

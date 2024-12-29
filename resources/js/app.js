@@ -1,22 +1,18 @@
 import "./bootstrap";
-import "../css/app.css";
 
 import { createApp, h } from "vue";
 import { createInertiaApp } from '@inertiajs/vue3';
 import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { ZiggyVue } from 'ziggy-js';
 import money, { format, unformat } from "v-money3";
 import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css'; // optional for styling
+import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 import i18n from "./i18n";
 import AppSuspense from '@/Layouts/AppSuspense.vue'
 import Spinner from '@/Components/Spinner.vue'
-import Particles from "@tsparticles/vue3";
-import { loadFull } from "tsparticles"
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 
 window.tippy = tippy
@@ -34,8 +30,8 @@ createInertiaApp({
             `./Pages/${name}.vue`,
             import.meta.glob("./Pages/**/*.vue")
         ),
-    setup({ el, app, props, plugin }) {
-        const _app = i18n(createApp({ render: () => h(app, props) }));
+    setup({ el, App, props, plugin }) {
+        const _app = i18n(createApp({ render: () => h(App, props) }));
 
         _app.config.globalProperties.$filters = {
             capitalize(string) {
@@ -73,18 +69,16 @@ createInertiaApp({
             },
         };
 
-        return _app
+        _app
             .use(plugin)
-            .use(ZiggyVue)
             .use(money)
             .use(pinia)
-            .use(Particles, {
-                init: async (engine) => await loadFull(engine)
-            })
             .use(autoAnimatePlugin)
             .component('AppSuspense', AppSuspense)
             .component('Spinner', Spinner)
-            .mount(el);
+            .mixin({ methods: { route } });
+
+        return _app.mount(el);
     },
 });
 

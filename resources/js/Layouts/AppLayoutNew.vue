@@ -25,6 +25,9 @@ import { useLanguageStore } from '@/stores/language'
 import { useCoinStore } from '@/stores/coin'
 import { i18nextPromise } from "@/i18n.js";
 import { usePage, router } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
+import { tsParticles } from "@tsparticles/engine";
+import { loadFull } from "tsparticles"
 
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
@@ -104,6 +107,15 @@ const particlesOptions = {
     },
 };
 
+onMounted(async () => {
+    await loadFull(tsParticles);
+
+    await tsParticles.load({
+        id: "tsparticles",
+        options: particlesOptions,
+    });
+})
+
 const setCoin = async (coin) => {
     await coinStore.setCoin(coin);
 
@@ -125,7 +137,6 @@ await i18nextPromise
 
 <template>
     <div>
-
         <Head :title="title" />
 
         <Banner />
@@ -134,7 +145,7 @@ await i18nextPromise
 
             <div class="relative bg-gradient-to-b from-blue-700 via-blue-500 to-blue-400 pb-32">
                 <div class="absolute inset-0">
-                    <vue-particles id="tsparticles" :options="particlesOptions" class="w-full h-full" />
+                    <div id="tsparticles" class="w-full h-full"></div>
                 </div>
 
                 <Disclosure as="nav" class="relative z-10 border-b border-white border-opacity-50 lg:border-none"

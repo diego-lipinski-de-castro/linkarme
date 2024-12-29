@@ -3,7 +3,6 @@ import ClientLayoutNew from '@/Layouts/ClientLayoutNew.vue';
 import TableSortButton from '@/Components/TableSortButton.vue';
 import { Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import unionBy from 'lodash/unionBy'
 import {
     ArrowLongLeftIcon,
     ArrowLongRightIcon,
