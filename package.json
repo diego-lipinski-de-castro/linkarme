@@ -39,6 +39,7 @@
         "maska": "^3.0.4",
         "pinia": "^2.3.0",
         "pinia-plugin-persist": "^1.0.0",
+        "puppeteer": "^23.11.1",
         "svgmap": "^2.12.1",
         "tippy.js": "^6.3.7",
         "tsparticles": "3.7.1",

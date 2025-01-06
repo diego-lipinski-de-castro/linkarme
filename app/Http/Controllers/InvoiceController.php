@@ -101,6 +101,10 @@ class InvoiceController extends Controller
 
     public function generate(Invoice $invoice, Request $request)
     {
+        return view('invoice_pdf', [
+            'invoice' => $invoice,
+        ]);
+
         $pdf = Pdf::view('invoice_pdf', [
             'invoice' => $invoice,
         ])

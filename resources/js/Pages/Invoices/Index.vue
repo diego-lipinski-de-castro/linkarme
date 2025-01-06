@@ -275,10 +275,10 @@ const get = async () => {
                         <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3"
                             aria-label="Pagination">
                             <div class="flex flex-1 justify-between">
-                                <Link :href="invoices.prev_page_url"
+                                <Link v-if="invoices.prev_page_url" :href="invoices.prev_page_url"
                                     class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
                                 {{ $t("Previous") }}</Link>
-                                <Link :href="invoices.next_page_url"
+                                <Link v-if="invoices.next_page_url" :href="invoices.next_page_url"
                                     class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500">
                                 {{ $t("Next") }}</Link>
                             </div>
@@ -355,7 +355,7 @@ const get = async () => {
 
                             <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
                                 <div class="-mt-px flex w-0 flex-1">
-                                    <Link :href="invoices.prev_page_url"
+                                    <Link v-if="invoices.prev_page_url" :href="invoices.prev_page_url"
                                         class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                     <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                                     {{ $t("Previous") }}
@@ -372,7 +372,7 @@ const get = async () => {
                                     </Link>
                                 </div>
                                 <div class="-mt-px flex w-0 flex-1 justify-end">
-                                    <Link :href="invoices.next_page_url"
+                                    <Link v-if="invoices.next_page_url" :href="invoices.next_page_url"
                                         class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
                                     {{ $t("Next") }}
                                     <ArrowLongRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />

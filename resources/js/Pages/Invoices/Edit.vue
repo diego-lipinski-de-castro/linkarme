@@ -1,6 +1,6 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import { computed, getCurrentInstance } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -60,10 +60,6 @@ const submit = () => {
             console.log(error)
         }
     });
-}
-
-const generate = () => {
-    
 }
 </script>
         
@@ -189,9 +185,9 @@ const generate = () => {
                             </div>
 
                             <div class="self-end mb-1 flex space-x-2">
-                                <SecondaryButton @click="generate">
+                                <a :href="route('invoices.generate', invoice.id)" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:text-gray-800 active:bg-gray-50 disabled:opacity-25 transition">
                                     {{ $t('Generate') }}
-                                </SecondaryButton>
+                                </a>
 
                                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                                     Save
