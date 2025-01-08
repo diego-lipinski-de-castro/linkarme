@@ -36,7 +36,7 @@ import { loadFull } from "tsparticles"
 const languageStore = useLanguageStore()
 const coinStore = useCoinStore()
 const { t } = useTranslation();
-const user = computed(() => usePage().props.value.auth.user)
+const user = computed(() => usePage().props.auth.user)
 
 defineProps({
     title: String,
