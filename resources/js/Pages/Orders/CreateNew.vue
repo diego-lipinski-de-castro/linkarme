@@ -1,11 +1,11 @@
 <script setup>
 import AppLayoutNew from '@/Layouts/AppLayoutNew.vue';
 import { useForm } from '@inertiajs/vue3';
-import { computed, ref, getCurrentInstance, toRaw, onMounted, watch, nextTick } from 'vue'
+import { computed, ref, getCurrentInstance, toRaw, watch, nextTick } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { PencilIcon, TrashIcon, PlusCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
+import { PencilIcon, TrashIcon, PlusCircleIcon, ArrowTopRightOnSquareIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import {
@@ -15,12 +15,11 @@ import {
     TransitionRoot,
 } from "@headlessui/vue";
 import { useCoinStore } from '@/stores/coin'
-import Checkbox from '@/Components/Checkbox.vue';
 
 const app = getCurrentInstance()
 const coinStore = useCoinStore()
 
-const { coins, statuses, clients, sites } = defineProps({
+const { coins, statuses, clients } = defineProps({
     coins: Object,
     statuses: Object,
     clients: Array,
@@ -37,6 +36,22 @@ const form = useForm({
     payment_date: '',
     sites: [],
 });
+
+watch(form.sites, () => {
+    nextTick(() => {
+        [...document.querySelectorAll('*')].forEach(node => {
+            if (node._tippy) {
+                node._tippy.destroy();
+            }
+        });
+
+        setTimeout(() => {
+            tippy('[data-tippy-content]', {
+                interactive: true,
+            });
+        }, 100);
+    })
+})
 
 const submit = () => {
     form.transform((data) => ({
@@ -82,7 +97,10 @@ const listForm = useForm({
 const list = ref([])
 
 const go = () => {
-    listForm.post(route('orders.go'), {
+    listForm.transform((data) => ({
+        ...data,
+        type: form.type_id,
+    })).post(route('orders.go'), {
         preserveScroll: true,
         onSuccess: (res) => {
             openOrderDialog.value = false
@@ -279,6 +297,15 @@ const comissionTotal = computed(() => {
 
     return total;
 })
+
+const addSites = () => {
+    if(form.type_id === null) {
+        alert('Select type before adding sites.')
+        return;
+    }
+
+    openOrderDialog.value = true
+}
 </script>
         
 <template>
@@ -574,6 +601,7 @@ const comissionTotal = computed(() => {
                                                 <tr>
                                                     <th scope="col" class="whitespace-nowrap pl-4 pr-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Portal') }}</th>
+                                                    <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Sponsor') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Link') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Vendedor') }}</th>
                                                     <th scope="col" class="border-l whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ $t('Valor de compra') }}</th>
@@ -609,11 +637,21 @@ const comissionTotal = computed(() => {
 
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm text-gray-500">
                                                         <div class="flex space-x-1">
+                                                            <span v-if="false" :data-tippy-content="$t('This website does not accept the required link type.')">
+                                                                <ExclamationCircleIcon class="size-5 text-red-500 cursor-help" />
+                                                            </span>
+
                                                             <span class="truncate w-36">{{ site.url }}</span>
                                                             <a :href="route('sites.edit', site.id)" target="_blank" class="block text-blue-500 hover:text-blue-700">
                                                                 <ArrowTopRightOnSquareIcon class="size-4"/>
                                                             </a>
                                                         </div>
+                                                    </td>
+
+                                                    <td class="border-l whitespace-nowrap px-3 py-2 text-sm text-gray-500">
+                                                        <span class="w-36">
+                                                            <CheckCircleIcon v-if="site.sponsor" class="size-5 text-green-500" /> 
+                                                        </span>
                                                     </td>
 
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm text-gray-500">
@@ -743,7 +781,7 @@ const comissionTotal = computed(() => {
 
                                             <tfoot v-if="form.sites.length > 0">
                                                 <tr>
-                                                    <td colspan="4" class="px-3 py-2"></td>
+                                                    <td colspan="5" class="px-3 py-2"></td>
 
                                                     <td class="border-l whitespace-nowrap px-3 py-2 text-sm font-medium text-gray-900">
                                                         ~ {{ costTotal }}
@@ -768,7 +806,7 @@ const comissionTotal = computed(() => {
                                     </div>
                                 </div>
 
-                                <button @click="openOrderDialog = true;" type="button" class="mt-2 flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-all">
+                                <button @click="addSites" type="button" class="mt-2 flex max-w-xs items-center rounded-md bg-blue-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-2 hover:bg-blue-700 transition-all">
                                     <span class="px-1 text-sm font-medium text-white">{{ $t("Add sites") }}</span>
                                 </button>
 

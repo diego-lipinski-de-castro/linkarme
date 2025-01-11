@@ -7,6 +7,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Imports\OrdersImport;
 use App\Models\Client;
+use App\Models\Offer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Seller;
@@ -299,19 +300,34 @@ class OrderController extends Controller
     {
         $input = $request->validate([
             'list' => ['required', 'string'],
+            'type' => ['required', 'exists:types,id'],
         ]);
+
+        $type = Type::findOrFail($input['type']);
 
         $list = explode(PHP_EOL, $input['list']);
 
         $sites = [];
 
-        foreach($list as $site) {
-            $sites[$site] = Site::query()
+        foreach($list as $item) {
+            $sites[$item] = Site::query()
                 ->with([
                     'seller',
+                    'types',
                 ])
-                ->where('url', $site)
+                ->where('url', $item)
                 ->first();
+
+            // $offers = Offer::query()
+            //         ->with([
+            //             'site',
+            //             'seller',
+            //             'types',
+            //         ])
+            //         ->where('site_id', $sites[$item]->id)
+            //         ->get();
+
+            // dd($sites[$item], $offers);
         }
 
         $request->session()->flash('sites', $sites);

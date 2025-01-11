@@ -6,6 +6,7 @@ use App\Helper;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\Offer;
 use App\Models\Seller;
 use App\Models\Site;
 use App\Models\Team;
@@ -175,6 +176,34 @@ class SitesImport implements OnEachRow, WithHeadingRow, SkipsOnError, SkipsOnFai
             if(!$this->notifyUpdated) {
                 Site::enableAuditing();
             }
+
+            // 
+
+            // $offer = Offer::create([
+            //     'seller_id' => auth()->id(),
+            //     'site_id' => $site->id,
+                
+            //     'cost' => Helper::extractNumbersFromString($validated['cost']),
+            //     'cost_coin' => $validated['cost_coin'],
+    
+            //     'sale' => 0,
+            //     'sale_coin' => $validated['cost_coin'],
+            // ]);
+    
+            // $types = collect($validated['types']);
+    
+            // $types = $types->where('available', true);
+    
+            // $types = $types->mapWithKeys(function ($type) {
+            //     return [$type['id'] => [
+            //         'cost' => Helper::extractNumbersFromString($type['cost']),
+            //         'sale' => 0,
+            //         'cost_coin' => $type['cost_coin'],
+            //         'sale_coin' => $type['cost_coin'],
+            //     ]];
+            // });
+    
+            // $offer->types()->sync($types);
 
         } else {
 
