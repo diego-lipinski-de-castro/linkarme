@@ -17,7 +17,12 @@ class BazoomService
         $this->password = env('BAZOOM_PASSWORD');
     }
 
-    public function makeRequest(array $queryParams = [])
+    public function makeRequest(array $queryParams = [
+        'domain_rating_range' => '1..10',
+        'organic_traffic_range' => '1..10',
+        'pageSize' => 10,
+        'pageNumber' => 1,
+    ])
     {
         $response = Http::withBasicAuth($this->username, $this->password)
                         ->get($this->baseUrl, $queryParams);
